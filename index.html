@@ -574,7 +574,7 @@
             opacity: 0.09;
         }
 
-        /* Universal Founder Tag — Everyone is Founder */
+        /* Universal Founder Tag */
         .founder-tag {
             position: absolute;
             top: 18px;
@@ -617,7 +617,7 @@
             50% { opacity: 0.6; transform: scale(0.85); }
         }
 
-        /* Profile Glow: Refined "Chok Chok" Effect */
+        /* Profile Glow */
         .profile {
             width: 145px;
             height: 145px;
@@ -780,7 +780,7 @@
         }
 
         /* ============================================================
-           PROJECTS SHOWCASE
+           PROJECTS SHOWCASE SECTION
            ============================================================ */
         .project-grid {
             display: grid;
@@ -794,6 +794,9 @@
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.025);
             transition: all 0.35s var(--smooth-ease);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .project-card:hover {
             border-color: rgba(255, 255, 255, 0.2);
@@ -803,10 +806,9 @@
         }
         .project-card .p-icon { font-size: 30px; margin-bottom: 14px; display: block; }
         .project-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-        .project-card p { font-size: 13px; color: #888; line-height: 1.7; }
+        .project-card p { font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 14px; }
         .project-card .p-tag {
             display: inline-block;
-            margin-top: 14px;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1.2px;
@@ -814,6 +816,50 @@
             border: 1px solid var(--border);
             padding: 4px 14px;
             border-radius: 50px;
+            width: fit-content;
+        }
+
+        .projects-cta-box {
+            margin-top: 48px;
+            padding: 36px 28px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 18px;
+            box-shadow: var(--shadow);
+        }
+        .projects-cta-box h3 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .projects-cta-box p {
+            color: #888;
+            max-width: 600px;
+            font-size: 14px;
+        }
+        .btn-showcase {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 34px;
+            border-radius: 50px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.35s var(--smooth-ease);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+        }
+        .btn-showcase:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 45px rgba(255, 255, 255, 0.25);
         }
 
         /* ============================================================
@@ -1050,7 +1096,7 @@
                 <a href="#about">About</a>
                 <a href="#services">What We Do</a>
                 <a href="#team-section">Team</a>
-                <a href="#projects">Projects</a>
+                <a href="projects.html" title="Projects Showcase — EIAFSDO">Projects</a>
                 <a href="#contact">Contact</a>
                 <a href="https://priyabratacare-source.github.io/EIAFSDO/login.html" class="btn-login">🔑 Login</a>
             </div>
@@ -1070,7 +1116,7 @@
         </p>
         <div class="cta-group">
             <a href="#about" class="cta-primary">Who We Are</a>
-            <a href="#team-section" class="cta-secondary">Meet the Team →</a>
+            <a href="projects.html" class="cta-secondary">Projects Showcase →</a>
         </div>
     </section>
 
@@ -1176,7 +1222,7 @@
         </div>
     </div>
 
-    <!-- PROJECTS -->
+    <!-- PROJECTS PREVIEW & LINK TO SHOWCASE -->
     <section id="projects">
         <div class="section-label reveal">Our Work</div>
         <h2 class="section-title reveal">Projects <span>we're building.</span></h2>
@@ -1186,29 +1232,48 @@
 
         <div class="project-grid">
             <div class="project-card reveal">
-                <span class="p-icon">⚡</span>
-                <h3>DevConnect</h3>
-                <p>Community platform for developers to share milestones, troubleshoot, and collaborate in real-time.</p>
+                <div>
+                    <span class="p-icon">⚡</span>
+                    <h3>DevConnect</h3>
+                    <p>Community platform for developers to share milestones, troubleshoot, and collaborate in real-time.</p>
+                </div>
                 <span class="p-tag">React · Node · Socket.io</span>
             </div>
             <div class="project-card reveal">
-                <span class="p-icon">📦</span>
-                <h3>StackStarter</h3>
-                <p>Automated command-line scaffolder configuring full-stack applications with built-in auth and ORM.</p>
+                <div>
+                    <span class="p-icon">📦</span>
+                    <h3>StackStarter</h3>
+                    <p>Automated command-line scaffolder configuring full-stack applications with built-in auth and ORM.</p>
+                </div>
                 <span class="p-tag">CLI · TypeScript · Prisma</span>
             </div>
             <div class="project-card reveal">
-                <span class="p-icon">🧠</span>
-                <h3>EduTrack</h3>
-                <p>Open learning management system engineered for structured coding roadmaps and tracking progress.</p>
+                <div>
+                    <span class="p-icon">🧠</span>
+                    <h3>EduTrack</h3>
+                    <p>Open learning management system engineered for structured coding roadmaps and tracking progress.</p>
+                </div>
                 <span class="p-tag">Django · React · PostgreSQL</span>
             </div>
             <div class="project-card reveal">
-                <span class="p-icon">📊</span>
-                <h3>Analytics Lite</h3>
-                <p>Lightweight, privacy-first analytics dashboard tailored for personal utilities and indie web tools.</p>
+                <div>
+                    <span class="p-icon">📊</span>
+                    <h3>Analytics Lite</h3>
+                    <p>Lightweight, privacy-first analytics dashboard tailored for personal utilities and indie web tools.</p>
+                </div>
                 <span class="p-tag">Vue · FastAPI · ClickHouse</span>
             </div>
+        </div>
+
+        <!-- CALL TO ACTION LINKING TO PROJECTS SHOWCASE -->
+        <div class="projects-cta-box reveal">
+            <h3>Projects Showcase — EIAFSDO</h3>
+            <p>
+                Looking for verified, live applications deployed by our collective? Explore the dedicated registry featuring member-submitted, approved projects with author verification badges.
+            </p>
+            <a href="projects.html" class="btn-showcase">
+                <span>View All Approved Projects</span> →
+            </a>
         </div>
     </section>
 
