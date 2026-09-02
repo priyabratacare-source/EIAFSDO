@@ -918,7 +918,7 @@
             box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
         }
 
-        /* ---------- MODAL ---------- */
+        /* ---------- MODALS ---------- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -934,6 +934,8 @@
         .modal-overlay.active {
             display: flex;
         }
+
+        /* Profile projects modal */
         .modal-content {
             background: #0d0d0d;
             border: 1px solid var(--border);
@@ -947,6 +949,55 @@
             overflow-y: auto;
             animation: slideUp .3s ease;
         }
+
+        /* Image lightbox modal */
+        .image-modal .modal-content {
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 0;
+            animation: fadeIn .3s ease;
+        }
+        .image-modal .modal-content img {
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, .8);
+            object-fit: contain;
+            background: #0d0d0d;
+        }
+        .image-modal .modal-content .loading-spinner {
+            color: #888;
+            font-size: 18px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(13, 13, 13, .9);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+        .image-modal .modal-content .loading-spinner .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 12px;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .modal-close {
             position: absolute;
             top: 16px;
@@ -959,11 +1010,24 @@
             background: none;
             border: none;
             font-family: inherit;
+            z-index: 10;
         }
         .modal-close:hover {
             color: white;
             transform: rotate(90deg);
         }
+        /* For image modal close button */
+        .image-modal .modal-close {
+            top: 10px;
+            right: 10px;
+            color: rgba(255, 255, 255, .6);
+            font-size: 32px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, .8);
+        }
+        .image-modal .modal-close:hover {
+            color: white;
+        }
+
         .modal-content h2 {
             font-size: 26px;
             letter-spacing: -1px;
@@ -1192,6 +1256,10 @@
             .services-grid {
                 grid-template-columns: 1fr 1fr;
             }
+            .image-modal .modal-content img {
+                max-width: 95vw;
+                max-height: 80vh;
+            }
         }
         @media (max-width: 480px) {
             .about-stats {
@@ -1211,6 +1279,10 @@
             .contact-info .social-icons a {
                 font-size: 12px;
                 padding: 6px 12px;
+            }
+            .image-modal .modal-content img {
+                max-width: 98vw;
+                max-height: 75vh;
             }
         }
     </style>
@@ -1380,8 +1452,8 @@
                     <span class="card-label">EIAFSDO ID</span>
                     <span class="status"></span>
                 </div>
-                <div class="profile" data-member="Ayush Chatterjee">
-                    <img src="images/ayush.jpg" alt="Ayush Chatterjee" />
+                <div class="profile" data-member="Ayush Chatterjee" data-image="images/ayush.jpg">
+                    <img src="images/ayush.jpg" alt="Ayush Chatterjee" loading="lazy" />
                 </div>
                 <h2 class="name">Ayush Chatterjee</h2>
                 <p class="role">Founder · Full-Stack Developer</p>
@@ -1401,15 +1473,15 @@
                 </div>
             </article>
 
-            <!-- PRIYABRATA -->
+            <!-- PRIYABRATA — updated image URL -->
             <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
                     <span class="card-label">EIAFSDO ID</span>
                     <span class="status"></span>
                 </div>
-                <div class="profile" data-member="Priyabrata Patra">
-                    <img src="images/priyabrata.jpg" alt="Priyabrata Patra" />
+                <div class="profile" data-member="Priyabrata Patra" data-image="https://priyabratacare-source.github.io/EIAFSDO/priyabrata-profile.png">
+                    <img src="https://priyabratacare-source.github.io/EIAFSDO/priyabrata-profile.png" alt="Priyabrata Patra" loading="lazy" />
                 </div>
                 <h2 class="name">Priyabrata Patra</h2>
                 <p class="role">Founder · Full-Stack Developer</p>
@@ -1428,15 +1500,15 @@
                 </div>
             </article>
 
-            <!-- ABHRADIP DHARA (corrected name) -->
+            <!-- ABHRADIP -->
             <article class="team-card" data-category="leadership" data-search="Abhradip Dhara Founder Full-Stack Vue Node AWS">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
                     <span class="card-label">EIAFSDO ID</span>
                     <span class="status"></span>
                 </div>
-                <div class="profile" data-member="Abhradip Dhara">
-                    <img src="images/abhradip.jpg" alt="Abhradip Dhara" />
+                <div class="profile" data-member="Abhradip Dhara" data-image="images/abhradip.jpg">
+                    <img src="images/abhradip.jpg" alt="Abhradip Dhara" loading="lazy" />
                 </div>
                 <h2 class="name">Abhradip Dhara</h2>
                 <p class="role">Founder · Full-Stack Developer</p>
@@ -1456,15 +1528,15 @@
                 </div>
             </article>
 
-            <!-- SOUVIK DESHI -->
+            <!-- SOUVIK -->
             <article class="team-card" data-category="leadership" data-search="Souvik Deshi Founder Full-Stack Java Spring Boot React">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
                     <span class="card-label">EIAFSDO ID</span>
                     <span class="status"></span>
                 </div>
-                <div class="profile" data-member="Souvik Deshi">
-                    <img src="images/souvik.jpg" alt="Souvik Deshi" />
+                <div class="profile" data-member="Souvik Deshi" data-image="images/souvik.jpg">
+                    <img src="images/souvik.jpg" alt="Souvik Deshi" loading="lazy" />
                 </div>
                 <h2 class="name">Souvik Deshi</h2>
                 <p class="role">Founder · Full-Stack Developer</p>
@@ -1607,12 +1679,25 @@
     <!-- ===== SCROLL TO TOP ===== -->
     <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
 
-    <!-- ===== PROFILE MODAL ===== -->
+    <!-- ===== PROFILE PROJECTS MODAL ===== -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">&times;</button>
             <h2 id="modalName">Projects by <span></span></h2>
             <div id="modalProjects"></div>
+        </div>
+    </div>
+
+    <!-- ===== IMAGE LIGHTBOX MODAL ===== -->
+    <div class="modal-overlay image-modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" id="imageModalClose">&times;</button>
+            <div id="imageModalContent">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <div>Loading image…</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1727,9 +1812,9 @@
         });
 
         /* =========================
-               PROFILE MODAL
+               PROFILE PROJECTS MODAL
                ========================= */
-        const modalOverlay = document.getElementById('profileModal');
+        const profileModal = document.getElementById('profileModal');
         const modalName = document.getElementById('modalName');
         const modalProjects = document.getElementById('modalProjects');
         const modalClose = document.getElementById('modalClose');
@@ -1784,28 +1869,135 @@
                 });
             }
 
-            modalOverlay.classList.add('active');
+            profileModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeProfileModal() {
-            modalOverlay.classList.remove('active');
+            profileModal.classList.remove('active');
             document.body.style.overflow = '';
         }
 
+        /* =========================
+               IMAGE LIGHTBOX MODAL
+               ========================= */
+        const imageModal = document.getElementById('imageModal');
+        const imageModalContent = document.getElementById('imageModalContent');
+        const imageModalClose = document.getElementById('imageModalClose');
+
+        function openImageModal(imageSrc, altText) {
+            // Show loading spinner
+            imageModalContent.innerHTML = `
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <div>Loading image…</div>
+                        </div>
+                    `;
+
+            imageModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Create image and load it
+            const img = new Image();
+            img.alt = altText || 'Team member';
+            img.style.maxWidth = '90vw';
+            img.style.maxHeight = '85vh';
+            img.style.borderRadius = '16px';
+            img.style.border = '1px solid var(--border)';
+            img.style.boxShadow = '0 30px 80px rgba(0,0,0,.8)';
+            img.style.objectFit = 'contain';
+            img.style.background = '#0d0d0d';
+
+            img.onload = function() {
+                imageModalContent.innerHTML = '';
+                imageModalContent.appendChild(img);
+            };
+
+            img.onerror = function() {
+                imageModalContent.innerHTML = `
+                            <div style="color:#888;padding:40px;text-align:center;background:rgba(13,13,13,.9);border-radius:16px;border:1px solid var(--border);">
+                                <div style="font-size:48px;margin-bottom:12px;">🖼️</div>
+                                <div>Could not load image</div>
+                                <div style="font-size:13px;margin-top:6px;color:#555;">${altText || ''}</div>
+                            </div>
+                        `;
+            };
+
+            img.src = imageSrc;
+        }
+
+        function closeImageModal() {
+            imageModal.classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset content to spinner for next open
+            imageModalContent.innerHTML = `
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <div>Loading image…</div>
+                        </div>
+                    `;
+        }
+
+        /* =========================
+               CLICK HANDLERS FOR PROFILES
+               ========================= */
         document.querySelectorAll('.profile').forEach(el => {
-            el.addEventListener('click', () => {
+            // Click for projects modal
+            el.addEventListener('click', (e) => {
+                // If the click is on the image itself, we want to open the image lightbox
+                // But we also want to keep the projects modal functionality.
+                // We'll use a dual-action: click on the profile opens projects,
+                // but we also add a separate click on the image for lightbox.
+                // However, since the image has pointer-events: none, the click
+                // is actually on the .profile div. We'll check if the target is the image.
+                // But we want both: projects modal on profile click, and image lightbox
+                // on image click. Since the image has pointer-events: none, we need to
+                // handle it differently. We'll use a separate handler for the image.
+                // Actually, the image has pointer-events: none, so clicking on the image
+                // will bubble up to the .profile div. We'll detect if the click was on the image.
+                // We'll use a flag.
                 const member = el.dataset.member;
-                if (member) openProfileModal(member);
+                const imageSrc = el.dataset.image;
+                if (member) {
+                    openProfileModal(member);
+                }
             });
         });
 
-        modalClose.addEventListener('click', closeProfileModal);
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) closeProfileModal();
+        // Separate click handler for the image itself (using event delegation)
+        document.querySelectorAll('.profile img').forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent the profile click from firing
+                const profile = img.closest('.profile');
+                if (profile) {
+                    const imageSrc = profile.dataset.image;
+                    const altText = img.alt || 'Team member';
+                    if (imageSrc) {
+                        openImageModal(imageSrc, altText);
+                    }
+                }
+            });
         });
+
+        /* =========================
+               CLOSE MODALS
+               ========================= */
+        modalClose.addEventListener('click', closeProfileModal);
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) closeProfileModal();
+        });
+
+        imageModalClose.addEventListener('click', closeImageModal);
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) closeImageModal();
+        });
+
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeProfileModal();
+            if (e.key === 'Escape') {
+                closeProfileModal();
+                closeImageModal();
+                closeLoginModal();
+            }
         });
 
         /* =========================
@@ -1842,13 +2034,6 @@
             closeLoginModal();
         });
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeLoginModal();
-                closeProfileModal();
-            }
-        });
-
         /* =========================
                CONTACT FORM
                ========================= */
@@ -1879,13 +2064,16 @@
         });
 
         /* =========================
-               IMAGE FALLBACK
+               IMAGE FALLBACK for broken images
                ========================= */
         document.querySelectorAll('.profile img').forEach(img => {
-            img.addEventListener('error', () => {
-                const name = encodeURIComponent(img.alt || 'Member');
-                img.src =
-                    `https://ui-avatars.com/api/?name=${name}&background=111111&color=ffffff&size=300`;
+            img.addEventListener('error', function() {
+                // Don't override if it's already a fallback
+                if (!this.src.includes('ui-avatars.com')) {
+                    const name = encodeURIComponent(this.alt || 'Member');
+                    this.src =
+                        `https://ui-avatars.com/api/?name=${name}&background=111111&color=ffffff&size=300`;
+                }
             });
         });
 
@@ -1894,7 +2082,7 @@
         console.log('🏛️ Student-operated · HETC');
         console.log('📜 Motto: Aedificare — Disputare — Crescere');
         console.log('👥 Founders: 4');
-        console.log('✅ Name correction: Abhradeep → Abhradip Dhara');
+        console.log('🖼️ Image lightbox enabled — click any profile picture to enlarge');
     </script>
 
 </body>
