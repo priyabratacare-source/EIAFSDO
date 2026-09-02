@@ -208,6 +208,34 @@
             display: none;
         }
 
+        /* Hamburger for mobile */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: #aaa;
+            transition: .3s;
+            border-radius: 2px;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
         /* ---------- HERO ---------- */
         .hero {
             max-width: 1100px;
@@ -1210,17 +1238,35 @@
             .about-stats {
                 grid-template-columns: 1fr 1fr;
             }
+
             .nav-inner {
-                flex-direction: column;
-                align-items: flex-start;
                 padding: 12px 18px;
             }
-            .nav-links {
-                width: 100%;
-                justify-content: flex-start;
-                gap: 12px;
-                margin-top: 6px;
+            .hamburger {
+                display: flex;
             }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 16px 0 8px;
+                border-top: 1px solid var(--border);
+                margin-top: 8px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                font-size: 14px;
+                padding: 4px 0;
+            }
+            .nav-links .btn-login {
+                padding: 6px 16px;
+                font-size: 13px;
+            }
+
             .hero {
                 padding-top: 120px;
                 min-height: auto;
@@ -1271,7 +1317,7 @@
                 letter-spacing: -1px;
             }
             .nav-links a {
-                font-size: 12px;
+                font-size: 13px;
             }
             .services-grid {
                 grid-template-columns: 1fr;
@@ -1303,7 +1349,14 @@
                 EIAFSDO
                 <small>East Indian Amateur Full‑Stack Developers Org.</small>
             </a>
-            <div class="nav-links">
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links" id="navLinks">
                 <a href="#about">About</a>
                 <a href="#services">What We Do</a>
                 <a href="#team-section">Team</a>
@@ -1445,15 +1498,15 @@
 
         <div class="team-grid" id="teamGrid">
 
-            <!-- AYUSH -->
+            <!-- AYUSH — updated image & LinkedIn -->
             <article class="team-card featured" data-category="leadership" data-search="Ayush Chatterjee Founder Full-Stack JavaScript React Node">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
                     <span class="card-label">EIAFSDO ID</span>
                     <span class="status"></span>
                 </div>
-                <div class="profile" data-member="Ayush Chatterjee" data-image="images/ayush.jpg">
-                    <img src="images/ayush.jpg" alt="Ayush Chatterjee" loading="lazy" />
+                <div class="profile" data-member="Ayush Chatterjee" data-image="https://i.ibb.co/GQx5CQjB/Chat-GPT-Image-Sep-2-2026-04-06-19-PM.png">
+                    <img src="https://i.ibb.co/GQx5CQjB/Chat-GPT-Image-Sep-2-2026-04-06-19-PM.png" alt="Ayush Chatterjee" loading="lazy" />
                 </div>
                 <h2 class="name">Ayush Chatterjee</h2>
                 <p class="role">Founder · Full-Stack Developer</p>
@@ -1467,21 +1520,21 @@
                 </div>
                 <p class="bio">Ayush is the driving force behind EIAFSDO. A self-taught full-stack developer with a love for clean code and system design.</p>
                 <div class="socials">
-                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="https://www.linkedin.com/in/ayush-chatterjee-784559308/" target="_blank" aria-label="LinkedIn">IN</a>
                     <a href="#" aria-label="GitHub">GH</a>
                     <a href="#" aria-label="Twitter">TW</a>
                 </div>
             </article>
 
-            <!-- PRIYABRATA — updated image URL -->
+            <!-- PRIYABRATA — updated image & LinkedIn -->
             <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
                     <span class="card-label">EIAFSDO ID</span>
                     <span class="status"></span>
                 </div>
-                <div class="profile" data-member="Priyabrata Patra" data-image="https://priyabratacare-source.github.io/EIAFSDO/priyabrata-profile.png">
-                    <img src="https://priyabratacare-source.github.io/EIAFSDO/priyabrata-profile.png" alt="Priyabrata Patra" loading="lazy" />
+                <div class="profile" data-member="Priyabrata Patra" data-image="https://i.ibb.co/9HTqv59W/Chat-GPT-Image-Sep-2-2026-03-51-53-PM.png">
+                    <img src="https://i.ibb.co/9HTqv59W/Chat-GPT-Image-Sep-2-2026-03-51-53-PM.png" alt="Priyabrata Patra" loading="lazy" />
                 </div>
                 <h2 class="name">Priyabrata Patra</h2>
                 <p class="role">Founder · Full-Stack Developer</p>
@@ -1495,7 +1548,7 @@
                 </div>
                 <p class="bio">Priyabrata is a backend-first developer with a passion for scalable architecture and data-driven applications.</p>
                 <div class="socials">
-                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="https://www.linkedin.com/in/priyabratapatra/" target="_blank" aria-label="LinkedIn">IN</a>
                     <a href="#" aria-label="GitHub">GH</a>
                 </div>
             </article>
@@ -1731,6 +1784,25 @@
         });
 
         /* =========================
+               HAMBURGER MENU
+               ========================= */
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        /* =========================
                SCROLL REVEAL
                ========================= */
         const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
@@ -1886,7 +1958,6 @@
         const imageModalClose = document.getElementById('imageModalClose');
 
         function openImageModal(imageSrc, altText) {
-            // Show loading spinner
             imageModalContent.innerHTML = `
                         <div class="loading-spinner">
                             <div class="spinner"></div>
@@ -1897,7 +1968,6 @@
             imageModal.classList.add('active');
             document.body.style.overflow = 'hidden';
 
-            // Create image and load it
             const img = new Image();
             img.alt = altText || 'Team member';
             img.style.maxWidth = '90vw';
@@ -1929,7 +1999,6 @@
         function closeImageModal() {
             imageModal.classList.remove('active');
             document.body.style.overflow = '';
-            // Reset content to spinner for next open
             imageModalContent.innerHTML = `
                         <div class="loading-spinner">
                             <div class="spinner"></div>
@@ -1942,32 +2011,17 @@
                CLICK HANDLERS FOR PROFILES
                ========================= */
         document.querySelectorAll('.profile').forEach(el => {
-            // Click for projects modal
             el.addEventListener('click', (e) => {
-                // If the click is on the image itself, we want to open the image lightbox
-                // But we also want to keep the projects modal functionality.
-                // We'll use a dual-action: click on the profile opens projects,
-                // but we also add a separate click on the image for lightbox.
-                // However, since the image has pointer-events: none, the click
-                // is actually on the .profile div. We'll check if the target is the image.
-                // But we want both: projects modal on profile click, and image lightbox
-                // on image click. Since the image has pointer-events: none, we need to
-                // handle it differently. We'll use a separate handler for the image.
-                // Actually, the image has pointer-events: none, so clicking on the image
-                // will bubble up to the .profile div. We'll detect if the click was on the image.
-                // We'll use a flag.
                 const member = el.dataset.member;
-                const imageSrc = el.dataset.image;
                 if (member) {
                     openProfileModal(member);
                 }
             });
         });
 
-        // Separate click handler for the image itself (using event delegation)
         document.querySelectorAll('.profile img').forEach(img => {
             img.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent the profile click from firing
+                e.stopPropagation();
                 const profile = img.closest('.profile');
                 if (profile) {
                     const imageSrc = profile.dataset.image;
@@ -2068,7 +2122,6 @@
                ========================= */
         document.querySelectorAll('.profile img').forEach(img => {
             img.addEventListener('error', function() {
-                // Don't override if it's already a fallback
                 if (!this.src.includes('ui-avatars.com')) {
                     const name = encodeURIComponent(this.alt || 'Member');
                     this.src =
@@ -2083,6 +2136,7 @@
         console.log('📜 Motto: Aedificare — Disputare — Crescere');
         console.log('👥 Founders: 4');
         console.log('🖼️ Image lightbox enabled — click any profile picture to enlarge');
+        console.log('📱 Mobile hamburger menu enabled');
     </script>
 
 </body>
