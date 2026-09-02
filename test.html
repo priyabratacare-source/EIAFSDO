@@ -31,6 +31,7 @@
             --shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
             --radius: 26px;
             --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --verified-color: #38bdf8;
         }
 
         html {
@@ -460,7 +461,7 @@
         }
 
         /* ============================================================
-           SMOOTH FOUNDER CARDS & TEAM SECTION
+           FOUNDER CARDS & TEAM SECTION
            ============================================================ */
         .team-controls {
             max-width: 1100px;
@@ -534,7 +535,6 @@
             margin: auto;
         }
 
-        /* Team Card: Silky Glass & Micro-Interactions */
         .team-card {
             position: relative;
             min-height: 440px;
@@ -574,7 +574,6 @@
             opacity: 0.09;
         }
 
-        /* Universal Founder Tag — Everyone is Founder */
         .founder-tag {
             position: absolute;
             top: 18px;
@@ -617,7 +616,6 @@
             50% { opacity: 0.6; transform: scale(0.85); }
         }
 
-        /* Profile Glow: Refined "Chok Chok" Effect */
         .profile {
             width: 145px;
             height: 145px;
@@ -780,40 +778,137 @@
         }
 
         /* ============================================================
-           PROJECTS SHOWCASE
+           PROJECTS SHOWCASE (FIREBASE DYNAMIC + VERIFIED BADGE)
            ============================================================ */
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 26px;
+            margin-top: 36px;
         }
         .project-card {
-            padding: 28px 24px;
-            border-radius: 20px;
+            border-radius: var(--radius);
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.025);
-            transition: all 0.35s var(--smooth-ease);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s var(--smooth-ease);
         }
         .project-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
             transform: translateY(-6px);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.02));
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
         }
-        .project-card .p-icon { font-size: 30px; margin-bottom: 14px; display: block; }
-        .project-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-        .project-card p { font-size: 13px; color: #888; line-height: 1.7; }
-        .project-card .p-tag {
-            display: inline-block;
-            margin-top: 14px;
-            font-size: 10px;
+        .project-img-wrapper {
+            width: 100%;
+            height: 190px;
+            position: relative;
+            background: #0d0d0d;
+            overflow: hidden;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+        }
+        .project-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.55s var(--smooth-ease), filter 0.35s ease;
+        }
+        .project-card:hover .project-img-wrapper img {
+            transform: scale(1.06);
+            filter: brightness(1.05);
+        }
+        .project-body {
+            padding: 24px 22px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .project-body h3 {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .project-body p {
+            font-size: 13.5px;
+            color: #888;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        /* Creator Profile & Verified Badge Row */
+        .creator-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+            gap: 12px;
+        }
+        .creator-left {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .creator-label {
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 1.2px;
             color: #666;
-            border: 1px solid var(--border);
-            padding: 4px 14px;
+        }
+        .creator-name {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e5e5e5;
+        }
+        .verify-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            color: var(--verified-color);
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.4));
+        }
+        .verify-badge svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .project-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
             border-radius: 50px;
+            font-size: 11.5px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            transition: all 0.3s var(--smooth-ease);
+            white-space: nowrap;
+        }
+        .project-link-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.16);
         }
 
         /* ============================================================
@@ -1021,6 +1116,8 @@
             .nav-links.open { display: flex; }
             .hero { padding-top: 110px; min-height: auto; }
             .team-grid { grid-template-columns: 1fr; }
+            .creator-meta { flex-direction: column; align-items: flex-start; }
+            .project-link-btn { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -1154,7 +1251,7 @@
     <div id="team-section" style="padding-top:20px;">
         <div style="max-width:1100px;margin:auto;padding:0 25px;">
             <div class="section-label reveal">Our Leadership</div>
-            <h2 class="section-title reveal">Meet the <span>Founders</span></h2>
+            <h2 class="section-title reveal">Meet the <span>Team</span></h2>
             <p class="section-sub reveal">
                 The builders, architects, and founders driving the development and vision of EIAFSDO.
             </p>
@@ -1176,39 +1273,16 @@
         </div>
     </div>
 
-    <!-- PROJECTS -->
+    <!-- PROJECTS (DYNAMIC FIREBASE DATABASE SHOWCASE) -->
     <section id="projects">
         <div class="section-label reveal">Our Work</div>
         <h2 class="section-title reveal">Projects <span>we're building.</span></h2>
         <p class="section-sub reveal">
-            Open-source platforms engineered and maintained by the EIAFSDO community.
+            Open-source platforms and applications engineered, maintained, and verified by EIAFSDO developers.
         </p>
 
-        <div class="project-grid">
-            <div class="project-card reveal">
-                <span class="p-icon">⚡</span>
-                <h3>DevConnect</h3>
-                <p>Community platform for developers to share milestones, troubleshoot, and collaborate in real-time.</p>
-                <span class="p-tag">React · Node · Socket.io</span>
-            </div>
-            <div class="project-card reveal">
-                <span class="p-icon">📦</span>
-                <h3>StackStarter</h3>
-                <p>Automated command-line scaffolder configuring full-stack applications with built-in auth and ORM.</p>
-                <span class="p-tag">CLI · TypeScript · Prisma</span>
-            </div>
-            <div class="project-card reveal">
-                <span class="p-icon">🧠</span>
-                <h3>EduTrack</h3>
-                <p>Open learning management system engineered for structured coding roadmaps and tracking progress.</p>
-                <span class="p-tag">Django · React · PostgreSQL</span>
-            </div>
-            <div class="project-card reveal">
-                <span class="p-icon">📊</span>
-                <h3>Analytics Lite</h3>
-                <p>Lightweight, privacy-first analytics dashboard tailored for personal utilities and indie web tools.</p>
-                <span class="p-tag">Vue · FastAPI · ClickHouse</span>
-            </div>
+        <div class="project-grid" id="publicProjectsGrid">
+            <div class="empty" id="projectsEmpty">Connecting to database and loading projects...</div>
         </div>
     </section>
 
@@ -1279,7 +1353,7 @@
     </div>
 
     <!-- ============================================================
-       SCRIPT: FIRESTORE & ULTRA-SMOOTH CARD INTERACTION
+       SCRIPT: FIRESTORE & DYNAMIC RENDERING
        ============================================================ -->
     <script>
         const firebaseConfig = {
@@ -1299,6 +1373,9 @@
         const teamSearch = document.getElementById('teamSearch');
         const teamFilters = document.querySelectorAll('.team-filters .filter');
 
+        const publicProjectsGrid = document.getElementById('publicProjectsGrid');
+        const projectsEmpty = document.getElementById('projectsEmpty');
+
         const profileModal = document.getElementById('profileModal');
         const modalName = document.getElementById('modalName');
         const modalProjects = document.getElementById('modalProjects');
@@ -1310,6 +1387,15 @@
 
         let allMembers = [];
         let activeFilter = 'all';
+
+        // Verified Badge SVG
+        const verifiedBadgeSVG = `
+            <span class="verify-badge" title="Verified Creator" aria-label="Verified Creator">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.93 14.88l-4.24-4.24 1.41-1.41 2.83 2.83 7.07-7.07 1.41 1.41-8.48 8.48z"/>
+                </svg>
+            </span>
+        `;
 
         async function loadTeamMembers() {
             try {
@@ -1374,7 +1460,7 @@
                              data-member-id="${member.id}" 
                              data-search="${searchMeta}">
                         
-                        <!-- Everyone is Founder -->
+                        <!-- Universal Founder Tag -->
                         <div class="founder-tag">FOUNDER</div>
                         
                         <div class="card-top">
@@ -1413,6 +1499,86 @@
 
             teamGrid.innerHTML = html;
             attachCardInteractions();
+        }
+
+        /* ============================================================
+           LOAD FIREBASE PROJECTS WITH VERIFIED CREATOR BADGES
+           ============================================================ */
+        async function loadPublicProjects() {
+            try {
+                let snapshot;
+                try {
+                    snapshot = await db.collection('projects')
+                        .where('status', '==', 'approved')
+                        .get();
+                    if (snapshot.empty) {
+                        snapshot = await db.collection('projects').get();
+                    }
+                } catch (e) {
+                    snapshot = await db.collection('projects').get();
+                }
+
+                if (snapshot.empty) {
+                    publicProjectsGrid.innerHTML = '';
+                    projectsEmpty.style.display = 'block';
+                    projectsEmpty.textContent = 'No published projects found in database.';
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const p = doc.data();
+                    
+                    // Identify Creator Name from doc or mapped members
+                    let creator = p.creatorName || p.author || p.submittedByName || p.authorName || '';
+                    if (!creator && p.submittedBy) {
+                        const matched = allMembers.find(m => m.id === p.submittedBy);
+                        if (matched && matched.name) creator = matched.name;
+                    }
+                    if (!creator) creator = 'EIAFSDO Founder';
+
+                    const projectImg = p.imageURL && p.imageURL.trim() !== '' 
+                        ? p.imageURL 
+                        : 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+
+                    const safeTitle = (p.name || 'Untitled Project').replace(/'/g, "\\'");
+
+                    html += `
+                        <article class="project-card reveal">
+                            <div class="project-img-wrapper" onclick="openImageModal('${projectImg}', '${safeTitle}')">
+                                <img src="${projectImg}" alt="${p.name || 'Project'}" loading="lazy" />
+                            </div>
+
+                            <div class="project-body">
+                                <h3>${p.name || 'Untitled Project'}</h3>
+                                <p>${p.description || 'Modern full-stack application built and deployed through the EIAFSDO development initiative.'}</p>
+                                
+                                <div class="creator-meta">
+                                    <div class="creator-left">
+                                        <span class="creator-label">Created By</span>
+                                        <div class="creator-name">
+                                            <span>${creator}</span>
+                                            ${verifiedBadgeSVG}
+                                        </div>
+                                    </div>
+
+                                    ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="project-link-btn">🔗 Visit Website</a>` : ''}
+                                </div>
+                            </div>
+                        </article>
+                    `;
+                });
+
+                publicProjectsGrid.innerHTML = html;
+                projectsEmpty.style.display = 'none';
+
+                // Re-bind newly injected reveal nodes to IntersectionObserver
+                document.querySelectorAll('#projects .reveal').forEach(el => revealObserver.observe(el));
+            } catch (err) {
+                console.error('Error loading public projects:', err);
+                projectsEmpty.style.display = 'block';
+                projectsEmpty.textContent = '⚠️ Unable to load projects from database. Please refresh.';
+            }
         }
 
         function attachCardInteractions() {
@@ -1525,8 +1691,7 @@
 
             const filtered = allMembers.filter(member => {
                 const searchMeta = `${member.name || ''} ${member.role || ''} ${member.stack || ''} ${member.org || ''} ${member.bio || ''}`.toLowerCase();
-                const matchesSearch = query === '' || searchMeta.includes(query);
-                return matchesSearch;
+                return query === '' || searchMeta.includes(query);
             });
 
             renderTeamCards(filtered);
@@ -1591,13 +1756,19 @@
             if (e.target.tagName === 'IMG') {
                 const img = e.target;
                 if (!img.src.includes('ui-avatars.com')) {
-                    const fallbackName = encodeURIComponent(img.alt || 'Founder');
+                    const fallbackName = encodeURIComponent(img.alt || 'Project');
                     img.src = `https://ui-avatars.com/api/?name=${fallbackName}&background=111111&color=ffffff&size=300`;
                 }
             }
         }, true);
 
-        loadTeamMembers();
+        // Initialize Data Load
+        async function initData() {
+            await loadTeamMembers();
+            await loadPublicProjects();
+        }
+
+        initData();
     </script>
 </body>
 </html>
