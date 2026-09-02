@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
 
-    <title>EIAFSDO — East Indian Amateur Full-Stack Developers Organization</title>
+    <title>EIAFSDO — East Indian Amateur Full‑Stack Developers Organization</title>
 
     <style>
         /* ============================================================
                EAST INDIAN AMATEUR FULL-STACK DEVELOPERS ORGANIZATION
-               ALL-IN-ONE: WHO WE ARE · ABOUT · TEAM · PROJECTS · LOGIN
+               ENHANCED ALL-IN-ONE PAGE
                ============================================================ */
 
-        /* ---------- RESET & VARIABLES ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -89,7 +88,7 @@
             opacity: .3;
         }
 
-        /* ---------- SCROLL ANIMATIONS ---------- */
+        /* ---------- SCROLL REVEAL ---------- */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
@@ -375,6 +374,42 @@
             font-size: 12px;
             color: #666;
             margin-top: 4px;
+        }
+
+        /* ---------- WHAT WE DO (SERVICES) ---------- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .service-card {
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px 24px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, .2);
+            background: rgba(255, 255, 255, .05);
+        }
+        .service-card .icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .service-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .service-card p {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         /* ---------- TEAM ---------- */
@@ -750,6 +785,107 @@
             border-radius: 50px;
         }
 
+        /* ---------- JOIN US ---------- */
+        #join {
+            text-align: center;
+        }
+        #join .section-sub {
+            margin: 0 auto 30px;
+        }
+        .join-btn {
+            display: inline-block;
+            padding: 16px 48px;
+            border-radius: 50px;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .join-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, .15);
+        }
+
+        /* ---------- CONTACT ---------- */
+        #contact .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        .contact-info p {
+            color: #aaa;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        .contact-info .social-icons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .contact-info .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            transition: .3s;
+            font-size: 13px;
+        }
+        .contact-info .social-icons a:hover {
+            color: white;
+            border-color: white;
+            background: rgba(255, 255, 255, .05);
+        }
+        .contact-info .social-icons a svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+            transition: .3s;
+            font-family: inherit;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: rgba(255, 255, 255, .3);
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .contact-form button {
+            padding: 14px 32px;
+            border-radius: 12px;
+            border: none;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: .3s;
+        }
+        .contact-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
+        }
+
         /* ---------- MODAL ---------- */
         .modal-overlay {
             display: none;
@@ -926,6 +1062,35 @@
             color: #888;
         }
 
+        /* ---------- SCROLL TO TOP ---------- */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid var(--border);
+            color: #aaa;
+            font-size: 22px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: .3s;
+            z-index: 999;
+        }
+        .scroll-top:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+        .scroll-top.visible {
+            display: flex;
+        }
+
         /* ---------- FOOTER ---------- */
         footer {
             border-top: 1px solid var(--border);
@@ -938,29 +1103,6 @@
         }
         footer strong {
             color: #aaa;
-        }
-        .footer-socials {
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .footer-socials a {
-            color: #777;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            padding: 6px 14px;
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            transition: .3s;
-        }
-        .footer-socials a:hover {
-            color: white;
-            border-color: white;
-            background: rgba(255, 255, 255, .05);
         }
 
         /* ---------- RESPONSIVE ---------- */
@@ -1001,9 +1143,6 @@
             .modal-content {
                 padding: 25px 18px 20px;
             }
-            .footer-socials {
-                gap: 10px;
-            }
             .profile::after {
                 content: "👤";
                 font-size: 12px;
@@ -1011,6 +1150,12 @@
             }
             .about-stats .stat .number {
                 font-size: 26px;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
         @media (max-width: 480px) {
@@ -1024,6 +1169,13 @@
             }
             .nav-links a {
                 font-size: 12px;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-info .social-icons a {
+                font-size: 12px;
+                padding: 6px 12px;
             }
         }
     </style>
@@ -1046,8 +1198,10 @@
             </a>
             <div class="nav-links">
                 <a href="#about">About</a>
+                <a href="#services">What We Do</a>
                 <a href="#team-section">Team</a>
                 <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
                 <a href="#" class="btn-login" id="openLoginBtn">🔑 Login</a>
             </div>
         </div>
@@ -1055,7 +1209,7 @@
 
     <!-- ===== HERO ===== -->
     <section class="hero" id="hero">
-        <div class="small-title">East Indian Amateur Full-Stack Developers Organization</div>
+        <div class="small-title">East Indian Amateur Full‑Stack Developers Organization</div>
         <h1>Build. Learn. <span>Grow.</span></h1>
         <p>
             We are a collective of passionate amateur full-stack developers
@@ -1116,6 +1270,38 @@
                     <span class="number">🌏</span>
                     <span class="label">East India · Global</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHAT WE DO (SERVICES) ===== -->
+    <section id="services">
+        <div class="section-label reveal">What We Do</div>
+        <h2 class="section-title reveal">Our <span>Focus Areas</span></h2>
+        <p class="section-sub reveal">
+            We combine development, mentorship, and community building to create impact.
+        </p>
+
+        <div class="services-grid">
+            <div class="service-card reveal" style="transition-delay:.0s;">
+                <span class="icon">💻</span>
+                <h3>Full‑Stack Development</h3>
+                <p>Building modern web applications with React, Node, Django, Vue, and more.</p>
+            </div>
+            <div class="service-card reveal" style="transition-delay:.1s;">
+                <span class="icon">📦</span>
+                <h3>Open Source</h3>
+                <p>Creating and maintaining open‑source tools that help the developer community.</p>
+            </div>
+            <div class="service-card reveal" style="transition-delay:.2s;">
+                <span class="icon">🧑‍🏫</span>
+                <h3>Mentorship</h3>
+                <p>Guiding aspiring developers through 1‑on‑1 mentoring and group workshops.</p>
+            </div>
+            <div class="service-card reveal" style="transition-delay:.3s;">
+                <span class="icon">🤝</span>
+                <h3>Community Building</h3>
+                <p>Fostering a collaborative environment where developers learn and grow together.</p>
             </div>
         </div>
     </section>
@@ -1284,16 +1470,76 @@
         </div>
     </section>
 
+    <!-- ===== JOIN US ===== -->
+    <section id="join">
+        <div class="section-label reveal">Get Involved</div>
+        <h2 class="section-title reveal">Join <span>the Movement</span></h2>
+        <p class="section-sub reveal">
+            Whether you're a beginner or an experienced developer, there's a place for you in EIAFSDO.
+            Let's build, learn, and grow together.
+        </p>
+        <a href="#" class="join-btn reveal">🚀 Join EIAFSDO</a>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+        <div class="section-label reveal">Connect</div>
+        <h2 class="section-title reveal">Get in <span>Touch</span></h2>
+        <p class="section-sub reveal">
+            Have a question, idea, or want to collaborate? Reach out to us.
+        </p>
+
+        <div class="contact-grid">
+            <div class="contact-info reveal-left">
+                <p>
+                    <strong style="color:white;">Email:</strong>
+                    <a href="mailto:hello@eiafsdo.org" style="color:#aaa;text-decoration:none;">hello@eiafsdo.org</a>
+                </p>
+                <p>
+                    <strong style="color:white;">Location:</strong>
+                    <span style="color:#aaa;">East India</span>
+                </p>
+                <p style="margin-top:20px;">
+                    Follow us on social media for updates, projects, and community events.
+                </p>
+                <div class="social-icons">
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="#" target="_blank" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.399s2.04.132 3 .399c2.292-1.552 3.3-1.23 3.3-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.694.825.577C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        GitHub
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        Instagram
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-form reveal-right">
+                <form id="contactForm">
+                    <input type="text" placeholder="Your Name" required />
+                    <input type="email" placeholder="Email Address" required />
+                    <textarea placeholder="Tell us what's on your mind…" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- ===== FOOTER ===== -->
     <footer>
-        <div class="footer-socials">
-            <a href="#" target="_blank">📘 LinkedIn</a>
-            <a href="#" target="_blank">🐙 GitHub</a>
-            <a href="#" target="_blank">🐦 Twitter</a>
-            <a href="#" target="_blank">📸 Instagram</a>
-        </div>
         © 2026 <strong>East Indian Amateur Full-Stack Developers Organization</strong>. All rights reserved.
     </footer>
+
+    <!-- ===== SCROLL TO TOP ===== -->
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
 
     <!-- ===== PROFILE MODAL ===== -->
     <div class="modal-overlay" id="profileModal">
@@ -1334,7 +1580,7 @@
         });
 
         /* =========================
-               SCROLL REVEAL (Intersection Observer)
+               SCROLL REVEAL
                ========================= */
         const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
         const observer = new IntersectionObserver((entries) => {
@@ -1345,6 +1591,17 @@
             });
         }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
         reveals.forEach(el => observer.observe(el));
+
+        /* =========================
+               SCROLL TO TOP
+               ========================= */
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         /* =========================
                TEAM SEARCH + FILTER
@@ -1502,6 +1759,15 @@
                 closeLoginModal();
                 closeProfileModal();
             }
+        });
+
+        /* =========================
+               CONTACT FORM
+               ========================= */
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('📬 Thank you for reaching out! We\'ll get back to you soon.');
+            this.reset();
         });
 
         /* =========================
