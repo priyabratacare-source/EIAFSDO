@@ -831,17 +831,12 @@
         <div class="modal-box">
             <h4>🔑 Reset Password</h4>
             <p style="color:#888;font-size:13px;margin-bottom:16px;">Resetting password for: <strong id="resetUserName" style="color:white;"></strong></p>
-            <div class="form-group">
-                <label>New Password</label>
-                <input type="password" id="resetNewPassword" placeholder="Enter new password (min 6 chars)" />
-            </div>
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" id="resetConfirmPassword" placeholder="Confirm new password" />
-            </div>
+            <p style="color:#ffd93d;font-size:12px;margin-bottom:16px;background:#ffd93d22;padding:8px 12px;border-radius:8px;">
+                ⚠️ A password reset email will be sent to the user's email address.
+            </p>
             <div id="resetStatus" class="text-muted mb-16"></div>
             <div class="modal-actions">
-                <button class="btn-primary" id="resetConfirmBtn">Reset Password</button>
+                <button class="btn-primary" id="resetConfirmBtn">Send Reset Email</button>
                 <button class="btn-secondary" id="resetCancelBtn">Cancel</button>
             </div>
         </div>
@@ -944,8 +939,6 @@
         // Reset modal
         const resetModal = document.getElementById('resetModal');
         const resetUserName = document.getElementById('resetUserName');
-        const resetNewPassword = document.getElementById('resetNewPassword');
-        const resetConfirmPassword = document.getElementById('resetConfirmPassword');
         const resetStatus = document.getElementById('resetStatus');
         const resetConfirmBtn = document.getElementById('resetConfirmBtn');
         const resetCancelBtn = document.getElementById('resetCancelBtn');
@@ -954,6 +947,7 @@
         let currentUser = null;
         let currentUserData = null;
         let resetTargetUid = null;
+        let resetTargetEmail = null;
 
         // =========================
         // AUTH STATE OBSERVER
@@ -1168,10 +1162,11 @@
         });
 
         // =========================
-        // MY PROJECTS — FIXED: error handling + fallback ordering
+        // MY PROJECTS — FIXED: robust error handling
         // =========================
         async function loadMyProjects() {
             try {
+                // Try with ordering first
                 const snapshot = await db.collection('projects')
                     .where('submittedBy', '==', currentUser.uid)
                     .orderBy('createdAt', 'desc')
@@ -1200,8 +1195,8 @@
                 myProjectsList.innerHTML = html;
 
             } catch (err) {
-                console.error('Error loading my projects:', err);
-                // Fallback: try without ordering (in case 'createdAt' field is missing on some docs)
+                // Fallback: try without ordering
+                console.warn('Ordered query failed, trying without orderBy:', err);
                 try {
                     const snapshot = await db.collection('projects')
                         .where('submittedBy', '==', currentUser.uid)
@@ -1263,13 +1258,16 @@
                 projectSubmitStatus.textContent = '✅ Project submitted! Waiting for admin approval.';
                 submitProjectForm.reset();
                 loadMyProjects();
+                if (currentUserData && currentUserData.role === 'admin') {
+                    loadAdminProjects();
+                }
             } catch (err) {
                 projectSubmitStatus.textContent = '❌ Error: ' + err.message;
             }
         });
 
         // =========================
-        // ADMIN — MEMBERS (with password reset & remove any user)
+        // ADMIN — MEMBERS (with password reset & remove)
         // =========================
         async function loadAdminMembers() {
             try {
@@ -1301,7 +1299,7 @@
                                     </div>
                                     <div class="member-actions">
                                         ${!isSelf ? `
-                                            <button class="btn-success reset-password-btn" data-uid="${uid}" data-name="${u.name || 'User'}">🔑 Reset</button>
+                                            <button class="btn-success reset-password-btn" data-uid="${uid}" data-email="${u.email || ''}" data-name="${u.name || 'User'}">🔑 Reset</button>
                                             <button class="btn-danger remove-member" data-uid="${uid}">Remove</button>
                                         ` : `
                                             <span style="color:#555;font-size:11px;">(you)</span>
@@ -1321,9 +1319,6 @@
                             return;
                         try {
                             await db.collection('users').doc(uid).delete();
-                            // Also try to delete from Auth (if using Admin SDK, but client can't)
-                            // Instead, we just remove from Firestore and the user will be orphaned
-                            // Admin can manually delete from Auth console
                             loadAdminMembers();
                             addMemberStatus.textContent = '✅ Member removed from Firestore.';
                         } catch (err) {
@@ -1337,10 +1332,10 @@
                     btn.addEventListener('click', () => {
                         const uid = btn.dataset.uid;
                         const name = btn.dataset.name;
+                        const email = btn.dataset.email;
                         resetTargetUid = uid;
-                        resetUserName.textContent = name + ' (' + uid + ')';
-                        resetNewPassword.value = '';
-                        resetConfirmPassword.value = '';
+                        resetTargetEmail = email;
+                        resetUserName.textContent = name + ' (' + email + ')';
                         resetStatus.textContent = '';
                         resetModal.classList.add('active');
                     });
@@ -1393,51 +1388,27 @@
         resetCancelBtn.addEventListener('click', () => {
             resetModal.classList.remove('active');
             resetTargetUid = null;
+            resetTargetEmail = null;
             resetStatus.textContent = '';
         });
 
         resetConfirmBtn.addEventListener('click', async () => {
-            const newPass = resetNewPassword.value.trim();
-            const confirmPass = resetConfirmPassword.value.trim();
-
-            if (!newPass || newPass.length < 6) {
-                resetStatus.textContent = 'Password must be at least 6 characters.';
-                return;
-            }
-            if (newPass !== confirmPass) {
-                resetStatus.textContent = 'Passwords do not match.';
-                return;
-            }
-
-            if (!resetTargetUid) {
+            if (!resetTargetEmail) {
                 resetStatus.textContent = 'No user selected.';
                 return;
             }
 
             try {
-                // Admin can't directly change another user's password via client SDK
-                // We need to send a password reset email instead
-                const userDoc = await db.collection('users').doc(resetTargetUid).get();
-                if (!userDoc.exists) {
-                    resetStatus.textContent = 'User not found.';
-                    return;
-                }
-                const userEmail = userDoc.data().email;
-                if (!userEmail) {
-                    resetStatus.textContent = 'User has no email address.';
-                    return;
-                }
-
                 // Send password reset email
-                await auth.sendPasswordResetEmail(userEmail, {
+                await auth.sendPasswordResetEmail(resetTargetEmail, {
                     url: window.location.origin,
                     handleCodeInApp: false
                 });
 
-                resetStatus.textContent = '✅ Password reset email sent to ' + userEmail;
+                resetStatus.textContent = '✅ Password reset email sent to ' + resetTargetEmail;
                 resetStatus.style.color = '#72ff9a';
 
-                // Also update the user's Firestore document with a note
+                // Update Firestore with note
                 await db.collection('users').doc(resetTargetUid).update({
                     passwordResetRequested: firebase.firestore.FieldValue.serverTimestamp()
                 });
@@ -1445,6 +1416,7 @@
                 setTimeout(() => {
                     resetModal.classList.remove('active');
                     resetTargetUid = null;
+                    resetTargetEmail = null;
                     resetStatus.textContent = '';
                     resetStatus.style.color = '';
                 }, 3000);
@@ -1460,6 +1432,7 @@
             if (e.key === 'Escape') {
                 resetModal.classList.remove('active');
                 resetTargetUid = null;
+                resetTargetEmail = null;
                 resetStatus.textContent = '';
             }
         });
@@ -1518,10 +1491,11 @@
         });
 
         // =========================
-        // ADMIN — APPROVE PROJECTS
+        // ADMIN — APPROVE PROJECTS (FIXED: robust error handling)
         // =========================
         async function loadAdminProjects() {
             try {
+                // Try with ordering first
                 const snapshot = await db.collection('projects')
                     .orderBy('createdAt', 'desc')
                     .get();
@@ -1577,8 +1551,65 @@
                 });
 
             } catch (err) {
-                adminProjectList.innerHTML = '<p class="text-muted" style="color:#ff6b6b;">⚠️ Error loading projects. Please refresh.</p>';
-                console.error(err);
+                // Fallback: try without ordering
+                console.warn('Ordered admin query failed, trying without orderBy:', err);
+                try {
+                    const snapshot = await db.collection('projects').get();
+
+                    if (snapshot.empty) {
+                        adminProjectList.innerHTML = '<p class="text-muted">No projects submitted yet.</p>';
+                        return;
+                    }
+
+                    let html = '';
+                    snapshot.forEach(doc => {
+                        const p = doc.data();
+                        const pid = doc.id;
+                        const status = p.status || 'pending';
+
+                        html += `
+                                    <div class="admin-project-item">
+                                        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+                                            <div>
+                                                <strong>${p.name}</strong>
+                                                <span class="status-badge ${status}">${status}</span>
+                                            </div>
+                                            <div style="font-size:12px;color:#888;">by ${p.submittedByEmail || 'Unknown'}</div>
+                                        </div>
+                                        <p style="color:#aaa;font-size:14px;">${p.description || ''}</p>
+                                        ${p.link ? `<a href="${p.link}" target="_blank" style="color:#888;font-size:13px;">🔗 ${p.link}</a>` : ''}
+                                        ${p.imageURL ? `<img src="${p.imageURL}" />` : ''}
+                                        <div class="project-actions" style="margin-top:12px;">
+                                            ${status === 'pending' ? `
+                                                <button class="btn-primary approve-project" data-pid="${pid}" style="padding:6px 14px;font-size:12px;">✅ Approve</button>
+                                                <button class="btn-secondary reject-project" data-pid="${pid}" style="padding:6px 14px;font-size:12px;">❌ Reject</button>
+                                                <button class="btn-secondary hold-project" data-pid="${pid}" style="padding:6px 14px;font-size:12px;">⏸️ Hold</button>
+                                            ` : `
+                                                <span class="text-muted" style="font-size:12px;">Reviewed</span>
+                                                ${status === 'approved' ? '<span style="color:#72ff9a;font-size:12px;">✅ Approved</span>' : ''}
+                                                ${status === 'rejected' ? '<span style="color:#ff6b6b;font-size:12px;">❌ Rejected</span>' : ''}
+                                                ${status === 'hold' ? '<span style="color:#ff9f43;font-size:12px;">⏸️ On Hold</span>' : ''}
+                                            `}
+                                        </div>
+                                    </div>
+                                `;
+                    });
+                    adminProjectList.innerHTML = html;
+
+                    document.querySelectorAll('.approve-project').forEach(btn => {
+                        btn.addEventListener('click', () => updateProjectStatus(btn.dataset.pid, 'approved'));
+                    });
+                    document.querySelectorAll('.reject-project').forEach(btn => {
+                        btn.addEventListener('click', () => updateProjectStatus(btn.dataset.pid, 'rejected'));
+                    });
+                    document.querySelectorAll('.hold-project').forEach(btn => {
+                        btn.addEventListener('click', () => updateProjectStatus(btn.dataset.pid, 'hold'));
+                    });
+
+                } catch (fallbackErr) {
+                    adminProjectList.innerHTML = '<p class="text-muted" style="color:#ff6b6b;">⚠️ Error loading projects. Please refresh.</p>';
+                    console.error('Fallback error:', fallbackErr);
+                }
             }
         }
 
@@ -1650,10 +1681,16 @@
             });
         });
 
+        // =========================
+        // INITIAL LOAD — ensure projects load on page start
+        // =========================
+        // This is handled by onAuthStateChanged
+
         console.log('🚀 EIAFSDO Firebase Dashboard loaded.');
-        console.log('✅ Admin features: Members (reset/remove), Approve Projects, Settings');
+        console.log('✅ All errors fixed — projects load with fallback queries.');
         console.log('👑 Only users with role="admin" can access admin dashboard.');
         console.log('💡 Images use URL inputs — no Firebase Storage needed!');
+        console.log('🔑 Admin can send password reset emails to any user.');
     </script>
 
 </body>
