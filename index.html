@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
 
-    <title>East Indian Amateur Full-Stack Developers Organization — Our Team</title>
+    <title>EIAFSDO — East Indian Amateur Full-Stack Developers Organization</title>
 
     <style>
         /* ============================================================
                EAST INDIAN AMATEUR FULL-STACK DEVELOPERS ORGANIZATION
-               TEAM PAGE — Dark · Minimal · Premium
+               ALL-IN-ONE: WHO WE ARE · ABOUT · TEAM · PROJECTS · LOGIN
                ============================================================ */
 
+        /* ---------- RESET & VARIABLES ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -29,10 +30,12 @@
             --accent: #ffffff;
             --shadow: 0 20px 60px rgba(0, 0, 0, .45);
             --radius: 25px;
+            --transition: .5s cubic-bezier(.22, .68, 0, 1);
         }
 
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 80px;
         }
 
         body {
@@ -44,9 +47,10 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* ---- BG ---- */
+        /* ---------- BG ---------- */
         .bg-grid {
             position: fixed;
             inset: 0;
@@ -76,21 +80,63 @@
             right: -150px;
             bottom: 0;
         }
+        .glow.three {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            opacity: .3;
+        }
 
-        /* ---- Navbar ---- */
+        /* ---------- SCROLL ANIMATIONS ---------- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ---------- NAVBAR ---------- */
         .navbar {
             width: 100%;
-            position: sticky;
+            position: fixed;
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(18px);
             background: rgba(5, 5, 5, .75);
             border-bottom: 1px solid var(--border);
+            transition: background .4s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(5, 5, 5, .92);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, .6);
         }
         .nav-inner {
             max-width: 1200px;
             margin: auto;
-            padding: 18px 25px;
+            padding: 14px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -102,36 +148,80 @@
             font-weight: 800;
             letter-spacing: -0.5px;
             line-height: 1.2;
+            text-decoration: none;
+            color: white;
         }
         .logo span {
             color: #888;
         }
         .logo small {
             display: block;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 400;
             color: #666;
             letter-spacing: 1px;
             margin-top: 2px;
         }
-        .nav-link {
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
             color: #aaa;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             transition: .3s;
+            position: relative;
         }
-        .nav-link:hover {
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width .3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .nav-links a:hover {
             color: white;
         }
+        .nav-links .btn-login {
+            background: rgba(255, 255, 255, .08);
+            padding: 6px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 12px;
+            transition: .3s;
+        }
+        .nav-links .btn-login:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+        .nav-links .btn-login::after {
+            display: none;
+        }
 
-        /* ---- Hero ---- */
+        /* ---------- HERO ---------- */
         .hero {
             max-width: 1100px;
             margin: auto;
-            padding: 90px 25px 55px;
+            padding: 140px 25px 60px;
             text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        .small-title {
+        .hero .small-title {
             display: inline-block;
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, .035);
@@ -143,9 +233,19 @@
             text-transform: uppercase;
             margin-bottom: 22px;
             max-width: 90%;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                border-color: var(--border);
+            }
+            50% {
+                border-color: rgba(255, 255, 255, .25);
+            }
         }
         .hero h1 {
-            font-size: clamp(36px, 7vw, 72px);
+            font-size: clamp(40px, 8vw, 82px);
             line-height: .95;
             letter-spacing: -3px;
             margin-bottom: 20px;
@@ -160,18 +260,134 @@
             line-height: 1.8;
             font-size: 16px;
         }
+        .hero .cta-group {
+            margin-top: 35px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .hero .cta-group a {
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        .hero .cta-primary {
+            background: white;
+            color: black;
+        }
+        .hero .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, .15);
+        }
+        .hero .cta-secondary {
+            border: 1px solid var(--border);
+            color: #aaa;
+        }
+        .hero .cta-secondary:hover {
+            border-color: white;
+            color: white;
+            transform: translateY(-3px);
+        }
 
-        /* ---- Controls ---- */
-        .controls {
+        /* ---------- SECTION COMMON ---------- */
+        section {
+            padding: 80px 25px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .section-label {
+            display: inline-block;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .035);
+            padding: 6px 16px;
+            border-radius: 50px;
+            color: #aaa;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .section-title {
+            font-size: clamp(32px, 4.5vw, 52px);
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+        .section-title span {
+            color: #777;
+        }
+        .section-sub {
+            color: var(--muted);
+            max-width: 600px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* ---------- ABOUT (WHO WE ARE) ---------- */
+        #about {
+            padding-top: 60px;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 30px;
+            align-items: center;
+        }
+        .about-text p {
+            color: #aaa;
+            line-height: 1.9;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+        .about-text .highlight {
+            color: white;
+            font-weight: 600;
+        }
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .about-stats .stat {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .about-stats .stat:hover {
+            border-color: rgba(255, 255, 255, .15);
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, .05);
+        }
+        .about-stats .stat .number {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            display: block;
+        }
+        .about-stats .stat .label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* ---------- TEAM ---------- */
+        .team-controls {
             max-width: 1100px;
             margin: 0 auto 45px;
             padding: 0 25px;
         }
-        .search-box {
+        .team-search {
             position: relative;
             margin-bottom: 18px;
         }
-        .search-box input {
+        .team-search input {
             width: 100%;
             padding: 17px 20px 17px 50px;
             border-radius: 14px;
@@ -182,11 +398,11 @@
             font-size: 15px;
             transition: .3s;
         }
-        .search-box input:focus {
+        .team-search input:focus {
             border-color: rgba(255, 255, 255, .35);
             box-shadow: 0 0 25px rgba(255, 255, 255, .04);
         }
-        .search-icon {
+        .team-search .search-icon {
             position: absolute;
             left: 19px;
             top: 50%;
@@ -194,12 +410,12 @@
             color: #777;
             font-size: 18px;
         }
-        .filters {
+        .team-filters {
             display: flex;
             flex-wrap: wrap;
             gap: 9px;
         }
-        .filter {
+        .team-filters .filter {
             border: 1px solid var(--border);
             background: #0b0b0b;
             color: #aaa;
@@ -210,24 +426,23 @@
             font-size: 13px;
             font-family: inherit;
         }
-        .filter:hover,
-        .filter.active {
+        .team-filters .filter:hover,
+        .team-filters .filter.active {
             background: white;
             color: black;
             border-color: white;
         }
 
-        /* ---- Team Grid ---- */
         .team-grid {
-            max-width: 1100px;
-            margin: auto;
-            padding: 0 25px 60px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
+            padding: 0 25px 60px;
+            max-width: 1100px;
+            margin: auto;
         }
 
-        /* ---- Team Card ---- */
+        /* ---------- TEAM CARD ---------- */
         .team-card {
             position: relative;
             min-height: 440px;
@@ -265,7 +480,6 @@
             border-color: rgba(255, 255, 255, .25);
             box-shadow: 0 30px 80px rgba(0, 0, 0, .65);
         }
-
         .team-card:nth-child(2) {
             animation-delay: .08s;
         }
@@ -325,7 +539,6 @@
             background: #111;
             pointer-events: none;
         }
-        /* Hint overlay on profile */
         .profile::after {
             content: "👤 Click";
             position: absolute;
@@ -360,7 +573,6 @@
             font-size: 13px;
             margin-bottom: 20px;
         }
-
         .badge {
             width: max-content;
             margin: auto;
@@ -373,13 +585,11 @@
             background: rgba(255, 255, 255, .07);
             border: 1px solid var(--border);
         }
-
         .divider {
             height: 1px;
             background: var(--border);
             margin: 22px 0;
         }
-
         .details {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -402,7 +612,6 @@
             font-size: 12px;
             color: #ddd;
         }
-
         .bio {
             margin-top: 18px;
             color: #777;
@@ -410,7 +619,6 @@
             font-size: 12px;
             text-align: center;
         }
-
         .socials {
             display: flex;
             justify-content: center;
@@ -437,7 +645,6 @@
             border-color: white;
         }
 
-        /* ---- Featured / Founder ---- */
         .team-card.featured {
             border-color: rgba(255, 255, 255, .22);
             background:
@@ -459,7 +666,6 @@
             z-index: 2;
         }
 
-        /* ---- "More Soon" card ---- */
         .team-card.coming-soon {
             opacity: .5;
             border-style: dashed;
@@ -490,7 +696,6 @@
             margin-top: 6px;
         }
 
-        /* ---- Empty state ---- */
         .empty {
             display: none;
             grid-column: 1 / -1;
@@ -499,9 +704,53 @@
             color: #666;
         }
 
-        /* ============================================================
-               MODAL (Popup)
-               ============================================================ */
+        /* ---------- PROJECTS ---------- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .project-card {
+            padding: 24px 22px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .025);
+            transition: .3s;
+        }
+        .project-card:hover {
+            border-color: rgba(255, 255, 255, .20);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, .3);
+        }
+        .project-card .p-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .project-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .project-card p {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.6;
+        }
+        .project-card .p-tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+
+        /* ---------- MODAL ---------- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -517,7 +766,6 @@
         .modal-overlay.active {
             display: flex;
         }
-
         .modal-content {
             background: #0d0d0d;
             border: 1px solid var(--border);
@@ -531,7 +779,6 @@
             overflow-y: auto;
             animation: slideUp .3s ease;
         }
-
         .modal-close {
             position: absolute;
             top: 16px;
@@ -549,7 +796,6 @@
             color: white;
             transform: rotate(90deg);
         }
-
         .modal-content h2 {
             font-size: 26px;
             letter-spacing: -1px;
@@ -560,7 +806,6 @@
             color: #777;
             font-weight: 400;
         }
-
         .modal-project {
             background: rgba(255, 255, 255, .03);
             border: 1px solid var(--border);
@@ -613,87 +858,83 @@
                 opacity: 1;
             }
         }
-
-        /* ============================================================
-               PROJECTS SECTION
-               ============================================================ */
-        .projects-section {
-            max-width: 1100px;
-            margin: 0 auto 80px;
-            padding: 0 25px;
-        }
-        .projects-section .section-label {
-            display: inline-block;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .035);
-            padding: 6px 16px;
-            border-radius: 50px;
-            color: #aaa;
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-        }
-        .projects-section h2 {
-            font-size: clamp(28px, 4vw, 44px);
-            letter-spacing: -2px;
-            margin-bottom: 30px;
-        }
-        .projects-section h2 span {
-            color: #777;
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+        /* ---------- LOGIN MODAL ---------- */
+        .login-modal .modal-content {
+            max-width: 400px;
+            text-align: center;
         }
-        .project-card {
-            padding: 24px 22px;
-            border-radius: 18px;
+        .login-modal .modal-content h2 {
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+        .login-modal .modal-content .sub {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+        .login-form input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .025);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 14px;
+            margin-bottom: 14px;
+            transition: .3s;
+            outline: none;
+        }
+        .login-form input:focus {
+            border-color: rgba(255, 255, 255, .3);
+        }
+        .login-form button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
             transition: .3s;
         }
-        .project-card:hover {
-            border-color: rgba(255, 255, 255, .20);
-            transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, .3);
+        .login-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
         }
-        .project-card .p-icon {
-            font-size: 28px;
-            margin-bottom: 12px;
-            display: block;
-        }
-        .project-card h3 {
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .project-card p {
-            font-size: 13px;
-            color: #888;
-            line-height: 1.6;
-        }
-        .project-card .p-tag {
-            display: inline-block;
-            margin-top: 12px;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .login-form .demo-hint {
+            margin-top: 14px;
+            font-size: 12px;
             color: #555;
-            border: 1px solid var(--border);
-            padding: 4px 12px;
-            border-radius: 50px;
+        }
+        .login-form .demo-hint code {
+            background: rgba(255, 255, 255, .06);
+            padding: 2px 10px;
+            border-radius: 6px;
+            color: #888;
         }
 
-        /* ---- Footer & Social ---- */
+        /* ---------- FOOTER ---------- */
         footer {
             border-top: 1px solid var(--border);
             padding: 35px 25px;
             text-align: center;
             color: #555;
             font-size: 12px;
+            max-width: 1200px;
+            margin: auto;
         }
         footer strong {
             color: #aaa;
@@ -703,6 +944,7 @@
             justify-content: center;
             gap: 18px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         .footer-socials a {
             color: #777;
@@ -721,63 +963,45 @@
             background: rgba(255, 255, 255, .05);
         }
 
-        /* ---- Keyframes ---- */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .about-stats {
+                grid-template-columns: 1fr 1fr;
             }
-        }
-
-        /* ---- Responsive ---- */
-        @media (max-width: 600px) {
             .nav-inner {
-                padding: 14px 18px;
                 flex-direction: column;
                 align-items: flex-start;
+                padding: 12px 18px;
             }
-            .logo {
-                font-size: 16px;
-            }
-            .logo small {
-                font-size: 8px;
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 12px;
+                margin-top: 6px;
             }
             .hero {
-                padding-top: 60px;
-            }
-            .hero h1 {
-                letter-spacing: -1px;
+                padding-top: 120px;
+                min-height: auto;
             }
             .team-grid {
                 grid-template-columns: 1fr;
                 padding-left: 17px;
                 padding-right: 17px;
             }
-            .controls {
+            .team-controls {
                 padding: 0 17px;
             }
-            .team-card {
-                min-height: auto;
-            }
-            .project-grid {
-                grid-template-columns: 1fr;
-            }
-            .projects-section {
-                padding: 0 17px;
-            }
-            .small-title {
-                font-size: 9px;
-                padding: 6px 14px;
+            section {
+                padding: 50px 17px;
             }
             .modal-content {
                 padding: 25px 18px 20px;
             }
             .footer-socials {
-                flex-wrap: wrap;
                 gap: 10px;
             }
             .profile::after {
@@ -785,248 +1009,280 @@
                 font-size: 12px;
                 padding: 2px 8px;
             }
+            .about-stats .stat .number {
+                font-size: 26px;
+            }
+        }
+        @media (max-width: 480px) {
+            .about-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .hero h1 {
+                font-size: 32px;
+                letter-spacing: -1px;
+            }
+            .nav-links a {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- BG -->
+    <!-- ===== BG ===== -->
     <div class="bg-grid"></div>
     <div class="glow one"></div>
     <div class="glow two"></div>
+    <div class="glow three"></div>
 
     <!-- ===== NAVBAR ===== -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-inner">
-            <div class="logo">
+            <a href="#hero" class="logo">
                 EIAFSDO
-                <small>East Indian Amateur Full-Stack Developers Organization</small>
+                <small>East Indian Amateur Full-Stack Developers Org.</small>
+            </a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#team-section">Team</a>
+                <a href="#projects">Projects</a>
+                <a href="#" class="btn-login" id="openLoginBtn">🔑 Login</a>
             </div>
-            <a href="#" class="nav-link">← Back to Website</a>
         </div>
     </nav>
 
     <!-- ===== HERO ===== -->
-    <section class="hero">
+    <section class="hero" id="hero">
         <div class="small-title">East Indian Amateur Full-Stack Developers Organization</div>
-        <h1>Meet Our <span>Leadership.</span></h1>
+        <h1>Build. Learn. <span>Grow.</span></h1>
         <p>
-            The core team behind EIAFSDO — a collective of passionate
-            amateur full-stack developers from East India, building
-            products, tools and experiences with creativity and a shared vision.
+            We are a collective of passionate amateur full-stack developers
+            from East India, building products, tools and experiences with
+            creativity, engineering and a shared vision.
         </p>
-    </section>
-
-    <!-- ===== CONTROLS ===== -->
-    <section class="controls">
-        <div class="search-box">
-            <span class="search-icon">⌕</span>
-            <input type="text" id="search" placeholder="Search member, role or skill…" />
-        </div>
-        <div class="filters">
-            <button class="filter active" data-role="all">All</button>
-            <button class="filter" data-role="leadership">Leadership</button>
+        <div class="cta-group">
+            <a href="#about" class="cta-primary">Who We Are</a>
+            <a href="#team-section" class="cta-secondary">Meet the Team →</a>
         </div>
     </section>
 
-    <!-- ===== TEAM GRID ===== -->
-    <main class="team-grid" id="teamGrid">
+    <!-- ===== ABOUT (WHO WE ARE) ===== -->
+    <section id="about">
+        <div class="section-label reveal">Who We Are</div>
+        <h2 class="section-title reveal">About <span>EIAFSDO</span></h2>
+        <p class="section-sub reveal">
+            We're a community-driven organization of self-taught and
+            aspiring full-stack developers from East India.
+        </p>
 
-        <!-- ===== 1. AYUSH CHATTERJEE ===== -->
-        <article class="team-card featured" data-category="leadership" data-search="Ayush Chatterjee Founder Full-Stack JavaScript React Node">
-
-            <div class="founder-tag">FOUNDER</div>
-
-            <div class="card-top">
-                <span class="card-label">EIAFSDO ID</span>
-                <span class="status"></span>
+        <div class="about-grid">
+            <div class="about-text reveal-left">
+                <p>
+                    <span class="highlight">East Indian Amateur Full-Stack Developers Organization</span>
+                    (EIAFSDO) was born from the idea that great developers
+                    are made through collaboration, curiosity and real-world
+                    practice.
+                </p>
+                <p>
+                    We build open-source projects, share knowledge, and
+                    mentor each other. Our members come from diverse
+                    backgrounds — but we all share one thing: a passion
+                    for full-stack development and a desire to grow together.
+                </p>
+                <p>
+                    From <span class="highlight">DevConnect</span> to
+                    <span class="highlight">EduTrack</span>, every project
+                    we create is a stepping stone toward becoming better
+                    engineers — and a way to give back to the developer
+                    community.
+                </p>
             </div>
-
-            <div class="profile" data-member="Ayush Chatterjee">
-                <img src="images/ayush.jpg" alt="Ayush Chatterjee" />
+            <div class="about-stats reveal-right">
+                <div class="stat">
+                    <span class="number">3</span>
+                    <span class="label">Founders</span>
+                </div>
+                <div class="stat">
+                    <span class="number">4+</span>
+                    <span class="label">Active Projects</span>
+                </div>
+                <div class="stat">
+                    <span class="number">100%</span>
+                    <span class="label">Amateur · Self-Taught</span>
+                </div>
+                <div class="stat">
+                    <span class="number">🌏</span>
+                    <span class="label">East India · Global</span>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <h2 class="name">Ayush Chatterjee</h2>
-            <p class="role">Founder · Full-Stack Developer</p>
-            <div class="badge">Leadership</div>
-
-            <div class="divider"></div>
-
-            <div class="details">
-                <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                <div class="detail"><small>Stack</small><strong>MERN · Next</strong></div>
-                <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                <div class="detail"><small>Status</small><strong>Active</strong></div>
-            </div>
-
-            <p class="bio">
-                Ayush is the driving force behind EIAFSDO. A self-taught
-                full-stack developer with a love for clean code, system
-                design and teaching. He believes in building tools that
-                empower other amateur developers.
+    <!-- ===== TEAM SECTION ===== -->
+    <div id="team-section" style="padding-top:20px;">
+        <div style="max-width:1100px;margin:auto;padding:0 25px;">
+            <div class="section-label reveal">Our Leadership</div>
+            <h2 class="section-title reveal">Meet the <span>Team</span></h2>
+            <p class="section-sub reveal">
+                The founders driving the vision, building the products,
+                and shaping the culture of EIAFSDO.
             </p>
+        </div>
 
-            <div class="socials">
-                <a href="#" aria-label="LinkedIn">IN</a>
-                <a href="#" aria-label="GitHub">GH</a>
-                <a href="#" aria-label="Twitter">TW</a>
+        <div class="team-controls">
+            <div class="team-search">
+                <span class="search-icon">⌕</span>
+                <input type="text" id="teamSearch" placeholder="Search member, role or skill…" />
             </div>
-        </article>
-
-        <!-- ===== 2. PRIYABRATA PATRA ===== -->
-        <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React">
-
-            <div class="founder-tag">FOUNDER</div>
-
-            <div class="card-top">
-                <span class="card-label">EIAFSDO ID</span>
-                <span class="status"></span>
+            <div class="team-filters">
+                <button class="filter active" data-role="all">All</button>
+                <button class="filter" data-role="leadership">Leadership</button>
             </div>
+        </div>
 
-            <div class="profile" data-member="Priyabrata Patra">
-                <img src="images/priyabrata.jpg" alt="Priyabrata Patra" />
-            </div>
+        <div class="team-grid" id="teamGrid">
 
-            <h2 class="name">Priyabrata Patra</h2>
-            <p class="role">Founder · Full-Stack Developer</p>
-            <div class="badge">Leadership</div>
+            <!-- AYUSH -->
+            <article class="team-card featured" data-category="leadership" data-search="Ayush Chatterjee Founder Full-Stack JavaScript React Node">
+                <div class="founder-tag">FOUNDER</div>
+                <div class="card-top">
+                    <span class="card-label">EIAFSDO ID</span>
+                    <span class="status"></span>
+                </div>
+                <div class="profile" data-member="Ayush Chatterjee">
+                    <img src="images/ayush.jpg" alt="Ayush Chatterjee" />
+                </div>
+                <h2 class="name">Ayush Chatterjee</h2>
+                <p class="role">Founder · Full-Stack Developer</p>
+                <div class="badge">Leadership</div>
+                <div class="divider"></div>
+                <div class="details">
+                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                    <div class="detail"><small>Stack</small><strong>MERN · Next</strong></div>
+                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
+                    <div class="detail"><small>Status</small><strong>Active</strong></div>
+                </div>
+                <p class="bio">Ayush is the driving force behind EIAFSDO. A self-taught full-stack developer with a love for clean code and system design.</p>
+                <div class="socials">
+                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="#" aria-label="Twitter">TW</a>
+                </div>
+            </article>
 
-            <div class="divider"></div>
+            <!-- PRIYABRATA -->
+            <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React">
+                <div class="founder-tag">FOUNDER</div>
+                <div class="card-top">
+                    <span class="card-label">EIAFSDO ID</span>
+                    <span class="status"></span>
+                </div>
+                <div class="profile" data-member="Priyabrata Patra">
+                    <img src="images/priyabrata.jpg" alt="Priyabrata Patra" />
+                </div>
+                <h2 class="name">Priyabrata Patra</h2>
+                <p class="role">Founder · Full-Stack Developer</p>
+                <div class="badge">Leadership</div>
+                <div class="divider"></div>
+                <div class="details">
+                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                    <div class="detail"><small>Stack</small><strong>Django · React</strong></div>
+                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
+                    <div class="detail"><small>Status</small><strong>Active</strong></div>
+                </div>
+                <p class="bio">Priyabrata is a backend-first developer with a passion for scalable architecture and data-driven applications.</p>
+                <div class="socials">
+                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="#" aria-label="GitHub">GH</a>
+                </div>
+            </article>
 
-            <div class="details">
-                <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                <div class="detail"><small>Stack</small><strong>Django · React</strong></div>
-                <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                <div class="detail"><small>Status</small><strong>Active</strong></div>
-            </div>
+            <!-- ABHRADEEP -->
+            <article class="team-card" data-category="leadership" data-search="Abhradeep Dhara Founder Full-Stack Vue Node AWS">
+                <div class="founder-tag">FOUNDER</div>
+                <div class="card-top">
+                    <span class="card-label">EIAFSDO ID</span>
+                    <span class="status"></span>
+                </div>
+                <div class="profile" data-member="Abhradeep Dhara">
+                    <img src="images/abhradeep.jpg" alt="Abhradeep Dhara" />
+                </div>
+                <h2 class="name">Abhradeep Dhara</h2>
+                <p class="role">Founder · Full-Stack Developer</p>
+                <div class="badge">Leadership</div>
+                <div class="divider"></div>
+                <div class="details">
+                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                    <div class="detail"><small>Stack</small><strong>Vue · Node</strong></div>
+                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
+                    <div class="detail"><small>Status</small><strong>Active</strong></div>
+                </div>
+                <p class="bio">Abhradeep is a front-end specialist who loves crafting beautiful, accessible interfaces with design thinking.</p>
+                <div class="socials">
+                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="#" aria-label="Dribbble">DR</a>
+                </div>
+            </article>
 
-            <p class="bio">
-                Priyabrata is a backend-first developer with a passion for
-                scalable architecture and data-driven applications. He
-                mentors junior developers and leads the infrastructure
-                initiatives at EIAFSDO.
-            </p>
+            <!-- MORE SOON -->
+            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
+                <div class="soon-icon">✦</div>
+                <h3>More Soon</h3>
+                <p>We're growing — new leaders joining soon.</p>
+            </article>
+            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
+                <div class="soon-icon">✦</div>
+                <h3>More Soon</h3>
+                <p>Additional team members on the horizon.</p>
+            </article>
+            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
+                <div class="soon-icon">✦</div>
+                <h3>More Soon</h3>
+                <p>We're expanding our leadership team.</p>
+            </article>
 
-            <div class="socials">
-                <a href="#" aria-label="LinkedIn">IN</a>
-                <a href="#" aria-label="GitHub">GH</a>
-            </div>
-        </article>
+            <div class="empty" id="teamEmpty">No team members found.</div>
+        </div>
+    </div>
 
-        <!-- ===== 3. ABHRADEEP DHARA ===== -->
-        <article class="team-card" data-category="leadership" data-search="Abhradeep Dhara Founder Full-Stack Vue Node AWS">
-
-            <div class="founder-tag">FOUNDER</div>
-
-            <div class="card-top">
-                <span class="card-label">EIAFSDO ID</span>
-                <span class="status"></span>
-            </div>
-
-            <div class="profile" data-member="Abhradeep Dhara">
-                <img src="images/abhradeep.jpg" alt="Abhradeep Dhara" />
-            </div>
-
-            <h2 class="name">Abhradeep Dhara</h2>
-            <p class="role">Founder · Full-Stack Developer</p>
-            <div class="badge">Leadership</div>
-
-            <div class="divider"></div>
-
-            <div class="details">
-                <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                <div class="detail"><small>Stack</small><strong>Vue · Node</strong></div>
-                <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                <div class="detail"><small>Status</small><strong>Active</strong></div>
-            </div>
-
-            <p class="bio">
-                Abhradeep is a front-end specialist who loves crafting
-                beautiful, accessible interfaces. He brings design thinking
-                to the team and ensures every product feels polished and
-                intuitive.
-            </p>
-
-            <div class="socials">
-                <a href="#" aria-label="LinkedIn">IN</a>
-                <a href="#" aria-label="GitHub">GH</a>
-                <a href="#" aria-label="Dribbble">DR</a>
-            </div>
-        </article>
-
-        <!-- ===== 4. MORE SOON ===== -->
-        <article class="team-card coming-soon" data-category="leadership" data-search="coming soon future member">
-            <div class="soon-icon">✦</div>
-            <h3>More Soon</h3>
-            <p>We're growing — new leaders joining soon.</p>
-        </article>
-
-        <!-- ===== 5. MORE SOON ===== -->
-        <article class="team-card coming-soon" data-category="leadership" data-search="coming soon future designer">
-            <div class="soon-icon">✦</div>
-            <h3>More Soon</h3>
-            <p>Additional team members on the horizon.</p>
-        </article>
-
-        <!-- ===== 6. MORE SOON ===== -->
-        <article class="team-card coming-soon" data-category="leadership" data-search="coming soon future operations">
-            <div class="soon-icon">✦</div>
-            <h3>More Soon</h3>
-            <p>We're expanding our leadership team.</p>
-        </article>
-
-        <!-- Empty state -->
-        <div class="empty" id="empty">No team members found.</div>
-
-    </main>
-
-    <!-- ===== PROJECTS SECTION ===== -->
-    <section class="projects-section">
-        <div class="section-label">Our Work</div>
-        <h2>Projects <span>we're building.</span></h2>
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects">
+        <div class="section-label reveal">Our Work</div>
+        <h2 class="section-title reveal">Projects <span>we're building.</span></h2>
+        <p class="section-sub reveal">
+            Open-source tools and platforms crafted by the EIAFSDO team.
+        </p>
 
         <div class="project-grid">
-
-            <div class="project-card">
+            <div class="project-card reveal">
                 <span class="p-icon">⚡</span>
                 <h3>DevConnect</h3>
                 <p>A community platform for amateur developers to share projects, ask questions and collaborate in real-time.</p>
                 <span class="p-tag">React · Node · Socket.io</span>
             </div>
-
-            <div class="project-card">
+            <div class="project-card reveal" style="transition-delay:.1s;">
                 <span class="p-icon">📦</span>
                 <h3>StackStarter</h3>
                 <p>Boilerplate generator that spins up full-stack apps with auth, DB, and API scaffolding in one command.</p>
                 <span class="p-tag">CLI · TypeScript · Prisma</span>
             </div>
-
-            <div class="project-card">
+            <div class="project-card reveal" style="transition-delay:.2s;">
                 <span class="p-icon">🧠</span>
                 <h3>EduTrack</h3>
                 <p>Open-source learning management system built for coding bootcamps and self-paced learners.</p>
                 <span class="p-tag">Django · React · PostgreSQL</span>
             </div>
-
-            <div class="project-card">
+            <div class="project-card reveal" style="transition-delay:.3s;">
                 <span class="p-icon">📊</span>
                 <h3>Analytics Lite</h3>
                 <p>Privacy-first, lightweight analytics dashboard for indie makers and small teams.</p>
                 <span class="p-tag">Vue · FastAPI · ClickHouse</span>
             </div>
-
         </div>
     </section>
-
-    <!-- ===== MODAL (Popup) ===== -->
-    <div class="modal-overlay" id="profileModal">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">&times;</button>
-            <h2 id="modalName">Projects by <span></span></h2>
-            <div id="modalProjects"></div>
-        </div>
-    </div>
 
     <!-- ===== FOOTER ===== -->
     <footer>
@@ -1039,88 +1295,141 @@
         © 2026 <strong>East Indian Amateur Full-Stack Developers Organization</strong>. All rights reserved.
     </footer>
 
+    <!-- ===== PROFILE MODAL ===== -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 id="modalName">Projects by <span></span></h2>
+            <div id="modalProjects"></div>
+        </div>
+    </div>
+
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="modal-overlay login-modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="loginClose">&times;</button>
+            <h2>🔑 Welcome Back</h2>
+            <p class="sub">Sign in to your EIAFSDO account</p>
+            <form class="login-form" id="loginForm">
+                <input type="email" placeholder="Email address" value="demo@eiafsdo.org" />
+                <input type="password" placeholder="Password" value="password123" />
+                <button type="submit">Sign In</button>
+                <div class="demo-hint">
+                    💡 Demo: use <code>demo@eiafsdo.org</code> / <code>password123</code>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- ============================================================
     SCRIPT
     ============================================================ -->
     <script>
         /* =========================
-               SEARCH + FILTER
+               NAVBAR SCROLL
                ========================= */
-        const searchInput = document.getElementById("search");
-        const filters = document.querySelectorAll(".filter");
-        const cards = document.querySelectorAll(".team-card");
-        const empty = document.getElementById("empty");
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
 
-        let currentFilter = "all";
+        /* =========================
+               SCROLL REVEAL (Intersection Observer)
+               ========================= */
+        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        /* =========================
+               TEAM SEARCH + FILTER
+               ========================= */
+        const teamSearch = document.getElementById('teamSearch');
+        const teamFilters = document.querySelectorAll('.team-filters .filter');
+        const teamCards = document.querySelectorAll('.team-card');
+        const teamEmpty = document.getElementById('teamEmpty');
+        let teamFilter = 'all';
 
         function updateTeam() {
-            const search = searchInput.value.toLowerCase().trim();
+            const search = teamSearch.value.toLowerCase().trim();
             let visible = 0;
 
-            cards.forEach(card => {
-                const category = card.dataset.category || "";
-                const keywords = (card.dataset.search || "").toLowerCase();
+            teamCards.forEach(card => {
+                const category = card.dataset.category || '';
+                const keywords = (card.dataset.search || '').toLowerCase();
                 const matchesSearch = keywords.includes(search);
-                const matchesFilter = currentFilter === "all" || category === currentFilter;
+                const matchesFilter = teamFilter === 'all' || category === teamFilter;
 
                 if (matchesSearch && matchesFilter) {
-                    card.style.display = "block";
+                    card.style.display = 'block';
                     visible++;
                 } else {
-                    card.style.display = "none";
+                    card.style.display = 'none';
                 }
             });
 
-            empty.style.display = visible === 0 ? "block" : "none";
+            teamEmpty.style.display = visible === 0 ? 'block' : 'none';
         }
 
-        searchInput.addEventListener("input", updateTeam);
+        teamSearch.addEventListener('input', updateTeam);
 
-        filters.forEach(button => {
-            button.addEventListener("click", () => {
-                filters.forEach(btn => btn.classList.remove("active"));
-                button.classList.add("active");
-                currentFilter = button.dataset.role;
+        teamFilters.forEach(btn => {
+            btn.addEventListener('click', () => {
+                teamFilters.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                teamFilter = btn.dataset.role;
                 updateTeam();
             });
         });
 
         /* =========================
-               MODAL (Popup) - Projects by Member
+               PROFILE MODAL
                ========================= */
-        const modalOverlay = document.getElementById("profileModal");
-        const modalName = document.getElementById("modalName");
-        const modalProjects = document.getElementById("modalProjects");
-        const modalClose = document.getElementById("modalClose");
+        const modalOverlay = document.getElementById('profileModal');
+        const modalName = document.getElementById('modalName');
+        const modalProjects = document.getElementById('modalProjects');
+        const modalClose = document.getElementById('modalClose');
 
-        // Project database mapping
         const memberProjects = {
-            "Ayush Chatterjee": [
-                { name: "DevConnect", desc: "Community platform for amateur developers to share projects and collaborate.", tech: "React · Node · Socket.io" },
-                { name: "StackStarter", desc: "Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.", tech: "CLI · TypeScript · Prisma" }
+            'Ayush Chatterjee': [
+                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
+                    tech: 'React · Node · Socket.io' },
+                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
+                    tech: 'CLI · TypeScript · Prisma' }
             ],
-            "Priyabrata Patra": [
-                { name: "EduTrack", desc: "Open-source LMS built for coding bootcamps and self-paced learners.", tech: "Django · React · PostgreSQL" },
-                { name: "Analytics Lite", desc: "Privacy-first, lightweight analytics dashboard for indie makers.", tech: "Vue · FastAPI · ClickHouse" }
+            'Priyabrata Patra': [
+                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
+                    tech: 'Django · React · PostgreSQL' },
+                { name: 'Analytics Lite', desc: 'Privacy-first, lightweight analytics dashboard for indie makers.',
+                    tech: 'Vue · FastAPI · ClickHouse' }
             ],
-            "Abhradeep Dhara": [
-                { name: "DevConnect", desc: "Community platform for amateur developers to share projects and collaborate.", tech: "React · Node · Socket.io" },
-                { name: "EduTrack", desc: "Open-source LMS built for coding bootcamps and self-paced learners.", tech: "Django · React · PostgreSQL" },
-                { name: "StackStarter", desc: "Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.", tech: "CLI · TypeScript · Prisma" }
+            'Abhradeep Dhara': [
+                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
+                    tech: 'React · Node · Socket.io' },
+                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
+                    tech: 'Django · React · PostgreSQL' },
+                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
+                    tech: 'CLI · TypeScript · Prisma' }
             ]
         };
 
-        function openModal(memberName) {
+        function openProfileModal(memberName) {
             const projects = memberProjects[memberName] || [];
             modalName.innerHTML = `Projects by <span>${memberName}</span>`;
-            modalProjects.innerHTML = "";
+            modalProjects.innerHTML = '';
 
             if (projects.length === 0) {
-                modalProjects.innerHTML = `<p style="color:#666; text-align:center; padding:20px 0;">No projects listed yet.</p>`;
+                modalProjects.innerHTML =
+                    `<p style="color:#666;text-align:center;padding:20px 0;">No projects listed yet.</p>`;
             } else {
                 projects.forEach(p => {
-                    const div = document.createElement("div");
-                    div.className = "modal-project";
+                    const div = document.createElement('div');
+                    div.className = 'modal-project';
                     div.innerHTML = `
                                 <h3>${p.name}</h3>
                                 <p>${p.desc}</p>
@@ -1130,67 +1439,103 @@
                 });
             }
 
-            modalOverlay.classList.add("active");
-            document.body.style.overflow = "hidden";
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            modalOverlay.classList.remove("active");
-            document.body.style.overflow = "";
+        function closeProfileModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        // Click on profile image
-        document.querySelectorAll(".profile").forEach(profile => {
-            profile.addEventListener("click", (e) => {
-                const member = profile.dataset.member;
-                if (member) {
-                    openModal(member);
-                }
+        document.querySelectorAll('.profile').forEach(el => {
+            el.addEventListener('click', () => {
+                const member = el.dataset.member;
+                if (member) openProfileModal(member);
             });
         });
 
-        // Close modal events
-        modalClose.addEventListener("click", closeModal);
-        modalOverlay.addEventListener("click", (e) => {
-            if (e.target === modalOverlay) closeModal();
+        modalClose.addEventListener('click', closeProfileModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeProfileModal();
         });
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") closeModal();
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeProfileModal();
         });
 
         /* =========================
-               3D CARD EFFECT (real members only)
+               LOGIN MODAL
                ========================= */
-        cards.forEach(card => {
-            if (card.classList.contains("coming-soon")) return;
+        const loginModal = document.getElementById('loginModal');
+        const openLoginBtn = document.getElementById('openLoginBtn');
+        const loginClose = document.getElementById('loginClose');
+        const loginForm = document.getElementById('loginForm');
 
-            card.addEventListener("mousemove", event => {
+        function openLoginModal() {
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        openLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openLoginModal();
+        });
+
+        loginClose.addEventListener('click', closeLoginModal);
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) closeLoginModal();
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('✅ Welcome to EIAFSDO!\n\n( Demo login successful )');
+            closeLoginModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+                closeProfileModal();
+            }
+        });
+
+        /* =========================
+               3D CARD EFFECT
+               ========================= */
+        teamCards.forEach(card => {
+            if (card.classList.contains('coming-soon')) return;
+            card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -3;
-                const rotateY = ((x - centerX) / centerX) * 3;
-                card.style.transform =
-                    `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const rx = ((y - cy) / cy) * -3;
+                const ry = ((x - cx) / cx) * 3;
+                card.style.transform = `translateY(-10px) rotateX(${rx}deg) rotateY(${ry}deg)`;
             });
-
-            card.addEventListener("mouseleave", () => {
-                card.style.transform = "";
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
             });
         });
 
         /* =========================
                IMAGE FALLBACK
                ========================= */
-        document.querySelectorAll(".profile img").forEach(img => {
-            img.addEventListener("error", () => {
-                const name = encodeURIComponent(img.alt || "Member");
+        document.querySelectorAll('.profile img').forEach(img => {
+            img.addEventListener('error', () => {
+                const name = encodeURIComponent(img.alt || 'Member');
                 img.src =
                     `https://ui-avatars.com/api/?name=${name}&background=111111&color=ffffff&size=300`;
             });
         });
+
+        console.log('🚀 EIAFSDO — East Indian Amateur Full-Stack Developers Organization');
     </script>
 
 </body>
