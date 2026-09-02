@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EIAFSDO — Admin & User Dashboard</title>
 
-    <!-- Firebase SDKs (Auth + Firestore only, no Storage) -->
+    <!-- Firebase SDKs (Auth + Firestore only) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js">
@@ -151,7 +151,6 @@
             display: flex;
         }
 
-        /* Navbar */
         .dash-nav {
             display: flex;
             justify-content: space-between;
@@ -205,14 +204,12 @@
             border-color: white;
         }
 
-        /* Dashboard body */
         .dash-body {
             display: grid;
             grid-template-columns: 240px 1fr;
             gap: 24px;
         }
 
-        /* Sidebar */
         .dash-sidebar {
             background: var(--card);
             border: 1px solid var(--border);
@@ -238,7 +235,6 @@
             background: rgba(255, 255, 255, .06);
         }
 
-        /* Content */
         .dash-content {
             background: var(--card);
             border: 1px solid var(--border);
@@ -263,7 +259,6 @@
             color: #777;
         }
 
-        /* Forms */
         .form-group {
             margin-bottom: 18px;
         }
@@ -347,7 +342,6 @@
             background: #ff6b6b22;
         }
 
-        /* Profile picture */
         .profile-upload {
             display: flex;
             align-items: center;
@@ -401,7 +395,6 @@
             color: white;
         }
 
-        /* Project cards */
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -467,14 +460,7 @@
             border-color: #ff9f43;
             color: #ff9f43;
         }
-        .project-card .project-actions {
-            margin-top: 12px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
 
-        /* Admin members list */
         .member-list {
             display: flex;
             flex-direction: column;
@@ -517,7 +503,6 @@
             opacity: .4;
         }
 
-        /* Admin project approvals */
         .admin-project-item {
             display: flex;
             flex-direction: column;
@@ -528,13 +513,6 @@
             margin-bottom: 12px;
             background: rgba(255, 255, 255, .02);
         }
-        .admin-project-item .project-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            font-size: 13px;
-            color: #888;
-        }
         .admin-project-item img {
             max-height: 120px;
             border-radius: 8px;
@@ -542,57 +520,12 @@
             background: #111;
         }
 
-        /* Settings */
         .settings-group {
             display: grid;
             gap: 16px;
             max-width: 500px;
         }
 
-        /* ---------- RESPONSIVE ---------- */
-        @media (max-width: 768px) {
-            .dash-body {
-                grid-template-columns: 1fr;
-            }
-            .dash-sidebar {
-                display: flex;
-                overflow-x: auto;
-                padding: 10px 0;
-                gap: 4px;
-            }
-            .dash-sidebar .menu-item {
-                border-left: none;
-                border-bottom: 3px solid transparent;
-                white-space: nowrap;
-                padding: 10px 16px;
-            }
-            .dash-sidebar .menu-item.active {
-                border-bottom-color: white;
-                border-left: none;
-            }
-            .dash-nav {
-                flex-direction: column;
-                gap: 10px;
-                align-items: stretch;
-                text-align: center;
-            }
-            .dash-nav .user-info {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .profile-upload {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .profile-upload .upload-actions input[type="url"] {
-                min-width: 100%;
-            }
-            .auth-box {
-                padding: 30px 20px;
-            }
-        }
-
-        /* Utility */
         .hidden {
             display: none !important;
         }
@@ -637,15 +570,56 @@
             border-color: #ff9f43;
             color: #ff9f43;
         }
+
+        @media (max-width: 768px) {
+            .dash-body {
+                grid-template-columns: 1fr;
+            }
+            .dash-sidebar {
+                display: flex;
+                overflow-x: auto;
+                padding: 10px 0;
+                gap: 4px;
+            }
+            .dash-sidebar .menu-item {
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                white-space: nowrap;
+                padding: 10px 16px;
+            }
+            .dash-sidebar .menu-item.active {
+                border-bottom-color: white;
+                border-left: none;
+            }
+            .dash-nav {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+                text-align: center;
+            }
+            .dash-nav .user-info {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .profile-upload {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .profile-upload .upload-actions input[type="url"] {
+                min-width: 100%;
+            }
+            .auth-box {
+                padding: 30px 20px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- ===== CONTAINER ===== -->
     <div class="container">
 
-        <!-- ===== AUTH (Login / Register) ===== -->
+        <!-- ===== AUTH ===== -->
         <div id="authContainer" class="auth-container">
             <div class="auth-box" id="loginBox">
                 <h2>Welcome <span>Back</span></h2>
@@ -670,7 +644,6 @@
         <!-- ===== DASHBOARD ===== -->
         <div id="dashboard" class="dashboard">
 
-            <!-- Navbar -->
             <nav class="dash-nav">
                 <div class="logo">EIAFSDO <span>Dashboard</span></div>
                 <div class="user-info">
@@ -680,61 +653,38 @@
                 </div>
             </nav>
 
-            <!-- Body -->
             <div class="dash-body">
 
-                <!-- Sidebar -->
                 <aside class="dash-sidebar" id="sidebar">
                     <div class="menu-item active" data-tab="profile">👤 My Profile</div>
                     <div class="menu-item" data-tab="myprojects">📁 My Projects</div>
                     <div class="menu-item" data-tab="submitproject">➕ Submit Project</div>
-                    <!-- Admin only -->
                     <div class="menu-item hidden" data-tab="admin-members" id="adminMembersTab">👥 Members</div>
                     <div class="menu-item hidden" data-tab="admin-projects" id="adminProjectsTab">📋 Approve Projects</div>
                     <div class="menu-item hidden" data-tab="admin-settings" id="adminSettingsTab">⚙️ Settings</div>
                 </aside>
 
-                <!-- Content -->
                 <main class="dash-content">
 
-                    <!-- ===== TAB: PROFILE ===== -->
+                    <!-- PROFILE -->
                     <div class="tab active" id="tab-profile">
                         <h3>My <span>Profile</span></h3>
                         <div id="profileForm">
                             <div class="profile-upload">
                                 <img id="profilePreview" src="" alt="Profile" />
                                 <div class="upload-actions">
-                                    <input type="url" id="profilePhotoUrl" placeholder="Paste image URL (imgbb, Cloudinary, etc.)" />
+                                    <input type="url" id="profilePhotoUrl" placeholder="Paste image URL" />
                                     <button class="btn-secondary" id="applyPhotoUrlBtn">Apply URL</button>
                                     <button class="btn-danger" id="deletePhotoBtn">Remove</button>
                                 </div>
                             </div>
-                            <div class="imgbb-helper">
-                                💡 Use <a href="https://imgbb.com" target="_blank">imgbb.com</a> to upload for free, then paste the direct image URL above.
-                            </div>
-
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" id="profileName" />
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" id="profileEmail" disabled />
-                            </div>
-                            <div class="form-group">
-                                <label>Bio</label>
-                                <textarea id="profileBio" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Tech Stack / Skills</label>
-                                <input type="text" id="profileStack" placeholder="e.g. React, Django, Vue" />
-                            </div>
-                            <div class="form-group">
-                                <label>Organization</label>
-                                <input type="text" id="profileOrg" placeholder="e.g. EIAFSDO" />
-                            </div>
-                            <div class="form-group">
-                                <label>Status</label>
+                            <div class="imgbb-helper">💡 Use <a href="https://imgbb.com" target="_blank">imgbb.com</a> for free image hosting.</div>
+                            <div class="form-group"><label>Full Name</label><input type="text" id="profileName" /></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="profileEmail" disabled /></div>
+                            <div class="form-group"><label>Bio</label><textarea id="profileBio" rows="3"></textarea></div>
+                            <div class="form-group"><label>Tech Stack / Skills</label><input type="text" id="profileStack" placeholder="e.g. React, Django, Vue" /></div>
+                            <div class="form-group"><label>Organization</label><input type="text" id="profileOrg" placeholder="e.g. EIAFSDO" /></div>
+                            <div class="form-group"><label>Status</label>
                                 <select id="profileStatus">
                                     <option value="Active">Active</option>
                                     <option value="On Leave">On Leave</option>
@@ -742,74 +692,40 @@
                                     <option value="Inactive">Inactive</option>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label>LinkedIn URL</label>
-                                <input type="url" id="profileLinkedin" placeholder="https://linkedin.com/in/..." />
-                            </div>
-                            <div class="form-group">
-                                <label>GitHub URL</label>
-                                <input type="url" id="profileGithub" placeholder="https://github.com/..." />
-                            </div>
-                            <div class="form-group">
-                                <label>Dribbble / Portfolio URL</label>
-                                <input type="url" id="profileDribbble" placeholder="https://dribbble.com/..." />
-                            </div>
-                            <div class="form-group">
-                                <label>New Password (leave blank to keep current)</label>
-                                <input type="password" id="profilePassword" placeholder="New password" />
-                            </div>
+                            <div class="form-group"><label>LinkedIn URL</label><input type="url" id="profileLinkedin" placeholder="https://linkedin.com/in/..." /></div>
+                            <div class="form-group"><label>GitHub URL</label><input type="url" id="profileGithub" placeholder="https://github.com/..." /></div>
+                            <div class="form-group"><label>Dribbble / Portfolio URL</label><input type="url" id="profileDribbble" placeholder="https://dribbble.com/..." /></div>
+                            <div class="form-group"><label>New Password (leave blank to keep current)</label><input type="password" id="profilePassword" placeholder="New password" /></div>
                             <button class="btn-primary" id="updateProfileBtn">Update Profile</button>
                             <div id="profileUpdateStatus" class="text-muted mt-16"></div>
                         </div>
                     </div>
 
-                    <!-- ===== TAB: MY PROJECTS ===== -->
+                    <!-- MY PROJECTS -->
                     <div class="tab" id="tab-myprojects">
                         <h3>My <span>Projects</span></h3>
-                        <div id="myProjectsList">
-                            <p class="text-muted">Loading...</p>
-                        </div>
+                        <div id="myProjectsList"><p class="text-muted">Loading...</p></div>
                     </div>
 
-                    <!-- ===== TAB: SUBMIT PROJECT ===== -->
+                    <!-- SUBMIT PROJECT -->
                     <div class="tab" id="tab-submitproject">
                         <h3>Submit a <span>Project</span></h3>
                         <form id="submitProjectForm">
-                            <div class="form-group">
-                                <label>Project Name</label>
-                                <input type="text" id="projectName" required />
-                            </div>
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea id="projectDescription" rows="4" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Website / Demo Link</label>
-                                <input type="url" id="projectLink" placeholder="https://..." />
-                            </div>
-                            <div class="form-group">
-                                <label>Project Image URL</label>
-                                <input type="url" id="projectImageUrl" placeholder="Paste image URL from imgbb, Cloudinary, etc." />
-                            </div>
-                            <div class="imgbb-helper mb-16">
-                                💡 Upload images for free at <a href="https://imgbb.com" target="_blank">imgbb.com</a>, then paste the direct URL above.
-                            </div>
+                            <div class="form-group"><label>Project Name</label><input type="text" id="projectName" required /></div>
+                            <div class="form-group"><label>Description</label><textarea id="projectDescription" rows="4" required></textarea></div>
+                            <div class="form-group"><label>Website / Demo Link</label><input type="url" id="projectLink" placeholder="https://..." /></div>
+                            <div class="form-group"><label>Project Image URL</label><input type="url" id="projectImageUrl" placeholder="Paste image URL" /></div>
+                            <div class="imgbb-helper mb-16">💡 Upload images for free at <a href="https://imgbb.com" target="_blank">imgbb.com</a>.</div>
                             <button type="submit" class="btn-primary">Submit Project</button>
                             <div id="projectSubmitStatus" class="text-muted mt-16"></div>
                         </form>
                     </div>
 
-                    <!-- ===== ADMIN TABS ===== -->
-                    <!-- Admin: Members -->
+                    <!-- ADMIN: MEMBERS -->
                     <div class="tab" id="tab-admin-members">
                         <h3>Manage <span>Members</span></h3>
-                        <div class="mb-16">
-                            <button class="btn-primary" id="addMemberBtn">+ Add Member</button>
-                        </div>
-                        <div id="adminMemberList">
-                            <p class="text-muted">Loading members...</p>
-                        </div>
-                        <!-- Add member form -->
+                        <div class="mb-16"><button class="btn-primary" id="addMemberBtn">+ Add Member</button></div>
+                        <div id="adminMemberList"><p class="text-muted">Loading members...</p></div>
                         <div id="addMemberForm" class="hidden" style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px;">
                             <h4>Add New Member</h4>
                             <div class="form-group"><input type="text" id="newMemberName" placeholder="Full Name" /></div>
@@ -821,15 +737,13 @@
                         </div>
                     </div>
 
-                    <!-- Admin: Approve Projects -->
+                    <!-- ADMIN: APPROVE PROJECTS -->
                     <div class="tab" id="tab-admin-projects">
                         <h3>Approve <span>Projects</span></h3>
-                        <div id="adminProjectList">
-                            <p class="text-muted">Loading projects...</p>
-                        </div>
+                        <div id="adminProjectList"><p class="text-muted">Loading projects...</p></div>
                     </div>
 
-                    <!-- Admin: Settings -->
+                    <!-- ADMIN: SETTINGS -->
                     <div class="tab" id="tab-admin-settings">
                         <h3>Site <span>Settings</span></h3>
                         <div class="settings-group">
@@ -843,15 +757,14 @@
                 </main>
             </div>
         </div>
-
     </div>
 
     <!-- ============================================================
-    JAVASCRIPT — FIREBASE AUTH + FIRESTORE (NO STORAGE)
+    JAVASCRIPT — FIREBASE AUTH + FIRESTORE
     ============================================================ -->
     <script>
         // =========================
-        // 1. FIREBASE CONFIG (YOUR CREDENTIALS)
+        // FIREBASE CONFIG (YOUR CREDENTIALS)
         // =========================
         const firebaseConfig = {
             apiKey: "AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
@@ -865,12 +778,10 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-
-        // Enable offline persistence
         db.enablePersistence().catch(err => console.warn('Firestore persistence:', err));
 
         // =========================
-        // 2. DOM REFS
+        // DOM REFS
         // =========================
         const authContainer = document.getElementById('authContainer');
         const dashboard = document.getElementById('dashboard');
@@ -894,7 +805,6 @@
         const navUserImg = document.getElementById('navUserImg');
         const navUserName = document.getElementById('navUserName');
 
-        // Profile
         const profilePreview = document.getElementById('profilePreview');
         const profilePhotoUrl = document.getElementById('profilePhotoUrl');
         const applyPhotoUrlBtn = document.getElementById('applyPhotoUrlBtn');
@@ -912,10 +822,7 @@
         const updateProfileBtn = document.getElementById('updateProfileBtn');
         const profileUpdateStatus = document.getElementById('profileUpdateStatus');
 
-        // My Projects
         const myProjectsList = document.getElementById('myProjectsList');
-
-        // Submit Project
         const projectName = document.getElementById('projectName');
         const projectDescription = document.getElementById('projectDescription');
         const projectLink = document.getElementById('projectLink');
@@ -923,7 +830,6 @@
         const submitProjectForm = document.getElementById('submitProjectForm');
         const projectSubmitStatus = document.getElementById('projectSubmitStatus');
 
-        // Admin
         const adminMembersTab = document.getElementById('adminMembersTab');
         const adminProjectsTab = document.getElementById('adminProjectsTab');
         const adminSettingsTab = document.getElementById('adminSettingsTab');
@@ -943,15 +849,13 @@
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         const settingsStatus = document.getElementById('settingsStatus');
 
-        // Menu items
         const menuItems = document.querySelectorAll('.menu-item');
-
-        // =========================
-        // 3. AUTH STATE OBSERVER
-        // =========================
         let currentUser = null;
         let currentUserData = null;
 
+        // =========================
+        // AUTH STATE OBSERVER
+        // =========================
         auth.onAuthStateChanged(async user => {
             if (user) {
                 currentUser = user;
@@ -978,9 +882,6 @@
             }
         });
 
-        // =========================
-        // 4. UI SWITCHING
-        // =========================
         function showAuth() {
             authContainer.style.display = 'flex';
             dashboard.classList.remove('active');
@@ -1017,7 +918,7 @@
         }
 
         // =========================
-        // 5. AUTH HANDLERS
+        // AUTH HANDLERS
         // =========================
         showRegister.addEventListener('click', () => {
             loginBox.classList.add('hidden');
@@ -1041,7 +942,7 @@
                 await auth.signInWithEmailAndPassword(email, password);
                 authError.textContent = '';
             } catch (err) {
-                authError.textContent = err.message;
+                authError.textContent = '❌ ' + err.message;
             }
         });
 
@@ -1075,7 +976,7 @@
                 });
                 regError.textContent = '';
             } catch (err) {
-                regError.textContent = err.message;
+                regError.textContent = '❌ ' + err.message;
             }
         });
 
@@ -1084,7 +985,7 @@
         });
 
         // =========================
-        // 6. PROFILE FUNCTIONS
+        // PROFILE FUNCTIONS
         // =========================
         function populateProfile() {
             if (!currentUserData) return;
@@ -1103,13 +1004,9 @@
             profileDribbble.value = currentUserData.dribbble || '';
         }
 
-        // Apply photo URL
         applyPhotoUrlBtn.addEventListener('click', async () => {
             const url = profilePhotoUrl.value.trim();
-            if (!url) {
-                profileUpdateStatus.textContent = 'Please paste a valid image URL.';
-                return;
-            }
+            if (!url) { profileUpdateStatus.textContent = 'Please paste a valid image URL.'; return; }
             try {
                 await db.collection('users').doc(currentUser.uid).update({ photoURL: url });
                 currentUserData.photoURL = url;
@@ -1121,7 +1018,6 @@
             }
         });
 
-        // Delete photo
         deletePhotoBtn.addEventListener('click', async () => {
             if (!confirm('Remove your profile photo?')) return;
             try {
@@ -1138,7 +1034,6 @@
             }
         });
 
-        // Update full profile
         updateProfileBtn.addEventListener('click', async () => {
             const name = profileName.value.trim();
             const bio = profileBio.value.trim();
@@ -1149,19 +1044,13 @@
             const github = profileGithub.value.trim();
             const dribbble = profileDribbble.value.trim();
             const newPassword = profilePassword.value.trim();
-
-            if (!name) {
-                profileUpdateStatus.textContent = 'Name is required.';
-                return;
-            }
-
+            if (!name) { profileUpdateStatus.textContent = 'Name is required.'; return; }
             try {
                 const updates = { name, bio, stack, org, status, linkedin, github, dribbble };
                 await db.collection('users').doc(currentUser.uid).update(updates);
                 currentUserData = { ...currentUserData, ...updates };
                 navUserName.textContent = name;
                 profileUpdateStatus.textContent = '✅ Profile updated successfully!';
-
                 if (newPassword && newPassword.length >= 6) {
                     await currentUser.updatePassword(newPassword);
                     profileUpdateStatus.textContent += ' Password updated.';
@@ -1172,7 +1061,7 @@
         });
 
         // =========================
-        // 7. PROJECTS — MY PROJECTS
+        // MY PROJECTS
         // =========================
         async function loadMyProjects() {
             try {
@@ -1207,7 +1096,7 @@
         }
 
         // =========================
-        // 8. SUBMIT PROJECT
+        // SUBMIT PROJECT
         // =========================
         submitProjectForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1215,12 +1104,10 @@
             const description = projectDescription.value.trim();
             const link = projectLink.value.trim();
             const imageURL = projectImageUrl.value.trim();
-
             if (!name || !description) {
                 projectSubmitStatus.textContent = 'Name and description are required.';
                 return;
             }
-
             try {
                 await db.collection('projects').add({
                     name,
@@ -1233,7 +1120,6 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
                 projectSubmitStatus.textContent = '✅ Project submitted! Waiting for admin approval.';
                 submitProjectForm.reset();
                 loadMyProjects();
@@ -1243,7 +1129,7 @@
         });
 
         // =========================
-        // 9. ADMIN — MEMBERS
+        // ADMIN — MEMBERS
         // =========================
         async function loadAdminMembers() {
             try {
@@ -1277,12 +1163,10 @@
                 html += '</div>';
                 adminMemberList.innerHTML = html;
 
-                // Remove handlers
                 document.querySelectorAll('.remove-member').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const uid = btn.dataset.uid;
-                        if (!confirm('Remove this member? This will delete their account and data.'))
-                            return;
+                        if (!confirm('Remove this member?')) return;
                         try {
                             await db.collection('users').doc(uid).delete();
                             loadAdminMembers();
@@ -1315,7 +1199,6 @@
                         const toItem = items[index];
                         if (fromItem && toItem) {
                             list.insertBefore(fromItem, toItem);
-                            // Update order in Firestore
                             const batch = db.batch();
                             list.querySelectorAll('.member-item').forEach((el, idx) => {
                                 const uid = el.dataset.uid;
@@ -1332,7 +1215,6 @@
             }
         }
 
-        // Add member
         addMemberBtn.addEventListener('click', () => {
             addMemberForm.classList.remove('hidden');
             addMemberBtn.disabled = true;
@@ -1384,7 +1266,7 @@
         });
 
         // =========================
-        // 10. ADMIN — APPROVE PROJECTS
+        // ADMIN — APPROVE PROJECTS
         // =========================
         async function loadAdminProjects() {
             try {
@@ -1458,7 +1340,7 @@
         }
 
         // =========================
-        // 11. ADMIN — SETTINGS
+        // ADMIN — SETTINGS
         // =========================
         async function loadSettings() {
             try {
@@ -1489,7 +1371,7 @@
         });
 
         // =========================
-        // 12. SIDEBAR NAVIGATION
+        // SIDEBAR NAVIGATION
         // =========================
         function switchTab(tabId) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1513,10 +1395,9 @@
         });
 
         console.log('🚀 EIAFSDO Firebase Dashboard loaded.');
-        console.log('✅ Firebase config inserted successfully.');
-        console.log('🔐 Firestore rules must allow read/write for authenticated users.');
+        console.log('✅ Firebase config inserted.');
         console.log('👑 Set a user role to "admin" in Firestore to see admin features.');
-        console.log('💡 Images use URL inputs (imgbb, Cloudinary, etc.) — no Firebase Storage needed!');
+        console.log('💡 Images use URL inputs — no Firebase Storage needed!');
     </script>
 
 </body>
