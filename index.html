@@ -559,6 +559,9 @@
         .team-card:nth-child(6) {
             animation-delay: .40s;
         }
+        .team-card:nth-child(7) {
+            animation-delay: .48s;
+        }
 
         .card-top {
             display: flex;
@@ -1295,7 +1298,7 @@
             </div>
             <div class="about-stats reveal-right">
                 <div class="stat">
-                    <span class="number">3</span>
+                    <span class="number">4</span>
                     <span class="label">Founders</span>
                 </div>
                 <div class="stat">
@@ -1453,6 +1456,34 @@
                 </div>
             </article>
 
+            <!-- SOUVIK DESHI -->
+            <article class="team-card" data-category="leadership" data-search="Souvik Deshi Founder Full-Stack Java Spring Boot React">
+                <div class="founder-tag">FOUNDER</div>
+                <div class="card-top">
+                    <span class="card-label">EIAFSDO ID</span>
+                    <span class="status"></span>
+                </div>
+                <div class="profile" data-member="Souvik Deshi">
+                    <img src="images/souvik.jpg" alt="Souvik Deshi" />
+                </div>
+                <h2 class="name">Souvik Deshi</h2>
+                <p class="role">Founder · Full-Stack Developer</p>
+                <div class="badge">Leadership</div>
+                <div class="divider"></div>
+                <div class="details">
+                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                    <div class="detail"><small>Stack</small><strong>Spring Boot · React</strong></div>
+                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
+                    <div class="detail"><small>Status</small><strong>Active</strong></div>
+                </div>
+                <p class="bio">Souvik is a backend and systems enthusiast who enjoys crafting robust APIs and scalable microservices. Passionate about DevOps and cloud infrastructure.</p>
+                <div class="socials">
+                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="#" aria-label="Twitter">TW</a>
+                </div>
+            </article>
+
             <!-- MORE SOON -->
             <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
                 <div class="soon-icon">✦</div>
@@ -1463,11 +1494,6 @@
                 <div class="soon-icon">✦</div>
                 <h3>More Soon</h3>
                 <p>Additional team members on the horizon.</p>
-            </article>
-            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
-                <div class="soon-icon">✦</div>
-                <h3>More Soon</h3>
-                <p>We're expanding our leadership team.</p>
             </article>
 
             <div class="empty" id="teamEmpty">No team members found.</div>
@@ -1728,6 +1754,12 @@
                     tech: 'Django · React · PostgreSQL' },
                 { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
                     tech: 'CLI · TypeScript · Prisma' }
+            ],
+            'Souvik Deshi': [
+                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
+                    tech: 'React · Node · Socket.io' },
+                { name: 'Analytics Lite', desc: 'Privacy-first, lightweight analytics dashboard for indie makers.',
+                    tech: 'Vue · FastAPI · ClickHouse' }
             ]
         };
 
@@ -1861,6 +1893,7 @@
         console.log('📧 admin@codebihin.in');
         console.log('🏛️ Student-operated · HETC');
         console.log('📜 Motto: Aedificare — Disputare — Crescere');
+        console.log('👥 Founders: 4');
     </script>
 
 </body>
