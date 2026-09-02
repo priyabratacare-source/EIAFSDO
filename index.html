@@ -7,12 +7,14 @@
 
     <title>EIAFSDO — East Indian Amateur Full‑Stack Developers Organization</title>
 
+    <!-- Firebase SDK (Firestore for public page) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
         /* ============================================================
-               EAST INDIAN AMATEUR FULL-STACK DEVELOPERS ORGANIZATION
-               SMOOTH · POLISHED · ALL-IN-ONE
-               ============================================================ */
-
+           GLOBAL RESETS & TOKENS
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -23,13 +25,12 @@
             --bg: #050505;
             --card: #0d0d0d;
             --card2: #121212;
-            --border: rgba(255, 255, 255, .08);
+            --border: rgba(255, 255, 255, 0.08);
             --text: #ffffff;
             --muted: #999999;
-            --shadow: 0 20px 60px rgba(0, 0, 0, .45);
-            --radius: 25px;
-            --transition: .6s cubic-bezier(.22, .68, 0, 1);
-            --hover-transform: translateY(-8px) scale(1.01);
+            --shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+            --radius: 26px;
+            --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         html {
@@ -38,10 +39,10 @@
         }
 
         body {
-            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
             background:
-                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, .06), transparent 25%),
-                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, .04), transparent 30%),
+                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.05), transparent 25%),
+                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.03), transparent 30%),
                 var(--bg);
             color: var(--text);
             min-height: 100vh;
@@ -50,64 +51,52 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ---------- BG ---------- */
+        /* Ambient Background Grid & Glows */
         .bg-grid {
             position: fixed;
             inset: 0;
             z-index: -2;
-            opacity: .2;
+            opacity: 0.18;
             background-image:
-                linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
-            background-size: 45px 45px;
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 44px 44px;
             pointer-events: none;
         }
 
         .glow {
             position: fixed;
-            width: 500px;
-            height: 500px;
+            width: 520px;
+            height: 520px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, .03);
-            filter: blur(120px);
+            background: rgba(255, 255, 255, 0.025);
+            filter: blur(140px);
             z-index: -1;
             pointer-events: none;
-            animation: floatGlow 20s ease-in-out infinite alternate;
+            animation: floatGlow 22s ease-in-out infinite alternate;
         }
-        .glow.one {
-            top: -10%;
-            left: -10%;
-            animation-delay: 0s;
-        }
-        .glow.two {
-            bottom: -10%;
-            right: -10%;
-            animation-delay: -7s;
-        }
+        .glow.one { top: -10%; left: -10%; animation-delay: 0s; }
+        .glow.two { bottom: -10%; right: -10%; animation-delay: -7s; }
         .glow.three {
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 700px;
-            height: 700px;
-            opacity: .2;
+            width: 750px;
+            height: 750px;
+            opacity: 0.15;
             animation-delay: -14s;
         }
 
         @keyframes floatGlow {
-            0% {
-                transform: translate(0, 0) scale(1);
-            }
-            100% {
-                transform: translate(60px, 40px) scale(1.2);
-            }
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(70px, 45px) scale(1.18); }
         }
 
-        /* ---------- SCROLL REVEAL ---------- */
+        /* Fluid Reveal Animation */
         .reveal {
             opacity: 0;
-            transform: translateY(50px);
-            transition: opacity .9s cubic-bezier(.22, .68, 0, 1), transform .9s cubic-bezier(.22, .68, 0, 1);
+            transform: translateY(45px);
+            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
         }
         .reveal.visible {
             opacity: 1;
@@ -115,8 +104,8 @@
         }
         .reveal-left {
             opacity: 0;
-            transform: translateX(-50px);
-            transition: opacity .9s cubic-bezier(.22, .68, 0, 1), transform .9s cubic-bezier(.22, .68, 0, 1);
+            transform: translateX(-45px);
+            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
         }
         .reveal-left.visible {
             opacity: 1;
@@ -124,15 +113,17 @@
         }
         .reveal-right {
             opacity: 0;
-            transform: translateX(50px);
-            transition: opacity .9s cubic-bezier(.22, .68, 0, 1), transform .9s cubic-bezier(.22, .68, 0, 1);
+            transform: translateX(45px);
+            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
         }
         .reveal-right.visible {
             opacity: 1;
             transform: translateX(0);
         }
 
-        /* ---------- NAVBAR ---------- */
+        /* ============================================================
+           NAVBAR
+           ============================================================ */
         .navbar {
             width: 100%;
             position: fixed;
@@ -140,18 +131,18 @@
             z-index: 1000;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            background: rgba(5, 5, 5, .65);
+            background: rgba(5, 5, 5, 0.7);
             border-bottom: 1px solid var(--border);
-            transition: background .5s ease, box-shadow .5s ease;
+            transition: background 0.4s ease, box-shadow 0.4s ease;
         }
         .navbar.scrolled {
-            background: rgba(5, 5, 5, .92);
-            box-shadow: 0 4px 40px rgba(0, 0, 0, .6);
+            background: rgba(5, 5, 5, 0.94);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
         .nav-inner {
             max-width: 1200px;
             margin: auto;
-            padding: 14px 25px;
+            padding: 15px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -164,34 +155,28 @@
             letter-spacing: -0.5px;
             line-height: 1.2;
             text-decoration: none;
-            color: white;
-            transition: opacity .3s;
+            color: #fff;
+            transition: opacity 0.3s;
         }
-        .logo:hover {
-            opacity: .8;
-        }
-        .logo span {
-            color: #888;
-        }
+        .logo:hover { opacity: 0.85; }
         .logo small {
             display: block;
-            font-size: 8px;
+            font-size: 8.5px;
             font-weight: 400;
-            color: #666;
-            letter-spacing: 1px;
+            color: #777;
+            letter-spacing: 0.8px;
             margin-top: 2px;
         }
         .nav-links {
             display: flex;
             align-items: center;
             gap: 22px;
-            flex-wrap: wrap;
         }
         .nav-links a {
             color: #aaa;
             text-decoration: none;
             font-size: 13px;
-            transition: color .3s ease;
+            transition: color 0.3s ease;
             position: relative;
             padding: 4px 0;
         }
@@ -202,36 +187,29 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: white;
-            transition: width .35s cubic-bezier(.22, .68, 0, 1);
+            background: #fff;
+            transition: width 0.35s var(--smooth-ease);
         }
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        .nav-links a:hover {
-            color: white;
-        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: #fff; }
         .nav-links .btn-login {
-            background: rgba(255, 255, 255, .06);
-            padding: 7px 18px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 8px 20px;
             border-radius: 50px;
             border: 1px solid var(--border);
             font-weight: 600;
             font-size: 12px;
-            transition: all .35s cubic-bezier(.22, .68, 0, 1);
+            transition: all 0.35s var(--smooth-ease);
         }
-        .nav-links .btn-login::after {
-            display: none;
-        }
+        .nav-links .btn-login::after { display: none; }
         .nav-links .btn-login:hover {
-            background: white;
-            color: black;
-            border-color: white;
+            background: #fff;
+            color: #000;
+            border-color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, .1);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
         }
 
-        /* Hamburger */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -240,48 +218,51 @@
             background: none;
             border: none;
             padding: 4px;
-            transition: transform .3s;
-        }
-        .hamburger:hover {
-            transform: scale(1.05);
         }
         .hamburger span {
             display: block;
-            width: 26px;
-            height: 2.5px;
+            width: 25px;
+            height: 2px;
             background: #aaa;
-            transition: all .35s cubic-bezier(.22, .68, 0, 1);
+            transition: all 0.35s var(--smooth-ease);
             border-radius: 2px;
         }
         .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-            background: white;
+            transform: rotate(45deg) translate(5px, 5px);
+            background: #fff;
         }
         .hamburger.active span:nth-child(2) {
             opacity: 0;
             transform: scaleX(0);
         }
         .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-            background: white;
+            transform: rotate(-45deg) translate(5px, -5px);
+            background: #fff;
         }
 
-        /* ---------- HERO ---------- */
+        /* ============================================================
+           HERO & GENERAL SECTIONS
+           ============================================================ */
+        section {
+            padding: 90px 25px;
+            max-width: 1200px;
+            margin: auto;
+        }
         .hero {
             max-width: 1100px;
             margin: auto;
-            padding: 150px 25px 70px;
+            padding: 150px 25px 80px;
             text-align: center;
-            min-height: 100vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        .hero .small-title {
+        .small-title {
             display: inline-block;
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .04);
+            background: rgba(255, 255, 255, 0.04);
             padding: 8px 24px;
             border-radius: 50px;
             color: #aaa;
@@ -289,29 +270,15 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 24px;
-            max-width: 90%;
-            animation: pulseBorder 4s ease-in-out infinite;
             backdrop-filter: blur(4px);
-        }
-        @keyframes pulseBorder {
-            0%,
-            100% {
-                border-color: var(--border);
-            }
-            50% {
-                border-color: rgba(255, 255, 255, .25);
-            }
         }
         .hero h1 {
             font-size: clamp(42px, 8vw, 84px);
-            line-height: .95;
-            letter-spacing: -4px;
+            line-height: 0.95;
+            letter-spacing: -3.5px;
             margin-bottom: 20px;
-            animation: fadeUp 1s ease both;
         }
-        .hero h1 span {
-            color: #777;
-        }
+        .hero h1 span { color: #777; }
         .hero .motto {
             font-size: 20px;
             color: #aaa;
@@ -319,19 +286,14 @@
             letter-spacing: 1px;
             margin-bottom: 22px;
             font-weight: 300;
-            animation: fadeUp 1s ease .1s both;
         }
-        .hero .motto strong {
-            color: white;
-            font-weight: 500;
-        }
+        .hero .motto strong { color: #fff; font-weight: 500; }
         .hero p {
             max-width: 650px;
             margin: auto;
             color: var(--muted);
-            line-height: 1.9;
+            line-height: 1.85;
             font-size: 16px;
-            animation: fadeUp 1s ease .2s both;
         }
         .hero .cta-group {
             margin-top: 38px;
@@ -339,7 +301,6 @@
             gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: fadeUp 1s ease .3s both;
         }
         .hero .cta-group a {
             padding: 15px 36px;
@@ -347,48 +308,31 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 14px;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
+            transition: all 0.35s var(--smooth-ease);
         }
         .hero .cta-primary {
-            background: white;
-            color: black;
+            background: #fff;
+            color: #000;
         }
         .hero .cta-primary:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 16px 50px rgba(255, 255, 255, .15);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 45px rgba(255, 255, 255, 0.16);
         }
         .hero .cta-secondary {
             border: 1px solid var(--border);
             color: #aaa;
         }
         .hero .cta-secondary:hover {
-            border-color: white;
-            color: white;
-            transform: translateY(-4px) scale(1.02);
-            background: rgba(255, 255, 255, .04);
+            border-color: #fff;
+            color: #fff;
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.04);
         }
 
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ---------- SECTION COMMON ---------- */
-        section {
-            padding: 90px 25px;
-            max-width: 1200px;
-            margin: auto;
-        }
         .section-label {
             display: inline-block;
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .04);
+            background: rgba(255, 255, 255, 0.04);
             padding: 6px 18px;
             border-radius: 50px;
             color: #aaa;
@@ -402,51 +346,45 @@
             letter-spacing: -2px;
             margin-bottom: 16px;
         }
-        .section-title span {
-            color: #777;
-        }
+        .section-title span { color: #777; }
         .section-sub {
             color: var(--muted);
             max-width: 700px;
             font-size: 15px;
-            line-height: 1.9;
+            line-height: 1.85;
         }
 
-        /* ---------- ABOUT ---------- */
-        #about {
-            padding-top: 60px;
-        }
+        /* ============================================================
+           ABOUT & STATS
+           ============================================================ */
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
-            margin-top: 30px;
+            margin-top: 35px;
             align-items: center;
         }
         .about-text p {
             color: #aaa;
-            line-height: 2;
+            line-height: 1.95;
             margin-bottom: 18px;
             font-size: 15px;
         }
-        .about-text .highlight {
-            color: white;
-            font-weight: 600;
-        }
+        .about-text .highlight { color: #fff; font-weight: 600; }
         .about-text .motto-highlight {
             display: block;
-            font-size: 20px;
+            font-size: 19px;
             font-style: italic;
             color: #ccc;
-            padding: 18px 24px;
-            border-left: 3px solid white;
-            background: rgba(255, 255, 255, .03);
+            padding: 16px 24px;
+            border-left: 3px solid #fff;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 0 14px 14px 0;
             margin: 22px 0;
-            transition: background .4s;
+            transition: background 0.3s;
         }
         .about-text .motto-highlight:hover {
-            background: rgba(255, 255, 255, .06);
+            background: rgba(255, 255, 255, 0.06);
         }
         .about-stats {
             display: grid;
@@ -454,71 +392,61 @@
             gap: 20px;
         }
         .about-stats .stat {
-            background: rgba(255, 255, 255, .03);
+            background: rgba(255, 255, 255, 0.025);
             border: 1px solid var(--border);
             border-radius: 18px;
             padding: 28px 20px;
             text-align: center;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
-            backdrop-filter: blur(4px);
+            transition: all 0.4s var(--smooth-ease);
         }
         .about-stats .stat:hover {
-            border-color: rgba(255, 255, 255, .18);
-            transform: translateY(-6px) scale(1.02);
-            background: rgba(255, 255, 255, .06);
-            box-shadow: 0 16px 50px rgba(0, 0, 0, .3);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
         }
         .about-stats .stat .number {
             font-size: 34px;
             font-weight: 800;
-            color: white;
+            color: #fff;
             display: block;
             letter-spacing: -1px;
         }
         .about-stats .stat .label {
-            font-size: 12px;
-            color: #666;
+            font-size: 11px;
+            color: #777;
             margin-top: 4px;
             text-transform: uppercase;
-            letter-spacing: .5px;
+            letter-spacing: 0.8px;
         }
 
-        /* ---------- SERVICES ---------- */
+        /* ============================================================
+           SERVICES
+           ============================================================ */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 26px;
-            margin-top: 30px;
+            margin-top: 34px;
         }
         .service-card {
-            background: rgba(255, 255, 255, .025);
+            background: rgba(255, 255, 255, 0.025);
             border: 1px solid var(--border);
             border-radius: 22px;
             padding: 34px 26px;
             text-align: center;
-            transition: all .5s cubic-bezier(.22, .68, 0, 1);
-            opacity: 0;
-            transform: translateY(50px);
-            backdrop-filter: blur(4px);
-        }
-        .service-card.visible {
-            opacity: 1;
-            transform: translateY(0);
+            transition: all 0.4s var(--smooth-ease);
         }
         .service-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: rgba(255, 255, 255, .2);
-            background: rgba(255, 255, 255, .06);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.055);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
         .service-card .icon {
             font-size: 40px;
             margin-bottom: 18px;
             display: block;
-            transition: transform .4s;
-        }
-        .service-card:hover .icon {
-            transform: scale(1.1) rotate(-3deg);
         }
         .service-card h3 {
             font-size: 18px;
@@ -531,10 +459,12 @@
             line-height: 1.7;
         }
 
-        /* ---------- TEAM ---------- */
+        /* ============================================================
+           SMOOTH FOUNDER CARDS & TEAM SECTION
+           ============================================================ */
         .team-controls {
             max-width: 1100px;
-            margin: 0 auto 45px;
+            margin: 30px auto 40px;
             padding: 0 25px;
         }
         .team-search {
@@ -543,24 +473,21 @@
         }
         .team-search input {
             width: 100%;
-            padding: 18px 22px 18px 52px;
+            padding: 17px 22px 17px 52px;
             border-radius: 16px;
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .035);
-            color: white;
+            background: rgba(255, 255, 255, 0.035);
+            color: #fff;
             outline: none;
-            font-size: 15px;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
-            backdrop-filter: blur(4px);
+            font-size: 14.5px;
+            transition: all 0.3s ease;
         }
         .team-search input:focus {
-            border-color: rgba(255, 255, 255, .35);
-            box-shadow: 0 0 40px rgba(255, 255, 255, .04);
-            background: rgba(255, 255, 255, .05);
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.04);
         }
-        .team-search input::placeholder {
-            color: #555;
-        }
+        .team-search input::placeholder { color: #555; }
         .team-search .search-icon {
             position: absolute;
             left: 20px;
@@ -568,10 +495,6 @@
             transform: translateY(-50%);
             color: #777;
             font-size: 18px;
-            transition: color .3s;
-        }
-        .team-search input:focus+.search-icon {
-            color: white;
         }
         .team-filters {
             display: flex;
@@ -580,27 +503,26 @@
         }
         .team-filters .filter {
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .03);
+            background: rgba(255, 255, 255, 0.03);
             color: #aaa;
-            padding: 10px 20px;
+            padding: 9px 22px;
             border-radius: 50px;
             cursor: pointer;
-            transition: all .35s cubic-bezier(.22, .68, 0, 1);
+            transition: all 0.35s var(--smooth-ease);
             font-size: 13px;
-            font-family: inherit;
-            backdrop-filter: blur(4px);
         }
         .team-filters .filter:hover {
-            color: white;
-            border-color: rgba(255, 255, 255, .2);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
         .team-filters .filter.active {
-            background: white;
-            color: black;
-            border-color: white;
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+            font-weight: 700;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, .08);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
         }
 
         .team-grid {
@@ -612,86 +534,73 @@
             margin: auto;
         }
 
-        /* ---------- TEAM CARD ---------- */
+        /* Team Card: Silky Glass & Micro-Interactions */
         .team-card {
             position: relative;
             min-height: 440px;
-            padding: 20px;
+            padding: 22px;
             border-radius: var(--radius);
-            background:
-                linear-gradient(145deg,
-                    rgba(255, 255, 255, .07),
-                    rgba(255, 255, 255, .015));
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.018));
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
             overflow: hidden;
-            transition: all .6s cubic-bezier(.22, .68, 0, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             transform-style: preserve-3d;
-            animation: cardFadeUp .8s ease both;
-            backdrop-filter: blur(4px);
+            perspective: 1000px;
+            will-change: transform;
+            transition: transform 0.18s ease-out, border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
         }
         .team-card::before {
             content: "";
             position: absolute;
-            width: 200px;
-            height: 200px;
-            top: -120px;
-            right: -100px;
-            background: white;
-            opacity: .03;
+            width: 220px;
+            height: 220px;
+            top: -110px;
+            right: -90px;
+            background: rgba(255, 255, 255, 0.035);
             border-radius: 50%;
-            filter: blur(30px);
+            filter: blur(40px);
             pointer-events: none;
-            transition: all .8s;
-        }
-        .team-card:hover::before {
-            opacity: .08;
-            transform: scale(1.5);
+            transition: transform 0.6s var(--smooth-ease), opacity 0.6s;
         }
         .team-card:hover {
-            transform: translateY(-12px) rotateX(2deg) rotateY(-2deg);
-            border-color: rgba(255, 255, 255, .25);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, .6);
+            border-color: rgba(255, 255, 255, 0.28);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
+            box-shadow: 0 35px 90px rgba(0, 0, 0, 0.7);
         }
-        .team-card:nth-child(2) {
-            animation-delay: .08s;
-        }
-        .team-card:nth-child(3) {
-            animation-delay: .16s;
-        }
-        .team-card:nth-child(4) {
-            animation-delay: .24s;
-        }
-        .team-card:nth-child(5) {
-            animation-delay: .32s;
-        }
-        .team-card:nth-child(6) {
-            animation-delay: .40s;
-        }
-        .team-card:nth-child(7) {
-            animation-delay: .48s;
+        .team-card:hover::before {
+            transform: scale(1.4);
+            opacity: 0.09;
         }
 
-        @keyframes cardFadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(.96);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        /* Universal Founder Tag — Everyone is Founder */
+        .founder-tag {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            padding: 5px 14px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
+            font-size: 8.5px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            z-index: 2;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+            pointer-events: none;
         }
 
         .card-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
         .card-label {
-            font-size: 10px;
-            letter-spacing: 2.5px;
+            font-size: 9.5px;
+            letter-spacing: 2.2px;
             color: #777;
             text-transform: uppercase;
         }
@@ -700,112 +609,37 @@
             height: 10px;
             background: #72ff9a;
             border-radius: 50%;
-            box-shadow: 0 0 16px rgba(114, 255, 154, .5);
-            animation: pulseDot 2s ease-in-out infinite;
+            box-shadow: 0 0 14px rgba(114, 255, 154, 0.6);
+            animation: pulseDot 2.2s ease-in-out infinite;
         }
         @keyframes pulseDot {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: .6;
-                transform: scale(.85);
-            }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
         }
 
-        /* ============================================================
-               PROFILE PHOTO GLOW EFFECT — "CHOK CHOK" GLOW
-               ============================================================ */
+        /* Profile Glow: Refined "Chok Chok" Effect */
         .profile {
-            width: 150px;
-            height: 150px;
+            width: 145px;
+            height: 145px;
             margin: 15px auto 20px;
             border-radius: 50%;
             padding: 4px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .8), #444, rgba(255, 255, 255, .8));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), #333, rgba(255, 255, 255, 0.8));
             position: relative;
             cursor: pointer;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
-            /* Glow ring */
-            box-shadow:
-                0 0 20px rgba(255, 255, 255, .05),
-                0 0 40px rgba(255, 255, 255, .02);
-            animation: glowPulse 3s ease-in-out infinite;
+            transition: transform 0.4s var(--smooth-ease), box-shadow 0.4s var(--smooth-ease);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.06);
+            animation: glowPulse 3.2s ease-in-out infinite;
         }
         .profile:hover {
             transform: scale(1.05);
-            box-shadow:
-                0 0 30px rgba(255, 255, 255, .15),
-                0 0 60px rgba(255, 255, 255, .08),
-                0 0 90px rgba(255, 255, 255, .04);
             animation-play-state: paused;
+            box-shadow: 0 0 45px rgba(255, 255, 255, 0.22);
         }
-
-        /* Glow pulse animation — "chok chok" effect */
         @keyframes glowPulse {
-            0% {
-                box-shadow:
-                    0 0 20px rgba(255, 255, 255, .05),
-                    0 0 40px rgba(255, 255, 255, .02),
-                    inset 0 0 20px rgba(255, 255, 255, .02);
-            }
-            25% {
-                box-shadow:
-                    0 0 30px rgba(255, 255, 255, .10),
-                    0 0 60px rgba(255, 255, 255, .05),
-                    0 0 90px rgba(255, 255, 255, .03),
-                    inset 0 0 30px rgba(255, 255, 255, .04);
-            }
-            50% {
-                box-shadow:
-                    0 0 40px rgba(255, 255, 255, .15),
-                    0 0 80px rgba(255, 255, 255, .08),
-                    0 0 120px rgba(255, 255, 255, .04),
-                    inset 0 0 40px rgba(255, 255, 255, .06);
-            }
-            75% {
-                box-shadow:
-                    0 0 30px rgba(255, 255, 255, .10),
-                    0 0 60px rgba(255, 255, 255, .05),
-                    0 0 90px rgba(255, 255, 255, .03),
-                    inset 0 0 30px rgba(255, 255, 255, .04);
-            }
-            100% {
-                box-shadow:
-                    0 0 20px rgba(255, 255, 255, .05),
-                    0 0 40px rgba(255, 255, 255, .02),
-                    inset 0 0 20px rgba(255, 255, 255, .02);
-            }
+            0%, 100% { box-shadow: 0 0 22px rgba(255, 255, 255, 0.05); }
+            50% { box-shadow: 0 0 44px rgba(255, 255, 255, 0.16); }
         }
-
-        /* Secondary glow ring around the image itself */
-        .profile::before {
-            content: '';
-            position: absolute;
-            inset: -6px;
-            border-radius: 50%;
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, .06);
-            animation: ringGlow 4s ease-in-out infinite;
-            pointer-events: none;
-        }
-        @keyframes ringGlow {
-            0% {
-                border-color: rgba(255, 255, 255, .06);
-                transform: scale(1);
-            }
-            50% {
-                border-color: rgba(255, 255, 255, .15);
-                transform: scale(1.04);
-            }
-            100% {
-                border-color: rgba(255, 255, 255, .06);
-                transform: scale(1);
-            }
-        }
-
         .profile img {
             width: 100%;
             height: 100%;
@@ -813,115 +647,101 @@
             object-fit: cover;
             display: block;
             background: #111;
-            pointer-events: none;
-            transition: filter .4s, transform .4s;
-            position: relative;
-            z-index: 1;
+            transition: filter 0.35s ease;
         }
         .profile:hover img {
-            filter: brightness(1.08) saturate(1.05);
-            transform: scale(1.02);
+            filter: brightness(1.08) saturate(1.04);
         }
-
         .profile::after {
-            content: "👤 Click";
+            content: "👤 Projects";
             position: absolute;
             bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, .75);
-            backdrop-filter: blur(6px);
-            padding: 4px 12px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 3px 12px;
             border-radius: 20px;
             font-size: 9px;
-            letter-spacing: .5px;
-            color: #aaa;
+            color: #ddd;
             border: 1px solid var(--border);
             white-space: nowrap;
             opacity: 0;
-            transition: all .35s ease;
-            z-index: 5;
+            transition: all 0.3s var(--smooth-ease);
         }
         .profile:hover::after {
             opacity: 1;
-            bottom: -4px;
+            bottom: -3px;
         }
 
         .name {
             text-align: center;
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             letter-spacing: -0.5px;
         }
         .role {
             text-align: center;
             color: #aaa;
             font-size: 13px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         .badge {
             width: max-content;
             margin: auto;
-            padding: 7px 16px;
+            padding: 6px 16px;
             border-radius: 50px;
             font-size: 10px;
             font-weight: 700;
             letter-spacing: 1.2px;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, .06);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border);
-            transition: all .3s;
-        }
-        .team-card:hover .badge {
-            border-color: rgba(255, 255, 255, .2);
         }
         .divider {
             height: 1px;
             background: var(--border);
-            margin: 22px 0;
-            transition: background .4s;
-        }
-        .team-card:hover .divider {
-            background: rgba(255, 255, 255, .15);
+            margin: 20px 0;
         }
         .details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
         .detail {
-            padding: 12px;
-            background: rgba(255, 255, 255, .025);
-            border-radius: 14px;
-            transition: all .3s;
+            padding: 11px 12px;
+            background: rgba(255, 255, 255, 0.025);
+            border-radius: 12px;
+            transition: background 0.3s;
         }
         .team-card:hover .detail {
-            background: rgba(255, 255, 255, .04);
+            background: rgba(255, 255, 255, 0.045);
         }
         .detail small {
             display: block;
             color: #666;
-            font-size: 9px;
+            font-size: 8.5px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 5px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
         }
         .detail strong {
             font-size: 12px;
             color: #ddd;
+            word-break: break-word;
         }
         .bio {
-            margin-top: 18px;
-            color: #777;
-            line-height: 1.7;
-            font-size: 12px;
+            margin-top: 16px;
+            color: #888;
+            line-height: 1.65;
+            font-size: 12.5px;
             text-align: center;
         }
         .socials {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 9px;
             margin-top: 18px;
         }
         .socials a {
@@ -929,214 +749,104 @@
             height: 34px;
             display: grid;
             place-items: center;
-            color: #999;
+            color: #aaa;
             text-decoration: none;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 9px;
             font-size: 10px;
             font-weight: 700;
-            transition: all .35s cubic-bezier(.22, .68, 0, 1);
+            transition: all 0.3s var(--smooth-ease);
         }
         .socials a:hover {
-            background: white;
-            color: black;
-            transform: translateY(-4px);
-            border-color: white;
-            box-shadow: 0 8px 30px rgba(255, 255, 255, .08);
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
         }
-
-        /* --- Special link styling for Priyabrata's Codebihin --- */
         .socials a.codebihin-link {
-            font-size: 8px;
-            letter-spacing: 0.3px;
-            padding: 0 4px;
             width: auto;
             min-width: 34px;
-        }
-
-        .team-card.featured {
-            border-color: rgba(255, 255, 255, .2);
-            background:
-                linear-gradient(145deg,
-                    rgba(255, 255, 255, .10),
-                    rgba(255, 255, 255, .02));
-        }
-        .founder-tag {
-            position: absolute;
-            top: 18px;
-            left: 18px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            background: white;
-            color: black;
-            font-size: 8px;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            z-index: 2;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, .1);
-        }
-
-        .team-card.coming-soon {
-            opacity: .4;
-            border-style: dashed;
-            border-color: rgba(255, 255, 255, .06);
-            background: rgba(255, 255, 255, .01);
-            min-height: 340px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            pointer-events: none;
-            transform: none !important;
-        }
-        .team-card.coming-soon .soon-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            opacity: .5;
-        }
-        .team-card.coming-soon h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: #666;
-            letter-spacing: 1px;
-        }
-        .team-card.coming-soon p {
-            font-size: 13px;
-            color: #555;
-            margin-top: 6px;
+            padding: 0 7px;
+            font-size: 8.5px;
+            letter-spacing: 0.4px;
         }
 
         .empty {
-            display: none;
             grid-column: 1 / -1;
             text-align: center;
-            padding: 80px 20px;
-            color: #666;
+            padding: 60px 20px;
+            color: #777;
         }
 
-        /* ---------- PROJECTS ---------- */
+        /* ============================================================
+           PROJECTS SHOWCASE
+           ============================================================ */
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 24px;
-            margin-top: 30px;
+            margin-top: 32px;
         }
         .project-card {
             padding: 28px 24px;
             border-radius: 20px;
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .025);
-            transition: all .5s cubic-bezier(.22, .68, 0, 1);
-            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.025);
+            transition: all 0.35s var(--smooth-ease);
         }
         .project-card:hover {
-            border-color: rgba(255, 255, 255, .2);
-            transform: translateY(-6px) scale(1.01);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
-            background: rgba(255, 255, 255, .04);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
         }
-        .project-card .p-icon {
-            font-size: 30px;
-            margin-bottom: 14px;
-            display: block;
-            transition: transform .4s;
-        }
-        .project-card:hover .p-icon {
-            transform: scale(1.1) rotate(-3deg);
-        }
-        .project-card h3 {
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .project-card p {
-            font-size: 13px;
-            color: #888;
-            line-height: 1.7;
-        }
+        .project-card .p-icon { font-size: 30px; margin-bottom: 14px; display: block; }
+        .project-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .project-card p { font-size: 13px; color: #888; line-height: 1.7; }
         .project-card .p-tag {
             display: inline-block;
             margin-top: 14px;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1.2px;
-            color: #555;
+            color: #666;
             border: 1px solid var(--border);
             padding: 4px 14px;
             border-radius: 50px;
-            transition: all .3s;
-        }
-        .project-card:hover .p-tag {
-            border-color: rgba(255, 255, 255, .15);
-            color: #888;
         }
 
-        /* ---------- JOIN ---------- */
-        #join {
-            text-align: center;
-        }
-        #join .section-sub {
-            margin: 0 auto 30px;
-        }
+        /* ============================================================
+           JOIN & CONTACT
+           ============================================================ */
+        #join { text-align: center; }
         .join-btn {
             display: inline-block;
-            padding: 18px 52px;
+            padding: 17px 52px;
             border-radius: 50px;
-            background: white;
-            color: black;
+            background: #fff;
+            color: #000;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15.5px;
             text-decoration: none;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, .05);
+            margin-top: 24px;
+            transition: all 0.35s var(--smooth-ease);
         }
         .join-btn:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(255, 255, 255, .12);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 16px 50px rgba(255, 255, 255, 0.16);
         }
 
-        /* ---------- CONTACT ---------- */
         #contact .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 50px;
-            margin-top: 30px;
+            margin-top: 32px;
         }
         .contact-info p {
             color: #aaa;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             font-size: 15px;
-        }
-        .contact-info .social-icons {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        .contact-info .social-icons a {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #aaa;
-            text-decoration: none;
-            padding: 8px 18px;
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            transition: all .35s cubic-bezier(.22, .68, 0, 1);
-            font-size: 13px;
-        }
-        .contact-info .social-icons a:hover {
-            color: white;
-            border-color: white;
-            background: rgba(255, 255, 255, .05);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, .04);
-        }
-        .contact-info .social-icons a svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
         }
         .contact-form input,
         .contact-form textarea {
@@ -1144,96 +854,135 @@
             padding: 15px 20px;
             border-radius: 14px;
             border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .035);
-            color: white;
+            background: rgba(255, 255, 255, 0.035);
+            color: #fff;
             font-size: 14px;
-            margin-bottom: 16px;
+            margin-bottom: 15px;
             outline: none;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
             font-family: inherit;
-            backdrop-filter: blur(4px);
+            transition: border-color 0.3s;
         }
         .contact-form input:focus,
         .contact-form textarea:focus {
-            border-color: rgba(255, 255, 255, .35);
-            box-shadow: 0 0 40px rgba(255, 255, 255, .04);
-            background: rgba(255, 255, 255, .05);
+            border-color: rgba(255, 255, 255, 0.35);
         }
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder {
-            color: #555;
-        }
-        .contact-form textarea {
-            resize: vertical;
-            min-height: 130px;
-        }
+        .contact-form textarea { resize: vertical; min-height: 130px; }
         .contact-form button {
             padding: 15px 36px;
             border-radius: 14px;
             border: none;
-            background: white;
-            color: black;
+            background: #fff;
+            color: #000;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14.5px;
             cursor: pointer;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
+            transition: all 0.3s ease;
         }
         .contact-form button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(255, 255, 255, .12);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(255, 255, 255, 0.12);
         }
 
-        /* ---------- MODALS ---------- */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 25px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        footer strong { color: #aaa; }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: #aaa;
+            font-size: 22px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.35s var(--smooth-ease);
+            z-index: 999;
+        }
+        .scroll-top.visible { display: flex; }
+        .scroll-top:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        /* ============================================================
+           MODALS (PROJECTS & LIGHTBOX)
+           ============================================================ */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, .8);
+            background: rgba(0, 0, 0, 0.84);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             z-index: 9999;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            animation: modalFadeIn .4s ease;
         }
-        .modal-overlay.active {
-            display: flex;
-        }
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal-content {
             background: #0d0d0d;
             border: 1px solid var(--border);
-            border-radius: 28px;
-            max-width: 480px;
+            border-radius: 26px;
+            max-width: 490px;
             width: 100%;
-            padding: 38px 32px 32px;
-            box-shadow: 0 50px 100px rgba(0, 0, 0, .8);
+            padding: 36px 30px 30px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85);
             position: relative;
-            max-height: 90vh;
+            max-height: 88vh;
             overflow-y: auto;
-            animation: modalSlideUp .4s cubic-bezier(.22, .68, 0, 1);
         }
-        @keyframes modalSlideUp {
-            from {
-                transform: translateY(40px) scale(.95);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            font-size: 28px;
+            line-height: 1;
+            color: #777;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: all 0.3s;
+        }
+        .modal-close:hover { color: #fff; transform: scale(1.1); }
+        .modal-project {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+        }
+        .modal-project h3 { font-size: 16px; margin-bottom: 4px; }
+        .modal-project p { font-size: 13px; color: #888; line-height: 1.6; }
+        .modal-project .tech-tag {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 9.5px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #666;
+            border: 1px solid var(--border);
+            padding: 3px 12px;
+            border-radius: 50px;
         }
 
-        /* Image lightbox */
         .image-modal .modal-content {
             background: transparent;
             box-shadow: none;
@@ -1244,376 +993,46 @@
             align-items: center;
             justify-content: center;
             border: none;
-            border-radius: 0;
-            animation: modalFadeIn .4s ease;
         }
         .image-modal .modal-content img {
-            max-width: 92vw;
-            max-height: 86vh;
+            max-width: 90vw;
+            max-height: 85vh;
             border-radius: 18px;
             border: 1px solid var(--border);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, .9);
             object-fit: contain;
             background: #0d0d0d;
-            animation: imageZoomIn .4s cubic-bezier(.22, .68, 0, 1);
-        }
-        @keyframes imageZoomIn {
-            from {
-                transform: scale(.92);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        .image-modal .modal-content .loading-spinner {
-            color: #888;
-            font-size: 18px;
-            padding: 50px;
-            text-align: center;
-            background: rgba(13, 13, 13, .9);
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            backdrop-filter: blur(8px);
-        }
-        .image-modal .modal-content .loading-spinner .spinner {
-            display: inline-block;
-            width: 44px;
-            height: 44px;
-            border: 3px solid var(--border);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 14px;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
         }
 
-        .modal-close {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 30px;
-            line-height: 1;
-            color: #666;
-            cursor: pointer;
-            transition: all .35s ease;
-            background: none;
-            border: none;
-            font-family: inherit;
-            z-index: 10;
-        }
-        .modal-close:hover {
-            color: white;
-            transform: rotate(90deg) scale(1.1);
-        }
-        .image-modal .modal-close {
-            top: 12px;
-            right: 12px;
-            color: rgba(255, 255, 255, .5);
-            font-size: 34px;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, .9);
-        }
-        .image-modal .modal-close:hover {
-            color: white;
-            transform: rotate(90deg) scale(1.1);
-        }
-
-        .modal-content h2 {
-            font-size: 26px;
-            letter-spacing: -1px;
-            margin-bottom: 24px;
-            padding-right: 30px;
-        }
-        .modal-content h2 span {
-            color: #777;
-            font-weight: 400;
-        }
-        .modal-project {
-            background: rgba(255, 255, 255, .03);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 18px 20px;
-            margin-bottom: 14px;
-            transition: all .3s;
-        }
-        .modal-project:hover {
-            border-color: rgba(255, 255, 255, .15);
-            background: rgba(255, 255, 255, .06);
-            transform: translateX(4px);
-        }
-        .modal-project h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .modal-project p {
-            font-size: 13px;
-            color: #888;
-            line-height: 1.6;
-        }
-        .modal-project .tech-tag {
-            display: inline-block;
-            margin-top: 8px;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #555;
-            border: 1px solid var(--border);
-            padding: 3px 14px;
-            border-radius: 50px;
-        }
-
-        /* ---------- LOGIN MODAL ---------- */
-        .login-modal .modal-content {
-            max-width: 400px;
-            text-align: center;
-        }
-        .login-modal .modal-content h2 {
-            margin-bottom: 8px;
-            font-size: 28px;
-        }
-        .login-modal .modal-content .sub {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 28px;
-        }
-        .login-form input {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, .035);
-            color: white;
-            font-size: 14px;
-            margin-bottom: 14px;
-            transition: all .4s;
-            outline: none;
-        }
-        .login-form input:focus {
-            border-color: rgba(255, 255, 255, .35);
-            box-shadow: 0 0 40px rgba(255, 255, 255, .04);
-        }
-        .login-form input::placeholder {
-            color: #555;
-        }
-        .login-form button {
-            width: 100%;
-            padding: 15px;
-            border-radius: 14px;
-            border: none;
-            background: white;
-            color: black;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all .35s cubic-bezier(.22, .68, 0, 1);
-        }
-        .login-form button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(255, 255, 255, .12);
-        }
-        .login-form .demo-hint {
-            margin-top: 16px;
-            font-size: 12px;
-            color: #555;
-        }
-        .login-form .demo-hint code {
-            background: rgba(255, 255, 255, .06);
-            padding: 2px 12px;
-            border-radius: 6px;
-            color: #888;
-        }
-
-        /* ---------- SCROLL TO TOP ---------- */
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .06);
-            border: 1px solid var(--border);
-            color: #aaa;
-            font-size: 22px;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            transition: all .4s cubic-bezier(.22, .68, 0, 1);
-            z-index: 999;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .3);
-        }
-        .scroll-top:hover {
-            background: white;
-            color: black;
-            border-color: white;
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 12px 40px rgba(255, 255, 255, .08);
-        }
-        .scroll-top.visible {
-            display: flex;
-        }
-
-        /* ---------- FOOTER ---------- */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 40px 25px;
-            text-align: center;
-            color: #555;
-            font-size: 12px;
-            max-width: 1200px;
-            margin: auto;
-        }
-        footer strong {
-            color: #aaa;
-            transition: color .3s;
-        }
-        footer strong:hover {
-            color: white;
-        }
-
-        /* ---------- RESPONSIVE ---------- */
+        /* ============================================================
+           RESPONSIVE BREAKPOINTS
+           ============================================================ */
         @media (max-width: 768px) {
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 35px;
-            }
-            .about-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-            .nav-inner {
-                padding: 12px 18px;
-            }
-            .hamburger {
-                display: flex;
-            }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+            .hamburger { display: flex; }
             .nav-links {
                 display: none;
                 width: 100%;
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 14px;
-                padding: 18px 0 10px;
+                padding: 18px 0 8px;
                 border-top: 1px solid var(--border);
-                margin-top: 10px;
             }
-            .nav-links.open {
-                display: flex;
-                animation: slideDown .35s ease;
-            }
-            @keyframes slideDown {
-                from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            .nav-links a {
-                font-size: 14px;
-                padding: 4px 0;
-            }
-            .nav-links .btn-login {
-                padding: 8px 20px;
-                font-size: 13px;
-            }
-            .hero {
-                padding-top: 120px;
-                min-height: auto;
-            }
-            .hero .motto {
-                font-size: 17px;
-            }
-            .team-grid {
-                grid-template-columns: 1fr;
-                padding-left: 17px;
-                padding-right: 17px;
-            }
-            .team-controls {
-                padding: 0 17px;
-            }
-            section {
-                padding: 60px 17px;
-            }
-            .modal-content {
-                padding: 28px 20px 22px;
-            }
-            .profile::after {
-                content: "👤";
-                font-size: 12px;
-                padding: 2px 8px;
-            }
-            .about-stats .stat .number {
-                font-size: 28px;
-            }
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            .services-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .image-modal .modal-content img {
-                max-width: 96vw;
-                max-height: 80vh;
-            }
-            .scroll-top {
-                bottom: 20px;
-                right: 20px;
-                width: 46px;
-                height: 46px;
-                font-size: 18px;
-            }
-        }
-        @media (max-width: 480px) {
-            .about-stats {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-            .hero h1 {
-                font-size: 32px;
-                letter-spacing: -1px;
-            }
-            .nav-links a {
-                font-size: 13px;
-            }
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            .contact-info .social-icons a {
-                font-size: 12px;
-                padding: 6px 14px;
-            }
-            .image-modal .modal-content img {
-                max-width: 98vw;
-                max-height: 75vh;
-            }
-            .team-card {
-                min-height: auto;
-            }
+            .nav-links.open { display: flex; }
+            .hero { padding-top: 110px; min-height: auto; }
+            .team-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- ===== BG ===== -->
     <div class="bg-grid"></div>
     <div class="glow one"></div>
     <div class="glow two"></div>
     <div class="glow three"></div>
 
-    <!-- ===== NAVBAR ===== -->
+    <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="nav-inner">
             <a href="#hero" class="logo">
@@ -1633,23 +1052,21 @@
                 <a href="#team-section">Team</a>
                 <a href="#projects">Projects</a>
                 <a href="#contact">Contact</a>
-                <a href="#" class="btn-login" id="openLoginBtn">🔑 Login</a>
+                <a href="https://priyabratacare-source.github.io/EIAFSDO/login.html" class="btn-login">🔑 Login</a>
             </div>
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
+    <!-- HERO -->
     <section class="hero" id="hero">
         <div class="small-title">East Indian Amateur Full‑Stack Developers Organization</div>
         <h1>Build. Learn. <span>Grow.</span></h1>
         <div class="motto">
             <strong>“Aedificare — Disputare — Crescere”</strong><br />
-            <span style="font-size:14px; color:#888;">Build · Discuss · Grow</span>
+            <span style="font-size:13.5px; color:#777;">Build · Discuss · Grow</span>
         </div>
         <p>
-            We are a student‑operated collective, sprouted from a band of
-            interested students of <strong style="color:white;">HETC</strong>,
-            who wanted to explore the craftsmanship behind the web and mobile apps we use daily.
+            A collective of passionate students from <strong style="color:#fff;">HETC</strong> dedicated to exploring the craftsmanship behind the modern web and mobile applications we rely on every day.
         </p>
         <div class="cta-group">
             <a href="#about" class="cta-primary">Who We Are</a>
@@ -1657,37 +1074,25 @@
         </div>
     </section>
 
-    <!-- ===== ABOUT ===== -->
+    <!-- ABOUT -->
     <section id="about">
         <div class="section-label reveal">Who We Are</div>
         <h2 class="section-title reveal">About <span>EIAFSDO</span></h2>
         <p class="section-sub reveal">
-            We're a student‑run community of aspiring full‑stack developers from East India,
-            driven by curiosity and a passion for craftsmanship.
+            We are an ambitious student-operated organization fostering collaborative engineering, project building, and knowledge exchange.
         </p>
 
         <div class="about-grid">
             <div class="about-text reveal-left">
                 <p>
-                    <span class="highlight">East Indian Amateur Full-Stack Developers Organization</span>
-                    (EIAFSDO) is a student‑operated organization, sprouted out of a band of
-                    interested students of <span class="highlight">HETC</span>, who wanted to
-                    explore the craftsmanship behind the web apps and the mobile apps we use daily.
+                    <span class="highlight">East Indian Amateur Full-Stack Developers Organization</span> (EIAFSDO) sprouted from a close-knit group of inquisitive engineering students at <span class="highlight">HETC</span>.
                 </p>
                 <p>
-                    Our motto is <strong style="color:white;">“Aedificare — Disputare — Crescere”</strong>
-                    (<em>Build · Discuss · Grow</em>). We believe in learning by building,
-                    growing through discussion, and evolving as a community.
-                </p>
-                <p>
-                    From <span class="highlight">DevConnect</span> to
-                    <span class="highlight">EduTrack</span>, every project we create is a
-                    stepping stone toward becoming better engineers — and a way to give back
-                    to the developer community.
+                    Guided by our foundation <strong style="color:white;">“Aedificare — Disputare — Crescere”</strong>, we believe real skill develops when theory meets practical implementation and peer feedback.
                 </p>
                 <div class="motto-highlight">
                     “Aedificare — Disputare — Crescere”
-                    <span style="display:block; font-size:14px; color:#888; font-style:normal; margin-top:4px;">
+                    <span style="display:block; font-size:13px; color:#888; font-style:normal; margin-top:4px;">
                         Build · Discuss · Grow
                     </span>
                 </div>
@@ -1699,7 +1104,7 @@
                 </div>
                 <div class="stat">
                     <span class="number">4+</span>
-                    <span class="label">Active Projects</span>
+                    <span class="label">Core Projects</span>
                 </div>
                 <div class="stat">
                     <span class="number">100%</span>
@@ -1713,361 +1118,444 @@
         </div>
     </section>
 
-    <!-- ===== SERVICES ===== -->
+    <!-- SERVICES -->
     <section id="services">
         <div class="section-label reveal">What We Do</div>
         <h2 class="section-title reveal">Our <span>Focus Areas</span></h2>
         <p class="section-sub reveal">
-            We combine development, mentorship, and community building to create impact.
+            Bridging academic curriculum and production environments through community engineering.
         </p>
 
-        <div class="services-grid" id="servicesGrid">
-            <div class="service-card" style="transition-delay:0.0s;">
+        <div class="services-grid">
+            <div class="service-card reveal">
                 <span class="icon">💻</span>
-                <h3>Full‑Stack Development</h3>
-                <p>Building modern web applications with React, Node, Django, Vue, and more.</p>
+                <h3>Full‑Stack Systems</h3>
+                <p>Developing dependable applications with React, Node, Python, Django, and cloud databases.</p>
             </div>
-            <div class="service-card" style="transition-delay:0.08s;">
+            <div class="service-card reveal">
                 <span class="icon">📦</span>
-                <h3>Open Source</h3>
-                <p>Creating and maintaining open‑source tools that help the developer community.</p>
+                <h3>Open Source Tools</h3>
+                <p>Maintaining modular starter kits, utility generators, and educational frameworks.</p>
             </div>
-            <div class="service-card" style="transition-delay:0.16s;">
+            <div class="service-card reveal">
                 <span class="icon">🧑‍🏫</span>
-                <h3>Mentorship</h3>
-                <p>Guiding aspiring developers through 1‑on‑1 mentoring and group workshops.</p>
+                <h3>Peer Mentorship</h3>
+                <p>Equipping junior engineers with modern version control, code review, and architectural habits.</p>
             </div>
-            <div class="service-card" style="transition-delay:0.24s;">
+            <div class="service-card reveal">
                 <span class="icon">🤝</span>
-                <h3>Community Building</h3>
-                <p>Fostering a collaborative environment where developers learn and grow together.</p>
+                <h3>Community Craft</h3>
+                <p>Hosting interactive discussions, hack nights, and collaborative project development.</p>
             </div>
         </div>
     </section>
 
-    <!-- ===== TEAM ===== -->
+    <!-- TEAM SECTION (DATABASE DRIVEN - ALL FOUNDERS) -->
     <div id="team-section" style="padding-top:20px;">
         <div style="max-width:1100px;margin:auto;padding:0 25px;">
             <div class="section-label reveal">Our Leadership</div>
-            <h2 class="section-title reveal">Meet the <span>Team</span></h2>
+            <h2 class="section-title reveal">Meet the <span>Founders</span></h2>
             <p class="section-sub reveal">
-                The founders driving the vision, building the products,
-                and shaping the culture of EIAFSDO.
+                The builders, architects, and founders driving the development and vision of EIAFSDO.
             </p>
         </div>
 
         <div class="team-controls">
             <div class="team-search">
                 <span class="search-icon">⌕</span>
-                <input type="text" id="teamSearch" placeholder="Search member, role or skill…" />
+                <input type="text" id="teamSearch" placeholder="Search founder by name, role, tech stack, or bio…" />
             </div>
             <div class="team-filters">
                 <button class="filter active" data-role="all">All</button>
-                <button class="filter" data-role="leadership">Leadership</button>
+                <button class="filter" data-role="leadership">Founders</button>
             </div>
         </div>
 
         <div class="team-grid" id="teamGrid">
-
-            <!-- ============================================================
-            AYUSH CHATTERJEE — updated GitHub
-            ============================================================ -->
-            <article class="team-card featured" data-category="leadership" data-search="Ayush Chatterjee Founder Full-Stack JavaScript React Node">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Ayush Chatterjee" data-image="https://i.ibb.co/GQx5CQjB/Chat-GPT-Image-Sep-2-2026-04-06-19-PM.png">
-                    <img src="https://i.ibb.co/GQx5CQjB/Chat-GPT-Image-Sep-2-2026-04-06-19-PM.png" alt="Ayush Chatterjee" loading="lazy" />
-                </div>
-                <h2 class="name">Ayush Chatterjee</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>MERN · Next</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">Ayush is the driving force behind EIAFSDO. A self-taught full-stack developer with a love for clean code and system design.</p>
-                <div class="socials">
-                    <a href="https://www.linkedin.com/in/ayush-chatterjee-784559308/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="https://github.com/Ayushchatterjeesource/" target="_blank" aria-label="GitHub">GH</a>
-                    <a href="#" aria-label="Twitter">TW</a>
-                </div>
-            </article>
-
-            <!-- ============================================================
-            PRIYABRATA PATRA — updated GitHub + Codebihin info
-            ============================================================ -->
-            <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React Codebihin">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Priyabrata Patra" data-image="https://i.ibb.co/9HTqv59W/Chat-GPT-Image-Sep-2-2026-03-51-53-PM.png">
-                    <img src="https://i.ibb.co/9HTqv59W/Chat-GPT-Image-Sep-2-2026-03-51-53-PM.png" alt="Priyabrata Patra" loading="lazy" />
-                </div>
-                <h2 class="name">Priyabrata Patra</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>Django · React</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">Priyabrata is a backend-first developer with a passion for scalable architecture and data-driven applications. Also the founder of <strong style="color:#fff;">Codebihin.in</strong> — reach out at <strong style="color:#888;">admin@codebihin.in</strong></p>
-                <div class="socials">
-                    <a href="https://www.linkedin.com/in/priyabratapatra/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="https://github.com/priyabratacare-source" target="_blank" aria-label="GitHub">GH</a>
-                    <a href="#" class="codebihin-link" style="font-size:8px; letter-spacing:0.3px; padding:0 6px; min-width:auto; width:auto;" aria-label="Codebihin">CB</a>
-                </div>
-            </article>
-
-            <!-- ============================================================
-            ABHRADIP DHARA — fully updated
-            ============================================================ -->
-            <article class="team-card" data-category="leadership" data-search="Abhradip Dhara Founder Full-Stack Vue Node AWS">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Abhradip Dhara" data-image="https://i.ibb.co/KxM9s0F3/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png">
-                    <img src="https://i.ibb.co/KxM9s0F3/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png" alt="Abhradip Dhara" loading="lazy" />
-                </div>
-                <h2 class="name">Abhradip Dhara</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>B.Tech Civil (pursuing)</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">I am a student of HETC. I am eager to learn all the craftsmanships needed to craft the cyberspace.</p>
-                <div class="socials">
-                    <a href="https://www.linkedin.com/in/abhradip-dhara-9532b3430/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="https://github.com/AbhradipDhara" target="_blank" aria-label="GitHub">GH</a>
-                    <a href="#" aria-label="Dribbble">DR</a>
-                </div>
-            </article>
-
-            <!-- ============================================================
-            SOUVIK DESHI
-            ============================================================ -->
-            <article class="team-card" data-category="leadership" data-search="Souvik Deshi Founder Full-Stack Java Spring Boot React">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Souvik Deshi" data-image="images/souvik.jpg">
-                    <img src="images/souvik.jpg" alt="Souvik Deshi" loading="lazy" />
-                </div>
-                <h2 class="name">Souvik Deshi</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>Spring Boot · React</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">Souvik is a backend and systems enthusiast who enjoys crafting robust APIs and scalable microservices. Passionate about DevOps and cloud infrastructure.</p>
-                <div class="socials">
-                    <a href="#" aria-label="LinkedIn">IN</a>
-                    <a href="#" aria-label="GitHub">GH</a>
-                    <a href="#" aria-label="Twitter">TW</a>
-                </div>
-            </article>
-
-            <!-- MORE SOON -->
-            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
-                <div class="soon-icon">✦</div>
-                <h3>More Soon</h3>
-                <p>We're growing — new leaders joining soon.</p>
-            </article>
-            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
-                <div class="soon-icon">✦</div>
-                <h3>More Soon</h3>
-                <p>Additional team members on the horizon.</p>
-            </article>
-
-            <div class="empty" id="teamEmpty">No team members found.</div>
+            <div class="empty" id="teamEmpty">Connecting to database and loading team members...</div>
         </div>
     </div>
 
-    <!-- ===== PROJECTS ===== -->
+    <!-- PROJECTS -->
     <section id="projects">
         <div class="section-label reveal">Our Work</div>
         <h2 class="section-title reveal">Projects <span>we're building.</span></h2>
         <p class="section-sub reveal">
-            Open-source tools and platforms crafted by the EIAFSDO team.
+            Open-source platforms engineered and maintained by the EIAFSDO community.
         </p>
 
         <div class="project-grid">
             <div class="project-card reveal">
                 <span class="p-icon">⚡</span>
                 <h3>DevConnect</h3>
-                <p>A community platform for amateur developers to share projects, ask questions and collaborate in real-time.</p>
+                <p>Community platform for developers to share milestones, troubleshoot, and collaborate in real-time.</p>
                 <span class="p-tag">React · Node · Socket.io</span>
             </div>
-            <div class="project-card reveal" style="transition-delay:.08s;">
+            <div class="project-card reveal">
                 <span class="p-icon">📦</span>
                 <h3>StackStarter</h3>
-                <p>Boilerplate generator that spins up full-stack apps with auth, DB, and API scaffolding in one command.</p>
+                <p>Automated command-line scaffolder configuring full-stack applications with built-in auth and ORM.</p>
                 <span class="p-tag">CLI · TypeScript · Prisma</span>
             </div>
-            <div class="project-card reveal" style="transition-delay:.16s;">
+            <div class="project-card reveal">
                 <span class="p-icon">🧠</span>
                 <h3>EduTrack</h3>
-                <p>Open-source learning management system built for coding bootcamps and self-paced learners.</p>
+                <p>Open learning management system engineered for structured coding roadmaps and tracking progress.</p>
                 <span class="p-tag">Django · React · PostgreSQL</span>
             </div>
-            <div class="project-card reveal" style="transition-delay:.24s;">
+            <div class="project-card reveal">
                 <span class="p-icon">📊</span>
                 <h3>Analytics Lite</h3>
-                <p>Privacy-first, lightweight analytics dashboard for indie makers and small teams.</p>
+                <p>Lightweight, privacy-first analytics dashboard tailored for personal utilities and indie web tools.</p>
                 <span class="p-tag">Vue · FastAPI · ClickHouse</span>
             </div>
         </div>
     </section>
 
-    <!-- ===== JOIN US ===== -->
+    <!-- JOIN US -->
     <section id="join">
         <div class="section-label reveal">Get Involved</div>
         <h2 class="section-title reveal">Join <span>the Movement</span></h2>
-        <p class="section-sub reveal">
-            Whether you're a student or a professional, there's a place for you in EIAFSDO.
-            Let's build, learn, and grow together.
+        <p class="section-sub" style="margin: 0 auto;">
+            Whether you are learning to build or already shipping software, collaborate with us to grow together.
         </p>
-        <a href="#" class="join-btn reveal">🚀 Join EIAFSDO</a>
+        <a href="#contact" class="join-btn reveal">🚀 Connect With Us</a>
     </section>
 
-    <!-- ===== CONTACT ===== -->
+    <!-- CONTACT -->
     <section id="contact">
         <div class="section-label reveal">Connect</div>
         <h2 class="section-title reveal">Get in <span>Touch</span></h2>
         <p class="section-sub reveal">
-            Have a question, idea, or want to collaborate? Reach out to us.
+            Have questions, feedback, or open-source partnership inquiries? Reach out to our team.
         </p>
 
         <div class="contact-grid">
             <div class="contact-info reveal-left">
                 <p>
-                    <strong style="color:white;">Email:</strong>
-                    <a href="mailto:eifsdoindia@proton.me" style="color:#aaa;text-decoration:none;transition:color .3s;">eifsdoindia@proton.me</a>
+                    <strong style="color:white;">Email:</strong><br />
+                    <a href="mailto:eifsdoindia@proton.me" style="color:#aaa;text-decoration:none;">eifsdoindia@proton.me</a>
                 </p>
                 <p>
-                    <strong style="color:white;">Location:</strong>
-                    <span style="color:#aaa;">HETC, East India</span>
+                    <strong style="color:white;">Headquarters:</strong><br />
+                    <span style="color:#aaa;">HETC Campus, Hooghly, West Bengal, India</span>
                 </p>
-                <p style="margin-top:20px;">
-                    Follow us on social media for updates, projects, and community events.
-                </p>
-                <div class="social-icons">
-                    <a href="#" target="_blank" aria-label="LinkedIn">
-                        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        LinkedIn
-                    </a>
-                    <a href="#" target="_blank" aria-label="GitHub">
-                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.399s2.04.132 3 .399c2.292-1.552 3.3-1.23 3.3-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.694.825.577C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                        GitHub
-                    </a>
-                    <a href="#" target="_blank" aria-label="Twitter">
-                        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                        Twitter
-                    </a>
-                    <a href="#" target="_blank" aria-label="Instagram">
-                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                        Instagram
-                    </a>
-                </div>
             </div>
 
             <div class="contact-form reveal-right">
                 <form id="contactForm">
                     <input type="text" placeholder="Your Name" required />
-                    <input type="email" placeholder="Email Address" required />
-                    <textarea placeholder="Tell us what's on your mind…" required></textarea>
+                    <input type="email" placeholder="Your Email" required />
+                    <textarea placeholder="Write your message here…" required></textarea>
                     <button type="submit">Send Message</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- FOOTER -->
     <footer>
         © 2026 <strong>East Indian Amateur Full-Stack Developers Organization</strong>. All rights reserved.
     </footer>
 
-    <!-- ===== SCROLL TO TOP ===== -->
+    <!-- SCROLL TO TOP -->
     <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
 
-    <!-- ===== PROFILE PROJECTS MODAL ===== -->
+    <!-- MEMBER APPROVED PROJECTS MODAL -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">&times;</button>
-            <h2 id="modalName">Projects by <span></span></h2>
+            <h2 id="modalName" style="font-size:22px;margin-bottom:18px;">Projects by <span></span></h2>
             <div id="modalProjects"></div>
         </div>
     </div>
 
-    <!-- ===== IMAGE LIGHTBOX ===== -->
+    <!-- IMAGE LIGHTBOX MODAL -->
     <div class="modal-overlay image-modal" id="imageModal">
         <div class="modal-content">
             <button class="modal-close" id="imageModalClose">&times;</button>
-            <div id="imageModalContent">
-                <div class="loading-spinner">
-                    <div class="spinner"></div>
-                    <div>Loading image…</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== LOGIN MODAL ===== -->
-    <div class="modal-overlay login-modal" id="loginModal">
-        <div class="modal-content">
-            <button class="modal-close" id="loginClose">&times;</button>
-            <h2>🔑 Welcome Back</h2>
-            <p class="sub">Sign in to your EIAFSDO account</p>
-            <form class="login-form" id="loginForm">
-                <input type="email" placeholder="Email address" value="demo@eiafsdo.org" />
-                <input type="password" placeholder="Password" value="password123" />
-                <button type="submit">Sign In</button>
-                <div class="demo-hint">
-                    💡 Demo: use <code>demo@eiafsdo.org</code> / <code>password123</code>
-                </div>
-            </form>
+            <div id="imageModalContent"></div>
         </div>
     </div>
 
     <!-- ============================================================
-    SCRIPT
-    ============================================================ -->
+       SCRIPT: FIRESTORE & ULTRA-SMOOTH CARD INTERACTION
+       ============================================================ -->
     <script>
-        /* =========================
-               NAVBAR SCROLL
-               ========================= */
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        const firebaseConfig = {
+            apiKey: "AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
+            authDomain: "eiafsdo-dashboard.firebaseapp.com",
+            projectId: "eiafsdo-dashboard",
+            storageBucket: "eiafsdo-dashboard.firebasestorage.app",
+            messagingSenderId: "171714190075",
+            appId: "1:171714190075:web:ee3dfe78f82896cc736e5e"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const teamGrid = document.getElementById('teamGrid');
+        const teamEmpty = document.getElementById('teamEmpty');
+        const teamSearch = document.getElementById('teamSearch');
+        const teamFilters = document.querySelectorAll('.team-filters .filter');
+
+        const profileModal = document.getElementById('profileModal');
+        const modalName = document.getElementById('modalName');
+        const modalProjects = document.getElementById('modalProjects');
+        const modalClose = document.getElementById('modalClose');
+
+        const imageModal = document.getElementById('imageModal');
+        const imageModalContent = document.getElementById('imageModalContent');
+        const imageModalClose = document.getElementById('imageModalClose');
+
+        let allMembers = [];
+        let activeFilter = 'all';
+
+        async function loadTeamMembers() {
+            try {
+                const snapshot = await db.collection('users').get();
+
+                if (snapshot.empty) {
+                    teamGrid.innerHTML = '';
+                    teamEmpty.style.display = 'block';
+                    teamEmpty.textContent = 'No founders found in database.';
+                    return;
+                }
+
+                allMembers = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    allMembers.push({ id: doc.id, ...data });
+                });
+
+                allMembers.sort((a, b) => {
+                    const orderA = a.order !== undefined ? a.order : 9999;
+                    const orderB = b.order !== undefined ? b.order : 9999;
+                    return orderA - orderB;
+                });
+
+                renderTeamCards(allMembers);
+            } catch (err) {
+                console.error('Error fetching team from Firestore:', err);
+                teamEmpty.style.display = 'block';
+                teamEmpty.textContent = '⚠️ Unable to load founders from database. Please refresh.';
+            }
+        }
+
+        function renderTeamCards(members) {
+            if (!members || members.length === 0) {
+                teamGrid.innerHTML = '';
+                teamEmpty.style.display = 'block';
+                teamEmpty.textContent = 'No matching founders found.';
+                return;
+            }
+
+            teamEmpty.style.display = 'none';
+
+            let html = '';
+            members.forEach((member) => {
+                const fallbackImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Founder')}&background=111111&color=ffffff&size=300`;
+                const photoURL = member.photoURL && member.photoURL.trim() !== '' ? member.photoURL : fallbackImg;
+                const role = member.role || 'Full-Stack Developer';
+                const status = member.status || 'Active';
+                const bio = member.bio || 'Founder at EIAFSDO engineering collective.';
+                const stack = member.stack || 'Full-Stack Development';
+                const org = member.org || 'EIAFSDO';
+                const linkedin = member.linkedin || '';
+                const github = member.github || '';
+                const dribbble = member.dribbble || '';
+
+                const searchMeta = `${member.name || ''} ${role} ${stack} ${org} ${bio}`.toLowerCase();
+                const isPriyabrata = (member.name || '').toLowerCase().includes('priyabrata');
+
+                html += `
+                    <article class="team-card" 
+                             data-category="leadership" 
+                             data-member-id="${member.id}" 
+                             data-search="${searchMeta}">
+                        
+                        <!-- Everyone is Founder -->
+                        <div class="founder-tag">FOUNDER</div>
+                        
+                        <div class="card-top">
+                            <span class="card-label">EIAFSDO ID</span>
+                            <span class="status"></span>
+                        </div>
+
+                        <div class="profile" data-member-id="${member.id}" data-member-name="${member.name || 'Founder'}" data-image="${photoURL}">
+                            <img src="${photoURL}" alt="${member.name || 'Founder'}" loading="lazy" />
+                        </div>
+
+                        <h2 class="name">${member.name || 'Founder'}</h2>
+                        <p class="role">Founder · ${role.toLowerCase() === 'admin' ? 'Lead Architect' : role}</p>
+                        <div class="badge">${org}</div>
+                        
+                        <div class="divider"></div>
+
+                        <div class="details">
+                            <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                            <div class="detail"><small>Stack</small><strong>${stack}</strong></div>
+                            <div class="detail"><small>Org</small><strong>${org}</strong></div>
+                            <div class="detail"><small>Status</small><strong>${status}</strong></div>
+                        </div>
+
+                        <p class="bio">${bio}</p>
+
+                        <div class="socials">
+                            ${linkedin && linkedin !== '#' ? `<a href="${linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>` : ''}
+                            ${github && github !== '#' ? `<a href="${github}" target="_blank" rel="noopener" aria-label="GitHub">GH</a>` : ''}
+                            ${dribbble && dribbble !== '#' ? `<a href="${dribbble}" target="_blank" rel="noopener" aria-label="Portfolio">DR</a>` : ''}
+                            ${isPriyabrata ? `<a href="https://codebihin.in" target="_blank" rel="noopener" class="codebihin-link" aria-label="Codebihin">CB</a>` : ''}
+                        </div>
+                    </article>
+                `;
+            });
+
+            teamGrid.innerHTML = html;
+            attachCardInteractions();
+        }
+
+        function attachCardInteractions() {
+            document.querySelectorAll('.profile').forEach(el => {
+                el.addEventListener('click', function() {
+                    const memberId = this.dataset.memberId;
+                    const memberName = this.dataset.memberName || 'Founder';
+                    if (memberId) openMemberProjects(memberId, memberName);
+                });
+            });
+
+            document.querySelectorAll('.profile img').forEach(img => {
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const profile = this.closest('.profile');
+                    if (profile) {
+                        const imageSrc = profile.dataset.image;
+                        const altText = this.alt || 'Founder';
+                        if (imageSrc) openImageModal(imageSrc, altText);
+                    }
+                });
+            });
+
+            // Smooth 3D tilt
+            document.querySelectorAll('.team-card').forEach(card => {
+                let rafId = null;
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+                    const rx = ((y - cy) / cy) * -4.5;
+                    const ry = ((x - cx) / cx) * 4.5;
+
+                    if (rafId) cancelAnimationFrame(rafId);
+                    rafId = requestAnimationFrame(() => {
+                        this.style.transform = `translateY(-8px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+                    });
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    if (rafId) cancelAnimationFrame(rafId);
+                    this.style.transform = '';
+                });
+            });
+        }
+
+        async function openMemberProjects(memberId, memberName) {
+            modalName.innerHTML = `Projects by <span>${memberName}</span>`;
+            modalProjects.innerHTML = '<p style="color:#777;text-align:center;padding:24px 0;">Loading projects...</p>';
+            profileModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            try {
+                const snapshot = await db.collection('projects')
+                    .where('submittedBy', '==', memberId)
+                    .where('status', '==', 'approved')
+                    .get();
+
+                if (snapshot.empty) {
+                    modalProjects.innerHTML = '<p style="color:#666;text-align:center;padding:24px 0;">No approved projects listed for this founder yet.</p>';
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const p = doc.data();
+                    html += `
+                        <div class="modal-project">
+                            ${p.imageURL ? `<img src="${p.imageURL}" alt="${p.name}" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#111;" />` : ''}
+                            <h3>${p.name || 'Untitled Project'}</h3>
+                            <p>${p.description || ''}</p>
+                            ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="tech-tag" style="text-decoration:none;display:inline-block;margin-top:8px;">🔗 Visit Website</a>` : ''}
+                        </div>
+                    `;
+                });
+                modalProjects.innerHTML = html;
+            } catch (err) {
+                console.error('Error fetching member projects:', err);
+                modalProjects.innerHTML = '<p style="color:#ff6b6b;text-align:center;padding:20px 0;">Error loading projects. Please try again.</p>';
+            }
+        }
+
+        function openImageModal(src, alt) {
+            imageModalContent.innerHTML = `<img src="${src}" alt="${alt}" />`;
+            imageModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAllModals() {
+            profileModal.classList.remove('active');
+            imageModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeAllModals);
+        imageModalClose.addEventListener('click', closeAllModals);
+
+        window.addEventListener('click', (e) => {
+            if (e.target === profileModal || e.target === imageModal) closeAllModals();
         });
 
-        /* =========================
-               HAMBURGER MENU
-               ========================= */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAllModals();
+        });
+
+        function filterMembers() {
+            const query = teamSearch.value.toLowerCase().trim();
+
+            const filtered = allMembers.filter(member => {
+                const searchMeta = `${member.name || ''} ${member.role || ''} ${member.stack || ''} ${member.org || ''} ${member.bio || ''}`.toLowerCase();
+                const matchesSearch = query === '' || searchMeta.includes(query);
+                return matchesSearch;
+            });
+
+            renderTeamCards(filtered);
+        }
+
+        teamSearch.addEventListener('input', filterMembers);
+
+        teamFilters.forEach(btn => {
+            btn.addEventListener('click', function() {
+                teamFilters.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                activeFilter = this.dataset.role;
+                filterMembers();
+            });
+        });
+
+        const navbar = document.getElementById('navbar');
+        const scrollBtn = document.getElementById('scrollTopBtn');
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('navLinks');
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            scrollBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
@@ -2081,341 +1569,35 @@
             });
         });
 
-        /* =========================
-               SCROLL REVEAL
-               ========================= */
-        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
-        reveals.forEach(el => revealObserver.observe(el));
+        }, { threshold: 0.1 });
 
-        /* =========================
-               SERVICES STAGGERED REVEAL
-               ========================= */
-        const serviceCards = document.querySelectorAll('.service-card');
-        const serviceObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
-        serviceCards.forEach(card => serviceObserver.observe(card));
-
-        /* =========================
-               SCROLL TO TOP
-               ========================= */
-        const scrollBtn = document.getElementById('scrollTopBtn');
-        window.addEventListener('scroll', () => {
-            scrollBtn.classList.toggle('visible', window.scrollY > 450);
-        });
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            revealObserver.observe(el);
         });
 
-        /* =========================
-               TEAM SEARCH + FILTER
-               ========================= */
-        const teamSearch = document.getElementById('teamSearch');
-        const teamFilters = document.querySelectorAll('.team-filters .filter');
-        const teamCards = document.querySelectorAll('.team-card');
-        const teamEmpty = document.getElementById('teamEmpty');
-        let teamFilter = 'all';
-
-        function updateTeam() {
-            const search = teamSearch.value.toLowerCase().trim();
-            let visible = 0;
-
-            teamCards.forEach(card => {
-                const category = card.dataset.category || '';
-                const keywords = (card.dataset.search || '').toLowerCase();
-                const matchesSearch = keywords.includes(search);
-                const matchesFilter = teamFilter === 'all' || category === teamFilter;
-
-                if (matchesSearch && matchesFilter) {
-                    card.style.display = 'block';
-                    visible++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            teamEmpty.style.display = visible === 0 ? 'block' : 'none';
-        }
-
-        teamSearch.addEventListener('input', updateTeam);
-
-        teamFilters.forEach(btn => {
-            btn.addEventListener('click', () => {
-                teamFilters.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                teamFilter = btn.dataset.role;
-                updateTeam();
-            });
-        });
-
-        /* =========================
-               PROFILE PROJECTS MODAL
-               ========================= */
-        const profileModal = document.getElementById('profileModal');
-        const modalName = document.getElementById('modalName');
-        const modalProjects = document.getElementById('modalProjects');
-        const modalClose = document.getElementById('modalClose');
-
-        const memberProjects = {
-            'Ayush Chatterjee': [
-                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
-                    tech: 'React · Node · Socket.io' },
-                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
-                    tech: 'CLI · TypeScript · Prisma' }
-            ],
-            'Priyabrata Patra': [
-                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
-                    tech: 'Django · React · PostgreSQL' },
-                { name: 'Analytics Lite', desc: 'Privacy-first, lightweight analytics dashboard for indie makers.',
-                    tech: 'Vue · FastAPI · ClickHouse' }
-            ],
-            'Abhradip Dhara': [
-                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
-                    tech: 'React · Node · Socket.io' },
-                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
-                    tech: 'Django · React · PostgreSQL' },
-                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
-                    tech: 'CLI · TypeScript · Prisma' }
-            ],
-            'Souvik Deshi': [
-                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
-                    tech: 'React · Node · Socket.io' },
-                { name: 'Analytics Lite', desc: 'Privacy-first, lightweight analytics dashboard for indie makers.',
-                    tech: 'Vue · FastAPI · ClickHouse' }
-            ]
-        };
-
-        function openProfileModal(memberName) {
-            const projects = memberProjects[memberName] || [];
-            modalName.innerHTML = `Projects by <span>${memberName}</span>`;
-            modalProjects.innerHTML = '';
-
-            if (projects.length === 0) {
-                modalProjects.innerHTML =
-                    `<p style="color:#666;text-align:center;padding:20px 0;">No projects listed yet.</p>`;
-            } else {
-                projects.forEach(p => {
-                    const div = document.createElement('div');
-                    div.className = 'modal-project';
-                    div.innerHTML = `
-                                <h3>${p.name}</h3>
-                                <p>${p.desc}</p>
-                                <span class="tech-tag">${p.tech}</span>
-                            `;
-                    modalProjects.appendChild(div);
-                });
-            }
-
-            profileModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeProfileModal() {
-            profileModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        /* =========================
-               IMAGE LIGHTBOX
-               ========================= */
-        const imageModal = document.getElementById('imageModal');
-        const imageModalContent = document.getElementById('imageModalContent');
-        const imageModalClose = document.getElementById('imageModalClose');
-
-        function openImageModal(imageSrc, altText) {
-            imageModalContent.innerHTML = `
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <div>Loading image…</div>
-                        </div>
-                    `;
-
-            imageModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            const img = new Image();
-            img.alt = altText || 'Team member';
-            img.style.maxWidth = '92vw';
-            img.style.maxHeight = '86vh';
-            img.style.borderRadius = '18px';
-            img.style.border = '1px solid var(--border)';
-            img.style.boxShadow = '0 40px 100px rgba(0,0,0,.9)';
-            img.style.objectFit = 'contain';
-            img.style.background = '#0d0d0d';
-
-            img.onload = function() {
-                imageModalContent.innerHTML = '';
-                imageModalContent.appendChild(img);
-            };
-
-            img.onerror = function() {
-                imageModalContent.innerHTML = `
-                            <div style="color:#888;padding:50px;text-align:center;background:rgba(13,13,13,.9);border-radius:18px;border:1px solid var(--border);backdrop-filter:blur(8px);">
-                                <div style="font-size:48px;margin-bottom:14px;">🖼️</div>
-                                <div>Could not load image</div>
-                                <div style="font-size:13px;margin-top:6px;color:#555;">${altText || ''}</div>
-                            </div>
-                        `;
-            };
-
-            img.src = imageSrc;
-        }
-
-        function closeImageModal() {
-            imageModal.classList.remove('active');
-            document.body.style.overflow = '';
-            imageModalContent.innerHTML = `
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <div>Loading image…</div>
-                        </div>
-                    `;
-        }
-
-        /* =========================
-               PROFILE CLICK HANDLERS
-               ========================= */
-        document.querySelectorAll('.profile').forEach(el => {
-            el.addEventListener('click', (e) => {
-                const member = el.dataset.member;
-                if (member) {
-                    openProfileModal(member);
-                }
-            });
-        });
-
-        document.querySelectorAll('.profile img').forEach(img => {
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const profile = img.closest('.profile');
-                if (profile) {
-                    const imageSrc = profile.dataset.image;
-                    const altText = img.alt || 'Team member';
-                    if (imageSrc) {
-                        openImageModal(imageSrc, altText);
-                    }
-                }
-            });
-        });
-
-        /* =========================
-               CLOSE MODALS
-               ========================= */
-        modalClose.addEventListener('click', closeProfileModal);
-        profileModal.addEventListener('click', (e) => {
-            if (e.target === profileModal) closeProfileModal();
-        });
-
-        imageModalClose.addEventListener('click', closeImageModal);
-        imageModal.addEventListener('click', (e) => {
-            if (e.target === imageModal) closeImageModal();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeProfileModal();
-                closeImageModal();
-                closeLoginModal();
-            }
-        });
-
-        /* =========================
-               LOGIN MODAL
-               ========================= */
-        const loginModal = document.getElementById('loginModal');
-        const openLoginBtn = document.getElementById('openLoginBtn');
-        const loginClose = document.getElementById('loginClose');
-        const loginForm = document.getElementById('loginForm');
-
-        function openLoginModal() {
-            loginModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLoginModal() {
-            loginModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        openLoginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            openLoginModal();
-        });
-
-        loginClose.addEventListener('click', closeLoginModal);
-        loginModal.addEventListener('click', (e) => {
-            if (e.target === loginModal) closeLoginModal();
-        });
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('✅ Welcome to EIAFSDO!\n\n( Demo login successful )');
-            closeLoginModal();
-        });
-
-        /* =========================
-               CONTACT FORM
-               ========================= */
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('📬 Thank you for reaching out! We\'ll get back to you soon.');
+            alert('📬 Thank you for contacting EIAFSDO! We will respond shortly.');
             this.reset();
         });
 
-        /* =========================
-               3D CARD EFFECT
-               ========================= */
-        teamCards.forEach(card => {
-            if (card.classList.contains('coming-soon')) return;
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const cx = rect.width / 2;
-                const cy = rect.height / 2;
-                const rx = ((y - cy) / cy) * -3.5;
-                const ry = ((x - cx) / cx) * 3.5;
-                card.style.transform =
-                    `translateY(-12px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-
-        /* =========================
-               IMAGE FALLBACK
-               ========================= */
-        document.querySelectorAll('.profile img').forEach(img => {
-            img.addEventListener('error', function() {
-                if (!this.src.includes('ui-avatars.com')) {
-                    const name = encodeURIComponent(this.alt || 'Member');
-                    this.src =
-                        `https://ui-avatars.com/api/?name=${name}&background=111111&color=ffffff&size=300`;
+        document.addEventListener('error', function(e) {
+            if (e.target.tagName === 'IMG') {
+                const img = e.target;
+                if (!img.src.includes('ui-avatars.com')) {
+                    const fallbackName = encodeURIComponent(img.alt || 'Founder');
+                    img.src = `https://ui-avatars.com/api/?name=${fallbackName}&background=111111&color=ffffff&size=300`;
                 }
-            });
-        });
+            }
+        }, true);
 
-        console.log('🚀 EIAFSDO — East Indian Amateur Full-Stack Developers Organization');
-        console.log('📧 eifsdoindia@proton.me');
-        console.log('🏛️ Student-operated · HETC');
-        console.log('📜 Motto: Aedificare — Disputare — Crescere');
-        console.log('👥 Founders: 4');
-        console.log('🖼️ Image lightbox enabled — click any profile picture to enlarge');
-        console.log('📱 Mobile hamburger menu enabled');
-        console.log('✨ Glow effect enabled on all profile photos');
+        loadTeamMembers();
     </script>
-
 </body>
 </html>
