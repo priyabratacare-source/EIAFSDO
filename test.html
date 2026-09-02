@@ -7,13 +7,13 @@
 
     <title>EIAFSDO — East Indian Amateur Full‑Stack Developers Organization</title>
 
-    <!-- Firebase SDKs (Compat: App + Firestore) -->
+    <!-- Firebase SDK (Firestore for public page) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <style>
         /* ============================================================
-           GLOBAL RESETS & DESIGN TOKENS
+           GLOBAL RESETS & TOKENS
            ============================================================ */
         * {
             margin: 0;
@@ -28,9 +28,9 @@
             --border: rgba(255, 255, 255, 0.08);
             --text: #ffffff;
             --muted: #999999;
-            --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-            --radius: 25px;
-            --transition: 0.6s cubic-bezier(0.22, 0.68, 0, 1);
+            --shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+            --radius: 26px;
+            --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         html {
@@ -41,8 +41,8 @@
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
             background:
-                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.06), transparent 25%),
-                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.04), transparent 30%),
+                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.05), transparent 25%),
+                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.03), transparent 30%),
                 var(--bg);
             color: var(--text);
             min-height: 100vh;
@@ -51,29 +51,29 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Background grid & dynamic glows */
+        /* Ambient Background Grid & Glows */
         .bg-grid {
             position: fixed;
             inset: 0;
             z-index: -2;
-            opacity: 0.2;
+            opacity: 0.18;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-            background-size: 45px 45px;
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 44px 44px;
             pointer-events: none;
         }
 
         .glow {
             position: fixed;
-            width: 500px;
-            height: 500px;
+            width: 520px;
+            height: 520px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.03);
-            filter: blur(120px);
+            background: rgba(255, 255, 255, 0.025);
+            filter: blur(140px);
             z-index: -1;
             pointer-events: none;
-            animation: floatGlow 20s ease-in-out infinite alternate;
+            animation: floatGlow 22s ease-in-out infinite alternate;
         }
         .glow.one { top: -10%; left: -10%; animation-delay: 0s; }
         .glow.two { bottom: -10%; right: -10%; animation-delay: -7s; }
@@ -81,22 +81,22 @@
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 700px;
-            height: 700px;
-            opacity: 0.2;
+            width: 750px;
+            height: 750px;
+            opacity: 0.15;
             animation-delay: -14s;
         }
 
         @keyframes floatGlow {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, 40px) scale(1.2); }
+            100% { transform: translate(70px, 45px) scale(1.18); }
         }
 
-        /* Scroll Reveal Utility */
+        /* Fluid Reveal Animation */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.22, 0.68, 0, 1), transform 0.8s cubic-bezier(0.22, 0.68, 0, 1);
+            transform: translateY(45px);
+            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
         }
         .reveal.visible {
             opacity: 1;
@@ -104,8 +104,8 @@
         }
         .reveal-left {
             opacity: 0;
-            transform: translateX(-40px);
-            transition: opacity 0.8s cubic-bezier(0.22, 0.68, 0, 1), transform 0.8s cubic-bezier(0.22, 0.68, 0, 1);
+            transform: translateX(-45px);
+            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
         }
         .reveal-left.visible {
             opacity: 1;
@@ -113,8 +113,8 @@
         }
         .reveal-right {
             opacity: 0;
-            transform: translateX(40px);
-            transition: opacity 0.8s cubic-bezier(0.22, 0.68, 0, 1), transform 0.8s cubic-bezier(0.22, 0.68, 0, 1);
+            transform: translateX(45px);
+            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
         }
         .reveal-right.visible {
             opacity: 1;
@@ -131,18 +131,18 @@
             z-index: 1000;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            background: rgba(5, 5, 5, 0.65);
+            background: rgba(5, 5, 5, 0.7);
             border-bottom: 1px solid var(--border);
             transition: background 0.4s ease, box-shadow 0.4s ease;
         }
         .navbar.scrolled {
-            background: rgba(5, 5, 5, 0.95);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+            background: rgba(5, 5, 5, 0.94);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
         .nav-inner {
             max-width: 1200px;
             margin: auto;
-            padding: 14px 25px;
+            padding: 15px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -188,18 +188,18 @@
             width: 0;
             height: 2px;
             background: #fff;
-            transition: width 0.3s cubic-bezier(0.22, 0.68, 0, 1);
+            transition: width 0.35s var(--smooth-ease);
         }
         .nav-links a:hover::after { width: 100%; }
         .nav-links a:hover { color: #fff; }
         .nav-links .btn-login {
             background: rgba(255, 255, 255, 0.06);
-            padding: 7px 18px;
+            padding: 8px 20px;
             border-radius: 50px;
             border: 1px solid var(--border);
             font-weight: 600;
             font-size: 12px;
-            transition: all 0.3s cubic-bezier(0.22, 0.68, 0, 1);
+            transition: all 0.35s var(--smooth-ease);
         }
         .nav-links .btn-login::after { display: none; }
         .nav-links .btn-login:hover {
@@ -207,7 +207,7 @@
             color: #000;
             border-color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
         }
 
         .hamburger {
@@ -217,14 +217,14 @@
             cursor: pointer;
             background: none;
             border: none;
-            padding: 6px;
+            padding: 4px;
         }
         .hamburger span {
             display: block;
-            width: 24px;
+            width: 25px;
             height: 2px;
             background: #aaa;
-            transition: all 0.3s cubic-bezier(0.22, 0.68, 0, 1);
+            transition: all 0.35s var(--smooth-ease);
             border-radius: 2px;
         }
         .hamburger.active span:nth-child(1) {
@@ -241,7 +241,7 @@
         }
 
         /* ============================================================
-           HERO & SECTION SHELL
+           HERO & GENERAL SECTIONS
            ============================================================ */
         section {
             padding: 90px 25px;
@@ -270,21 +270,21 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 24px;
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(4px);
         }
         .hero h1 {
-            font-size: clamp(40px, 7.5vw, 84px);
+            font-size: clamp(42px, 8vw, 84px);
             line-height: 0.95;
-            letter-spacing: -3px;
+            letter-spacing: -3.5px;
             margin-bottom: 20px;
         }
         .hero h1 span { color: #777; }
         .hero .motto {
-            font-size: 19px;
+            font-size: 20px;
             color: #aaa;
             font-style: italic;
             letter-spacing: 1px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             font-weight: 300;
         }
         .hero .motto strong { color: #fff; font-weight: 500; }
@@ -292,23 +292,23 @@
             max-width: 650px;
             margin: auto;
             color: var(--muted);
-            line-height: 1.8;
+            line-height: 1.85;
             font-size: 16px;
         }
         .hero .cta-group {
-            margin-top: 36px;
+            margin-top: 38px;
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
         }
         .hero .cta-group a {
-            padding: 14px 34px;
+            padding: 15px 36px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             font-size: 14px;
-            transition: all 0.3s cubic-bezier(0.22, 0.68, 0, 1);
+            transition: all 0.35s var(--smooth-ease);
         }
         .hero .cta-primary {
             background: #fff;
@@ -316,7 +316,7 @@
         }
         .hero .cta-primary:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(255, 255, 255, 0.16);
+            box-shadow: 0 14px 45px rgba(255, 255, 255, 0.16);
         }
         .hero .cta-secondary {
             border: 1px solid var(--border);
@@ -339,19 +339,19 @@
             font-size: 10px;
             letter-spacing: 2.5px;
             text-transform: uppercase;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         .section-title {
-            font-size: clamp(32px, 4.5vw, 52px);
+            font-size: clamp(34px, 4.8vw, 54px);
             letter-spacing: -2px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
         .section-title span { color: #777; }
         .section-sub {
             color: var(--muted);
-            max-width: 680px;
+            max-width: 700px;
             font-size: 15px;
-            line-height: 1.8;
+            line-height: 1.85;
         }
 
         /* ============================================================
@@ -366,21 +366,25 @@
         }
         .about-text p {
             color: #aaa;
-            line-height: 1.9;
+            line-height: 1.95;
             margin-bottom: 18px;
             font-size: 15px;
         }
         .about-text .highlight { color: #fff; font-weight: 600; }
         .about-text .motto-highlight {
             display: block;
-            font-size: 18px;
+            font-size: 19px;
             font-style: italic;
             color: #ccc;
-            padding: 16px 22px;
+            padding: 16px 24px;
             border-left: 3px solid #fff;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 0 14px 14px 0;
-            margin: 20px 0;
+            margin: 22px 0;
+            transition: background 0.3s;
+        }
+        .about-text .motto-highlight:hover {
+            background: rgba(255, 255, 255, 0.06);
         }
         .about-stats {
             display: grid;
@@ -391,14 +395,15 @@
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid var(--border);
             border-radius: 18px;
-            padding: 26px 20px;
+            padding: 28px 20px;
             text-align: center;
-            transition: all 0.35s ease;
+            transition: all 0.4s var(--smooth-ease);
         }
         .about-stats .stat:hover {
-            border-color: rgba(255, 255, 255, 0.18);
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
         }
         .about-stats .stat .number {
             font-size: 34px;
@@ -416,46 +421,46 @@
         }
 
         /* ============================================================
-           SERVICES / FOCUS AREAS
+           SERVICES
            ============================================================ */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin-top: 36px;
+            gap: 26px;
+            margin-top: 34px;
         }
         .service-card {
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px 24px;
+            border-radius: 22px;
+            padding: 34px 26px;
             text-align: center;
-            transition: all 0.4s cubic-bezier(0.22, 0.68, 0, 1);
+            transition: all 0.4s var(--smooth-ease);
         }
         .service-card:hover {
             transform: translateY(-6px);
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.22);
+            background: rgba(255, 255, 255, 0.055);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
         .service-card .icon {
-            font-size: 38px;
-            margin-bottom: 16px;
+            font-size: 40px;
+            margin-bottom: 18px;
             display: block;
         }
         .service-card h3 {
             font-size: 18px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .service-card p {
             color: #888;
-            font-size: 13.5px;
-            line-height: 1.6;
+            font-size: 14px;
+            line-height: 1.7;
         }
 
         /* ============================================================
-           TEAM SECTION & CARDS
+           SMOOTH FOUNDER CARDS & TEAM SECTION
            ============================================================ */
         .team-controls {
             max-width: 1100px;
@@ -464,31 +469,32 @@
         }
         .team-search {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         .team-search input {
             width: 100%;
-            padding: 16px 20px 16px 50px;
+            padding: 17px 22px 17px 52px;
             border-radius: 16px;
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.035);
             color: #fff;
             outline: none;
             font-size: 14.5px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
         .team-search input:focus {
-            border-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.35);
             background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.04);
         }
         .team-search input::placeholder { color: #555; }
         .team-search .search-icon {
             position: absolute;
-            left: 18px;
+            left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: #666;
-            font-size: 17px;
+            color: #777;
+            font-size: 18px;
         }
         .team-filters {
             display: flex;
@@ -499,21 +505,24 @@
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.03);
             color: #aaa;
-            padding: 8px 20px;
+            padding: 9px 22px;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.35s var(--smooth-ease);
             font-size: 13px;
         }
         .team-filters .filter:hover {
             color: #fff;
             border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
         .team-filters .filter.active {
             background: #fff;
             color: #000;
             border-color: #fff;
-            font-weight: 600;
+            font-weight: 700;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
         }
 
         .team-grid {
@@ -525,41 +534,64 @@
             margin: auto;
         }
 
-        /* Interactive Team Card */
+        /* Team Card: Silky Glass & Micro-Interactions */
         .team-card {
             position: relative;
             min-height: 440px;
             padding: 22px;
             border-radius: var(--radius);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.018));
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
             overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.22, 0.68, 0, 1), border-color 0.4s, box-shadow 0.4s;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             transform-style: preserve-3d;
-            backdrop-filter: blur(6px);
+            perspective: 1000px;
+            will-change: transform;
+            transition: transform 0.18s ease-out, border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
         }
-        .team-card.featured {
-            border-color: rgba(255, 255, 255, 0.22);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+        .team-card::before {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            top: -110px;
+            right: -90px;
+            background: rgba(255, 255, 255, 0.035);
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            transition: transform 0.6s var(--smooth-ease), opacity 0.6s;
         }
         .team-card:hover {
             border-color: rgba(255, 255, 255, 0.28);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
+            box-shadow: 0 35px 90px rgba(0, 0, 0, 0.7);
         }
+        .team-card:hover::before {
+            transform: scale(1.4);
+            opacity: 0.09;
+        }
+
+        /* Universal Founder Tag — Everyone is Founder */
         .founder-tag {
             position: absolute;
             top: 18px;
             left: 18px;
-            padding: 5px 12px;
-            border-radius: 6px;
-            background: #fff;
-            color: #000;
+            padding: 5px 14px;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #000000;
             font-size: 8.5px;
             font-weight: 800;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
             z-index: 2;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+            pointer-events: none;
         }
+
         .card-top {
             display: flex;
             justify-content: space-between;
@@ -568,31 +600,36 @@
         }
         .card-label {
             font-size: 9.5px;
-            letter-spacing: 2px;
+            letter-spacing: 2.2px;
             color: #777;
             text-transform: uppercase;
         }
         .status {
-            width: 9px;
-            height: 9px;
+            width: 10px;
+            height: 10px;
             background: #72ff9a;
             border-radius: 50%;
-            box-shadow: 0 0 12px rgba(114, 255, 154, 0.6);
+            box-shadow: 0 0 14px rgba(114, 255, 154, 0.6);
+            animation: pulseDot 2.2s ease-in-out infinite;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.85); }
         }
 
-        /* Profile Photo with Ambient Glow ("Chok Chok" effect) */
+        /* Profile Glow: Refined "Chok Chok" Effect */
         .profile {
-            width: 140px;
-            height: 140px;
+            width: 145px;
+            height: 145px;
             margin: 15px auto 20px;
             border-radius: 50%;
-            padding: 3px;
+            padding: 4px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), #333, rgba(255, 255, 255, 0.8));
             position: relative;
             cursor: pointer;
-            transition: transform 0.35s ease, box-shadow 0.35s ease;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
-            animation: glowPulse 3.5s ease-in-out infinite;
+            transition: transform 0.4s var(--smooth-ease), box-shadow 0.4s var(--smooth-ease);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.06);
+            animation: glowPulse 3.2s ease-in-out infinite;
         }
         .profile:hover {
             transform: scale(1.05);
@@ -600,8 +637,8 @@
             box-shadow: 0 0 45px rgba(255, 255, 255, 0.22);
         }
         @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.05); }
-            50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.15); }
+            0%, 100% { box-shadow: 0 0 22px rgba(255, 255, 255, 0.05); }
+            50% { box-shadow: 0 0 44px rgba(255, 255, 255, 0.16); }
         }
         .profile img {
             width: 100%;
@@ -610,48 +647,52 @@
             object-fit: cover;
             display: block;
             background: #111;
+            transition: filter 0.35s ease;
+        }
+        .profile:hover img {
+            filter: brightness(1.08) saturate(1.04);
         }
         .profile::after {
             content: "👤 Projects";
             position: absolute;
-            bottom: -6px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(6px);
-            padding: 3px 10px;
+            backdrop-filter: blur(8px);
+            padding: 3px 12px;
             border-radius: 20px;
             font-size: 9px;
-            color: #ccc;
+            color: #ddd;
             border: 1px solid var(--border);
             white-space: nowrap;
             opacity: 0;
-            transition: all 0.3s ease;
+            transition: all 0.3s var(--smooth-ease);
         }
         .profile:hover::after {
             opacity: 1;
-            bottom: -2px;
+            bottom: -3px;
         }
 
         .name {
             text-align: center;
-            font-size: 22px;
+            font-size: 23px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             letter-spacing: -0.5px;
         }
         .role {
             text-align: center;
             color: #aaa;
             font-size: 13px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
         .badge {
             width: max-content;
             margin: auto;
-            padding: 6px 14px;
+            padding: 6px 16px;
             border-radius: 50px;
-            font-size: 9.5px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: 1.2px;
             text-transform: uppercase;
@@ -669,9 +710,13 @@
             gap: 10px;
         }
         .detail {
-            padding: 10px 12px;
+            padding: 11px 12px;
             background: rgba(255, 255, 255, 0.025);
             border-radius: 12px;
+            transition: background 0.3s;
+        }
+        .team-card:hover .detail {
+            background: rgba(255, 255, 255, 0.045);
         }
         .detail small {
             display: block;
@@ -679,7 +724,7 @@
             font-size: 8.5px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
         .detail strong {
             font-size: 12px;
@@ -689,54 +734,44 @@
         .bio {
             margin-top: 16px;
             color: #888;
-            line-height: 1.6;
-            font-size: 12px;
+            line-height: 1.65;
+            font-size: 12.5px;
             text-align: center;
         }
         .socials {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-top: 16px;
+            gap: 9px;
+            margin-top: 18px;
         }
         .socials a {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             display: grid;
             place-items: center;
             color: #aaa;
             text-decoration: none;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 9px;
             font-size: 10px;
             font-weight: 700;
-            transition: all 0.3s;
+            transition: all 0.3s var(--smooth-ease);
         }
         .socials a:hover {
             background: #fff;
             color: #000;
             border-color: #fff;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
         }
         .socials a.codebihin-link {
             width: auto;
-            min-width: 32px;
-            padding: 0 6px;
-            font-size: 8px;
+            min-width: 34px;
+            padding: 0 7px;
+            font-size: 8.5px;
+            letter-spacing: 0.4px;
         }
 
-        .team-card.coming-soon {
-            opacity: 0.45;
-            border-style: dashed;
-            border-color: rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.015);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            pointer-events: none;
-        }
         .empty {
             grid-column: 1 / -1;
             text-align: center;
@@ -750,33 +785,34 @@
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 22px;
+            gap: 24px;
             margin-top: 32px;
         }
         .project-card {
-            padding: 26px 22px;
-            border-radius: 18px;
+            padding: 28px 24px;
+            border-radius: 20px;
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.025);
-            transition: all 0.35s ease;
+            transition: all 0.35s var(--smooth-ease);
         }
         .project-card:hover {
             border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.045);
+            transform: translateY(-6px);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
         }
-        .project-card .p-icon { font-size: 28px; margin-bottom: 12px; display: block; }
-        .project-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-        .project-card p { font-size: 13px; color: #888; line-height: 1.6; }
+        .project-card .p-icon { font-size: 30px; margin-bottom: 14px; display: block; }
+        .project-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .project-card p { font-size: 13px; color: #888; line-height: 1.7; }
         .project-card .p-tag {
             display: inline-block;
             margin-top: 14px;
-            font-size: 9.5px;
+            font-size: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             color: #666;
             border: 1px solid var(--border);
-            padding: 3px 12px;
+            padding: 4px 14px;
             border-radius: 50px;
         }
 
@@ -786,42 +822,42 @@
         #join { text-align: center; }
         .join-btn {
             display: inline-block;
-            padding: 16px 48px;
+            padding: 17px 52px;
             border-radius: 50px;
             background: #fff;
             color: #000;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 15.5px;
             text-decoration: none;
             margin-top: 24px;
-            transition: all 0.3s;
+            transition: all 0.35s var(--smooth-ease);
         }
         .join-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 45px rgba(255, 255, 255, 0.16);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 16px 50px rgba(255, 255, 255, 0.16);
         }
 
         #contact .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 48px;
+            gap: 50px;
             margin-top: 32px;
         }
         .contact-info p {
             color: #aaa;
             margin-bottom: 18px;
-            font-size: 14.5px;
+            font-size: 15px;
         }
         .contact-form input,
         .contact-form textarea {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 12px;
+            padding: 15px 20px;
+            border-radius: 14px;
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.035);
             color: #fff;
             font-size: 14px;
-            margin-bottom: 14px;
+            margin-bottom: 15px;
             outline: none;
             font-family: inherit;
             transition: border-color 0.3s;
@@ -830,26 +866,26 @@
         .contact-form textarea:focus {
             border-color: rgba(255, 255, 255, 0.35);
         }
-        .contact-form textarea { resize: vertical; min-height: 120px; }
+        .contact-form textarea { resize: vertical; min-height: 130px; }
         .contact-form button {
-            padding: 14px 32px;
-            border-radius: 12px;
+            padding: 15px 36px;
+            border-radius: 14px;
             border: none;
             background: #fff;
             color: #000;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 14.5px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
         .contact-form button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 32px rgba(255, 255, 255, 0.12);
         }
 
         footer {
             border-top: 1px solid var(--border);
-            padding: 38px 25px;
+            padding: 40px 25px;
             text-align: center;
             color: #666;
             font-size: 12px;
@@ -860,21 +896,21 @@
 
         .scroll-top {
             position: fixed;
-            bottom: 28px;
-            right: 28px;
-            width: 48px;
-            height: 48px;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border);
             color: #aaa;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
             backdrop-filter: blur(10px);
             display: none;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: all 0.35s var(--smooth-ease);
             z-index: 999;
         }
         .scroll-top.visible { display: flex; }
@@ -885,15 +921,15 @@
         }
 
         /* ============================================================
-           MODALS (PROJECTS & IMAGE LIGHTBOX)
+           MODALS (PROJECTS & LIGHTBOX)
            ============================================================ */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.82);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            background: rgba(0, 0, 0, 0.84);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 9999;
             align-items: center;
             justify-content: center;
@@ -904,10 +940,10 @@
         .modal-content {
             background: #0d0d0d;
             border: 1px solid var(--border);
-            border-radius: 24px;
-            max-width: 500px;
+            border-radius: 26px;
+            max-width: 490px;
             width: 100%;
-            padding: 34px 28px 28px;
+            padding: 36px 30px 30px;
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85);
             position: relative;
             max-height: 88vh;
@@ -915,8 +951,8 @@
         }
         .modal-close {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: 18px;
+            right: 22px;
             font-size: 28px;
             line-height: 1;
             color: #777;
@@ -929,25 +965,24 @@
         .modal-project {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px 18px;
-            margin-bottom: 12px;
+            border-radius: 15px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
         }
         .modal-project h3 { font-size: 16px; margin-bottom: 4px; }
-        .modal-project p { font-size: 13px; color: #888; line-height: 1.5; }
+        .modal-project p { font-size: 13px; color: #888; line-height: 1.6; }
         .modal-project .tech-tag {
             display: inline-block;
             margin-top: 8px;
-            font-size: 9px;
+            font-size: 9.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             color: #666;
             border: 1px solid var(--border);
-            padding: 2px 10px;
+            padding: 3px 12px;
             border-radius: 50px;
         }
 
-        /* Image Lightbox */
         .image-modal .modal-content {
             background: transparent;
             box-shadow: none;
@@ -961,8 +996,8 @@
         }
         .image-modal .modal-content img {
             max-width: 90vw;
-            max-height: 84vh;
-            border-radius: 16px;
+            max-height: 85vh;
+            border-radius: 18px;
             border: 1px solid var(--border);
             object-fit: contain;
             background: #0d0d0d;
@@ -980,7 +1015,7 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 14px;
-                padding: 16px 0 8px;
+                padding: 18px 0 8px;
                 border-top: 1px solid var(--border);
             }
             .nav-links.open { display: flex; }
@@ -1028,7 +1063,7 @@
         <h1>Build. Learn. <span>Grow.</span></h1>
         <div class="motto">
             <strong>“Aedificare — Disputare — Crescere”</strong><br />
-            <span style="font-size:13px; color:#777;">Build · Discuss · Grow</span>
+            <span style="font-size:13.5px; color:#777;">Build · Discuss · Grow</span>
         </div>
         <p>
             A collective of passionate students from <strong style="color:#fff;">HETC</strong> dedicated to exploring the craftsmanship behind the modern web and mobile applications we rely on every day.
@@ -1115,24 +1150,24 @@
         </div>
     </section>
 
-    <!-- TEAM SECTION (DATABASE DRIVEN) -->
+    <!-- TEAM SECTION (DATABASE DRIVEN - ALL FOUNDERS) -->
     <div id="team-section" style="padding-top:20px;">
         <div style="max-width:1100px;margin:auto;padding:0 25px;">
             <div class="section-label reveal">Our Leadership</div>
-            <h2 class="section-title reveal">Meet the <span>Team</span></h2>
+            <h2 class="section-title reveal">Meet the <span>Founders</span></h2>
             <p class="section-sub reveal">
-                The builders, architects, and founders shaping the development and vision of EIAFSDO.
+                The builders, architects, and founders driving the development and vision of EIAFSDO.
             </p>
         </div>
 
         <div class="team-controls">
             <div class="team-search">
                 <span class="search-icon">⌕</span>
-                <input type="text" id="teamSearch" placeholder="Search member by name, role, tech stack, or bio…" />
+                <input type="text" id="teamSearch" placeholder="Search founder by name, role, tech stack, or bio…" />
             </div>
             <div class="team-filters">
                 <button class="filter active" data-role="all">All</button>
-                <button class="filter" data-role="leadership">Leadership</button>
+                <button class="filter" data-role="leadership">Founders</button>
             </div>
         </div>
 
@@ -1243,11 +1278,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT: FIREBASE INTEGRATION & UI DYNAMICS -->
+    <!-- ============================================================
+       SCRIPT: FIRESTORE & ULTRA-SMOOTH CARD INTERACTION
+       ============================================================ -->
     <script>
-        /* ============================================================
-           1. FIREBASE INITIALIZATION
-           ============================================================ */
         const firebaseConfig = {
             apiKey: "AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
             authDomain: "eiafsdo-dashboard.firebaseapp.com",
@@ -1260,9 +1294,6 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        /* ============================================================
-           2. DOM REFERENCES & STATE
-           ============================================================ */
         const teamGrid = document.getElementById('teamGrid');
         const teamEmpty = document.getElementById('teamEmpty');
         const teamSearch = document.getElementById('teamSearch');
@@ -1280,18 +1311,14 @@
         let allMembers = [];
         let activeFilter = 'all';
 
-        /* ============================================================
-           3. LOAD TEAM MEMBERS DYNAMICALLY FROM FIRESTORE
-           ============================================================ */
         async function loadTeamMembers() {
             try {
-                // Fetch users without strict multi-field inequality ordering to avoid composite index requirements
                 const snapshot = await db.collection('users').get();
 
                 if (snapshot.empty) {
                     teamGrid.innerHTML = '';
                     teamEmpty.style.display = 'block';
-                    teamEmpty.textContent = 'No team members found in database.';
+                    teamEmpty.textContent = 'No founders found in database.';
                     return;
                 }
 
@@ -1301,7 +1328,6 @@
                     allMembers.push({ id: doc.id, ...data });
                 });
 
-                // In-memory sort by 'order' or fallback to creation time / index
                 allMembers.sort((a, b) => {
                     const orderA = a.order !== undefined ? a.order : 9999;
                     const orderB = b.order !== undefined ? b.order : 9999;
@@ -1312,31 +1338,27 @@
             } catch (err) {
                 console.error('Error fetching team from Firestore:', err);
                 teamEmpty.style.display = 'block';
-                teamEmpty.textContent = '⚠️ Unable to load team from database. Please refresh.';
+                teamEmpty.textContent = '⚠️ Unable to load founders from database. Please refresh.';
             }
         }
 
-        /* ============================================================
-           4. RENDER TEAM CARDS
-           ============================================================ */
         function renderTeamCards(members) {
             if (!members || members.length === 0) {
                 teamGrid.innerHTML = '';
                 teamEmpty.style.display = 'block';
-                teamEmpty.textContent = 'No matching members found.';
+                teamEmpty.textContent = 'No matching founders found.';
                 return;
             }
 
             teamEmpty.style.display = 'none';
 
             let html = '';
-            members.forEach((member, index) => {
-                const isFirst = index === 0;
-                const fallbackImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Member')}&background=111111&color=ffffff&size=300`;
+            members.forEach((member) => {
+                const fallbackImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Founder')}&background=111111&color=ffffff&size=300`;
                 const photoURL = member.photoURL && member.photoURL.trim() !== '' ? member.photoURL : fallbackImg;
                 const role = member.role || 'Full-Stack Developer';
                 const status = member.status || 'Active';
-                const bio = member.bio || 'Member of the EIAFSDO engineering organization.';
+                const bio = member.bio || 'Founder at EIAFSDO engineering collective.';
                 const stack = member.stack || 'Full-Stack Development';
                 const org = member.org || 'EIAFSDO';
                 const linkedin = member.linkedin || '';
@@ -1344,32 +1366,34 @@
                 const dribbble = member.dribbble || '';
 
                 const searchMeta = `${member.name || ''} ${role} ${stack} ${org} ${bio}`.toLowerCase();
+                const isPriyabrata = (member.name || '').toLowerCase().includes('priyabrata');
 
                 html += `
-                    <article class="team-card ${isFirst ? 'featured' : ''}" 
+                    <article class="team-card" 
                              data-category="leadership" 
                              data-member-id="${member.id}" 
                              data-search="${searchMeta}">
                         
-                        ${isFirst ? '<div class="founder-tag">FOUNDER</div>' : ''}
+                        <!-- Everyone is Founder -->
+                        <div class="founder-tag">FOUNDER</div>
                         
                         <div class="card-top">
                             <span class="card-label">EIAFSDO ID</span>
                             <span class="status"></span>
                         </div>
 
-                        <div class="profile" data-member-id="${member.id}" data-member-name="${member.name || 'Member'}" data-image="${photoURL}">
-                            <img src="${photoURL}" alt="${member.name || 'Team Member'}" loading="lazy" />
+                        <div class="profile" data-member-id="${member.id}" data-member-name="${member.name || 'Founder'}" data-image="${photoURL}">
+                            <img src="${photoURL}" alt="${member.name || 'Founder'}" loading="lazy" />
                         </div>
 
-                        <h2 class="name">${member.name || 'Team Member'}</h2>
-                        <p class="role">${role.toLowerCase() === 'admin' ? 'Organization Admin' : role}</p>
+                        <h2 class="name">${member.name || 'Founder'}</h2>
+                        <p class="role">Founder · ${role.toLowerCase() === 'admin' ? 'Lead Architect' : role}</p>
                         <div class="badge">${org}</div>
                         
                         <div class="divider"></div>
 
                         <div class="details">
-                            <div class="detail"><small>Position</small><strong>${role}</strong></div>
+                            <div class="detail"><small>Position</small><strong>Founder</strong></div>
                             <div class="detail"><small>Stack</small><strong>${stack}</strong></div>
                             <div class="detail"><small>Org</small><strong>${org}</strong></div>
                             <div class="detail"><small>Status</small><strong>${status}</strong></div>
@@ -1381,6 +1405,7 @@
                             ${linkedin && linkedin !== '#' ? `<a href="${linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>` : ''}
                             ${github && github !== '#' ? `<a href="${github}" target="_blank" rel="noopener" aria-label="GitHub">GH</a>` : ''}
                             ${dribbble && dribbble !== '#' ? `<a href="${dribbble}" target="_blank" rel="noopener" aria-label="Portfolio">DR</a>` : ''}
+                            ${isPriyabrata ? `<a href="https://codebihin.in" target="_blank" rel="noopener" class="codebihin-link" aria-label="Codebihin">CB</a>` : ''}
                         </div>
                     </article>
                 `;
@@ -1390,58 +1415,55 @@
             attachCardInteractions();
         }
 
-        /* ============================================================
-           5. EVENT LISTENERS & INTERACTIONS
-           ============================================================ */
         function attachCardInteractions() {
-            // Profile click: view approved member projects from Firestore
             document.querySelectorAll('.profile').forEach(el => {
-                el.addEventListener('click', function(e) {
+                el.addEventListener('click', function() {
                     const memberId = this.dataset.memberId;
-                    const memberName = this.dataset.memberName || 'Member';
-                    if (memberId) {
-                        openMemberProjects(memberId, memberName);
-                    }
+                    const memberName = this.dataset.memberName || 'Founder';
+                    if (memberId) openMemberProjects(memberId, memberName);
                 });
             });
 
-            // Image click inside profile: open photo in Lightbox
             document.querySelectorAll('.profile img').forEach(img => {
                 img.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const profile = this.closest('.profile');
                     if (profile) {
                         const imageSrc = profile.dataset.image;
-                        const altText = this.alt || 'Team member';
-                        if (imageSrc) {
-                            openImageModal(imageSrc, altText);
-                        }
+                        const altText = this.alt || 'Founder';
+                        if (imageSrc) openImageModal(imageSrc, altText);
                     }
                 });
             });
 
-            // 3D Card mouse movement tilt effect
+            // Smooth 3D tilt
             document.querySelectorAll('.team-card').forEach(card => {
+                let rafId = null;
                 card.addEventListener('mousemove', function(e) {
                     const rect = this.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     const cx = rect.width / 2;
                     const cy = rect.height / 2;
-                    const rx = ((y - cy) / cy) * -3.5;
-                    const ry = ((x - cx) / cx) * 3.5;
-                    this.style.transform = `translateY(-10px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+                    const rx = ((y - cy) / cy) * -4.5;
+                    const ry = ((x - cx) / cx) * 4.5;
+
+                    if (rafId) cancelAnimationFrame(rafId);
+                    rafId = requestAnimationFrame(() => {
+                        this.style.transform = `translateY(-8px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+                    });
                 });
+
                 card.addEventListener('mouseleave', function() {
+                    if (rafId) cancelAnimationFrame(rafId);
                     this.style.transform = '';
                 });
             });
         }
 
-        /* Member Projects Modal */
         async function openMemberProjects(memberId, memberName) {
             modalName.innerHTML = `Projects by <span>${memberName}</span>`;
-            modalProjects.innerHTML = '<p style="color:#777;text-align:center;padding:24px 0;">Loading projects from database...</p>';
+            modalProjects.innerHTML = '<p style="color:#777;text-align:center;padding:24px 0;">Loading projects...</p>';
             profileModal.classList.add('active');
             document.body.style.overflow = 'hidden';
 
@@ -1452,7 +1474,7 @@
                     .get();
 
                 if (snapshot.empty) {
-                    modalProjects.innerHTML = '<p style="color:#666;text-align:center;padding:24px 0;">No approved projects listed for this member yet.</p>';
+                    modalProjects.innerHTML = '<p style="color:#666;text-align:center;padding:24px 0;">No approved projects listed for this founder yet.</p>';
                     return;
                 }
 
@@ -1464,7 +1486,7 @@
                             ${p.imageURL ? `<img src="${p.imageURL}" alt="${p.name}" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#111;" />` : ''}
                             <h3>${p.name || 'Untitled Project'}</h3>
                             <p>${p.description || ''}</p>
-                            ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="tech-tag" style="text-decoration:none;display:inline-block;margin-top:8px;">🔗 Visit Project</a>` : ''}
+                            ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="tech-tag" style="text-decoration:none;display:inline-block;margin-top:8px;">🔗 Visit Website</a>` : ''}
                         </div>
                     `;
                 });
@@ -1475,7 +1497,6 @@
             }
         }
 
-        /* Image Lightbox */
         function openImageModal(src, alt) {
             imageModalContent.innerHTML = `<img src="${src}" alt="${alt}" />`;
             imageModal.classList.add('active');
@@ -1492,26 +1513,20 @@
         imageModalClose.addEventListener('click', closeAllModals);
 
         window.addEventListener('click', (e) => {
-            if (e.target === profileModal || e.target === imageModal) {
-                closeAllModals();
-            }
+            if (e.target === profileModal || e.target === imageModal) closeAllModals();
         });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeAllModals();
         });
 
-        /* ============================================================
-           6. SEARCH & FILTERING
-           ============================================================ */
         function filterMembers() {
             const query = teamSearch.value.toLowerCase().trim();
 
             const filtered = allMembers.filter(member => {
-                const matchesRole = activeFilter === 'all' || (member.role && member.role.toLowerCase().includes(activeFilter));
                 const searchMeta = `${member.name || ''} ${member.role || ''} ${member.stack || ''} ${member.org || ''} ${member.bio || ''}`.toLowerCase();
                 const matchesSearch = query === '' || searchMeta.includes(query);
-                return matchesRole && matchesSearch;
+                return matchesSearch;
             });
 
             renderTeamCards(filtered);
@@ -1528,9 +1543,6 @@
             });
         });
 
-        /* ============================================================
-           7. GENERAL UI SCRIPTS (Scroll, Navbar, Contact)
-           ============================================================ */
         const navbar = document.getElementById('navbar');
         const scrollBtn = document.getElementById('scrollTopBtn');
         const hamburger = document.getElementById('hamburger');
@@ -1557,7 +1569,6 @@
             });
         });
 
-        // Intersection Observer for scroll reveal animations
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1570,25 +1581,22 @@
             revealObserver.observe(el);
         });
 
-        // Contact Form handler
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('📬 Thank you for contacting EIAFSDO! Your inquiry has been recorded.');
+            alert('📬 Thank you for contacting EIAFSDO! We will respond shortly.');
             this.reset();
         });
 
-        // Image loading fallback
         document.addEventListener('error', function(e) {
             if (e.target.tagName === 'IMG') {
                 const img = e.target;
                 if (!img.src.includes('ui-avatars.com')) {
-                    const fallbackName = encodeURIComponent(img.alt || 'Member');
+                    const fallbackName = encodeURIComponent(img.alt || 'Founder');
                     img.src = `https://ui-avatars.com/api/?name=${fallbackName}&background=111111&color=ffffff&size=300`;
                 }
             }
         }, true);
 
-        // Bootstrap on load
         loadTeamMembers();
     </script>
 </body>
