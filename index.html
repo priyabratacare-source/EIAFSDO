@@ -715,6 +715,9 @@
             }
         }
 
+        /* ============================================================
+               PROFILE PHOTO GLOW EFFECT — "CHOK CHOK" GLOW
+               ============================================================ */
         .profile {
             width: 150px;
             height: 150px;
@@ -725,11 +728,84 @@
             position: relative;
             cursor: pointer;
             transition: all .4s cubic-bezier(.22, .68, 0, 1);
+            /* Glow ring */
+            box-shadow:
+                0 0 20px rgba(255, 255, 255, .05),
+                0 0 40px rgba(255, 255, 255, .02);
+            animation: glowPulse 3s ease-in-out infinite;
         }
         .profile:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(255, 255, 255, .05);
+            box-shadow:
+                0 0 30px rgba(255, 255, 255, .15),
+                0 0 60px rgba(255, 255, 255, .08),
+                0 0 90px rgba(255, 255, 255, .04);
+            animation-play-state: paused;
         }
+
+        /* Glow pulse animation — "chok chok" effect */
+        @keyframes glowPulse {
+            0% {
+                box-shadow:
+                    0 0 20px rgba(255, 255, 255, .05),
+                    0 0 40px rgba(255, 255, 255, .02),
+                    inset 0 0 20px rgba(255, 255, 255, .02);
+            }
+            25% {
+                box-shadow:
+                    0 0 30px rgba(255, 255, 255, .10),
+                    0 0 60px rgba(255, 255, 255, .05),
+                    0 0 90px rgba(255, 255, 255, .03),
+                    inset 0 0 30px rgba(255, 255, 255, .04);
+            }
+            50% {
+                box-shadow:
+                    0 0 40px rgba(255, 255, 255, .15),
+                    0 0 80px rgba(255, 255, 255, .08),
+                    0 0 120px rgba(255, 255, 255, .04),
+                    inset 0 0 40px rgba(255, 255, 255, .06);
+            }
+            75% {
+                box-shadow:
+                    0 0 30px rgba(255, 255, 255, .10),
+                    0 0 60px rgba(255, 255, 255, .05),
+                    0 0 90px rgba(255, 255, 255, .03),
+                    inset 0 0 30px rgba(255, 255, 255, .04);
+            }
+            100% {
+                box-shadow:
+                    0 0 20px rgba(255, 255, 255, .05),
+                    0 0 40px rgba(255, 255, 255, .02),
+                    inset 0 0 20px rgba(255, 255, 255, .02);
+            }
+        }
+
+        /* Secondary glow ring around the image itself */
+        .profile::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .06);
+            animation: ringGlow 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes ringGlow {
+            0% {
+                border-color: rgba(255, 255, 255, .06);
+                transform: scale(1);
+            }
+            50% {
+                border-color: rgba(255, 255, 255, .15);
+                transform: scale(1.04);
+            }
+            100% {
+                border-color: rgba(255, 255, 255, .06);
+                transform: scale(1);
+            }
+        }
+
         .profile img {
             width: 100%;
             height: 100%;
@@ -738,11 +814,15 @@
             display: block;
             background: #111;
             pointer-events: none;
-            transition: filter .4s;
+            transition: filter .4s, transform .4s;
+            position: relative;
+            z-index: 1;
         }
         .profile:hover img {
-            filter: brightness(1.05);
+            filter: brightness(1.08) saturate(1.05);
+            transform: scale(1.02);
         }
+
         .profile::after {
             content: "👤 Click";
             position: absolute;
@@ -760,6 +840,7 @@
             white-space: nowrap;
             opacity: 0;
             transition: all .35s ease;
+            z-index: 5;
         }
         .profile:hover::after {
             opacity: 1;
@@ -862,6 +943,15 @@
             transform: translateY(-4px);
             border-color: white;
             box-shadow: 0 8px 30px rgba(255, 255, 255, .08);
+        }
+
+        /* --- Special link styling for Priyabrata's Codebihin --- */
+        .socials a.codebihin-link {
+            font-size: 8px;
+            letter-spacing: 0.3px;
+            padding: 0 4px;
+            width: auto;
+            min-width: 34px;
         }
 
         .team-card.featured {
@@ -1679,7 +1769,9 @@
 
         <div class="team-grid" id="teamGrid">
 
-            <!-- AYUSH -->
+            <!-- ============================================================
+            AYUSH CHATTERJEE — updated GitHub
+            ============================================================ -->
             <article class="team-card featured" data-category="leadership" data-search="Ayush Chatterjee Founder Full-Stack JavaScript React Node">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
@@ -1702,13 +1794,15 @@
                 <p class="bio">Ayush is the driving force behind EIAFSDO. A self-taught full-stack developer with a love for clean code and system design.</p>
                 <div class="socials">
                     <a href="https://www.linkedin.com/in/ayush-chatterjee-784559308/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="https://github.com/Ayushchatterjeesource/" target="_blank" aria-label="GitHub">GH</a>
                     <a href="#" aria-label="Twitter">TW</a>
                 </div>
             </article>
 
-            <!-- PRIYABRATA -->
-            <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React">
+            <!-- ============================================================
+            PRIYABRATA PATRA — updated GitHub + Codebihin info
+            ============================================================ -->
+            <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React Codebihin">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
                     <span class="card-label">EIAFSDO ID</span>
@@ -1727,22 +1821,25 @@
                     <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
                     <div class="detail"><small>Status</small><strong>Active</strong></div>
                 </div>
-                <p class="bio">Priyabrata is a backend-first developer with a passion for scalable architecture and data-driven applications.</p>
+                <p class="bio">Priyabrata is a backend-first developer with a passion for scalable architecture and data-driven applications. Also the founder of <strong style="color:#fff;">Codebihin.in</strong> — reach out at <strong style="color:#888;">admin@codebihin.in</strong></p>
                 <div class="socials">
                     <a href="https://www.linkedin.com/in/priyabratapatra/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="https://github.com/priyabratacare-source" target="_blank" aria-label="GitHub">GH</a>
+                    <a href="#" class="codebihin-link" style="font-size:8px; letter-spacing:0.3px; padding:0 6px; min-width:auto; width:auto;" aria-label="Codebihin">CB</a>
                 </div>
             </article>
 
-            <!-- ABHRADIP -->
+            <!-- ============================================================
+            ABHRADIP DHARA — fully updated
+            ============================================================ -->
             <article class="team-card" data-category="leadership" data-search="Abhradip Dhara Founder Full-Stack Vue Node AWS">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
                     <span class="card-label">EIAFSDO ID</span>
                     <span class="status"></span>
                 </div>
-                <div class="profile" data-member="Abhradip Dhara" data-image="images/abhradip.jpg">
-                    <img src="images/abhradip.jpg" alt="Abhradip Dhara" loading="lazy" />
+                <div class="profile" data-member="Abhradip Dhara" data-image="https://i.ibb.co/KxM9s0F3/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png">
+                    <img src="https://i.ibb.co/KxM9s0F3/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png" alt="Abhradip Dhara" loading="lazy" />
                 </div>
                 <h2 class="name">Abhradip Dhara</h2>
                 <p class="role">Founder · Full-Stack Developer</p>
@@ -1750,19 +1847,21 @@
                 <div class="divider"></div>
                 <div class="details">
                     <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>Vue · Node</strong></div>
+                    <div class="detail"><small>Stack</small><strong>B.Tech Civil (pursuing)</strong></div>
                     <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
                     <div class="detail"><small>Status</small><strong>Active</strong></div>
                 </div>
-                <p class="bio">Abhradip is a front-end specialist who loves crafting beautiful, accessible interfaces with design thinking and a focus on user experience.</p>
+                <p class="bio">I am a student of HETC. I am eager to learn all the craftsmanships needed to craft the cyberspace.</p>
                 <div class="socials">
-                    <a href="#" aria-label="LinkedIn">IN</a>
-                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="https://www.linkedin.com/in/abhradip-dhara-9532b3430/" target="_blank" aria-label="LinkedIn">IN</a>
+                    <a href="https://github.com/AbhradipDhara" target="_blank" aria-label="GitHub">GH</a>
                     <a href="#" aria-label="Dribbble">DR</a>
                 </div>
             </article>
 
-            <!-- SOUVIK -->
+            <!-- ============================================================
+            SOUVIK DESHI
+            ============================================================ -->
             <article class="team-card" data-category="leadership" data-search="Souvik Deshi Founder Full-Stack Java Spring Boot React">
                 <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
@@ -2315,6 +2414,7 @@
         console.log('👥 Founders: 4');
         console.log('🖼️ Image lightbox enabled — click any profile picture to enlarge');
         console.log('📱 Mobile hamburger menu enabled');
+        console.log('✨ Glow effect enabled on all profile photos');
     </script>
 
 </body>
