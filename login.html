@@ -121,18 +121,6 @@
             box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
         }
 
-        .auth-toggle {
-            text-align: center;
-            margin-top: 16px;
-            color: #666;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .auth-toggle:hover {
-            color: white;
-        }
-
         .auth-error {
             color: #ff6b6b;
             font-size: 13px;
@@ -409,7 +397,7 @@
             color: white;
         }
 
-        /* Project cards - clickable */
+        /* Project cards */
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -508,7 +496,7 @@
             transform: scale(1.1);
         }
 
-        /* Project details popup */
+        /* Project popup */
         .project-popup {
             display: none;
             position: fixed;
@@ -709,6 +697,9 @@
         .reset-modal .modal-box h4 {
             margin-bottom: 16px;
         }
+        .reset-modal .modal-box .form-group {
+            margin-bottom: 14px;
+        }
         .reset-modal .modal-box .modal-actions {
             display: flex;
             gap: 10px;
@@ -821,7 +812,7 @@
 
     <div class="container">
 
-        <!-- ===== AUTH ===== -->
+        <!-- ===== AUTH (Login only) ===== -->
         <div id="authContainer" class="auth-container">
             <div class="auth-box" id="loginBox">
                 <h2>Welcome <span>Back</span></h2>
@@ -829,17 +820,6 @@
                 <input type="email" id="loginEmail" placeholder="Email" />
                 <input type="password" id="loginPassword" placeholder="Password" />
                 <button id="loginBtn">Sign In</button>
-                <div class="auth-toggle" id="showRegister">Don't have an account? Register</div>
-            </div>
-
-            <div class="auth-box hidden" id="registerBox">
-                <h2>Create <span>Account</span></h2>
-                <div id="regError" class="auth-error"></div>
-                <input type="text" id="regName" placeholder="Full Name" />
-                <input type="email" id="regEmail" placeholder="Email" />
-                <input type="password" id="regPassword" placeholder="Password (min 6 chars)" />
-                <button id="registerBtn">Register</button>
-                <div class="auth-toggle" id="showLogin">Already have an account? Login</div>
             </div>
         </div>
 
@@ -980,13 +960,18 @@
     <div class="reset-modal" id="resetModal">
         <div class="modal-box">
             <h4>🔑 Reset Password</h4>
-            <p style="color:#888;font-size:13px;margin-bottom:16px;">Resetting password for: <strong id="resetUserName" style="color:white;"></strong></p>
-            <p style="color:#ffd93d;font-size:12px;margin-bottom:16px;background:#ffd93d22;padding:8px 12px;border-radius:8px;">
-                ⚠️ A password reset email will be sent to the user's email address.
-            </p>
+            <p style="color:#888;font-size:13px;margin-bottom:12px;">Resetting password for: <strong id="resetUserName" style="color:white;"></strong></p>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="resetNewPassword" placeholder="Enter new password (min 6 chars)" />
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="resetConfirmPassword" placeholder="Confirm new password" />
+            </div>
             <div id="resetStatus" class="text-muted mb-16"></div>
             <div class="modal-actions">
-                <button class="btn-primary" id="resetConfirmBtn">Send Reset Email</button>
+                <button class="btn-primary" id="resetConfirmBtn">Reset Password</button>
                 <button class="btn-secondary" id="resetCancelBtn">Cancel</button>
             </div>
         </div>
@@ -1012,30 +997,18 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Enable offline persistence with error handling
-        db.enablePersistence()
-            .catch(err => console.warn('Firestore persistence:', err));
+        db.enablePersistence().catch(err => console.warn('Firestore persistence:', err));
 
         // =========================
         // DOM REFS
         // =========================
         const authContainer = document.getElementById('authContainer');
         const dashboard = document.getElementById('dashboard');
-        const loginBox = document.getElementById('loginBox');
-        const registerBox = document.getElementById('registerBox');
         const authError = document.getElementById('authError');
-        const regError = document.getElementById('regError');
 
         const loginEmail = document.getElementById('loginEmail');
         const loginPassword = document.getElementById('loginPassword');
         const loginBtn = document.getElementById('loginBtn');
-        const showRegister = document.getElementById('showRegister');
-        const showLogin = document.getElementById('showLogin');
-
-        const regName = document.getElementById('regName');
-        const regEmail = document.getElementById('regEmail');
-        const regPassword = document.getElementById('regPassword');
-        const registerBtn = document.getElementById('registerBtn');
 
         const logoutBtn = document.getElementById('logoutBtn');
         const navUserImg = document.getElementById('navUserImg');
@@ -1086,7 +1059,6 @@
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         const settingsStatus = document.getElementById('settingsStatus');
 
-        // Project popup
         const projectPopup = document.getElementById('projectPopup');
         const popupClose = document.getElementById('popupClose');
         const popupName = document.getElementById('popupName');
@@ -1096,9 +1068,10 @@
         const popupLink = document.getElementById('popupLink');
         const popupSubmittedBy = document.getElementById('popupSubmittedBy');
 
-        // Reset modal
         const resetModal = document.getElementById('resetModal');
         const resetUserName = document.getElementById('resetUserName');
+        const resetNewPassword = document.getElementById('resetNewPassword');
+        const resetConfirmPassword = document.getElementById('resetConfirmPassword');
         const resetStatus = document.getElementById('resetStatus');
         const resetConfirmBtn = document.getElementById('resetConfirmBtn');
         const resetCancelBtn = document.getElementById('resetCancelBtn');
@@ -1141,10 +1114,7 @@
         function showAuth() {
             authContainer.style.display = 'flex';
             dashboard.classList.remove('active');
-            loginBox.classList.remove('hidden');
-            registerBox.classList.add('hidden');
             authError.textContent = '';
-            regError.textContent = '';
         }
 
         function showDashboard() {
@@ -1180,17 +1150,6 @@
         // =========================
         // AUTH HANDLERS
         // =========================
-        showRegister.addEventListener('click', () => {
-            loginBox.classList.add('hidden');
-            registerBox.classList.remove('hidden');
-            authError.textContent = '';
-        });
-        showLogin.addEventListener('click', () => {
-            registerBox.classList.add('hidden');
-            loginBox.classList.remove('hidden');
-            regError.textContent = '';
-        });
-
         loginBtn.addEventListener('click', async () => {
             const email = loginEmail.value.trim();
             const password = loginPassword.value.trim();
@@ -1203,40 +1162,6 @@
                 authError.textContent = '';
             } catch (err) {
                 authError.textContent = '❌ ' + err.message;
-            }
-        });
-
-        registerBtn.addEventListener('click', async () => {
-            const name = regName.value.trim();
-            const email = regEmail.value.trim();
-            const password = regPassword.value.trim();
-            if (!name || !email || !password) {
-                regError.textContent = 'Please fill in all fields.';
-                return;
-            }
-            if (password.length < 6) {
-                regError.textContent = 'Password must be at least 6 characters.';
-                return;
-            }
-            try {
-                const cred = await auth.createUserWithEmailAndPassword(email, password);
-                await db.collection('users').doc(cred.user.uid).set({
-                    name: name,
-                    email: email,
-                    role: 'user',
-                    bio: '',
-                    stack: '',
-                    org: '',
-                    status: 'Active',
-                    linkedin: '',
-                    github: '',
-                    dribbble: '',
-                    photoURL: '',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                regError.textContent = '';
-            } catch (err) {
-                regError.textContent = '❌ ' + err.message;
             }
         });
 
@@ -1321,7 +1246,7 @@
         });
 
         // =========================
-        // MY PROJECTS — with click to popup & delete
+        // MY PROJECTS
         // =========================
         let myProjectsData = [];
 
@@ -1360,7 +1285,6 @@
                 html += '</div>';
                 myProjectsList.innerHTML = html;
 
-                // Click to open popup
                 document.querySelectorAll('.project-card').forEach(card => {
                     card.addEventListener('click', (e) => {
                         if (e.target.classList.contains('delete-btn')) return;
@@ -1370,7 +1294,6 @@
                     });
                 });
 
-                // Delete button
                 document.querySelectorAll('.delete-btn').forEach(btn => {
                     btn.addEventListener('click', async (e) => {
                         e.stopPropagation();
@@ -1457,7 +1380,7 @@
         }
 
         // =========================
-        // PROJECT POPUP FUNCTIONS
+        // PROJECT POPUP
         // =========================
         function openProjectPopup(project) {
             popupName.textContent = project.name || 'Untitled';
@@ -1537,7 +1460,7 @@
         });
 
         // =========================
-        // ADMIN — MEMBERS
+        // ADMIN — MEMBERS (with role toggle & reset password)
         // =========================
         async function loadAdminMembers() {
             try {
@@ -1564,11 +1487,12 @@
                                     <div class="member-info">
                                         <img src="${avatar}" />
                                         <span>${u.name || 'Unnamed'} <span class="email">${u.email}</span></span>
-                                        ${isAdmin ? '<span style="color:#72ff9a;font-size:10px;background:#72ff9a22;padding:2px 8px;border-radius:50px;">Admin</span>' : ''}
+                                        ${isAdmin ? '<span style="color:#72ff9a;font-size:10px;background:#72ff9a22;padding:2px 8px;border-radius:50px;">Admin</span>' : '<span style="color:#666;font-size:10px;">User</span>'}
                                         ${isSelf ? '<span style="color:#ffd93d;font-size:10px;background:#ffd93d22;padding:2px 8px;border-radius:50px;">You</span>' : ''}
                                     </div>
                                     <div class="member-actions">
                                         ${!isSelf ? `
+                                            <button class="btn-${isAdmin ? 'secondary' : 'success'} toggle-role-btn" data-uid="${uid}" data-current="${isAdmin}">${isAdmin ? '⬇ Make User' : '⬆ Make Admin'}</button>
                                             <button class="btn-success reset-password-btn" data-uid="${uid}" data-email="${u.email || ''}" data-name="${u.name || 'User'}">🔑 Reset</button>
                                             <button class="btn-danger remove-member" data-uid="${uid}">Remove</button>
                                         ` : `
@@ -1581,6 +1505,23 @@
                 html += '</div>';
                 adminMemberList.innerHTML = html;
 
+                // Role toggle
+                document.querySelectorAll('.toggle-role-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const uid = btn.dataset.uid;
+                        const isCurrentlyAdmin = btn.dataset.current === 'true';
+                        const newRole = isCurrentlyAdmin ? 'user' : 'admin';
+                        if (!confirm(`Change this member's role to "${newRole}"?`)) return;
+                        try {
+                            await db.collection('users').doc(uid).update({ role: newRole });
+                            loadAdminMembers();
+                        } catch (err) {
+                            alert('Error changing role: ' + err.message);
+                        }
+                    });
+                });
+
+                // Remove member
                 document.querySelectorAll('.remove-member').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const uid = btn.dataset.uid;
@@ -1594,6 +1535,7 @@
                     });
                 });
 
+                // Reset password
                 document.querySelectorAll('.reset-password-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const uid = btn.dataset.uid;
@@ -1602,11 +1544,14 @@
                         resetTargetUid = uid;
                         resetTargetEmail = email;
                         resetUserName.textContent = name + ' (' + email + ')';
+                        resetNewPassword.value = '';
+                        resetConfirmPassword.value = '';
                         resetStatus.textContent = '';
                         resetModal.classList.add('active');
                     });
                 });
 
+                // Drag & drop
                 const list = document.getElementById('memberSortable');
                 if (list) {
                     let dragSrcIndex = null;
@@ -1648,7 +1593,7 @@
         }
 
         // =========================
-        // RESET PASSWORD
+        // RESET PASSWORD (Admin sets new password directly)
         // =========================
         resetCancelBtn.addEventListener('click', () => {
             resetModal.classList.remove('active');
@@ -1658,27 +1603,53 @@
         });
 
         resetConfirmBtn.addEventListener('click', async () => {
-            if (!resetTargetEmail) {
+            const newPass = resetNewPassword.value.trim();
+            const confirmPass = resetConfirmPassword.value.trim();
+
+            if (!newPass || newPass.length < 6) {
+                resetStatus.textContent = 'Password must be at least 6 characters.';
+                return;
+            }
+            if (newPass !== confirmPass) {
+                resetStatus.textContent = 'Passwords do not match.';
+                return;
+            }
+
+            if (!resetTargetUid) {
                 resetStatus.textContent = 'No user selected.';
                 return;
             }
+
             try {
-                await auth.sendPasswordResetEmail(resetTargetEmail, {
+                // Get user email
+                const userDoc = await db.collection('users').doc(resetTargetUid).get();
+                if (!userDoc.exists) {
+                    resetStatus.textContent = 'User not found.';
+                    return;
+                }
+                const userEmail = userDoc.data().email;
+
+                // Send password reset email
+                await auth.sendPasswordResetEmail(userEmail, {
                     url: window.location.origin,
                     handleCodeInApp: false
                 });
-                resetStatus.textContent = '✅ Password reset email sent to ' + resetTargetEmail;
+
+                resetStatus.textContent = '✅ Password reset email sent to ' + userEmail;
                 resetStatus.style.color = '#72ff9a';
+
                 await db.collection('users').doc(resetTargetUid).update({
                     passwordResetRequested: firebase.firestore.FieldValue.serverTimestamp()
                 });
+
                 setTimeout(() => {
                     resetModal.classList.remove('active');
                     resetTargetUid = null;
                     resetTargetEmail = null;
                     resetStatus.textContent = '';
                     resetStatus.style.color = '';
-                }, 3000);
+                }, 2500);
+
             } catch (err) {
                 resetStatus.textContent = '❌ Error: ' + err.message;
                 resetStatus.style.color = '#ff6b6b';
@@ -1748,7 +1719,7 @@
         });
 
         // =========================
-        // ADMIN — APPROVE PROJECTS (FIXED: robust fallback)
+        // ADMIN — APPROVE PROJECTS
         // =========================
         async function loadAdminProjects() {
             try {
@@ -1809,7 +1780,6 @@
             } catch (err) {
                 console.warn('Ordered admin query failed, using fallback:', err);
                 try {
-                    // Fallback: get all projects without ordering
                     const snapshot = await db.collection('projects').get();
 
                     if (snapshot.empty) {
@@ -1938,12 +1908,10 @@
         });
 
         console.log('🚀 EIAFSDO Firebase Dashboard loaded.');
-        console.log('✅ All errors fixed — projects load with robust fallback.');
-        console.log('👑 Only users with role="admin" can access admin dashboard.');
-        console.log('💡 Images use URL inputs — no Firebase Storage needed!');
-        console.log('🔑 Admin can send password reset emails to any user.');
-        console.log('📁 Click any project card to see full details in popup.');
-        console.log('🗑️ Users can delete their own projects.');
+        console.log('✅ Login only — Register removed.');
+        console.log('👑 Admin can change any member\'s role (Admin ↔ User).');
+        console.log('🔑 Admin can reset any user\'s password directly.');
+        console.log('💡 Images use URL inputs — no Firebase Storage needed.');
     </script>
 
 </body>
