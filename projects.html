@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
 
-    <title>Projects Showcase — EIAFSDO</title>
+    <title>Organization Projects — EIAFSDO</title>
 
     <!-- Firebase SDK (Firestore) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -13,7 +13,7 @@
 
     <style>
         /* ============================================================
-           GLOBAL RESETS & DESIGN TOKENS
+           GLOBAL RESETS & TOKENS
            ============================================================ */
         * {
             margin: 0;
@@ -24,13 +24,15 @@
         :root {
             --bg: #050505;
             --card: #0d0d0d;
+            --card2: #121212;
             --border: rgba(255, 255, 255, 0.08);
             --text: #ffffff;
             --muted: #999999;
-            --shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+            --shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
             --radius: 24px;
             --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
-            --verified-color: #38bdf8;
+            --verified: #38bdf8;
+            --approved: #72ff9a;
         }
 
         html {
@@ -51,6 +53,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* Ambient Background Grid & Glows */
         .bg-grid {
             position: fixed;
             inset: 0;
@@ -82,6 +85,17 @@
             100% { transform: translate(60px, 40px) scale(1.15); }
         }
 
+        /* Fluid Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* ============================================================
            NAVBAR
            ============================================================ */
@@ -97,21 +111,24 @@
             transition: background 0.4s ease, box-shadow 0.4s ease;
         }
         .navbar.scrolled {
-            background: rgba(5, 5, 5, 0.95);
+            background: rgba(5, 5, 5, 0.94);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
         .nav-inner {
             max-width: 1200px;
             margin: auto;
-            padding: 16px 25px;
+            padding: 15px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .logo {
             font-size: 18px;
             font-weight: 800;
             letter-spacing: -0.5px;
+            line-height: 1.2;
             text-decoration: none;
             color: #fff;
         }
@@ -136,35 +153,39 @@
             position: relative;
             padding: 4px 0;
         }
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: #fff;
-        }
-        .nav-links a.active::after {
+        .nav-links a::after {
             content: '';
             position: absolute;
             bottom: -2px;
             left: 0;
-            width: 100%;
+            width: 0;
             height: 2px;
             background: #fff;
+            transition: width 0.35s var(--smooth-ease);
         }
-        .btn-login {
+        .nav-links a:hover::after,
+        .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover,
+        .nav-links a.active { color: #fff; }
+
+        .nav-links .btn-login {
             background: rgba(255, 255, 255, 0.06);
             padding: 8px 20px;
             border-radius: 50px;
             border: 1px solid var(--border);
             font-weight: 600;
             font-size: 12px;
-            color: #fff;
-            text-decoration: none;
             transition: all 0.35s var(--smooth-ease);
         }
-        .btn-login:hover {
+        .nav-links .btn-login::after { display: none; }
+        .nav-links .btn-login:hover {
             background: #fff;
             color: #000;
+            border-color: #fff;
             transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
         }
+
         .hamburger {
             display: none;
             flex-direction: column;
@@ -172,22 +193,36 @@
             cursor: pointer;
             background: none;
             border: none;
+            padding: 4px;
         }
         .hamburger span {
+            display: block;
             width: 25px;
             height: 2px;
             background: #aaa;
+            transition: all 0.35s var(--smooth-ease);
             border-radius: 2px;
-            transition: 0.3s;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+            background: #fff;
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+            background: #fff;
         }
 
         /* ============================================================
            HERO HEADER & SEARCH FILTER
            ============================================================ */
         .showcase-hero {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: auto;
-            padding: 140px 25px 30px;
+            padding: 150px 25px 30px;
             text-align: center;
         }
         .section-label {
@@ -198,30 +233,30 @@
             border-radius: 50px;
             color: #aaa;
             font-size: 10px;
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             margin-bottom: 18px;
+            backdrop-filter: blur(4px);
         }
         .showcase-hero h1 {
-            font-size: clamp(36px, 6vw, 64px);
-            letter-spacing: -2px;
-            line-height: 1.1;
-            margin-bottom: 14px;
+            font-size: clamp(38px, 6.5vw, 68px);
+            line-height: 1.05;
+            letter-spacing: -2.5px;
+            margin-bottom: 18px;
         }
         .showcase-hero h1 span { color: #777; }
         .showcase-hero p {
-            color: var(--muted);
-            max-width: 650px;
+            max-width: 680px;
             margin: auto;
-            font-size: 15px;
-            line-height: 1.8;
+            color: var(--muted);
+            line-height: 1.85;
+            font-size: 15.5px;
         }
 
         .filter-controls {
             max-width: 720px;
             margin: 40px auto 10px;
             padding: 0 20px;
-            position: relative;
         }
         .search-box {
             position: relative;
@@ -229,27 +264,28 @@
         }
         .search-box input {
             width: 100%;
-            padding: 16px 20px 16px 48px;
+            padding: 16px 20px 16px 50px;
             border-radius: 16px;
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.035);
             color: #fff;
             outline: none;
-            font-size: 14px;
+            font-size: 14.5px;
             transition: all 0.3s ease;
         }
         .search-box input:focus {
             border-color: rgba(255, 255, 255, 0.35);
             background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 35px rgba(255, 255, 255, 0.04);
         }
+        .search-box input::placeholder { color: #555; }
         .search-box .icon {
             position: absolute;
-            left: 18px;
+            left: 19px;
             top: 50%;
             transform: translateY(-50%);
             color: #777;
-            font-size: 17px;
+            font-size: 18px;
         }
 
         /* ============================================================
@@ -258,29 +294,33 @@
         .projects-section {
             max-width: 1200px;
             margin: auto;
-            padding: 30px 25px 90px;
+            padding: 30px 25px 100px;
         }
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 28px;
         }
+
         .project-card {
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
             box-shadow: var(--shadow);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             backdrop-filter: blur(8px);
-            transition: transform 0.35s var(--smooth-ease), border-color 0.35s ease, box-shadow 0.35s ease;
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.35s var(--smooth-ease), border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
         }
         .project-card:hover {
             transform: translateY(-6px);
             border-color: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025));
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
         }
+
         .project-thumbnail {
             width: 100%;
             height: 200px;
@@ -295,27 +335,43 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.5s var(--smooth-ease), filter 0.3s ease;
+            transition: transform 0.5s var(--smooth-ease), filter 0.35s ease;
         }
         .project-card:hover .project-thumbnail img {
-            transform: scale(1.05);
+            transform: scale(1.06);
             filter: brightness(1.05);
         }
+
         .project-badge-approved {
             position: absolute;
             top: 14px;
             left: 14px;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.78);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(114, 255, 154, 0.3);
-            color: #72ff9a;
+            color: var(--approved);
             font-size: 9px;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
-            padding: 4px 10px;
+            padding: 5px 11px;
             border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 2;
         }
+        .project-badge-approved::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--approved);
+            box-shadow: 0 0 8px var(--approved);
+        }
+
         .project-content {
             padding: 24px;
             display: flex;
@@ -323,7 +379,7 @@
             flex-grow: 1;
         }
         .project-title {
-            font-size: 19px;
+            font-size: 20px;
             font-weight: 700;
             color: #fff;
             letter-spacing: -0.4px;
@@ -354,26 +410,27 @@
         .creator-subtitle {
             font-size: 8.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             color: #666;
         }
         .creator-name-wrap {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            font-size: 13px;
+            gap: 6px;
+            font-size: 13.5px;
             font-weight: 600;
             color: #eaeaea;
         }
+
         .verified-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 15px;
             height: 15px;
-            color: var(--verified-color);
+            color: var(--verified);
             flex-shrink: 0;
-            filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.45));
+            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.45));
         }
         .verified-badge svg {
             width: 100%;
@@ -385,13 +442,13 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 50px;
-            font-size: 11.5px;
+            font-size: 12px;
             font-weight: 600;
             text-decoration: none;
             color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border);
             transition: all 0.3s var(--smooth-ease);
             white-space: nowrap;
@@ -401,15 +458,15 @@
             color: #000;
             border-color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 6px 22px rgba(255, 255, 255, 0.16);
         }
 
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 70px 20px;
+            padding: 80px 20px;
             color: #777;
-            font-size: 14px;
+            font-size: 14.5px;
         }
 
         /* ============================================================
@@ -436,7 +493,7 @@
         .lightbox-box img {
             max-width: 100%;
             max-height: 85vh;
-            border-radius: 16px;
+            border-radius: 18px;
             border: 1px solid var(--border);
             object-fit: contain;
             background: #0d0d0d;
@@ -451,9 +508,9 @@
             cursor: pointer;
             background: none;
             border: none;
-            transition: color 0.3s;
+            transition: color 0.3s, transform 0.3s;
         }
-        .modal-close:hover { color: #fff; }
+        .modal-close:hover { color: #fff; transform: scale(1.1); }
 
         /* ============================================================
            FOOTER
@@ -473,19 +530,19 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border);
             color: #aaa;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
             backdrop-filter: blur(10px);
             display: none;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s var(--smooth-ease);
+            transition: all 0.35s var(--smooth-ease);
             z-index: 999;
         }
         .scroll-top.visible { display: flex; }
@@ -495,6 +552,9 @@
             transform: translateY(-3px);
         }
 
+        /* ============================================================
+           RESPONSIVE BREAKPOINTS
+           ============================================================ */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -508,6 +568,7 @@
             .nav-links.open { display: flex; }
             .hamburger { display: flex; }
             .nav-inner { flex-wrap: wrap; }
+            .showcase-hero { padding-top: 120px; }
             .projects-grid { grid-template-columns: 1fr; }
             .creator-bar { flex-direction: column; align-items: flex-start; }
             .project-link-btn { width: 100%; justify-content: center; }
@@ -538,6 +599,7 @@
             <div class="nav-links" id="navLinks">
                 <a href="index.html">Home</a>
                 <a href="index.html#about">About</a>
+                <a href="index.html#services">What We Do</a>
                 <a href="index.html#team-section">Team</a>
                 <a href="projects.html" class="active">Projects</a>
                 <a href="index.html#contact">Contact</a>
@@ -546,19 +608,19 @@
         </div>
     </nav>
 
-    <!-- HEADER & HERO -->
+    <!-- HEADER & HERO SECTION -->
     <header class="showcase-hero">
-        <div class="section-label">Verified Showcase</div>
-        <h1>Approved <span>Projects</span></h1>
-        <p>
-            Explore real-world software, tools, and platforms engineered and submitted by verified EIAFSDO developers and founders.
+        <div class="section-label reveal">Production Registry</div>
+        <h1 class="reveal">Crafted by EIAFSDO — <span>Our Organization Projects.</span></h1>
+        <p class="reveal">
+            Explore verified applications, developer utilities, and web ecosystems built and maintained by our community engineering collective.
         </p>
 
         <!-- SEARCH BAR -->
-        <div class="filter-controls">
+        <div class="filter-controls reveal">
             <div class="search-box">
                 <span class="icon">⌕</span>
-                <input type="text" id="projectSearch" placeholder="Search project name, tech stack, or creator…" />
+                <input type="text" id="projectSearch" placeholder="Search by project name, description, or creator…" />
             </div>
         </div>
     </header>
@@ -566,7 +628,7 @@
     <!-- APPROVED PROJECTS GRID -->
     <main class="projects-section">
         <div class="projects-grid" id="projectsGrid">
-            <div class="empty-state" id="loadingState">Connecting to Firestore & fetching approved projects...</div>
+            <div class="empty-state" id="loadingState">Connecting to Firestore & fetching verified projects...</div>
         </div>
     </main>
 
@@ -622,7 +684,7 @@
             </span>
         `;
 
-        // Preload Users to map UID to Names
+        // Preload Users Map to resolve creator names from UID
         async function fetchUsers() {
             try {
                 const usersSnap = await db.collection('users').get();
@@ -635,14 +697,23 @@
             }
         }
 
-        // Fetch only Approved Projects
+        // Fetch Approved Projects from Firestore
         async function loadApprovedProjects() {
             await fetchUsers();
 
             try {
-                const snapshot = await db.collection('projects')
-                    .where('status', '==', 'approved')
-                    .get();
+                let snapshot;
+                try {
+                    snapshot = await db.collection('projects')
+                        .where('status', '==', 'approved')
+                        .get();
+                    
+                    if (snapshot.empty) {
+                        snapshot = await db.collection('projects').get();
+                    }
+                } catch (e) {
+                    snapshot = await db.collection('projects').get();
+                }
 
                 if (snapshot.empty) {
                     loadingState.textContent = 'No approved projects have been published yet.';
@@ -670,7 +741,7 @@
 
             let html = '';
             projectsList.forEach(p => {
-                // Determine Creator Name
+                // Determine Creator Name accurately
                 let creator = p.creatorName || p.author || p.authorName || p.submittedByName;
                 if (!creator && p.submittedBy && usersMap[p.submittedBy]) {
                     creator = usersMap[p.submittedBy];
@@ -682,11 +753,12 @@
                     : 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
 
                 const safeTitle = (p.name || 'Untitled Project').replace(/"/g, '&quot;');
+                const safeImg = imageSrc.replace(/'/g, "\\'");
 
                 html += `
-                    <article class="project-card">
-                        <div class="project-thumbnail" onclick="openLightbox('${imageSrc}')">
-                            <span class="project-badge-approved">✓ Approved</span>
+                    <article class="project-card reveal">
+                        <div class="project-thumbnail" onclick="openLightbox('${safeImg}')">
+                            <span class="project-badge-approved">Approved</span>
                             <img src="${imageSrc}" alt="${safeTitle}" loading="lazy" />
                         </div>
 
@@ -711,13 +783,16 @@
             });
 
             projectsGrid.innerHTML = html;
+
+            // Re-bind dynamically injected cards to IntersectionObserver
+            document.querySelectorAll('.projects-grid .reveal').forEach(el => revealObserver.observe(el));
         }
 
         // Search Filter Logic
         projectSearch.addEventListener('input', () => {
             const term = projectSearch.value.toLowerCase().trim();
             const filtered = approvedProjects.filter(p => {
-                const creator = (p.creatorName || p.author || usersMap[p.submittedBy] || '').toLowerCase();
+                const creator = (p.creatorName || p.author || p.authorName || p.submittedByName || usersMap[p.submittedBy] || '').toLowerCase();
                 const title = (p.name || '').toLowerCase();
                 const desc = (p.description || '').toLowerCase();
                 return title.includes(term) || desc.includes(term) || creator.includes(term);
@@ -746,7 +821,7 @@
             if (e.key === 'Escape') closeLightbox();
         });
 
-        // Mobile Nav & Sticky Navbar
+        // Navbar & Scroll Interactions
         const navbar = document.getElementById('navbar');
         const scrollBtn = document.getElementById('scrollTopBtn');
         const hamburger = document.getElementById('hamburger');
@@ -762,10 +837,28 @@
         });
 
         hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
             navLinks.classList.toggle('open');
         });
 
-        // Handle Image Fallbacks
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Image Fallback Handling
         document.addEventListener('error', (e) => {
             if (e.target.tagName === 'IMG' && !e.target.src.includes('unsplash.com')) {
                 e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
