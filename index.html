@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
 
-    <title>EIAFSDO — East Indian Amateur Full-Stack Developers Organization</title>
+    <title>EIAFSDO — East Indian Amateur Full‑Stack Developers Organization</title>
 
     <style>
         /* ============================================================
                EAST INDIAN AMATEUR FULL-STACK DEVELOPERS ORGANIZATION
-               ALL-IN-ONE: WHO WE ARE · ABOUT · TEAM · PROJECTS · LOGIN
+               ENHANCED ALL-IN-ONE PAGE
                ============================================================ */
 
-        /* ---------- RESET & VARIABLES ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -89,7 +88,7 @@
             opacity: .3;
         }
 
-        /* ---------- SCROLL ANIMATIONS ---------- */
+        /* ---------- SCROLL REVEAL ---------- */
         .reveal {
             opacity: 0;
             transform: translateY(50px);
@@ -236,8 +235,13 @@
             animation: pulseGlow 3s ease-in-out infinite;
         }
         @keyframes pulseGlow {
-            0%, 100% { border-color: var(--border); }
-            50% { border-color: rgba(255, 255, 255, .25); }
+            0%,
+            100% {
+                border-color: var(--border);
+            }
+            50% {
+                border-color: rgba(255, 255, 255, .25);
+            }
         }
         .hero h1 {
             font-size: clamp(40px, 8vw, 82px);
@@ -248,19 +252,24 @@
         .hero h1 span {
             color: #777;
         }
+        .hero .motto {
+            font-size: 20px;
+            color: #aaa;
+            font-style: italic;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .hero .motto strong {
+            color: white;
+            font-weight: 500;
+        }
         .hero p {
             max-width: 650px;
             margin: auto;
             color: var(--muted);
             line-height: 1.8;
             font-size: 16px;
-        }
-        .hero .motto-badge {
-            margin-top: 14px;
-            font-style: italic;
-            font-size: 13px;
-            letter-spacing: 1px;
-            color: #bbb;
         }
         .hero .cta-group {
             margin-top: 35px;
@@ -323,7 +332,7 @@
         }
         .section-sub {
             color: var(--muted);
-            max-width: 600px;
+            max-width: 700px;
             font-size: 15px;
             line-height: 1.8;
         }
@@ -348,6 +357,17 @@
         .about-text .highlight {
             color: white;
             font-weight: 600;
+        }
+        .about-text .motto-highlight {
+            display: block;
+            font-size: 20px;
+            font-style: italic;
+            color: #ccc;
+            padding: 16px 20px;
+            border-left: 3px solid white;
+            background: rgba(255, 255, 255, .03);
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
         }
         .about-stats {
             display: grid;
@@ -377,6 +397,48 @@
             font-size: 12px;
             color: #666;
             margin-top: 4px;
+        }
+
+        /* ---------- WHAT WE DO (SERVICES) ---------- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .service-card {
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px 24px;
+            text-align: center;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .service-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .service-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, .2);
+            background: rgba(255, 255, 255, .05);
+        }
+        .service-card .icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .service-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .service-card p {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         /* ---------- TEAM ---------- */
@@ -482,10 +544,21 @@
             border-color: rgba(255, 255, 255, .25);
             box-shadow: 0 30px 80px rgba(0, 0, 0, .65);
         }
-        .team-card:nth-child(2) { animation-delay: .08s; }
-        .team-card:nth-child(3) { animation-delay: .16s; }
-        .team-card:nth-child(4) { animation-delay: .24s; }
-        .team-card:nth-child(5) { animation-delay: .32s; }
+        .team-card:nth-child(2) {
+            animation-delay: .08s;
+        }
+        .team-card:nth-child(3) {
+            animation-delay: .16s;
+        }
+        .team-card:nth-child(4) {
+            animation-delay: .24s;
+        }
+        .team-card:nth-child(5) {
+            animation-delay: .32s;
+        }
+        .team-card:nth-child(6) {
+            animation-delay: .40s;
+        }
 
         .card-top {
             display: flex;
@@ -531,7 +604,7 @@
             pointer-events: none;
         }
         .profile::after {
-            content: "👤 View Profile";
+            content: "👤 Click";
             position: absolute;
             bottom: -8px;
             left: 50%;
@@ -625,7 +698,7 @@
             text-decoration: none;
             border: 1px solid var(--border);
             border-radius: 9px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             transition: .3s;
         }
@@ -668,10 +741,11 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            pointer-events: none;
         }
         .team-card.coming-soon .soon-icon {
-            font-size: 42px;
-            margin-bottom: 14px;
+            font-size: 48px;
+            margin-bottom: 16px;
             opacity: .5;
         }
         .team-card.coming-soon h3 {
@@ -738,6 +812,107 @@
             border: 1px solid var(--border);
             padding: 4px 12px;
             border-radius: 50px;
+        }
+
+        /* ---------- JOIN US ---------- */
+        #join {
+            text-align: center;
+        }
+        #join .section-sub {
+            margin: 0 auto 30px;
+        }
+        .join-btn {
+            display: inline-block;
+            padding: 16px 48px;
+            border-radius: 50px;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .join-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(255, 255, 255, .15);
+        }
+
+        /* ---------- CONTACT ---------- */
+        #contact .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        .contact-info p {
+            color: #aaa;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+        .contact-info .social-icons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .contact-info .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #aaa;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            transition: .3s;
+            font-size: 13px;
+        }
+        .contact-info .social-icons a:hover {
+            color: white;
+            border-color: white;
+            background: rgba(255, 255, 255, .05);
+        }
+        .contact-info .social-icons a svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+            transition: .3s;
+            font-family: inherit;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: rgba(255, 255, 255, .3);
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .contact-form button {
+            padding: 14px 32px;
+            border-radius: 12px;
+            border: none;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: .3s;
+        }
+        .contact-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
         }
 
         /* ---------- MODAL ---------- */
@@ -831,16 +1006,32 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
         @keyframes slideUp {
-            from { transform: translateY(30px) scale(.96); opacity: 0; }
-            to { transform: translateY(0) scale(1); opacity: 1; }
+            from {
+                transform: translateY(30px) scale(.96);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
         }
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ---------- LOGIN MODAL ---------- */
@@ -900,6 +1091,35 @@
             color: #888;
         }
 
+        /* ---------- SCROLL TO TOP ---------- */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid var(--border);
+            color: #aaa;
+            font-size: 22px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: .3s;
+            z-index: 999;
+        }
+        .scroll-top:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+        .scroll-top.visible {
+            display: flex;
+        }
+
         /* ---------- FOOTER ---------- */
         footer {
             border-top: 1px solid var(--border);
@@ -912,29 +1132,6 @@
         }
         footer strong {
             color: #aaa;
-        }
-        .footer-socials {
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .footer-socials a {
-            color: #777;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            padding: 6px 14px;
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            transition: .3s;
-        }
-        .footer-socials a:hover {
-            color: white;
-            border-color: white;
-            background: rgba(255, 255, 255, .05);
         }
 
         /* ---------- RESPONSIVE ---------- */
@@ -961,6 +1158,9 @@
                 padding-top: 120px;
                 min-height: auto;
             }
+            .hero .motto {
+                font-size: 17px;
+            }
             .team-grid {
                 grid-template-columns: 1fr;
                 padding-left: 17px;
@@ -975,9 +1175,6 @@
             .modal-content {
                 padding: 25px 18px 20px;
             }
-            .footer-socials {
-                gap: 10px;
-            }
             .profile::after {
                 content: "👤";
                 font-size: 12px;
@@ -985,6 +1182,12 @@
             }
             .about-stats .stat .number {
                 font-size: 26px;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
         @media (max-width: 480px) {
@@ -998,6 +1201,13 @@
             }
             .nav-links a {
                 font-size: 12px;
+            }
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-info .social-icons a {
+                font-size: 12px;
+                padding: 6px 12px;
             }
         }
     </style>
@@ -1016,12 +1226,14 @@
         <div class="nav-inner">
             <a href="#hero" class="logo">
                 EIAFSDO
-                <small>East Indian Amateur Full-Stack Developers Org.</small>
+                <small>East Indian Amateur Full‑Stack Developers Org.</small>
             </a>
             <div class="nav-links">
                 <a href="#about">About</a>
+                <a href="#services">What We Do</a>
                 <a href="#team-section">Team</a>
                 <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
                 <a href="#" class="btn-login" id="openLoginBtn">🔑 Login</a>
             </div>
         </div>
@@ -1029,14 +1241,17 @@
 
     <!-- ===== HERO ===== -->
     <section class="hero" id="hero">
-        <div class="small-title">East Indian Amateur Full-Stack Developers Organization</div>
+        <div class="small-title">East Indian Amateur Full‑Stack Developers Organization</div>
         <h1>Build. Learn. <span>Grow.</span></h1>
+        <div class="motto">
+            <strong>“Aedificare — Disputare — Crescere”</strong><br />
+            <span style="font-size:14px; color:#888;">Build · Discuss · Grow</span>
+        </div>
         <p>
-            We are a collective of passionate amateur full-stack developers
-            from East India, building products, tools and experiences with
-            creativity, engineering and a shared vision.
+            We are a student‑operated collective, sprouted from a band of
+            interested students of <strong style="color:white;">HETC</strong>,
+            who wanted to explore the craftsmanship behind the web and mobile apps we use daily.
         </p>
-        <div class="motto-badge">"Aedificare · Disputare · Crescere"</div>
         <div class="cta-group">
             <a href="#about" class="cta-primary">Who We Are</a>
             <a href="#team-section" class="cta-secondary">Meet the Team →</a>
@@ -1048,394 +1263,605 @@
         <div class="section-label reveal">Who We Are</div>
         <h2 class="section-title reveal">About <span>EIAFSDO</span></h2>
         <p class="section-sub reveal">
-            We're a student-operated organization turning theoretical code into real-world applications.
+            We're a student‑run community of aspiring full‑stack developers from East India,
+            driven by curiosity and a passion for craftsmanship.
         </p>
 
         <div class="about-grid">
             <div class="about-text reveal-left">
                 <p>
                     <span class="highlight">East Indian Amateur Full-Stack Developers Organization</span>
-                    (EIAFSDO) was sprouted out of a band of curious students from <span class="highlight">HETC</span> (Hooghly Engineering & Technology College) who wanted to explore the real craftsmanship behind the web and mobile applications we rely on daily.
+                    (EIAFSDO) is a student‑operated organization, sprouted out of a band of
+                    interested students of <span class="highlight">HETC</span>, who wanted to
+                    explore the craftsmanship behind the web apps and the mobile apps we use daily.
                 </p>
                 <p>
-                    Guided by our Latin motto <span class="highlight">"Aedificare-Disputare-Crescere"</span> (<em>Build · Discuss · Grow</em>), we bridge the gap between classroom theory and industry-grade engineering. We take ideas and convert them into production-ready web and mobile experiences.
+                    Our motto is <strong style="color:white;">“Aedificare — Disputare — Crescere”</strong>
+                    (<em>Build · Discuss · Grow</em>). We believe in learning by building,
+                    growing through discussion, and evolving as a community.
                 </p>
                 <p>
-                    From high-performance responsive web layouts to smooth, hardware-accelerated animations and mobile-first architectures, we build practical open-source utilities while mentoring each other across the entire stack.
+                    From <span class="highlight">DevConnect</span> to
+                    <span class="highlight">EduTrack</span>, every project we create is a
+                    stepping stone toward becoming better engineers — and a way to give back
+                    to the developer community.
                 </p>
+                <div class="motto-highlight">
+                    “Aedificare — Disputare — Crescere”
+                    <span style="display:block; font-size:14px; color:#888; font-style:normal; margin-top:4px;">
+                        Build · Discuss · Grow
+                    </span>
+                </div>
             </div>
-
             <div class="about-stats reveal-right">
                 <div class="stat">
-                    <span class="number">100%</span>
-                    <span class="label">Student-Operated (HETC)</span>
+                    <span class="number">3</span>
+                    <span class="label">Founders</span>
                 </div>
                 <div class="stat">
-                    <span class="number">12+</span>
+                    <span class="number">4+</span>
                     <span class="label">Active Projects</span>
                 </div>
                 <div class="stat">
-                    <span class="number">30+</span>
-                    <span class="label">Student Developers</span>
+                    <span class="number">100%</span>
+                    <span class="label">Student‑Operated</span>
                 </div>
                 <div class="stat">
-                    <span class="number">60 FPS</span>
-                    <span class="label">Fluid UI Performance</span>
+                    <span class="number">🌏</span>
+                    <span class="label">East India · Global</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHAT WE DO (SERVICES) ===== -->
+    <section id="services">
+        <div class="section-label reveal">What We Do</div>
+        <h2 class="section-title reveal">Our <span>Focus Areas</span></h2>
+        <p class="section-sub reveal">
+            We combine development, mentorship, and community building to create impact.
+        </p>
+
+        <div class="services-grid" id="servicesGrid">
+            <div class="service-card" style="transition-delay:0.0s;">
+                <span class="icon">💻</span>
+                <h3>Full‑Stack Development</h3>
+                <p>Building modern web applications with React, Node, Django, Vue, and more.</p>
+            </div>
+            <div class="service-card" style="transition-delay:0.1s;">
+                <span class="icon">📦</span>
+                <h3>Open Source</h3>
+                <p>Creating and maintaining open‑source tools that help the developer community.</p>
+            </div>
+            <div class="service-card" style="transition-delay:0.2s;">
+                <span class="icon">🧑‍🏫</span>
+                <h3>Mentorship</h3>
+                <p>Guiding aspiring developers through 1‑on‑1 mentoring and group workshops.</p>
+            </div>
+            <div class="service-card" style="transition-delay:0.3s;">
+                <span class="icon">🤝</span>
+                <h3>Community Building</h3>
+                <p>Fostering a collaborative environment where developers learn and grow together.</p>
             </div>
         </div>
     </section>
 
     <!-- ===== TEAM SECTION ===== -->
-    <section id="team-section">
-        <div class="section-label reveal">Core Collective</div>
-        <h2 class="section-title reveal">Meet the <span>Team</span></h2>
-        <p class="section-sub reveal">
-            Engineers, designers, and students collaborating across East India.
-        </p>
+    <div id="team-section" style="padding-top:20px;">
+        <div style="max-width:1100px;margin:auto;padding:0 25px;">
+            <div class="section-label reveal">Our Leadership</div>
+            <h2 class="section-title reveal">Meet the <span>Team</span></h2>
+            <p class="section-sub reveal">
+                The founders driving the vision, building the products,
+                and shaping the culture of EIAFSDO.
+            </p>
+        </div>
 
-        <div class="team-controls reveal">
+        <div class="team-controls">
             <div class="team-search">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="teamSearchInput" placeholder="Search developer by name, stack, or role..." />
+                <span class="search-icon">⌕</span>
+                <input type="text" id="teamSearch" placeholder="Search member, role or skill…" />
             </div>
             <div class="team-filters">
-                <button class="filter active" data-filter="all">All</button>
-                <button class="filter" data-filter="fullstack">Full-Stack</button>
-                <button class="filter" data-filter="frontend">Frontend</button>
-                <button class="filter" data-filter="backend">Backend</button>
-                <button class="filter" data-filter="uiux">UI/UX & Design</button>
+                <button class="filter active" data-role="all">All</button>
+                <button class="filter" data-role="leadership">Leadership</button>
             </div>
         </div>
 
         <div class="team-grid" id="teamGrid">
-            <!-- Member 1: Founder -->
-            <div class="team-card featured" data-role="fullstack" data-name="Priyabrata Patra" data-stack="PHP MySQL JS HTML CSS">
-                <span class="founder-tag">FOUNDER / LEAD</span>
+
+            <!-- AYUSH -->
+            <article class="team-card featured" data-category="leadership" data-search="Ayush Chatterjee Founder Full-Stack JavaScript React Node">
+                <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
-                    <span class="card-label">Core Lead</span>
-                    <span class="status" title="Active"></span>
+                    <span class="card-label">EIAFSDO ID</span>
+                    <span class="status"></span>
                 </div>
-                <div class="profile" onclick="openProfileModal('Priyabrata Patra', 'Founder & Full-Stack Lead', 'Specializes in custom PHP backends, database architecture, and performance-optimized interactive interfaces. Student engineer exploring real-world app craftsmanship.', ['EIAFSDO Portal', 'CodeBihin Engine', 'CBT Test System'])">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'><rect fill='%231a1a1a' width='140' height='140'/><text fill='%23666' font-size='42' font-family='sans-serif' x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle'>PP</text></svg>" alt="Priyabrata Patra" />
+                <div class="profile" data-member="Ayush Chatterjee">
+                    <img src="images/ayush.jpg" alt="Ayush Chatterjee" />
                 </div>
-                <div class="name">Priyabrata Patra</div>
-                <div class="role">Full-Stack Architect & Core Lead</div>
-                <div class="badge">PHP · MySQL · Vanilla JS</div>
+                <h2 class="name">Ayush Chatterjee</h2>
+                <p class="role">Founder · Full-Stack Developer</p>
+                <div class="badge">Leadership</div>
                 <div class="divider"></div>
                 <div class="details">
-                    <div class="detail">
-                        <small>Institution</small>
-                        <strong>HETC</strong>
-                    </div>
-                    <div class="detail">
-                        <small>Focus</small>
-                        <strong>Systems & Architecture</strong>
-                    </div>
+                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                    <div class="detail"><small>Stack</small><strong>MERN · Next</strong></div>
+                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
+                    <div class="detail"><small>Status</small><strong>Active</strong></div>
                 </div>
-                <div class="bio">
-                    Passionate about building fast, lightweight web systems and bringing student developers together.
-                </div>
+                <p class="bio">Ayush is the driving force behind EIAFSDO. A self-taught full-stack developer with a love for clean code and system design.</p>
                 <div class="socials">
-                    <a href="#" title="GitHub">GH</a>
-                    <a href="#" title="LinkedIn">IN</a>
-                    <a href="#" title="X / Twitter">𝕏</a>
+                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="#" aria-label="Twitter">TW</a>
                 </div>
-            </div>
+            </article>
 
-            <!-- Member 2: Frontend & UI -->
-            <div class="team-card" data-role="frontend uiux" data-name="Sourav Das" data-stack="CSS React Tailwind UI/UX">
+            <!-- PRIYABRATA -->
+            <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React">
+                <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
-                    <span class="card-label">Core Team</span>
-                    <span class="status" title="Active"></span>
+                    <span class="card-label">EIAFSDO ID</span>
+                    <span class="status"></span>
                 </div>
-                <div class="profile" onclick="openProfileModal('Sourav Das', 'Frontend & Visual Architect', 'Focuses on smooth client-side interaction, CSS layouts, and micro-interactions.', ['DevConnect UI', 'Design System Spec'])">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'><rect fill='%231a1a1a' width='140' height='140'/><text fill='%23666' font-size='42' font-family='sans-serif' x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle'>SD</text></svg>" alt="Sourav Das" />
+                <div class="profile" data-member="Priyabrata Patra">
+                    <img src="images/priyabrata.jpg" alt="Priyabrata Patra" />
                 </div>
-                <div class="name">Sourav Das</div>
-                <div class="role">Frontend & Interaction Design</div>
-                <div class="badge">React · Tailwind · Animation</div>
+                <h2 class="name">Priyabrata Patra</h2>
+                <p class="role">Founder · Full-Stack Developer</p>
+                <div class="badge">Leadership</div>
                 <div class="divider"></div>
                 <div class="details">
-                    <div class="detail">
-                        <small>Institution</small>
-                        <strong>HETC</strong>
-                    </div>
-                    <div class="detail">
-                        <small>Focus</small>
-                        <strong>Fluid Interfaces</strong>
-                    </div>
+                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                    <div class="detail"><small>Stack</small><strong>Django · React</strong></div>
+                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
+                    <div class="detail"><small>Status</small><strong>Active</strong></div>
                 </div>
-                <div class="bio">
-                    Dedicated to mobile-first responsive viewports, clean typography, and 60fps animations.
-                </div>
+                <p class="bio">Priyabrata is a backend-first developer with a passion for scalable architecture and data-driven applications.</p>
                 <div class="socials">
-                    <a href="#" title="GitHub">GH</a>
-                    <a href="#" title="LinkedIn">IN</a>
-                    <a href="#" title="Behance">BE</a>
+                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="#" aria-label="GitHub">GH</a>
                 </div>
-            </div>
+            </article>
 
-            <!-- Member 3: Backend & API -->
-            <div class="team-card" data-role="backend" data-name="Ankan Mukherjee" data-stack="Node.js Express PostgreSQL REST API">
+            <!-- ABHRADEEP -->
+            <article class="team-card" data-category="leadership" data-search="Abhradeep Dhara Founder Full-Stack Vue Node AWS">
+                <div class="founder-tag">FOUNDER</div>
                 <div class="card-top">
-                    <span class="card-label">Core Team</span>
-                    <span class="status" title="Active"></span>
+                    <span class="card-label">EIAFSDO ID</span>
+                    <span class="status"></span>
                 </div>
-                <div class="profile" onclick="openProfileModal('Ankan Mukherjee', 'Backend Engineer', 'Designs scalable microservices, relational databases, and secure token authentication schemas.', ['EduTrack API', 'AuthGateway'])">
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'><rect fill='%231a1a1a' width='140' height='140'/><text fill='%23666' font-size='42' font-family='sans-serif' x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle'>AM</text></svg>" alt="Ankan Mukherjee" />
+                <div class="profile" data-member="Abhradeep Dhara">
+                    <img src="images/abhradeep.jpg" alt="Abhradeep Dhara" />
                 </div>
-                <div class="name">Ankan Mukherjee</div>
-                <div class="role">Backend & Cloud Pipelines</div>
-                <div class="badge">Node.js · PostgreSQL · APIs</div>
+                <h2 class="name">Abhradeep Dhara</h2>
+                <p class="role">Founder · Full-Stack Developer</p>
+                <div class="badge">Leadership</div>
                 <div class="divider"></div>
                 <div class="details">
-                    <div class="detail">
-                        <small>Institution</small>
-                        <strong>HETC</strong>
-                    </div>
-                    <div class="detail">
-                        <small>Focus</small>
-                        <strong>Database Schema</strong>
-                    </div>
+                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
+                    <div class="detail"><small>Stack</small><strong>Vue · Node</strong></div>
+                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
+                    <div class="detail"><small>Status</small><strong>Active</strong></div>
                 </div>
-                <div class="bio">
-                    Obsessed with database indexing, queries optimization, and zero-latency API endpoints.
-                </div>
+                <p class="bio">Abhradeep is a front-end specialist who loves crafting beautiful, accessible interfaces with design thinking.</p>
                 <div class="socials">
-                    <a href="#" title="GitHub">GH</a>
-                    <a href="#" title="LinkedIn">IN</a>
-                    <a href="#" title="Terminal">DEV</a>
+                    <a href="#" aria-label="LinkedIn">IN</a>
+                    <a href="#" aria-label="GitHub">GH</a>
+                    <a href="#" aria-label="Dribbble">DR</a>
                 </div>
-            </div>
+            </article>
 
-            <!-- Open Position Placeholder -->
-            <div class="team-card coming-soon" data-role="all" data-name="Open Role Recruit" data-stack="Any">
-                <div class="soon-icon">🚀</div>
-                <h3>Join the Collective</h3>
-                <p>Are you an aspiring student developer at HETC or in East India? We're actively onboarding contributors.</p>
-            </div>
+            <!-- MORE SOON -->
+            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
+                <div class="soon-icon">✦</div>
+                <h3>More Soon</h3>
+                <p>We're growing — new leaders joining soon.</p>
+            </article>
+            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
+                <div class="soon-icon">✦</div>
+                <h3>More Soon</h3>
+                <p>Additional team members on the horizon.</p>
+            </article>
+            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
+                <div class="soon-icon">✦</div>
+                <h3>More Soon</h3>
+                <p>We're expanding our leadership team.</p>
+            </article>
 
-            <div class="empty" id="teamEmptyState">
-                <p>No developers match your current filter or search query.</p>
-            </div>
+            <div class="empty" id="teamEmpty">No team members found.</div>
         </div>
-    </section>
+    </div>
 
-    <!-- ===== PROJECTS SECTION ===== -->
+    <!-- ===== PROJECTS ===== -->
     <section id="projects">
-        <div class="section-label reveal">What We Build</div>
-        <h2 class="section-title reveal">Featured <span>Creations</span></h2>
+        <div class="section-label reveal">Our Work</div>
+        <h2 class="section-title reveal">Projects <span>we're building.</span></h2>
         <p class="section-sub reveal">
-            Real software built by students to solve academic, community, and platform challenges.
+            Open-source tools and platforms crafted by the EIAFSDO team.
         </p>
 
-        <div class="project-grid reveal">
-            <div class="project-card">
-                <span class="p-icon">🌐</span>
-                <h3>DevConnect Portal</h3>
-                <p>A collaborative directory and portfolio hub designed for amateur developers across eastern technical colleges to network and share code.</p>
-                <span class="p-tag">PHP · MySQL · REST</span>
-            </div>
-
-            <div class="project-card">
-                <span class="p-icon">📚</span>
-                <h3>EduTrack Academic Suite</h3>
-                <p>A responsive platform helping students track syllabus milestones, verify mock test answers, and manage study materials in real-time.</p>
-                <span class="p-tag">Full-Stack · JavaScript</span>
-            </div>
-
-            <div class="project-card">
+        <div class="project-grid">
+            <div class="project-card reveal">
                 <span class="p-icon">⚡</span>
-                <h3>High-Graphic Animation Boilerplate</h3>
-                <p>A zero-dependency, ultra-lightweight dark-mode UI kit with built-in hardware acceleration and responsive modal dialogs.</p>
-                <span class="p-tag">CSS3 · Vanilla JS · HTML5</span>
+                <h3>DevConnect</h3>
+                <p>A community platform for amateur developers to share projects, ask questions and collaborate in real-time.</p>
+                <span class="p-tag">React · Node · Socket.io</span>
             </div>
-
-            <div class="project-card">
-                <span class="p-icon">📱</span>
-                <h3>App Craftsmanship Lab</h3>
-                <p>Ongoing prototypes deconstructing the UX and networking layers of popular mobile and cross-platform web applications.</p>
-                <span class="p-tag">Hybrid Web · PWA</span>
+            <div class="project-card reveal" style="transition-delay:.1s;">
+                <span class="p-icon">📦</span>
+                <h3>StackStarter</h3>
+                <p>Boilerplate generator that spins up full-stack apps with auth, DB, and API scaffolding in one command.</p>
+                <span class="p-tag">CLI · TypeScript · Prisma</span>
+            </div>
+            <div class="project-card reveal" style="transition-delay:.2s;">
+                <span class="p-icon">🧠</span>
+                <h3>EduTrack</h3>
+                <p>Open-source learning management system built for coding bootcamps and self-paced learners.</p>
+                <span class="p-tag">Django · React · PostgreSQL</span>
+            </div>
+            <div class="project-card reveal" style="transition-delay:.3s;">
+                <span class="p-icon">📊</span>
+                <h3>Analytics Lite</h3>
+                <p>Privacy-first, lightweight analytics dashboard for indie makers and small teams.</p>
+                <span class="p-tag">Vue · FastAPI · ClickHouse</span>
             </div>
         </div>
     </section>
+
+    <!-- ===== JOIN US ===== -->
+    <section id="join">
+        <div class="section-label reveal">Get Involved</div>
+        <h2 class="section-title reveal">Join <span>the Movement</span></h2>
+        <p class="section-sub reveal">
+            Whether you're a student or a professional, there's a place for you in EIAFSDO.
+            Let's build, learn, and grow together.
+        </p>
+        <a href="#" class="join-btn reveal">🚀 Join EIAFSDO</a>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+        <div class="section-label reveal">Connect</div>
+        <h2 class="section-title reveal">Get in <span>Touch</span></h2>
+        <p class="section-sub reveal">
+            Have a question, idea, or want to collaborate? Reach out to us.
+        </p>
+
+        <div class="contact-grid">
+            <div class="contact-info reveal-left">
+                <p>
+                    <strong style="color:white;">Email:</strong>
+                    <a href="mailto:admin@codebihin.in" style="color:#aaa;text-decoration:none;">admin@codebihin.in</a>
+                </p>
+                <p>
+                    <strong style="color:white;">Location:</strong>
+                    <span style="color:#aaa;">HETC, East India</span>
+                </p>
+                <p style="margin-top:20px;">
+                    Follow us on social media for updates, projects, and community events.
+                </p>
+                <div class="social-icons">
+                    <a href="#" target="_blank" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="#" target="_blank" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.3-.535-1.52.117-3.16 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.399s2.04.132 3 .399c2.292-1.552 3.3-1.23 3.3-1.23.653 1.64.24 2.86.118 3.16.768.84 1.233 1.91 1.233 3.22 0 4.61-2.804 5.62-5.476 5.92.43.37.824 1.102.824 2.22 0 1.602-.015 2.894-.015 3.287 0 .322.216.694.825.577C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        GitHub
+                    </a>
+                    <a href="#" target="_blank" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        Twitter
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        Instagram
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-form reveal-right">
+                <form id="contactForm">
+                    <input type="text" placeholder="Your Name" required />
+                    <input type="email" placeholder="Email Address" required />
+                    <textarea placeholder="Tell us what's on your mind…" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        © 2026 <strong>East Indian Amateur Full-Stack Developers Organization</strong>. All rights reserved.
+    </footer>
+
+    <!-- ===== SCROLL TO TOP ===== -->
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
 
     <!-- ===== PROFILE MODAL ===== -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('profileModal')">&times;</button>
-            <h2 id="modalMemberName">Member <span>Profile</span></h2>
-            <p id="modalMemberRole" style="color: #aaa; font-size: 14px; margin-bottom: 16px;"></p>
-            <p id="modalMemberBio" style="color: #777; font-size: 13px; line-height: 1.7; margin-bottom: 24px;"></p>
-
-            <h3 style="font-size: 14px; letter-spacing: 1px; text-transform: uppercase; color: #555; margin-bottom: 12px;">Active Contributions</h3>
-            <div id="modalProjectList"></div>
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 id="modalName">Projects by <span></span></h2>
+            <div id="modalProjects"></div>
         </div>
     </div>
 
     <!-- ===== LOGIN MODAL ===== -->
     <div class="modal-overlay login-modal" id="loginModal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
-            <h2>Portal <span>Access</span></h2>
-            <div class="sub">EIAFSDO Member & Contributor Gateway</div>
-
-            <form class="login-form" onsubmit="event.preventDefault(); alert('Authentication initialized for EIAFSDO Member session.'); closeModal('loginModal');">
-                <input type="text" placeholder="Member ID or Email" required />
-                <input type="password" placeholder="Passkey" required />
-                <button type="submit">Authenticate →</button>
+            <button class="modal-close" id="loginClose">&times;</button>
+            <h2>🔑 Welcome Back</h2>
+            <p class="sub">Sign in to your EIAFSDO account</p>
+            <form class="login-form" id="loginForm">
+                <input type="email" placeholder="Email address" value="demo@eiafsdo.org" />
+                <input type="password" placeholder="Password" value="password123" />
+                <button type="submit">Sign In</button>
                 <div class="demo-hint">
-                    Student access: Use registered <code>hetc.ac.in</code> credentials.
+                    💡 Demo: use <code>demo@eiafsdo.org</code> / <code>password123</code>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
-    <footer>
-        <div class="footer-socials">
-            <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="https://twitter.com" target="_blank" rel="noopener">Twitter / 𝕏</a>
-            <a href="mailto:contact@eiafsdo.org">Contact</a>
-        </div>
-        <p>
-            <strong>East Indian Amateur Full-Stack Developers Organization</strong><br />
-            Sprouted at HETC · <em>Aedificare · Disputare · Crescere</em> · &copy; 2026 All Rights Reserved.
-        </p>
-    </footer>
-
-    <!-- ===== SCRIPTS ===== -->
+    <!-- ============================================================
+    SCRIPT
+    ============================================================ -->
     <script>
-        // 1. Navbar dynamic background on scroll
+        /* =========================
+               NAVBAR SCROLL
+               ========================= */
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 40) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // 2. Intersection Observer for Scroll Reveals
-        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        /* =========================
+               SCROLL REVEAL
+               ========================= */
+        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, {
-            threshold: 0.12,
-            rootMargin: '0px 0px -40px 0px'
+        }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        /* =========================
+               SERVICES STAGGERED REVEAL (smooth)
+               ========================= */
+        const serviceCards = document.querySelectorAll('.service-card');
+        const serviceObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: .15, rootMargin: '0px 0px -30px 0px' });
+        serviceCards.forEach((card, index) => {
+            card.style.transitionDelay = (index * 0.08) + 's';
+            serviceObserver.observe(card);
         });
 
-        revealElements.forEach(el => observer.observe(el));
+        /* =========================
+               SCROLL TO TOP
+               ========================= */
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
-        // 3. Team Filter and Search Engine
-        const teamSearchInput = document.getElementById('teamSearchInput');
-        const filterBtns = document.querySelectorAll('.team-filters .filter');
-        const teamCards = document.querySelectorAll('#teamGrid .team-card:not(.coming-soon)');
-        const emptyState = document.getElementById('teamEmptyState');
-        let currentFilter = 'all';
+        /* =========================
+               TEAM SEARCH + FILTER
+               ========================= */
+        const teamSearch = document.getElementById('teamSearch');
+        const teamFilters = document.querySelectorAll('.team-filters .filter');
+        const teamCards = document.querySelectorAll('.team-card');
+        const teamEmpty = document.getElementById('teamEmpty');
+        let teamFilter = 'all';
 
-        function applyTeamFilters() {
-            const query = teamSearchInput.value.toLowerCase().trim();
-            let visibleCount = 0;
+        function updateTeam() {
+            const search = teamSearch.value.toLowerCase().trim();
+            let visible = 0;
 
             teamCards.forEach(card => {
-                const name = (card.getAttribute('data-name') || '').toLowerCase();
-                const role = (card.getAttribute('data-role') || '').toLowerCase();
-                const stack = (card.getAttribute('data-stack') || '').toLowerCase();
+                const category = card.dataset.category || '';
+                const keywords = (card.dataset.search || '').toLowerCase();
+                const matchesSearch = keywords.includes(search);
+                const matchesFilter = teamFilter === 'all' || category === teamFilter;
 
-                const matchesFilter = (currentFilter === 'all') || role.includes(currentFilter);
-                const matchesQuery = !query || name.includes(query) || role.includes(query) || stack.includes(query);
-
-                if (matchesFilter && matchesQuery) {
+                if (matchesSearch && matchesFilter) {
                     card.style.display = 'block';
-                    visibleCount++;
+                    visible++;
                 } else {
                     card.style.display = 'none';
                 }
             });
 
-            emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+            teamEmpty.style.display = visible === 0 ? 'block' : 'none';
         }
 
-        filterBtns.forEach(btn => {
+        teamSearch.addEventListener('input', updateTeam);
+
+        teamFilters.forEach(btn => {
             btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
+                teamFilters.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                currentFilter = btn.getAttribute('data-filter');
-                applyTeamFilters();
+                teamFilter = btn.dataset.role;
+                updateTeam();
             });
         });
 
-        teamSearchInput.addEventListener('input', applyTeamFilters);
+        /* =========================
+               PROFILE MODAL
+               ========================= */
+        const modalOverlay = document.getElementById('profileModal');
+        const modalName = document.getElementById('modalName');
+        const modalProjects = document.getElementById('modalProjects');
+        const modalClose = document.getElementById('modalClose');
 
-        // 4. Modal Handlers
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
+        const memberProjects = {
+            'Ayush Chatterjee': [
+                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
+                    tech: 'React · Node · Socket.io' },
+                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
+                    tech: 'CLI · TypeScript · Prisma' }
+            ],
+            'Priyabrata Patra': [
+                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
+                    tech: 'Django · React · PostgreSQL' },
+                { name: 'Analytics Lite', desc: 'Privacy-first, lightweight analytics dashboard for indie makers.',
+                    tech: 'Vue · FastAPI · ClickHouse' }
+            ],
+            'Abhradeep Dhara': [
+                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
+                    tech: 'React · Node · Socket.io' },
+                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
+                    tech: 'Django · React · PostgreSQL' },
+                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
+                    tech: 'CLI · TypeScript · Prisma' }
+            ]
+        };
 
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
+        function openProfileModal(memberName) {
+            const projects = memberProjects[memberName] || [];
+            modalName.innerHTML = `Projects by <span>${memberName}</span>`;
+            modalProjects.innerHTML = '';
 
-        // Close on backdrop click or ESC key
-        document.querySelectorAll('.modal-overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    closeModal(overlay.id);
-                }
-            });
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal-overlay.active').forEach(modal => {
-                    closeModal(modal.id);
+            if (projects.length === 0) {
+                modalProjects.innerHTML =
+                    `<p style="color:#666;text-align:center;padding:20px 0;">No projects listed yet.</p>`;
+            } else {
+                projects.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'modal-project';
+                    div.innerHTML = `
+                                <h3>${p.name}</h3>
+                                <p>${p.desc}</p>
+                                <span class="tech-tag">${p.tech}</span>
+                            `;
+                    modalProjects.appendChild(div);
                 });
             }
-        });
 
-        // Login Modal Hook
-        document.getElementById('openLoginBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal('loginModal');
-        });
-
-        // Dynamic Profile Modal Population
-        function openProfileModal(name, role, bio, projects) {
-            document.getElementById('modalMemberName').innerHTML = `${name} <span>Profile</span>`;
-            document.getElementById('modalMemberRole').innerText = role;
-            document.getElementById('modalMemberBio').innerText = bio;
-
-            const projectList = document.getElementById('modalProjectList');
-            projectList.innerHTML = '';
-
-            projects.forEach(p => {
-                const item = document.createElement('div');
-                item.className = 'modal-project';
-                item.innerHTML = `
-                    <h3>${p}</h3>
-                    <p>Core initiative maintained by ${name.split(' ')[0]} under EIAFSDO guidelines.</p>
-                    <span class="tech-tag">Verified Contribution</span>
-                `;
-                projectList.appendChild(item);
-            });
-
-            openModal('profileModal');
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeProfileModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.profile').forEach(el => {
+            el.addEventListener('click', () => {
+                const member = el.dataset.member;
+                if (member) openProfileModal(member);
+            });
+        });
+
+        modalClose.addEventListener('click', closeProfileModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeProfileModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeProfileModal();
+        });
+
+        /* =========================
+               LOGIN MODAL
+               ========================= */
+        const loginModal = document.getElementById('loginModal');
+        const openLoginBtn = document.getElementById('openLoginBtn');
+        const loginClose = document.getElementById('loginClose');
+        const loginForm = document.getElementById('loginForm');
+
+        function openLoginModal() {
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        openLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openLoginModal();
+        });
+
+        loginClose.addEventListener('click', closeLoginModal);
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) closeLoginModal();
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('✅ Welcome to EIAFSDO!\n\n( Demo login successful )');
+            closeLoginModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+                closeProfileModal();
+            }
+        });
+
+        /* =========================
+               CONTACT FORM
+               ========================= */
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('📬 Thank you for reaching out! We\'ll get back to you soon.');
+            this.reset();
+        });
+
+        /* =========================
+               3D CARD EFFECT
+               ========================= */
+        teamCards.forEach(card => {
+            if (card.classList.contains('coming-soon')) return;
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                const rx = ((y - cy) / cy) * -3;
+                const ry = ((x - cx) / cx) * 3;
+                card.style.transform = `translateY(-10px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        /* =========================
+               IMAGE FALLBACK
+               ========================= */
+        document.querySelectorAll('.profile img').forEach(img => {
+            img.addEventListener('error', () => {
+                const name = encodeURIComponent(img.alt || 'Member');
+                img.src =
+                    `https://ui-avatars.com/api/?name=${name}&background=111111&color=ffffff&size=300`;
+            });
+        });
+
+        console.log('🚀 EIAFSDO — East Indian Amateur Full-Stack Developers Organization');
+        console.log('📧 admin@codebihin.in');
+        console.log('🏛️ Student-operated · HETC');
+        console.log('📜 Motto: Aedificare — Disputare — Crescere');
     </script>
+
 </body>
 </html>
