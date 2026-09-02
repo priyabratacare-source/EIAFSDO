@@ -343,6 +343,20 @@
         .btn-success:hover {
             background: #72ff9a22;
         }
+        .btn-warning {
+            padding: 8px 16px;
+            border: 1px solid #ffd93d;
+            border-radius: 8px;
+            background: transparent;
+            color: #ffd93d;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-warning:hover {
+            background: #ffd93d22;
+        }
 
         .profile-upload {
             display: flex;
@@ -470,10 +484,13 @@
             border-color: #ff9f43;
             color: #ff9f43;
         }
+        .project-card .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
         .project-card .delete-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
             background: rgba(255, 0, 0, .15);
             border: 1px solid rgba(255, 0, 0, .3);
             color: #ff6b6b;
@@ -493,6 +510,28 @@
         }
         .project-card .delete-btn:hover {
             background: rgba(255, 0, 0, .3);
+            transform: scale(1.1);
+        }
+        .project-card .edit-btn {
+            background: rgba(255, 215, 0, .15);
+            border: 1px solid rgba(255, 215, 0, .3);
+            color: #ffd93d;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+        }
+        .project-card:hover .edit-btn {
+            opacity: 1;
+        }
+        .project-card .edit-btn:hover {
+            background: rgba(255, 215, 0, .3);
             transform: scale(1.1);
         }
 
@@ -599,6 +638,48 @@
             color: white;
             border-color: white;
         }
+        .project-popup .popup-content .popup-edit-btn {
+            margin-top: 16px;
+        }
+
+        /* Edit project modal */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .85);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .edit-modal.active {
+            display: flex;
+        }
+        .edit-modal .modal-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: popupSlide .3s ease;
+        }
+        .edit-modal .modal-box h4 {
+            margin-bottom: 16px;
+        }
+        .edit-modal .modal-box .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .edit-modal .modal-box .modal-actions button {
+            flex: 1;
+        }
 
         .member-list {
             display: flex;
@@ -647,6 +728,45 @@
             opacity: .4;
         }
 
+        /* Admin edit user profile modal */
+        .admin-profile-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .85);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .admin-profile-modal.active {
+            display: flex;
+        }
+        .admin-profile-modal .modal-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: popupSlide .3s ease;
+        }
+        .admin-profile-modal .modal-box h4 {
+            margin-bottom: 16px;
+        }
+        .admin-profile-modal .modal-box .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .admin-profile-modal .modal-box .modal-actions button {
+            flex: 1;
+        }
+
         .admin-project-item {
             display: flex;
             flex-direction: column;
@@ -662,12 +782,6 @@
             border-radius: 8px;
             object-fit: cover;
             background: #111;
-        }
-
-        .settings-group {
-            display: grid;
-            gap: 16px;
-            max-width: 500px;
         }
 
         /* Reset password modal */
@@ -801,8 +915,14 @@
             .member-item .member-actions {
                 justify-content: flex-start;
             }
-            .project-popup .popup-content {
+            .project-popup .popup-content,
+            .edit-modal .modal-box,
+            .admin-profile-modal .modal-box {
                 padding: 20px;
+            }
+            .project-card .delete-btn,
+            .project-card .edit-btn {
+                opacity: 1;
             }
         }
     </style>
@@ -845,7 +965,6 @@
                     <!-- Admin only -->
                     <div class="menu-item hidden" data-tab="admin-members" id="adminMembersTab">👥 Members</div>
                     <div class="menu-item hidden" data-tab="admin-projects" id="adminProjectsTab">📋 Approve Projects</div>
-                    <div class="menu-item hidden" data-tab="admin-settings" id="adminSettingsTab">⚙️ Settings</div>
                 </aside>
 
                 <main class="dash-content">
@@ -927,17 +1046,6 @@
                         <div id="adminProjectList"><p class="text-muted">Loading projects...</p></div>
                     </div>
 
-                    <!-- ADMIN: SETTINGS -->
-                    <div class="tab" id="tab-admin-settings">
-                        <h3>Site <span>Settings</span></h3>
-                        <div class="settings-group">
-                            <div class="form-group"><label>Site Name</label><input type="text" id="siteName" /></div>
-                            <div class="form-group"><label>Site Logo URL</label><input type="url" id="siteLogo" placeholder="https://..." /></div>
-                            <button class="btn-primary" id="saveSettingsBtn">Save Settings</button>
-                            <div id="settingsStatus" class="text-muted mt-16"></div>
-                        </div>
-                    </div>
-
                 </main>
             </div>
         </div>
@@ -953,6 +1061,58 @@
             <p id="popupDescription" style="color:#aaa;margin:12px 0;"></p>
             <a id="popupLink" href="#" target="_blank" class="popup-link" style="display:none;">🔗 Visit Website</a>
             <p style="color:#666;font-size:12px;margin-top:12px;" id="popupSubmittedBy"></p>
+            <div class="popup-edit-btn">
+                <button class="btn-warning" id="popupEditBtn" style="display:none;">✏️ Edit Project</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== EDIT PROJECT MODAL ===== -->
+    <div class="edit-modal" id="editProjectModal">
+        <div class="modal-box">
+            <h4>✏️ Edit Project</h4>
+            <div id="editProjectForm">
+                <div class="form-group"><label>Project Name</label><input type="text" id="editProjectName" /></div>
+                <div class="form-group"><label>Description</label><textarea id="editProjectDescription" rows="4"></textarea></div>
+                <div class="form-group"><label>Website / Demo Link</label><input type="url" id="editProjectLink" placeholder="https://..." /></div>
+                <div class="form-group"><label>Project Image URL</label><input type="url" id="editProjectImageUrl" placeholder="Paste image URL" /></div>
+                <div id="editProjectStatus" class="text-muted mt-16"></div>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="editProjectSaveBtn">Save Changes</button>
+                    <button class="btn-secondary" id="editProjectCancelBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ADMIN EDIT USER PROFILE MODAL ===== -->
+    <div class="admin-profile-modal" id="adminProfileModal">
+        <div class="modal-box">
+            <h4>👤 Edit User Profile</h4>
+            <p style="color:#888;font-size:13px;margin-bottom:12px;">Editing: <strong id="adminEditUserName" style="color:white;"></strong></p>
+            <div id="adminEditForm">
+                <div class="form-group"><label>Full Name</label><input type="text" id="adminEditName" /></div>
+                <div class="form-group"><label>Bio</label><textarea id="adminEditBio" rows="3"></textarea></div>
+                <div class="form-group"><label>Tech Stack / Skills</label><input type="text" id="adminEditStack" placeholder="e.g. React, Django" /></div>
+                <div class="form-group"><label>Organization</label><input type="text" id="adminEditOrg" /></div>
+                <div class="form-group"><label>Status</label>
+                    <select id="adminEditStatus">
+                        <option value="Active">Active</option>
+                        <option value="On Leave">On Leave</option>
+                        <option value="Alumni">Alumni</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>LinkedIn URL</label><input type="url" id="adminEditLinkedin" placeholder="https://linkedin.com/in/..." /></div>
+                <div class="form-group"><label>GitHub URL</label><input type="url" id="adminEditGithub" placeholder="https://github.com/..." /></div>
+                <div class="form-group"><label>Dribbble / Portfolio URL</label><input type="url" id="adminEditDribbble" placeholder="https://dribbble.com/..." /></div>
+                <div class="form-group"><label>Profile Photo URL</label><input type="url" id="adminEditPhotoUrl" placeholder="Paste image URL" /></div>
+                <div id="adminEditStatusMsg" class="text-muted mt-16"></div>
+                <div class="modal-actions">
+                    <button class="btn-primary" id="adminEditSaveBtn">Save Changes</button>
+                    <button class="btn-secondary" id="adminEditCancelBtn">Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1042,7 +1202,6 @@
 
         const adminMembersTab = document.getElementById('adminMembersTab');
         const adminProjectsTab = document.getElementById('adminProjectsTab');
-        const adminSettingsTab = document.getElementById('adminSettingsTab');
         const adminMemberList = document.getElementById('adminMemberList');
         const adminProjectList = document.getElementById('adminProjectList');
         const addMemberBtn = document.getElementById('addMemberBtn');
@@ -1054,11 +1213,7 @@
         const cancelAddMemberBtn = document.getElementById('cancelAddMemberBtn');
         const addMemberStatus = document.getElementById('addMemberStatus');
 
-        const siteName = document.getElementById('siteName');
-        const siteLogo = document.getElementById('siteLogo');
-        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        const settingsStatus = document.getElementById('settingsStatus');
-
+        // Project popup
         const projectPopup = document.getElementById('projectPopup');
         const popupClose = document.getElementById('popupClose');
         const popupName = document.getElementById('popupName');
@@ -1067,7 +1222,35 @@
         const popupDescription = document.getElementById('popupDescription');
         const popupLink = document.getElementById('popupLink');
         const popupSubmittedBy = document.getElementById('popupSubmittedBy');
+        const popupEditBtn = document.getElementById('popupEditBtn');
 
+        // Edit project modal
+        const editProjectModal = document.getElementById('editProjectModal');
+        const editProjectName = document.getElementById('editProjectName');
+        const editProjectDescription = document.getElementById('editProjectDescription');
+        const editProjectLink = document.getElementById('editProjectLink');
+        const editProjectImageUrl = document.getElementById('editProjectImageUrl');
+        const editProjectStatus = document.getElementById('editProjectStatus');
+        const editProjectSaveBtn = document.getElementById('editProjectSaveBtn');
+        const editProjectCancelBtn = document.getElementById('editProjectCancelBtn');
+
+        // Admin profile modal
+        const adminProfileModal = document.getElementById('adminProfileModal');
+        const adminEditUserName = document.getElementById('adminEditUserName');
+        const adminEditName = document.getElementById('adminEditName');
+        const adminEditBio = document.getElementById('adminEditBio');
+        const adminEditStack = document.getElementById('adminEditStack');
+        const adminEditOrg = document.getElementById('adminEditOrg');
+        const adminEditStatus = document.getElementById('adminEditStatus');
+        const adminEditLinkedin = document.getElementById('adminEditLinkedin');
+        const adminEditGithub = document.getElementById('adminEditGithub');
+        const adminEditDribbble = document.getElementById('adminEditDribbble');
+        const adminEditPhotoUrl = document.getElementById('adminEditPhotoUrl');
+        const adminEditStatusMsg = document.getElementById('adminEditStatusMsg');
+        const adminEditSaveBtn = document.getElementById('adminEditSaveBtn');
+        const adminEditCancelBtn = document.getElementById('adminEditCancelBtn');
+
+        // Reset modal
         const resetModal = document.getElementById('resetModal');
         const resetUserName = document.getElementById('resetUserName');
         const resetNewPassword = document.getElementById('resetNewPassword');
@@ -1081,6 +1264,8 @@
         let currentUserData = null;
         let resetTargetUid = null;
         let resetTargetEmail = null;
+        let editProjectId = null;
+        let adminEditTargetUid = null;
 
         // =========================
         // AUTH STATE OBSERVER
@@ -1128,15 +1313,12 @@
             if (isAdmin) {
                 adminMembersTab.classList.remove('hidden');
                 adminProjectsTab.classList.remove('hidden');
-                adminSettingsTab.classList.remove('hidden');
                 loadAdminMembers();
                 loadAdminProjects();
-                loadSettings();
                 navUserRole.textContent = '🛡️ Admin';
             } else {
                 adminMembersTab.classList.add('hidden');
                 adminProjectsTab.classList.add('hidden');
-                adminSettingsTab.classList.add('hidden');
                 navUserRole.textContent = '';
             }
 
@@ -1278,22 +1460,28 @@
                                     <p>${p.description || ''}</p>
                                     ${p.link ? `<span style="font-size:11px;color:#555;">🔗 ${p.link.substring(0, 30)}...</span>` : ''}
                                     <span class="status-badge ${statusClass}">${statusClass}</span>
-                                    <button class="delete-btn" data-pid="${pid}" title="Delete project">✕</button>
+                                    <div class="card-actions">
+                                        <button class="edit-btn" data-pid="${pid}" title="Edit project">✎</button>
+                                        <button class="delete-btn" data-pid="${pid}" title="Delete project">✕</button>
+                                    </div>
                                 </div>
                             `;
                 });
                 html += '</div>';
                 myProjectsList.innerHTML = html;
 
+                // Click to open popup
                 document.querySelectorAll('.project-card').forEach(card => {
                     card.addEventListener('click', (e) => {
-                        if (e.target.classList.contains('delete-btn')) return;
+                        if (e.target.classList.contains('delete-btn') || e.target.classList.contains(
+                            'edit-btn')) return;
                         const pid = card.dataset.pid;
                         const project = myProjectsData.find(p => p.id === pid);
                         if (project) openProjectPopup(project);
                     });
                 });
 
+                // Delete button
                 document.querySelectorAll('.delete-btn').forEach(btn => {
                     btn.addEventListener('click', async (e) => {
                         e.stopPropagation();
@@ -1308,6 +1496,16 @@
                         } catch (err) {
                             alert('Error deleting project: ' + err.message);
                         }
+                    });
+                });
+
+                // Edit button
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const pid = btn.dataset.pid;
+                        const project = myProjectsData.find(p => p.id === pid);
+                        if (project) openEditProject(project);
                     });
                 });
 
@@ -1339,7 +1537,10 @@
                                         <p>${p.description || ''}</p>
                                         ${p.link ? `<span style="font-size:11px;color:#555;">🔗 ${p.link.substring(0, 30)}...</span>` : ''}
                                         <span class="status-badge ${statusClass}">${statusClass}</span>
-                                        <button class="delete-btn" data-pid="${pid}" title="Delete project">✕</button>
+                                        <div class="card-actions">
+                                            <button class="edit-btn" data-pid="${pid}" title="Edit project">✎</button>
+                                            <button class="delete-btn" data-pid="${pid}" title="Delete project">✕</button>
+                                        </div>
                                     </div>
                                 `;
                     });
@@ -1348,7 +1549,8 @@
 
                     document.querySelectorAll('.project-card').forEach(card => {
                         card.addEventListener('click', (e) => {
-                            if (e.target.classList.contains('delete-btn')) return;
+                            if (e.target.classList.contains('delete-btn') || e.target.classList.contains(
+                                'edit-btn')) return;
                             const pid = card.dataset.pid;
                             const project = myProjectsData.find(p => p.id === pid);
                             if (project) openProjectPopup(project);
@@ -1372,6 +1574,15 @@
                         });
                     });
 
+                    document.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const pid = btn.dataset.pid;
+                            const project = myProjectsData.find(p => p.id === pid);
+                            if (project) openEditProject(project);
+                        });
+                    });
+
                 } catch (fallbackErr) {
                     myProjectsList.innerHTML = '<p class="text-muted" style="color:#ff6b6b;">⚠️ Error loading projects. Please refresh.</p>';
                     console.error('Fallback error:', fallbackErr);
@@ -1382,7 +1593,10 @@
         // =========================
         // PROJECT POPUP
         // =========================
+        let currentPopupProject = null;
+
         function openProjectPopup(project) {
+            currentPopupProject = project;
             popupName.textContent = project.name || 'Untitled';
             popupStatus.textContent = project.status || 'pending';
             popupStatus.className = 'popup-status ' + (project.status || 'pending');
@@ -1406,6 +1620,13 @@
 
             popupSubmittedBy.textContent = 'Submitted by: ' + (project.submittedByEmail || 'Unknown');
 
+            // Show edit button if the user owns this project
+            if (project.submittedBy === currentUser.uid) {
+                popupEditBtn.style.display = 'inline-block';
+            } else {
+                popupEditBtn.style.display = 'none';
+            }
+
             projectPopup.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -1413,6 +1634,7 @@
         function closeProjectPopup() {
             projectPopup.classList.remove('active');
             document.body.style.overflow = '';
+            currentPopupProject = null;
         }
 
         popupClose.addEventListener('click', closeProjectPopup);
@@ -1421,6 +1643,79 @@
         });
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeProjectPopup();
+        });
+
+        // Popup edit button
+        popupEditBtn.addEventListener('click', () => {
+            if (currentPopupProject) {
+                closeProjectPopup();
+                openEditProject(currentPopupProject);
+            }
+        });
+
+        // =========================
+        // EDIT PROJECT
+        // =========================
+        function openEditProject(project) {
+            editProjectId = project.id;
+            editProjectName.value = project.name || '';
+            editProjectDescription.value = project.description || '';
+            editProjectLink.value = project.link || '';
+            editProjectImageUrl.value = project.imageURL || '';
+            editProjectStatus.textContent = '';
+            editProjectModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEditProject() {
+            editProjectModal.classList.remove('active');
+            document.body.style.overflow = '';
+            editProjectId = null;
+            editProjectStatus.textContent = '';
+        }
+
+        editProjectCancelBtn.addEventListener('click', closeEditProject);
+        editProjectModal.addEventListener('click', (e) => {
+            if (e.target === editProjectModal) closeEditProject();
+        });
+
+        editProjectSaveBtn.addEventListener('click', async () => {
+            const name = editProjectName.value.trim();
+            const description = editProjectDescription.value.trim();
+            const link = editProjectLink.value.trim();
+            const imageURL = editProjectImageUrl.value.trim();
+
+            if (!name || !description) {
+                editProjectStatus.textContent = 'Name and description are required.';
+                return;
+            }
+
+            if (!editProjectId) {
+                editProjectStatus.textContent = 'No project selected.';
+                return;
+            }
+
+            try {
+                // Update project — set status back to "pending" for re-approval
+                await db.collection('projects').doc(editProjectId).update({
+                    name,
+                    description,
+                    link,
+                    imageURL,
+                    status: 'pending',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                editProjectStatus.textContent = '✅ Project updated! It needs re-approval.';
+                editProjectStatus.style.color = '#72ff9a';
+                closeEditProject();
+                loadMyProjects();
+                if (currentUserData && currentUserData.role === 'admin') {
+                    loadAdminProjects();
+                }
+            } catch (err) {
+                editProjectStatus.textContent = '❌ Error: ' + err.message;
+                editProjectStatus.style.color = '#ff6b6b';
+            }
         });
 
         // =========================
@@ -1460,7 +1755,7 @@
         });
 
         // =========================
-        // ADMIN — MEMBERS (with role toggle & reset password)
+        // ADMIN — MEMBERS
         // =========================
         async function loadAdminMembers() {
             try {
@@ -1493,6 +1788,7 @@
                                     <div class="member-actions">
                                         ${!isSelf ? `
                                             <button class="btn-${isAdmin ? 'secondary' : 'success'} toggle-role-btn" data-uid="${uid}" data-current="${isAdmin}">${isAdmin ? '⬇ Make User' : '⬆ Make Admin'}</button>
+                                            <button class="btn-warning edit-profile-btn" data-uid="${uid}" data-name="${u.name || 'User'}">✎ Profile</button>
                                             <button class="btn-success reset-password-btn" data-uid="${uid}" data-email="${u.email || ''}" data-name="${u.name || 'User'}">🔑 Reset</button>
                                             <button class="btn-danger remove-member" data-uid="${uid}">Remove</button>
                                         ` : `
@@ -1518,6 +1814,15 @@
                         } catch (err) {
                             alert('Error changing role: ' + err.message);
                         }
+                    });
+                });
+
+                // Edit profile
+                document.querySelectorAll('.edit-profile-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const uid = btn.dataset.uid;
+                        const name = btn.dataset.name;
+                        openAdminEditProfile(uid, name);
                     });
                 });
 
@@ -1593,7 +1898,79 @@
         }
 
         // =========================
-        // RESET PASSWORD (Admin sets new password directly)
+        // ADMIN EDIT USER PROFILE
+        // =========================
+        function openAdminEditProfile(uid, name) {
+            adminEditTargetUid = uid;
+            adminEditUserName.textContent = name;
+
+            // Fetch user data
+            db.collection('users').doc(uid).get().then(doc => {
+                if (doc.exists) {
+                    const u = doc.data();
+                    adminEditName.value = u.name || '';
+                    adminEditBio.value = u.bio || '';
+                    adminEditStack.value = u.stack || '';
+                    adminEditOrg.value = u.org || '';
+                    adminEditStatus.value = u.status || 'Active';
+                    adminEditLinkedin.value = u.linkedin || '';
+                    adminEditGithub.value = u.github || '';
+                    adminEditDribbble.value = u.dribbble || '';
+                    adminEditPhotoUrl.value = u.photoURL || '';
+                    adminEditStatusMsg.textContent = '';
+                }
+            }).catch(err => {
+                adminEditStatusMsg.textContent = 'Error loading user data: ' + err.message;
+            });
+
+            adminProfileModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAdminEditProfile() {
+            adminProfileModal.classList.remove('active');
+            document.body.style.overflow = '';
+            adminEditTargetUid = null;
+            adminEditStatusMsg.textContent = '';
+        }
+
+        adminEditCancelBtn.addEventListener('click', closeAdminEditProfile);
+        adminProfileModal.addEventListener('click', (e) => {
+            if (e.target === adminProfileModal) closeAdminEditProfile();
+        });
+
+        adminEditSaveBtn.addEventListener('click', async () => {
+            if (!adminEditTargetUid) {
+                adminEditStatusMsg.textContent = 'No user selected.';
+                return;
+            }
+
+            const updates = {
+                name: adminEditName.value.trim(),
+                bio: adminEditBio.value.trim(),
+                stack: adminEditStack.value.trim(),
+                org: adminEditOrg.value.trim(),
+                status: adminEditStatus.value,
+                linkedin: adminEditLinkedin.value.trim(),
+                github: adminEditGithub.value.trim(),
+                dribbble: adminEditDribbble.value.trim(),
+                photoURL: adminEditPhotoUrl.value.trim()
+            };
+
+            try {
+                await db.collection('users').doc(adminEditTargetUid).update(updates);
+                adminEditStatusMsg.textContent = '✅ Profile updated!';
+                adminEditStatusMsg.style.color = '#72ff9a';
+                closeAdminEditProfile();
+                loadAdminMembers();
+            } catch (err) {
+                adminEditStatusMsg.textContent = '❌ Error: ' + err.message;
+                adminEditStatusMsg.style.color = '#ff6b6b';
+            }
+        });
+
+        // =========================
+        // RESET PASSWORD
         // =========================
         resetCancelBtn.addEventListener('click', () => {
             resetModal.classList.remove('active');
@@ -1621,7 +1998,6 @@
             }
 
             try {
-                // Get user email
                 const userDoc = await db.collection('users').doc(resetTargetUid).get();
                 if (!userDoc.exists) {
                     resetStatus.textContent = 'User not found.';
@@ -1629,7 +2005,6 @@
                 }
                 const userEmail = userDoc.data().email;
 
-                // Send password reset email
                 await auth.sendPasswordResetEmail(userEmail, {
                     url: window.location.origin,
                     handleCodeInApp: false
@@ -1853,37 +2228,6 @@
         }
 
         // =========================
-        // ADMIN — SETTINGS
-        // =========================
-        async function loadSettings() {
-            try {
-                const doc = await db.collection('settings').doc('site').get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    siteName.value = data.siteName || '';
-                    siteLogo.value = data.siteLogo || '';
-                }
-            } catch (err) {
-                console.error('Error loading settings:', err);
-            }
-        }
-
-        saveSettingsBtn.addEventListener('click', async () => {
-            const name = siteName.value.trim();
-            const logo = siteLogo.value.trim();
-            try {
-                await db.collection('settings').doc('site').set({
-                    siteName: name,
-                    siteLogo: logo,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true });
-                settingsStatus.textContent = '✅ Settings saved!';
-            } catch (err) {
-                settingsStatus.textContent = '❌ Error: ' + err.message;
-            }
-        });
-
-        // =========================
         // SIDEBAR NAVIGATION
         // =========================
         function switchTab(tabId) {
@@ -1902,7 +2246,6 @@
                 if (tab) switchTab(tab);
                 if (tab === 'admin-members') loadAdminMembers();
                 if (tab === 'admin-projects') loadAdminProjects();
-                if (tab === 'admin-settings') loadSettings();
                 if (tab === 'myprojects') loadMyProjects();
             });
         });
@@ -1911,7 +2254,9 @@
         console.log('✅ Login only — Register removed.');
         console.log('👑 Admin can change any member\'s role (Admin ↔ User).');
         console.log('🔑 Admin can reset any user\'s password directly.');
-        console.log('💡 Images use URL inputs — no Firebase Storage needed.');
+        console.log('✏️ Users can edit their projects — status becomes "pending" after edit.');
+        console.log('👤 Admin can edit any user\'s profile.');
+        console.log('📱 Fully mobile friendly.');
     </script>
 
 </body>
