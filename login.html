@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EIAFSDO — Admin & User Dashboard</title>
+
+    <!-- Firebase SDKs (Auth + Firestore only, no Storage) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js">
+    </script>
+
+    <style>
+        /* ============================================================
+           EIAFSDO DASHBOARD — Dark, polished, responsive
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #050505;
+            --card: #0d0d0d;
+            --border: rgba(255, 255, 255, .08);
+            --text: #ffffff;
+            --muted: #999999;
+            --shadow: 0 20px 60px rgba(0, 0, 0, .45);
+            --radius: 16px;
+            --transition: .3s cubic-bezier(.22, .68, 0, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 10%, rgba(255, 255, 255, .06), transparent 25%),
+                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, .04), transparent 30%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ---------- AUTH ---------- */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            gap: 30px;
+        }
+
+        .auth-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+        }
+
+        .auth-box h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .auth-box h2 span {
+            color: #777;
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+        .auth-box input:focus {
+            border-color: rgba(255, 255, 255, .25);
+            box-shadow: 0 0 20px rgba(255, 255, 255, .05);
+        }
+        .auth-box input::placeholder {
+            color: #555;
+        }
+
+        .auth-box button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .auth-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
+        }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 16px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .auth-toggle:hover {
+            color: white;
+        }
+
+        .auth-error {
+            color: #ff6b6b;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+
+        /* ---------- DASHBOARD ---------- */
+        .dashboard {
+            display: none;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .dashboard.active {
+            display: flex;
+        }
+
+        /* Navbar */
+        .dash-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .dash-nav .logo {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .dash-nav .logo span {
+            color: #777;
+        }
+        .dash-nav .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .dash-nav .user-info img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+        }
+        .dash-nav .user-info span {
+            color: #aaa;
+            font-size: 14px;
+        }
+        .dash-nav .user-info button {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid var(--border);
+            color: #aaa;
+            padding: 6px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 12px;
+        }
+        .dash-nav .user-info button:hover {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        /* Dashboard body */
+        .dash-body {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 24px;
+        }
+
+        /* Sidebar */
+        .dash-sidebar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 0;
+            height: fit-content;
+        }
+        .dash-sidebar .menu-item {
+            padding: 12px 20px;
+            color: #aaa;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            font-size: 14px;
+        }
+        .dash-sidebar .menu-item:hover {
+            color: white;
+            background: rgba(255, 255, 255, .04);
+        }
+        .dash-sidebar .menu-item.active {
+            color: white;
+            border-left-color: white;
+            background: rgba(255, 255, 255, .06);
+        }
+
+        /* Content */
+        .dash-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            min-height: 500px;
+        }
+        .dash-content .tab {
+            display: none;
+        }
+        .dash-content .tab.active {
+            display: block;
+        }
+
+        .dash-content h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+        .dash-content h3 span {
+            color: #777;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: rgba(255, 255, 255, .25);
+            box-shadow: 0 0 20px rgba(255, 255, 255, .05);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-group select option {
+            background: #0d0d0d;
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
+        }
+        .btn-secondary {
+            padding: 12px 24px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: transparent;
+            color: #aaa;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, .04);
+            color: white;
+        }
+        .btn-danger {
+            padding: 8px 16px;
+            border: 1px solid #ff6b6b;
+            border-radius: 8px;
+            background: transparent;
+            color: #ff6b6b;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-danger:hover {
+            background: #ff6b6b22;
+        }
+
+        /* Profile picture */
+        .profile-upload {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .profile-upload img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            background: #111;
+        }
+        .profile-upload .upload-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .profile-upload .upload-actions input[type="url"] {
+            min-width: 200px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 13px;
+            outline: none;
+            transition: var(--transition);
+        }
+        .profile-upload .upload-actions input[type="url"]:focus {
+            border-color: rgba(255, 255, 255, .25);
+        }
+        .profile-upload .upload-actions input[type="url"]::placeholder {
+            color: #555;
+        }
+
+        .imgbb-helper {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+        }
+        .imgbb-helper a {
+            color: #888;
+            text-decoration: none;
+            border-bottom: 1px dashed #555;
+        }
+        .imgbb-helper a:hover {
+            color: white;
+        }
+
+        /* Project cards */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .project-card {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: var(--transition);
+        }
+        .project-card:hover {
+            border-color: rgba(255, 255, 255, .15);
+            transform: translateY(-4px);
+        }
+        .project-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #111;
+        }
+        .project-card h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .project-card p {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.5;
+        }
+        .project-card .status-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 50px;
+            margin-top: 8px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid var(--border);
+        }
+        .project-card .status-badge.approved {
+            background: #72ff9a22;
+            border-color: #72ff9a;
+            color: #72ff9a;
+        }
+        .project-card .status-badge.pending {
+            background: #ffd93d22;
+            border-color: #ffd93d;
+            color: #ffd93d;
+        }
+        .project-card .status-badge.rejected {
+            background: #ff6b6b22;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        .project-card .status-badge.hold {
+            background: #ff9f4322;
+            border-color: #ff9f43;
+            color: #ff9f43;
+        }
+        .project-card .project-actions {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Admin members list */
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: grab;
+            transition: var(--transition);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .member-item:hover {
+            border-color: rgba(255, 255, 255, .15);
+        }
+        .member-item .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .member-item .member-info img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .member-item .member-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .member-item.dragging {
+            opacity: .4;
+        }
+
+        /* Admin project approvals */
+        .admin-project-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, .02);
+        }
+        .admin-project-item .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 13px;
+            color: #888;
+        }
+        .admin-project-item img {
+            max-height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #111;
+        }
+
+        /* Settings */
+        .settings-group {
+            display: grid;
+            gap: 16px;
+            max-width: 500px;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .dash-body {
+                grid-template-columns: 1fr;
+            }
+            .dash-sidebar {
+                display: flex;
+                overflow-x: auto;
+                padding: 10px 0;
+                gap: 4px;
+            }
+            .dash-sidebar .menu-item {
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                white-space: nowrap;
+                padding: 10px 16px;
+            }
+            .dash-sidebar .menu-item.active {
+                border-bottom-color: white;
+                border-left: none;
+            }
+            .dash-nav {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+                text-align: center;
+            }
+            .dash-nav .user-info {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .profile-upload {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .profile-upload .upload-actions input[type="url"] {
+                min-width: 100%;
+            }
+            .auth-box {
+                padding: 30px 20px;
+            }
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+        .text-muted {
+            color: #666;
+            font-size: 13px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid var(--border);
+        }
+        .status-badge.approved {
+            background: #72ff9a22;
+            border-color: #72ff9a;
+            color: #72ff9a;
+        }
+        .status-badge.pending {
+            background: #ffd93d22;
+            border-color: #ffd93d;
+            color: #ffd93d;
+        }
+        .status-badge.rejected {
+            background: #ff6b6b22;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        .status-badge.hold {
+            background: #ff9f4322;
+            border-color: #ff9f43;
+            color: #ff9f43;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== CONTAINER ===== -->
+    <div class="container">
+
+        <!-- ===== AUTH (Login / Register) ===== -->
+        <div id="authContainer" class="auth-container">
+            <div class="auth-box" id="loginBox">
+                <h2>Welcome <span>Back</span></h2>
+                <div id="authError" class="auth-error"></div>
+                <input type="email" id="loginEmail" placeholder="Email" />
+                <input type="password" id="loginPassword" placeholder="Password" />
+                <button id="loginBtn">Sign In</button>
+                <div class="auth-toggle" id="showRegister">Don't have an account? Register</div>
+            </div>
+
+            <div class="auth-box hidden" id="registerBox">
+                <h2>Create <span>Account</span></h2>
+                <div id="regError" class="auth-error"></div>
+                <input type="text" id="regName" placeholder="Full Name" />
+                <input type="email" id="regEmail" placeholder="Email" />
+                <input type="password" id="regPassword" placeholder="Password (min 6 chars)" />
+                <button id="registerBtn">Register</button>
+                <div class="auth-toggle" id="showLogin">Already have an account? Login</div>
+            </div>
+        </div>
+
+        <!-- ===== DASHBOARD ===== -->
+        <div id="dashboard" class="dashboard">
+
+            <!-- Navbar -->
+            <nav class="dash-nav">
+                <div class="logo">EIAFSDO <span>Dashboard</span></div>
+                <div class="user-info">
+                    <img id="navUserImg" src="" alt="User" />
+                    <span id="navUserName">User</span>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Body -->
+            <div class="dash-body">
+
+                <!-- Sidebar -->
+                <aside class="dash-sidebar" id="sidebar">
+                    <div class="menu-item active" data-tab="profile">👤 My Profile</div>
+                    <div class="menu-item" data-tab="myprojects">📁 My Projects</div>
+                    <div class="menu-item" data-tab="submitproject">➕ Submit Project</div>
+                    <!-- Admin only -->
+                    <div class="menu-item hidden" data-tab="admin-members" id="adminMembersTab">👥 Members</div>
+                    <div class="menu-item hidden" data-tab="admin-projects" id="adminProjectsTab">📋 Approve Projects</div>
+                    <div class="menu-item hidden" data-tab="admin-settings" id="adminSettingsTab">⚙️ Settings</div>
+                </aside>
+
+                <!-- Content -->
+                <main class="dash-content">
+
+                    <!-- ===== TAB: PROFILE ===== -->
+                    <div class="tab active" id="tab-profile">
+                        <h3>My <span>Profile</span></h3>
+                        <div id="profileForm">
+                            <div class="profile-upload">
+                                <img id="profilePreview" src="" alt="Profile" />
+                                <div class="upload-actions">
+                                    <input type="url" id="profilePhotoUrl" placeholder="Paste image URL (imgbb, Cloudinary, etc.)" />
+                                    <button class="btn-secondary" id="applyPhotoUrlBtn">Apply URL</button>
+                                    <button class="btn-danger" id="deletePhotoBtn">Remove</button>
+                                </div>
+                            </div>
+                            <div class="imgbb-helper">
+                                💡 Use <a href="https://imgbb.com" target="_blank">imgbb.com</a> to upload for free, then paste the direct image URL above.
+                            </div>
+
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="profileName" />
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="profileEmail" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label>Bio</label>
+                                <textarea id="profileBio" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Tech Stack / Skills</label>
+                                <input type="text" id="profileStack" placeholder="e.g. React, Django, Vue" />
+                            </div>
+                            <div class="form-group">
+                                <label>Organization</label>
+                                <input type="text" id="profileOrg" placeholder="e.g. EIAFSDO" />
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="profileStatus">
+                                    <option value="Active">Active</option>
+                                    <option value="On Leave">On Leave</option>
+                                    <option value="Alumni">Alumni</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>LinkedIn URL</label>
+                                <input type="url" id="profileLinkedin" placeholder="https://linkedin.com/in/..." />
+                            </div>
+                            <div class="form-group">
+                                <label>GitHub URL</label>
+                                <input type="url" id="profileGithub" placeholder="https://github.com/..." />
+                            </div>
+                            <div class="form-group">
+                                <label>Dribbble / Portfolio URL</label>
+                                <input type="url" id="profileDribbble" placeholder="https://dribbble.com/..." />
+                            </div>
+                            <div class="form-group">
+                                <label>New Password (leave blank to keep current)</label>
+                                <input type="password" id="profilePassword" placeholder="New password" />
+                            </div>
+                            <button class="btn-primary" id="updateProfileBtn">Update Profile</button>
+                            <div id="profileUpdateStatus" class="text-muted mt-16"></div>
+                        </div>
+                    </div>
+
+                    <!-- ===== TAB: MY PROJECTS ===== -->
+                    <div class="tab" id="tab-myprojects">
+                        <h3>My <span>Projects</span></h3>
+                        <div id="myProjectsList">
+                            <p class="text-muted">Loading...</p>
+                        </div>
+                    </div>
+
+                    <!-- ===== TAB: SUBMIT PROJECT ===== -->
+                    <div class="tab" id="tab-submitproject">
+                        <h3>Submit a <span>Project</span></h3>
+                        <form id="submitProjectForm">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input type="text" id="projectName" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="projectDescription" rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Website / Demo Link</label>
+                                <input type="url" id="projectLink" placeholder="https://..." />
+                            </div>
+                            <div class="form-group">
+                                <label>Project Image URL</label>
+                                <input type="url" id="projectImageUrl" placeholder="Paste image URL from imgbb, Cloudinary, etc." />
+                            </div>
+                            <div class="imgbb-helper mb-16">
+                                💡 Upload images for free at <a href="https://imgbb.com" target="_blank">imgbb.com</a>, then paste the direct URL above.
+                            </div>
+                            <button type="submit" class="btn-primary">Submit Project</button>
+                            <div id="projectSubmitStatus" class="text-muted mt-16"></div>
+                        </form>
+                    </div>
+
+                    <!-- ===== ADMIN TABS ===== -->
+                    <!-- Admin: Members -->
+                    <div class="tab" id="tab-admin-members">
+                        <h3>Manage <span>Members</span></h3>
+                        <div class="mb-16">
+                            <button class="btn-primary" id="addMemberBtn">+ Add Member</button>
+                        </div>
+                        <div id="adminMemberList">
+                            <p class="text-muted">Loading members...</p>
+                        </div>
+                        <!-- Add member form -->
+                        <div id="addMemberForm" class="hidden" style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px;">
+                            <h4>Add New Member</h4>
+                            <div class="form-group"><input type="text" id="newMemberName" placeholder="Full Name" /></div>
+                            <div class="form-group"><input type="email" id="newMemberEmail" placeholder="Email" /></div>
+                            <div class="form-group"><input type="password" id="newMemberPassword" placeholder="Temporary Password" /></div>
+                            <button class="btn-primary" id="saveMemberBtn">Save Member</button>
+                            <button class="btn-secondary" id="cancelAddMemberBtn">Cancel</button>
+                            <div id="addMemberStatus" class="text-muted mt-16"></div>
+                        </div>
+                    </div>
+
+                    <!-- Admin: Approve Projects -->
+                    <div class="tab" id="tab-admin-projects">
+                        <h3>Approve <span>Projects</span></h3>
+                        <div id="adminProjectList">
+                            <p class="text-muted">Loading projects...</p>
+                        </div>
+                    </div>
+
+                    <!-- Admin: Settings -->
+                    <div class="tab" id="tab-admin-settings">
+                        <h3>Site <span>Settings</span></h3>
+                        <div class="settings-group">
+                            <div class="form-group"><label>Site Name</label><input type="text" id="siteName" /></div>
+                            <div class="form-group"><label>Site Logo URL</label><input type="url" id="siteLogo" placeholder="https://..." /></div>
+                            <button class="btn-primary" id="saveSettingsBtn">Save Settings</button>
+                            <div id="settingsStatus" class="text-muted mt-16"></div>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT — FIREBASE AUTH + FIRESTORE (NO STORAGE)
+    ============================================================ -->
+    <script>
+        // =========================
+        // 1. FIREBASE CONFIG (YOUR CREDENTIALS)
+        // =========================
+        const firebaseConfig = {
+            apiKey: "AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
+            authDomain: "eiafsdo-dashboard.firebaseapp.com",
+            projectId: "eiafsdo-dashboard",
+            storageBucket: "eiafsdo-dashboard.firebasestorage.app",
+            messagingSenderId: "171714190075",
+            appId: "1:171714190075:web:ee3dfe78f82896cc736e5e"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Enable offline persistence
+        db.enablePersistence().catch(err => console.warn('Firestore persistence:', err));
+
+        // =========================
+        // 2. DOM REFS
+        // =========================
+        const authContainer = document.getElementById('authContainer');
+        const dashboard = document.getElementById('dashboard');
+        const loginBox = document.getElementById('loginBox');
+        const registerBox = document.getElementById('registerBox');
+        const authError = document.getElementById('authError');
+        const regError = document.getElementById('regError');
+
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+
+        const regName = document.getElementById('regName');
+        const regEmail = document.getElementById('regEmail');
+        const regPassword = document.getElementById('regPassword');
+        const registerBtn = document.getElementById('registerBtn');
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        const navUserImg = document.getElementById('navUserImg');
+        const navUserName = document.getElementById('navUserName');
+
+        // Profile
+        const profilePreview = document.getElementById('profilePreview');
+        const profilePhotoUrl = document.getElementById('profilePhotoUrl');
+        const applyPhotoUrlBtn = document.getElementById('applyPhotoUrlBtn');
+        const deletePhotoBtn = document.getElementById('deletePhotoBtn');
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileBio = document.getElementById('profileBio');
+        const profileStack = document.getElementById('profileStack');
+        const profileOrg = document.getElementById('profileOrg');
+        const profileStatus = document.getElementById('profileStatus');
+        const profileLinkedin = document.getElementById('profileLinkedin');
+        const profileGithub = document.getElementById('profileGithub');
+        const profileDribbble = document.getElementById('profileDribbble');
+        const profilePassword = document.getElementById('profilePassword');
+        const updateProfileBtn = document.getElementById('updateProfileBtn');
+        const profileUpdateStatus = document.getElementById('profileUpdateStatus');
+
+        // My Projects
+        const myProjectsList = document.getElementById('myProjectsList');
+
+        // Submit Project
+        const projectName = document.getElementById('projectName');
+        const projectDescription = document.getElementById('projectDescription');
+        const projectLink = document.getElementById('projectLink');
+        const projectImageUrl = document.getElementById('projectImageUrl');
+        const submitProjectForm = document.getElementById('submitProjectForm');
+        const projectSubmitStatus = document.getElementById('projectSubmitStatus');
+
+        // Admin
+        const adminMembersTab = document.getElementById('adminMembersTab');
+        const adminProjectsTab = document.getElementById('adminProjectsTab');
+        const adminSettingsTab = document.getElementById('adminSettingsTab');
+        const adminMemberList = document.getElementById('adminMemberList');
+        const adminProjectList = document.getElementById('adminProjectList');
+        const addMemberBtn = document.getElementById('addMemberBtn');
+        const addMemberForm = document.getElementById('addMemberForm');
+        const newMemberName = document.getElementById('newMemberName');
+        const newMemberEmail = document.getElementById('newMemberEmail');
+        const newMemberPassword = document.getElementById('newMemberPassword');
+        const saveMemberBtn = document.getElementById('saveMemberBtn');
+        const cancelAddMemberBtn = document.getElementById('cancelAddMemberBtn');
+        const addMemberStatus = document.getElementById('addMemberStatus');
+
+        const siteName = document.getElementById('siteName');
+        const siteLogo = document.getElementById('siteLogo');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const settingsStatus = document.getElementById('settingsStatus');
+
+        // Menu items
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        // =========================
+        // 3. AUTH STATE OBSERVER
+        // =========================
+        let currentUser = null;
+        let currentUserData = null;
+
+        auth.onAuthStateChanged(async user => {
+            if (user) {
+                currentUser = user;
+                try {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        currentUserData = doc.data();
+                    } else {
+                        currentUserData = {
+                            name: user.displayName || 'User',
+                            email: user.email,
+                            role: 'user',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        await db.collection('users').doc(user.uid).set(currentUserData);
+                    }
+                    showDashboard();
+                } catch (err) {
+                    console.error('Error fetching user data:', err);
+                    authError.textContent = 'Error loading profile. Please refresh.';
+                }
+            } else {
+                showAuth();
+            }
+        });
+
+        // =========================
+        // 4. UI SWITCHING
+        // =========================
+        function showAuth() {
+            authContainer.style.display = 'flex';
+            dashboard.classList.remove('active');
+            loginBox.classList.remove('hidden');
+            registerBox.classList.add('hidden');
+            authError.textContent = '';
+            regError.textContent = '';
+        }
+
+        function showDashboard() {
+            authContainer.style.display = 'none';
+            dashboard.classList.add('active');
+            populateProfile();
+            loadMyProjects();
+
+            if (currentUserData && currentUserData.role === 'admin') {
+                adminMembersTab.classList.remove('hidden');
+                adminProjectsTab.classList.remove('hidden');
+                adminSettingsTab.classList.remove('hidden');
+                loadAdminMembers();
+                loadAdminProjects();
+                loadSettings();
+            } else {
+                adminMembersTab.classList.add('hidden');
+                adminProjectsTab.classList.add('hidden');
+                adminSettingsTab.classList.add('hidden');
+            }
+
+            const fallback = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUserData.name || 'User') +
+                '&background=111111&color=ffffff&size=64';
+            navUserImg.src = currentUserData.photoURL || fallback;
+            navUserName.textContent = currentUserData.name || 'User';
+            switchTab('profile');
+        }
+
+        // =========================
+        // 5. AUTH HANDLERS
+        // =========================
+        showRegister.addEventListener('click', () => {
+            loginBox.classList.add('hidden');
+            registerBox.classList.remove('hidden');
+            authError.textContent = '';
+        });
+        showLogin.addEventListener('click', () => {
+            registerBox.classList.add('hidden');
+            loginBox.classList.remove('hidden');
+            regError.textContent = '';
+        });
+
+        loginBtn.addEventListener('click', async () => {
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value.trim();
+            if (!email || !password) {
+                authError.textContent = 'Please fill in all fields.';
+                return;
+            }
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                authError.textContent = '';
+            } catch (err) {
+                authError.textContent = err.message;
+            }
+        });
+
+        registerBtn.addEventListener('click', async () => {
+            const name = regName.value.trim();
+            const email = regEmail.value.trim();
+            const password = regPassword.value.trim();
+            if (!name || !email || !password) {
+                regError.textContent = 'Please fill in all fields.';
+                return;
+            }
+            if (password.length < 6) {
+                regError.textContent = 'Password must be at least 6 characters.';
+                return;
+            }
+            try {
+                const cred = await auth.createUserWithEmailAndPassword(email, password);
+                await db.collection('users').doc(cred.user.uid).set({
+                    name: name,
+                    email: email,
+                    role: 'user',
+                    bio: '',
+                    stack: '',
+                    org: '',
+                    status: 'Active',
+                    linkedin: '',
+                    github: '',
+                    dribbble: '',
+                    photoURL: '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                regError.textContent = '';
+            } catch (err) {
+                regError.textContent = err.message;
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut();
+        });
+
+        // =========================
+        // 6. PROFILE FUNCTIONS
+        // =========================
+        function populateProfile() {
+            if (!currentUserData) return;
+            const fallback = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUserData.name || 'User') +
+                '&background=111111&color=ffffff&size=150';
+            profilePreview.src = currentUserData.photoURL || fallback;
+            profilePhotoUrl.value = currentUserData.photoURL || '';
+            profileName.value = currentUserData.name || '';
+            profileEmail.value = currentUserData.email || '';
+            profileBio.value = currentUserData.bio || '';
+            profileStack.value = currentUserData.stack || '';
+            profileOrg.value = currentUserData.org || '';
+            profileStatus.value = currentUserData.status || 'Active';
+            profileLinkedin.value = currentUserData.linkedin || '';
+            profileGithub.value = currentUserData.github || '';
+            profileDribbble.value = currentUserData.dribbble || '';
+        }
+
+        // Apply photo URL
+        applyPhotoUrlBtn.addEventListener('click', async () => {
+            const url = profilePhotoUrl.value.trim();
+            if (!url) {
+                profileUpdateStatus.textContent = 'Please paste a valid image URL.';
+                return;
+            }
+            try {
+                await db.collection('users').doc(currentUser.uid).update({ photoURL: url });
+                currentUserData.photoURL = url;
+                profilePreview.src = url;
+                navUserImg.src = url;
+                profileUpdateStatus.textContent = '✅ Profile photo updated!';
+            } catch (err) {
+                profileUpdateStatus.textContent = '❌ Error: ' + err.message;
+            }
+        });
+
+        // Delete photo
+        deletePhotoBtn.addEventListener('click', async () => {
+            if (!confirm('Remove your profile photo?')) return;
+            try {
+                await db.collection('users').doc(currentUser.uid).update({ photoURL: '' });
+                currentUserData.photoURL = '';
+                const fallback = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUserData.name ||
+                    'User') + '&background=111111&color=ffffff&size=150';
+                profilePreview.src = fallback;
+                navUserImg.src = fallback;
+                profilePhotoUrl.value = '';
+                profileUpdateStatus.textContent = '✅ Photo removed.';
+            } catch (err) {
+                profileUpdateStatus.textContent = '❌ Error: ' + err.message;
+            }
+        });
+
+        // Update full profile
+        updateProfileBtn.addEventListener('click', async () => {
+            const name = profileName.value.trim();
+            const bio = profileBio.value.trim();
+            const stack = profileStack.value.trim();
+            const org = profileOrg.value.trim();
+            const status = profileStatus.value;
+            const linkedin = profileLinkedin.value.trim();
+            const github = profileGithub.value.trim();
+            const dribbble = profileDribbble.value.trim();
+            const newPassword = profilePassword.value.trim();
+
+            if (!name) {
+                profileUpdateStatus.textContent = 'Name is required.';
+                return;
+            }
+
+            try {
+                const updates = { name, bio, stack, org, status, linkedin, github, dribbble };
+                await db.collection('users').doc(currentUser.uid).update(updates);
+                currentUserData = { ...currentUserData, ...updates };
+                navUserName.textContent = name;
+                profileUpdateStatus.textContent = '✅ Profile updated successfully!';
+
+                if (newPassword && newPassword.length >= 6) {
+                    await currentUser.updatePassword(newPassword);
+                    profileUpdateStatus.textContent += ' Password updated.';
+                }
+            } catch (err) {
+                profileUpdateStatus.textContent = '❌ Error: ' + err.message;
+            }
+        });
+
+        // =========================
+        // 7. PROJECTS — MY PROJECTS
+        // =========================
+        async function loadMyProjects() {
+            try {
+                const snapshot = await db.collection('projects')
+                    .where('submittedBy', '==', currentUser.uid)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                if (snapshot.empty) {
+                    myProjectsList.innerHTML = '<p class="text-muted">You haven\'t submitted any projects yet.</p>';
+                    return;
+                }
+                let html = '<div class="project-grid">';
+                snapshot.forEach(doc => {
+                    const p = doc.data();
+                    const statusClass = p.status || 'pending';
+                    html += `
+                                <div class="project-card">
+                                    ${p.imageURL ? `<img src="${p.imageURL}" alt="${p.name}" />` : ''}
+                                    <h4>${p.name}</h4>
+                                    <p>${p.description || ''}</p>
+                                    ${p.link ? `<a href="${p.link}" target="_blank" class="text-muted" style="font-size:12px;color:#888;">🔗 Website</a>` : ''}
+                                    <span class="status-badge ${statusClass}">${statusClass}</span>
+                                </div>
+                            `;
+                });
+                html += '</div>';
+                myProjectsList.innerHTML = html;
+            } catch (err) {
+                myProjectsList.innerHTML = '<p class="text-muted">Error loading projects.</p>';
+                console.error(err);
+            }
+        }
+
+        // =========================
+        // 8. SUBMIT PROJECT
+        // =========================
+        submitProjectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = projectName.value.trim();
+            const description = projectDescription.value.trim();
+            const link = projectLink.value.trim();
+            const imageURL = projectImageUrl.value.trim();
+
+            if (!name || !description) {
+                projectSubmitStatus.textContent = 'Name and description are required.';
+                return;
+            }
+
+            try {
+                await db.collection('projects').add({
+                    name,
+                    description,
+                    link,
+                    imageURL,
+                    submittedBy: currentUser.uid,
+                    submittedByEmail: currentUser.email,
+                    status: 'pending',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                projectSubmitStatus.textContent = '✅ Project submitted! Waiting for admin approval.';
+                submitProjectForm.reset();
+                loadMyProjects();
+            } catch (err) {
+                projectSubmitStatus.textContent = '❌ Error: ' + err.message;
+            }
+        });
+
+        // =========================
+        // 9. ADMIN — MEMBERS
+        // =========================
+        async function loadAdminMembers() {
+            try {
+                const snapshot = await db.collection('users')
+                    .orderBy('createdAt', 'asc')
+                    .get();
+                if (snapshot.empty) {
+                    adminMemberList.innerHTML = '<p class="text-muted">No members found.</p>';
+                    return;
+                }
+                let html = '<div class="member-list" id="memberSortable">';
+                snapshot.forEach(doc => {
+                    const u = doc.data();
+                    const uid = doc.id;
+                    const isAdmin = u.role === 'admin';
+                    const avatar = u.photoURL || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(u.name ||
+                        'User') + '&background=111111&color=ffffff&size=32';
+                    html += `
+                                <div class="member-item" draggable="true" data-uid="${uid}">
+                                    <div class="member-info">
+                                        <img src="${avatar}" />
+                                        <span>${u.name || 'Unnamed'} <span style="color:#666;font-size:12px;">${u.email}</span></span>
+                                        ${isAdmin ? '<span style="color:#72ff9a;font-size:10px;background:#72ff9a22;padding:2px 8px;border-radius:50px;">Admin</span>' : ''}
+                                    </div>
+                                    <div class="member-actions">
+                                        ${!isAdmin ? `<button class="btn-danger remove-member" data-uid="${uid}">Remove</button>` : ''}
+                                    </div>
+                                </div>
+                            `;
+                });
+                html += '</div>';
+                adminMemberList.innerHTML = html;
+
+                // Remove handlers
+                document.querySelectorAll('.remove-member').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const uid = btn.dataset.uid;
+                        if (!confirm('Remove this member? This will delete their account and data.'))
+                            return;
+                        try {
+                            await db.collection('users').doc(uid).delete();
+                            loadAdminMembers();
+                        } catch (err) {
+                            alert('Error removing member: ' + err.message);
+                        }
+                    });
+                });
+
+                // Drag & drop
+                const list = document.getElementById('memberSortable');
+                let dragSrcIndex = null;
+                list.querySelectorAll('.member-item').forEach((item, index) => {
+                    item.addEventListener('dragstart', (e) => {
+                        dragSrcIndex = index;
+                        item.classList.add('dragging');
+                    });
+                    item.addEventListener('dragend', () => {
+                        item.classList.remove('dragging');
+                    });
+                    item.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                    });
+                    item.addEventListener('drop', async (e) => {
+                        e.preventDefault();
+                        if (dragSrcIndex === null) return;
+                        const items = list.querySelectorAll('.member-item');
+                        if (dragSrcIndex === index) return;
+                        const fromItem = items[dragSrcIndex];
+                        const toItem = items[index];
+                        if (fromItem && toItem) {
+                            list.insertBefore(fromItem, toItem);
+                            // Update order in Firestore
+                            const batch = db.batch();
+                            list.querySelectorAll('.member-item').forEach((el, idx) => {
+                                const uid = el.dataset.uid;
+                                batch.update(db.collection('users').doc(uid), { order: idx });
+                            });
+                            await batch.commit();
+                        }
+                        dragSrcIndex = null;
+                    });
+                });
+            } catch (err) {
+                adminMemberList.innerHTML = '<p class="text-muted">Error loading members.</p>';
+                console.error(err);
+            }
+        }
+
+        // Add member
+        addMemberBtn.addEventListener('click', () => {
+            addMemberForm.classList.remove('hidden');
+            addMemberBtn.disabled = true;
+        });
+        cancelAddMemberBtn.addEventListener('click', () => {
+            addMemberForm.classList.add('hidden');
+            addMemberBtn.disabled = false;
+            newMemberName.value = '';
+            newMemberEmail.value = '';
+            newMemberPassword.value = '';
+            addMemberStatus.textContent = '';
+        });
+
+        saveMemberBtn.addEventListener('click', async () => {
+            const name = newMemberName.value.trim();
+            const email = newMemberEmail.value.trim();
+            const password = newMemberPassword.value.trim();
+            if (!name || !email || !password) {
+                addMemberStatus.textContent = 'All fields required.';
+                return;
+            }
+            if (password.length < 6) {
+                addMemberStatus.textContent = 'Password must be at least 6 chars.';
+                return;
+            }
+            try {
+                const cred = await auth.createUserWithEmailAndPassword(email, password);
+                await db.collection('users').doc(cred.user.uid).set({
+                    name,
+                    email,
+                    role: 'user',
+                    bio: '',
+                    stack: '',
+                    org: '',
+                    status: 'Active',
+                    linkedin: '',
+                    github: '',
+                    dribbble: '',
+                    photoURL: '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    order: Date.now()
+                });
+                addMemberStatus.textContent = '✅ Member added!';
+                cancelAddMemberBtn.click();
+                loadAdminMembers();
+            } catch (err) {
+                addMemberStatus.textContent = '❌ Error: ' + err.message;
+            }
+        });
+
+        // =========================
+        // 10. ADMIN — APPROVE PROJECTS
+        // =========================
+        async function loadAdminProjects() {
+            try {
+                const snapshot = await db.collection('projects')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                if (snapshot.empty) {
+                    adminProjectList.innerHTML = '<p class="text-muted">No projects submitted yet.</p>';
+                    return;
+                }
+                let html = '';
+                snapshot.forEach(doc => {
+                    const p = doc.data();
+                    const pid = doc.id;
+                    const status = p.status || 'pending';
+                    html += `
+                                <div class="admin-project-item">
+                                    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+                                        <div>
+                                            <strong>${p.name}</strong>
+                                            <span class="status-badge ${status}">${status}</span>
+                                        </div>
+                                        <div style="font-size:12px;color:#888;">by ${p.submittedByEmail || 'Unknown'}</div>
+                                    </div>
+                                    <p style="color:#aaa;font-size:14px;">${p.description || ''}</p>
+                                    ${p.link ? `<a href="${p.link}" target="_blank" style="color:#888;font-size:13px;">🔗 ${p.link}</a>` : ''}
+                                    ${p.imageURL ? `<img src="${p.imageURL}" />` : ''}
+                                    <div class="project-actions" style="margin-top:12px;">
+                                        ${status === 'pending' ? `
+                                            <button class="btn-primary approve-project" data-pid="${pid}" style="padding:6px 14px;font-size:12px;">Approve</button>
+                                            <button class="btn-secondary reject-project" data-pid="${pid}" style="padding:6px 14px;font-size:12px;">Reject</button>
+                                            <button class="btn-secondary hold-project" data-pid="${pid}" style="padding:6px 14px;font-size:12px;">Hold</button>
+                                        ` : `
+                                            <span class="text-muted" style="font-size:12px;">Reviewed</span>
+                                            ${status === 'approved' ? '<span style="color:#72ff9a;font-size:12px;">✅ Approved</span>' : ''}
+                                            ${status === 'rejected' ? '<span style="color:#ff6b6b;font-size:12px;">❌ Rejected</span>' : ''}
+                                            ${status === 'hold' ? '<span style="color:#ff9f43;font-size:12px;">⏸️ On Hold</span>' : ''}
+                                        `}
+                                    </div>
+                                </div>
+                            `;
+                });
+                adminProjectList.innerHTML = html;
+
+                document.querySelectorAll('.approve-project').forEach(btn => {
+                    btn.addEventListener('click', () => updateProjectStatus(btn.dataset.pid, 'approved'));
+                });
+                document.querySelectorAll('.reject-project').forEach(btn => {
+                    btn.addEventListener('click', () => updateProjectStatus(btn.dataset.pid, 'rejected'));
+                });
+                document.querySelectorAll('.hold-project').forEach(btn => {
+                    btn.addEventListener('click', () => updateProjectStatus(btn.dataset.pid, 'hold'));
+                });
+            } catch (err) {
+                adminProjectList.innerHTML = '<p class="text-muted">Error loading projects.</p>';
+                console.error(err);
+            }
+        }
+
+        async function updateProjectStatus(pid, status) {
+            try {
+                await db.collection('projects').doc(pid).update({
+                    status: status,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                loadAdminProjects();
+                loadMyProjects();
+            } catch (err) {
+                alert('Error updating project: ' + err.message);
+            }
+        }
+
+        // =========================
+        // 11. ADMIN — SETTINGS
+        // =========================
+        async function loadSettings() {
+            try {
+                const doc = await db.collection('settings').doc('site').get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    siteName.value = data.siteName || '';
+                    siteLogo.value = data.siteLogo || '';
+                }
+            } catch (err) {
+                console.error('Error loading settings:', err);
+            }
+        }
+
+        saveSettingsBtn.addEventListener('click', async () => {
+            const name = siteName.value.trim();
+            const logo = siteLogo.value.trim();
+            try {
+                await db.collection('settings').doc('site').set({
+                    siteName: name,
+                    siteLogo: logo,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                settingsStatus.textContent = '✅ Settings saved!';
+            } catch (err) {
+                settingsStatus.textContent = '❌ Error: ' + err.message;
+            }
+        });
+
+        // =========================
+        // 12. SIDEBAR NAVIGATION
+        // =========================
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            const target = document.getElementById('tab-' + tabId);
+            if (target) target.classList.add('active');
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.tab === tabId) item.classList.add('active');
+            });
+        }
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const tab = item.dataset.tab;
+                if (tab) switchTab(tab);
+                if (tab === 'admin-members') loadAdminMembers();
+                if (tab === 'admin-projects') loadAdminProjects();
+                if (tab === 'admin-settings') loadSettings();
+                if (tab === 'myprojects') loadMyProjects();
+            });
+        });
+
+        console.log('🚀 EIAFSDO Firebase Dashboard loaded.');
+        console.log('✅ Firebase config inserted successfully.');
+        console.log('🔐 Firestore rules must allow read/write for authenticated users.');
+        console.log('👑 Set a user role to "admin" in Firestore to see admin features.');
+        console.log('💡 Images use URL inputs (imgbb, Cloudinary, etc.) — no Firebase Storage needed!');
+    </script>
+
+</body>
+</html>
