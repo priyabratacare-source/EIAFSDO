@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050505" />
+
+    <title>Projects Showcase — EIAFSDO</title>
+
+    <!-- Firebase SDK (Firestore) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        /* ============================================================
+           GLOBAL RESETS & DESIGN TOKENS
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #050505;
+            --card: #0d0d0d;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
+            --muted: #999999;
+            --shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+            --radius: 24px;
+            --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --verified-color: #38bdf8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.05), transparent 25%),
+                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.03), transparent 30%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            opacity: 0.18;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 44px 44px;
+            pointer-events: none;
+        }
+
+        .glow {
+            position: fixed;
+            width: 520px;
+            height: 520px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.025);
+            filter: blur(140px);
+            z-index: -1;
+            pointer-events: none;
+            animation: floatGlow 22s ease-in-out infinite alternate;
+        }
+        .glow.one { top: -10%; left: -10%; }
+        .glow.two { bottom: -10%; right: -10%; animation-delay: -7s; }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, 40px) scale(1.15); }
+        }
+
+        /* ============================================================
+           NAVBAR
+           ============================================================ */
+        .navbar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(5, 5, 5, 0.75);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+        .navbar.scrolled {
+            background: rgba(5, 5, 5, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: auto;
+            padding: 16px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            color: #fff;
+        }
+        .logo small {
+            display: block;
+            font-size: 8.5px;
+            font-weight: 400;
+            color: #777;
+            letter-spacing: 0.8px;
+            margin-top: 2px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 4px 0;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #fff;
+        }
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #fff;
+        }
+        .btn-login {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 12px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.35s var(--smooth-ease);
+        }
+        .btn-login:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-2px);
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: #aaa;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        /* ============================================================
+           HERO HEADER & SEARCH FILTER
+           ============================================================ */
+        .showcase-hero {
+            max-width: 1200px;
+            margin: auto;
+            padding: 140px 25px 30px;
+            text-align: center;
+        }
+        .section-label {
+            display: inline-block;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 6px 18px;
+            border-radius: 50px;
+            color: #aaa;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .showcase-hero h1 {
+            font-size: clamp(36px, 6vw, 64px);
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+        .showcase-hero h1 span { color: #777; }
+        .showcase-hero p {
+            color: var(--muted);
+            max-width: 650px;
+            margin: auto;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .filter-controls {
+            max-width: 720px;
+            margin: 40px auto 10px;
+            padding: 0 20px;
+            position: relative;
+        }
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 16px 20px 16px 48px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.035);
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .search-box input:focus {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+        }
+        .search-box .icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 17px;
+        }
+
+        /* ============================================================
+           PROJECTS GRID & CARDS
+           ============================================================ */
+        .projects-section {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 25px 90px;
+        }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+        }
+        .project-card {
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(8px);
+            transition: transform 0.35s var(--smooth-ease), border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+        }
+        .project-thumbnail {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            background: #0d0d0d;
+            overflow: hidden;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+        }
+        .project-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s var(--smooth-ease), filter 0.3s ease;
+        }
+        .project-card:hover .project-thumbnail img {
+            transform: scale(1.05);
+            filter: brightness(1.05);
+        }
+        .project-badge-approved {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(114, 255, 154, 0.3);
+            color: #72ff9a;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .project-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .project-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.4px;
+            margin-bottom: 8px;
+        }
+        .project-desc {
+            font-size: 13.5px;
+            color: #888;
+            line-height: 1.7;
+            margin-bottom: 22px;
+            flex-grow: 1;
+        }
+
+        /* Creator Metadata with Verified Badge */
+        .creator-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            gap: 12px;
+        }
+        .creator-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .creator-subtitle {
+            font-size: 8.5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+        }
+        .creator-name-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #eaeaea;
+        }
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 15px;
+            height: 15px;
+            color: var(--verified-color);
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.45));
+        }
+        .verified-badge svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .project-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 11.5px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            transition: all 0.3s var(--smooth-ease);
+            white-space: nowrap;
+        }
+        .project-link-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 70px 20px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ============================================================
+           IMAGE LIGHTBOX MODAL
+           ============================================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .lightbox-box {
+            position: relative;
+            max-width: 90vw;
+            max-height: 88vh;
+        }
+        .lightbox-box img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            object-fit: contain;
+            background: #0d0d0d;
+        }
+        .modal-close {
+            position: absolute;
+            top: -38px;
+            right: 0;
+            font-size: 32px;
+            line-height: 1;
+            color: #aaa;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+        }
+        .modal-close:hover { color: #fff; }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 25px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        footer strong { color: #aaa; }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: #aaa;
+            font-size: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s var(--smooth-ease);
+            z-index: 999;
+        }
+        .scroll-top.visible { display: flex; }
+        .scroll-top:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 18px 0 8px;
+                border-top: 1px solid var(--border);
+            }
+            .nav-links.open { display: flex; }
+            .hamburger { display: flex; }
+            .nav-inner { flex-wrap: wrap; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .creator-bar { flex-direction: column; align-items: flex-start; }
+            .project-link-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-grid"></div>
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">
+                EIAFSDO
+                <small>East Indian Amateur Full‑Stack Developers Org.</small>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#team-section">Team</a>
+                <a href="projects.html" class="active">Projects</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="https://priyabratacare-source.github.io/EIAFSDO/login.html" class="btn-login">🔑 Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER & HERO -->
+    <header class="showcase-hero">
+        <div class="section-label">Verified Showcase</div>
+        <h1>Approved <span>Projects</span></h1>
+        <p>
+            Explore real-world software, tools, and platforms engineered and submitted by verified EIAFSDO developers and founders.
+        </p>
+
+        <!-- SEARCH BAR -->
+        <div class="filter-controls">
+            <div class="search-box">
+                <span class="icon">⌕</span>
+                <input type="text" id="projectSearch" placeholder="Search project name, tech stack, or creator…" />
+            </div>
+        </div>
+    </header>
+
+    <!-- APPROVED PROJECTS GRID -->
+    <main class="projects-section">
+        <div class="projects-grid" id="projectsGrid">
+            <div class="empty-state" id="loadingState">Connecting to Firestore & fetching approved projects...</div>
+        </div>
+    </main>
+
+    <!-- IMAGE LIGHTBOX MODAL -->
+    <div class="modal-overlay" id="lightboxModal">
+        <div class="lightbox-box">
+            <button class="modal-close" id="lightboxClose" aria-label="Close modal">&times;</button>
+            <img id="lightboxImg" src="" alt="Project Screenshot Preview" />
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 <strong>East Indian Amateur Full-Stack Developers Organization</strong>. All rights reserved.
+    </footer>
+
+    <!-- SCROLL TO TOP -->
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
+
+    <!-- ============================================================
+       SCRIPT: FIRESTORE & DYNAMIC RENDERING
+       ============================================================ -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
+            authDomain: "eiafsdo-dashboard.firebaseapp.com",
+            projectId: "eiafsdo-dashboard",
+            storageBucket: "eiafsdo-dashboard.firebasestorage.app",
+            messagingSenderId: "171714190075",
+            appId: "1:171714190075:web:ee3dfe78f82896cc736e5e"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const projectsGrid = document.getElementById('projectsGrid');
+        const loadingState = document.getElementById('loadingState');
+        const projectSearch = document.getElementById('projectSearch');
+
+        const lightboxModal = document.getElementById('lightboxModal');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        let usersMap = {};
+        let approvedProjects = [];
+
+        // Verified Badge SVG Icon
+        const verifiedBadgeSVG = `
+            <span class="verified-badge" title="Verified Creator" aria-label="Verified Creator">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.93 14.88l-4.24-4.24 1.41-1.41 2.83 2.83 7.07-7.07 1.41 1.41-8.48 8.48z"/>
+                </svg>
+            </span>
+        `;
+
+        // Preload Users to map UID to Names
+        async function fetchUsers() {
+            try {
+                const usersSnap = await db.collection('users').get();
+                usersSnap.forEach(doc => {
+                    const data = doc.data();
+                    usersMap[doc.id] = data.name || 'EIAFSDO Founder';
+                });
+            } catch (err) {
+                console.warn('Could not preload user records:', err);
+            }
+        }
+
+        // Fetch only Approved Projects
+        async function loadApprovedProjects() {
+            await fetchUsers();
+
+            try {
+                const snapshot = await db.collection('projects')
+                    .where('status', '==', 'approved')
+                    .get();
+
+                if (snapshot.empty) {
+                    loadingState.textContent = 'No approved projects have been published yet.';
+                    return;
+                }
+
+                approvedProjects = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    approvedProjects.push({ id: doc.id, ...data });
+                });
+
+                renderProjects(approvedProjects);
+            } catch (err) {
+                console.error('Error fetching approved projects:', err);
+                loadingState.textContent = '⚠️ Unable to load projects from the database. Please refresh.';
+            }
+        }
+
+        function renderProjects(projectsList) {
+            if (!projectsList || projectsList.length === 0) {
+                projectsGrid.innerHTML = '<div class="empty-state">No matching projects found.</div>';
+                return;
+            }
+
+            let html = '';
+            projectsList.forEach(p => {
+                // Determine Creator Name
+                let creator = p.creatorName || p.author || p.authorName || p.submittedByName;
+                if (!creator && p.submittedBy && usersMap[p.submittedBy]) {
+                    creator = usersMap[p.submittedBy];
+                }
+                if (!creator) creator = 'EIAFSDO Founder';
+
+                const imageSrc = p.imageURL && p.imageURL.trim() !== ''
+                    ? p.imageURL
+                    : 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+
+                const safeTitle = (p.name || 'Untitled Project').replace(/"/g, '&quot;');
+
+                html += `
+                    <article class="project-card">
+                        <div class="project-thumbnail" onclick="openLightbox('${imageSrc}')">
+                            <span class="project-badge-approved">✓ Approved</span>
+                            <img src="${imageSrc}" alt="${safeTitle}" loading="lazy" />
+                        </div>
+
+                        <div class="project-content">
+                            <h2 class="project-title">${p.name || 'Untitled Project'}</h2>
+                            <p class="project-desc">${p.description || 'Verified production application engineered under EIAFSDO standards.'}</p>
+
+                            <div class="creator-bar">
+                                <div class="creator-info">
+                                    <span class="creator-subtitle">Created By</span>
+                                    <div class="creator-name-wrap">
+                                        <span>${creator}</span>
+                                        ${verifiedBadgeSVG}
+                                    </div>
+                                </div>
+
+                                ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="project-link-btn">🔗 Visit Website</a>` : ''}
+                            </div>
+                        </div>
+                    </article>
+                `;
+            });
+
+            projectsGrid.innerHTML = html;
+        }
+
+        // Search Filter Logic
+        projectSearch.addEventListener('input', () => {
+            const term = projectSearch.value.toLowerCase().trim();
+            const filtered = approvedProjects.filter(p => {
+                const creator = (p.creatorName || p.author || usersMap[p.submittedBy] || '').toLowerCase();
+                const title = (p.name || '').toLowerCase();
+                const desc = (p.description || '').toLowerCase();
+                return title.includes(term) || desc.includes(term) || creator.includes(term);
+            });
+            renderProjects(filtered);
+        });
+
+        // Lightbox Functions
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightboxModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightboxModal.classList.remove('active');
+            lightboxImg.src = '';
+            document.body.style.overflow = '';
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxModal.addEventListener('click', (e) => {
+            if (e.target === lightboxModal) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Mobile Nav & Sticky Navbar
+        const navbar = document.getElementById('navbar');
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+            scrollBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Handle Image Fallbacks
+        document.addEventListener('error', (e) => {
+            if (e.target.tagName === 'IMG' && !e.target.src.includes('unsplash.com')) {
+                e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80';
+            }
+        }, true);
+
+        // Run
+        loadApprovedProjects();
+    </script>
+</body>
+</html>
