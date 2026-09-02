@@ -7,10 +7,16 @@
 
     <title>EIAFSDO — East Indian Amateur Full‑Stack Developers Organization</title>
 
+    <!-- Firebase SDK (Firestore only for public page) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js">
+    </script>
+
     <style>
         /* ============================================================
                EAST INDIAN AMATEUR FULL-STACK DEVELOPERS ORGANIZATION
-               SMOOTH · POLISHED · ALL-IN-ONE
+               SMOOTH · POLISHED · ALL-IN-ONE · DATABASE DRIVEN
                ============================================================ */
 
         * {
@@ -945,15 +951,6 @@
             box-shadow: 0 8px 30px rgba(255, 255, 255, .08);
         }
 
-        /* --- Special link styling for Priyabrata's Codebihin --- */
-        .socials a.codebihin-link {
-            font-size: 8px;
-            letter-spacing: 0.3px;
-            padding: 0 4px;
-            width: auto;
-            min-width: 34px;
-        }
-
         .team-card.featured {
             border-color: rgba(255, 255, 255, .2);
             background:
@@ -1368,7 +1365,7 @@
             border-radius: 50px;
         }
 
-        /* ---------- LOGIN MODAL ---------- */
+        /* ---------- LOGIN MODAL (Legacy - kept for compatibility) ---------- */
         .login-modal .modal-content {
             max-width: 400px;
             text-align: center;
@@ -1768,140 +1765,8 @@
         </div>
 
         <div class="team-grid" id="teamGrid">
-
-            <!-- ============================================================
-            AYUSH CHATTERJEE — updated GitHub
-            ============================================================ -->
-            <article class="team-card featured" data-category="leadership" data-search="Ayush Chatterjee Founder Full-Stack JavaScript React Node">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Ayush Chatterjee" data-image="https://i.ibb.co/GQx5CQjB/Chat-GPT-Image-Sep-2-2026-04-06-19-PM.png">
-                    <img src="https://i.ibb.co/GQx5CQjB/Chat-GPT-Image-Sep-2-2026-04-06-19-PM.png" alt="Ayush Chatterjee" loading="lazy" />
-                </div>
-                <h2 class="name">Ayush Chatterjee</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>MERN · Next</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">Ayush is the driving force behind EIAFSDO. A self-taught full-stack developer with a love for clean code and system design.</p>
-                <div class="socials">
-                    <a href="https://www.linkedin.com/in/ayush-chatterjee-784559308/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="https://github.com/Ayushchatterjeesource/" target="_blank" aria-label="GitHub">GH</a>
-                    <a href="#" aria-label="Twitter">TW</a>
-                </div>
-            </article>
-
-            <!-- ============================================================
-            PRIYABRATA PATRA — updated GitHub + Codebihin info
-            ============================================================ -->
-            <article class="team-card" data-category="leadership" data-search="Priyabrata Patra Founder Full-Stack Python Django React Codebihin">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Priyabrata Patra" data-image="https://i.ibb.co/9HTqv59W/Chat-GPT-Image-Sep-2-2026-03-51-53-PM.png">
-                    <img src="https://i.ibb.co/9HTqv59W/Chat-GPT-Image-Sep-2-2026-03-51-53-PM.png" alt="Priyabrata Patra" loading="lazy" />
-                </div>
-                <h2 class="name">Priyabrata Patra</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>Django · React</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">Priyabrata is a backend-first developer with a passion for scalable architecture and data-driven applications. Also the founder of <strong style="color:#fff;">Codebihin.in</strong> — reach out at <strong style="color:#888;">admin@codebihin.in</strong></p>
-                <div class="socials">
-                    <a href="https://www.linkedin.com/in/priyabratapatra/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="https://github.com/priyabratacare-source" target="_blank" aria-label="GitHub">GH</a>
-                    <a href="#" class="codebihin-link" style="font-size:8px; letter-spacing:0.3px; padding:0 6px; min-width:auto; width:auto;" aria-label="Codebihin">CB</a>
-                </div>
-            </article>
-
-            <!-- ============================================================
-            ABHRADIP DHARA — fully updated
-            ============================================================ -->
-            <article class="team-card" data-category="leadership" data-search="Abhradip Dhara Founder Full-Stack Vue Node AWS">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Abhradip Dhara" data-image="https://i.ibb.co/KxM9s0F3/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png">
-                    <img src="https://i.ibb.co/KxM9s0F3/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png" alt="Abhradip Dhara" loading="lazy" />
-                </div>
-                <h2 class="name">Abhradip Dhara</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>B.Tech Civil (pursuing)</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">I am a student of HETC. I am eager to learn all the craftsmanships needed to craft the cyberspace.</p>
-                <div class="socials">
-                    <a href="https://www.linkedin.com/in/abhradip-dhara-9532b3430/" target="_blank" aria-label="LinkedIn">IN</a>
-                    <a href="https://github.com/AbhradipDhara" target="_blank" aria-label="GitHub">GH</a>
-                    <a href="#" aria-label="Dribbble">DR</a>
-                </div>
-            </article>
-
-            <!-- ============================================================
-            SOUVIK DESHI
-            ============================================================ -->
-            <article class="team-card" data-category="leadership" data-search="Souvik Deshi Founder Full-Stack Java Spring Boot React">
-                <div class="founder-tag">FOUNDER</div>
-                <div class="card-top">
-                    <span class="card-label">EIAFSDO ID</span>
-                    <span class="status"></span>
-                </div>
-                <div class="profile" data-member="Souvik Deshi" data-image="images/souvik.jpg">
-                    <img src="images/souvik.jpg" alt="Souvik Deshi" loading="lazy" />
-                </div>
-                <h2 class="name">Souvik Deshi</h2>
-                <p class="role">Founder · Full-Stack Developer</p>
-                <div class="badge">Leadership</div>
-                <div class="divider"></div>
-                <div class="details">
-                    <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                    <div class="detail"><small>Stack</small><strong>Spring Boot · React</strong></div>
-                    <div class="detail"><small>Org</small><strong>EIAFSDO</strong></div>
-                    <div class="detail"><small>Status</small><strong>Active</strong></div>
-                </div>
-                <p class="bio">Souvik is a backend and systems enthusiast who enjoys crafting robust APIs and scalable microservices. Passionate about DevOps and cloud infrastructure.</p>
-                <div class="socials">
-                    <a href="#" aria-label="LinkedIn">IN</a>
-                    <a href="#" aria-label="GitHub">GH</a>
-                    <a href="#" aria-label="Twitter">TW</a>
-                </div>
-            </article>
-
-            <!-- MORE SOON -->
-            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
-                <div class="soon-icon">✦</div>
-                <h3>More Soon</h3>
-                <p>We're growing — new leaders joining soon.</p>
-            </article>
-            <article class="team-card coming-soon" data-category="leadership" data-search="coming soon">
-                <div class="soon-icon">✦</div>
-                <h3>More Soon</h3>
-                <p>Additional team members on the horizon.</p>
-            </article>
-
-            <div class="empty" id="teamEmpty">No team members found.</div>
+            <!-- Team cards will be dynamically rendered from Firebase -->
+            <div class="empty" id="teamEmpty" style="display:block;">Loading team members...</div>
         </div>
     </div>
 
@@ -1913,7 +1778,8 @@
             Open-source tools and platforms crafted by the EIAFSDO team.
         </p>
 
-        <div class="project-grid">
+        <div class="project-grid" id="projectGrid">
+            <!-- Static project cards - these stay as they are -->
             <div class="project-card reveal">
                 <span class="p-icon">⚡</span>
                 <h3>DevConnect</h3>
@@ -2017,7 +1883,7 @@
         <div class="modal-content">
             <button class="modal-close" id="modalClose">&times;</button>
             <h2 id="modalName">Projects by <span></span></h2>
-            <div id="modalProjects"></div>
+            <div id="modalProjects"><p style="color:#666;text-align:center;padding:20px 0;">Loading projects...</p></div>
         </div>
     </div>
 
@@ -2052,187 +1918,277 @@
     </div>
 
     <!-- ============================================================
-    SCRIPT
+    SCRIPT — FIREBASE DATABASE DRIVEN TEAM CARDS
     ============================================================ -->
     <script>
         /* =========================
-               NAVBAR SCROLL
+               FIREBASE CONFIG (YOUR CREDENTIALS)
                ========================= */
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 60);
-        });
+        const firebaseConfig = {
+            apiKey: "AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
+            authDomain: "eiafsdo-dashboard.firebaseapp.com",
+            projectId: "eiafsdo-dashboard",
+            storageBucket: "eiafsdo-dashboard.firebasestorage.app",
+            messagingSenderId: "171714190075",
+            appId: "1:171714190075:web:ee3dfe78f82896cc736e5e"
+        };
 
-        /* =========================
-               HAMBURGER MENU
-               ========================= */
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('open');
-        });
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('open');
-            });
-        });
-
-        /* =========================
-               SCROLL REVEAL
-               ========================= */
-        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
-        reveals.forEach(el => revealObserver.observe(el));
-
-        /* =========================
-               SERVICES STAGGERED REVEAL
-               ========================= */
-        const serviceCards = document.querySelectorAll('.service-card');
-        const serviceObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
-        serviceCards.forEach(card => serviceObserver.observe(card));
-
-        /* =========================
-               SCROLL TO TOP
-               ========================= */
-        const scrollBtn = document.getElementById('scrollTopBtn');
-        window.addEventListener('scroll', () => {
-            scrollBtn.classList.toggle('visible', window.scrollY > 450);
-        });
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        /* =========================
-               TEAM SEARCH + FILTER
-               ========================= */
+        // =========================
+        // DOM REFS
+        // =========================
+        const teamGrid = document.getElementById('teamGrid');
+        const teamEmpty = document.getElementById('teamEmpty');
         const teamSearch = document.getElementById('teamSearch');
         const teamFilters = document.querySelectorAll('.team-filters .filter');
-        const teamCards = document.querySelectorAll('.team-card');
-        const teamEmpty = document.getElementById('teamEmpty');
-        let teamFilter = 'all';
 
-        function updateTeam() {
-            const search = teamSearch.value.toLowerCase().trim();
-            let visible = 0;
-
-            teamCards.forEach(card => {
-                const category = card.dataset.category || '';
-                const keywords = (card.dataset.search || '').toLowerCase();
-                const matchesSearch = keywords.includes(search);
-                const matchesFilter = teamFilter === 'all' || category === teamFilter;
-
-                if (matchesSearch && matchesFilter) {
-                    card.style.display = 'block';
-                    visible++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            teamEmpty.style.display = visible === 0 ? 'block' : 'none';
-        }
-
-        teamSearch.addEventListener('input', updateTeam);
-
-        teamFilters.forEach(btn => {
-            btn.addEventListener('click', () => {
-                teamFilters.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                teamFilter = btn.dataset.role;
-                updateTeam();
-            });
-        });
-
-        /* =========================
-               PROFILE PROJECTS MODAL
-               ========================= */
         const profileModal = document.getElementById('profileModal');
         const modalName = document.getElementById('modalName');
         const modalProjects = document.getElementById('modalProjects');
         const modalClose = document.getElementById('modalClose');
 
-        const memberProjects = {
-            'Ayush Chatterjee': [
-                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
-                    tech: 'React · Node · Socket.io' },
-                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
-                    tech: 'CLI · TypeScript · Prisma' }
-            ],
-            'Priyabrata Patra': [
-                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
-                    tech: 'Django · React · PostgreSQL' },
-                { name: 'Analytics Lite', desc: 'Privacy-first, lightweight analytics dashboard for indie makers.',
-                    tech: 'Vue · FastAPI · ClickHouse' }
-            ],
-            'Abhradip Dhara': [
-                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
-                    tech: 'React · Node · Socket.io' },
-                { name: 'EduTrack', desc: 'Open-source LMS built for coding bootcamps and self-paced learners.',
-                    tech: 'Django · React · PostgreSQL' },
-                { name: 'StackStarter', desc: 'Boilerplate generator for full-stack apps with auth, DB, and API scaffolding.',
-                    tech: 'CLI · TypeScript · Prisma' }
-            ],
-            'Souvik Deshi': [
-                { name: 'DevConnect', desc: 'Community platform for amateur developers to share projects and collaborate.',
-                    tech: 'React · Node · Socket.io' },
-                { name: 'Analytics Lite', desc: 'Privacy-first, lightweight analytics dashboard for indie makers.',
-                    tech: 'Vue · FastAPI · ClickHouse' }
-            ]
-        };
-
-        function openProfileModal(memberName) {
-            const projects = memberProjects[memberName] || [];
-            modalName.innerHTML = `Projects by <span>${memberName}</span>`;
-            modalProjects.innerHTML = '';
-
-            if (projects.length === 0) {
-                modalProjects.innerHTML =
-                    `<p style="color:#666;text-align:center;padding:20px 0;">No projects listed yet.</p>`;
-            } else {
-                projects.forEach(p => {
-                    const div = document.createElement('div');
-                    div.className = 'modal-project';
-                    div.innerHTML = `
-                                <h3>${p.name}</h3>
-                                <p>${p.desc}</p>
-                                <span class="tech-tag">${p.tech}</span>
-                            `;
-                    modalProjects.appendChild(div);
-                });
-            }
-
-            profileModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeProfileModal() {
-            profileModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        /* =========================
-               IMAGE LIGHTBOX
-               ========================= */
         const imageModal = document.getElementById('imageModal');
         const imageModalContent = document.getElementById('imageModalContent');
         const imageModalClose = document.getElementById('imageModalClose');
 
+        // =========================
+        // STATE
+        // =========================
+        let allMembers = [];
+        let currentFilter = 'all';
+        let currentMemberProjects = [];
+
+        // =========================
+        // LOAD TEAM MEMBERS FROM FIRESTORE
+        // =========================
+        async function loadTeamMembers() {
+            try {
+                const snapshot = await db.collection('users')
+                    .where('role', '!=', 'admin') // Exclude admins, show only team members
+                    .orderBy('order', 'asc') // Order by custom order field
+                    .get();
+
+                if (snapshot.empty) {
+                    teamGrid.innerHTML = '';
+                    teamEmpty.style.display = 'block';
+                    teamEmpty.textContent = 'No team members found.';
+                    return;
+                }
+
+                allMembers = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    allMembers.push({
+                        id: doc.id,
+                        ...data
+                    });
+                });
+
+                renderTeamCards(allMembers);
+                teamEmpty.style.display = 'none';
+
+            } catch (err) {
+                console.error('Error loading team members:', err);
+                // Fallback: try without ordering
+                try {
+                    const snapshot = await db.collection('users')
+                        .where('role', '!=', 'admin')
+                        .get();
+
+                    if (snapshot.empty) {
+                        teamGrid.innerHTML = '';
+                        teamEmpty.style.display = 'block';
+                        teamEmpty.textContent = 'No team members found.';
+                        return;
+                    }
+
+                    allMembers = [];
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        allMembers.push({
+                            id: doc.id,
+                            ...data
+                        });
+                    });
+
+                    renderTeamCards(allMembers);
+                    teamEmpty.style.display = 'none';
+                } catch (fallbackErr) {
+                    teamGrid.innerHTML = '';
+                    teamEmpty.style.display = 'block';
+                    teamEmpty.textContent = '⚠️ Error loading team. Please refresh.';
+                    console.error('Fallback error:', fallbackErr);
+                }
+            }
+        }
+
+        // =========================
+        // RENDER TEAM CARDS
+        // =========================
+        function renderTeamCards(members) {
+            if (members.length === 0) {
+                teamGrid.innerHTML = '';
+                teamEmpty.style.display = 'block';
+                teamEmpty.textContent = 'No members found.';
+                return;
+            }
+
+            let html = '';
+            members.forEach((member, index) => {
+                const isFirst = index === 0;
+                const fallbackImg = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name || 'User') +
+                    '&background=111111&color=ffffff&size=300';
+                const photoURL = member.photoURL || fallbackImg;
+                const role = member.role || 'Member';
+                const status = member.status || 'Active';
+                const bio = member.bio || 'Member of EIAFSDO.';
+                const stack = member.stack || 'Full-Stack Developer';
+                const org = member.org || 'EIAFSDO';
+                const linkedin = member.linkedin || '#';
+                const github = member.github || '#';
+                const dribbble = member.dribbble || '#';
+
+                html += `
+                            <article class="team-card ${isFirst ? 'featured' : ''}" data-category="leadership" data-member-id="${member.id}" data-search="${member.name || ''} ${stack} ${org}">
+                                ${isFirst ? '<div class="founder-tag">FOUNDER</div>' : ''}
+                                <div class="card-top">
+                                    <span class="card-label">EIAFSDO ID</span>
+                                    <span class="status"></span>
+                                </div>
+                                <div class="profile" data-member-id="${member.id}" data-member-name="${member.name || 'User'}" data-image="${photoURL}">
+                                    <img src="${photoURL}" alt="${member.name || 'Team Member'}" loading="lazy" />
+                                </div>
+                                <h2 class="name">${member.name || 'Team Member'}</h2>
+                                <p class="role">${stack}</p>
+                                <div class="badge">${org}</div>
+                                <div class="divider"></div>
+                                <div class="details">
+                                    <div class="detail"><small>Position</small><strong>${role}</strong></div>
+                                    <div class="detail"><small>Stack</small><strong>${stack}</strong></div>
+                                    <div class="detail"><small>Org</small><strong>${org}</strong></div>
+                                    <div class="detail"><small>Status</small><strong>${status}</strong></div>
+                                </div>
+                                <p class="bio">${bio}</p>
+                                <div class="socials">
+                                    ${linkedin && linkedin !== '#' ? `<a href="${linkedin}" target="_blank" aria-label="LinkedIn">IN</a>` : ''}
+                                    ${github && github !== '#' ? `<a href="${github}" target="_blank" aria-label="GitHub">GH</a>` : ''}
+                                    ${dribbble && dribbble !== '#' ? `<a href="${dribbble}" target="_blank" aria-label="Dribbble">DR</a>` : ''}
+                                </div>
+                            </article>
+                        `;
+            });
+
+            teamGrid.innerHTML = html;
+            teamEmpty.style.display = 'none';
+
+            // Attach click handlers for profile popup (projects)
+            document.querySelectorAll('.profile').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    const memberId = this.dataset.memberId;
+                    const memberName = this.dataset.memberName || 'User';
+                    if (memberId) {
+                        openMemberProjects(memberId, memberName);
+                    }
+                });
+            });
+
+            // Attach click handlers for image lightbox
+            document.querySelectorAll('.profile img').forEach(img => {
+                img.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const profile = this.closest('.profile');
+                    if (profile) {
+                        const imageSrc = profile.dataset.image;
+                        const altText = this.alt || 'Team member';
+                        if (imageSrc) {
+                            openImageModal(imageSrc, altText);
+                        }
+                    }
+                });
+            });
+
+            // Re-apply 3D card effect
+            document.querySelectorAll('.team-card').forEach(card => {
+                if (card.classList.contains('coming-soon')) return;
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+                    const rx = ((y - cy) / cy) * -3.5;
+                    const ry = ((x - cx) / cx) * 3.5;
+                    this.style.transform =
+                        `translateY(-12px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+
+            // Re-apply scroll reveal for new cards
+            const newReveals = document.querySelectorAll('.team-card');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, { threshold: .1 });
+            newReveals.forEach(card => {
+                card.style.animationPlayState = 'paused';
+                revealObserver.observe(card);
+            });
+        }
+
+        // =========================
+        // OPEN MEMBER PROJECTS POPUP
+        // =========================
+        async function openMemberProjects(memberId, memberName) {
+            modalName.innerHTML = `Projects by <span>${memberName}</span>`;
+            modalProjects.innerHTML = '<p style="color:#666;text-align:center;padding:20px 0;">Loading projects...</p>';
+            profileModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            try {
+                const snapshot = await db.collection('projects')
+                    .where('submittedBy', '==', memberId)
+                    .where('status', '==', 'approved')
+                    .get();
+
+                if (snapshot.empty) {
+                    modalProjects.innerHTML =
+                        '<p style="color:#666;text-align:center;padding:20px 0;">No approved projects yet.</p>';
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const p = doc.data();
+                    html += `
+                                <div class="modal-project">
+                                    ${p.imageURL ? `<img src="${p.imageURL}" alt="${p.name}" style="width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#111;" />` : ''}
+                                    <h3>${p.name}</h3>
+                                    <p>${p.description || ''}</p>
+                                    ${p.link ? `<a href="${p.link}" target="_blank" class="tech-tag" style="display:inline-block;margin-top:8px;text-decoration:none;">🔗 Visit Website</a>` : ''}
+                                    <span class="tech-tag" style="display:inline-block;margin-top:8px;margin-left:4px;">${p.status || 'approved'}</span>
+                                </div>
+                            `;
+                });
+                modalProjects.innerHTML = html;
+
+            } catch (err) {
+                console.error('Error loading member projects:', err);
+                modalProjects.innerHTML =
+                    '<p style="color:#ff6b6b;text-align:center;padding:20px 0;">⚠️ Error loading projects. Please refresh.</p>';
+            }
+        }
+
+        // =========================
+        // IMAGE LIGHTBOX
+        // =========================
         function openImageModal(imageSrc, altText) {
             imageModalContent.innerHTML = `
                         <div class="loading-spinner">
@@ -2283,38 +2239,18 @@
                     `;
         }
 
-        /* =========================
-               PROFILE CLICK HANDLERS
-               ========================= */
-        document.querySelectorAll('.profile').forEach(el => {
-            el.addEventListener('click', (e) => {
-                const member = el.dataset.member;
-                if (member) {
-                    openProfileModal(member);
-                }
-            });
+        // =========================
+        // CLOSE MODALS
+        // =========================
+        modalClose.addEventListener('click', () => {
+            profileModal.classList.remove('active');
+            document.body.style.overflow = '';
         });
-
-        document.querySelectorAll('.profile img').forEach(img => {
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const profile = img.closest('.profile');
-                if (profile) {
-                    const imageSrc = profile.dataset.image;
-                    const altText = img.alt || 'Team member';
-                    if (imageSrc) {
-                        openImageModal(imageSrc, altText);
-                    }
-                }
-            });
-        });
-
-        /* =========================
-               CLOSE MODALS
-               ========================= */
-        modalClose.addEventListener('click', closeProfileModal);
         profileModal.addEventListener('click', (e) => {
-            if (e.target === profileModal) closeProfileModal();
+            if (e.target === profileModal) {
+                profileModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
 
         imageModalClose.addEventListener('click', closeImageModal);
@@ -2324,33 +2260,60 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                closeProfileModal();
+                profileModal.classList.remove('active');
+                document.body.style.overflow = '';
                 closeImageModal();
                 closeLoginModal();
             }
         });
 
-        /* =========================
-               LOGIN MODAL (Legacy - kept for compatibility)
-               ========================= */
+        // =========================
+        // SEARCH & FILTER
+        // =========================
+        function filterMembers() {
+            const search = teamSearch.value.toLowerCase().trim();
+
+            let filtered = allMembers;
+
+            // Filter by role (currently we only have leadership, but we keep it)
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(m => m.role === currentFilter);
+            }
+
+            // Filter by search
+            if (search) {
+                filtered = filtered.filter(m => {
+                    const searchable = (m.name || '') + ' ' + (m.stack || '') + ' ' + (m.org || '') + ' ' + (m.bio ||
+                    '');
+                    return searchable.toLowerCase().includes(search);
+                });
+            }
+
+            renderTeamCards(filtered);
+        }
+
+        teamSearch.addEventListener('input', filterMembers);
+
+        teamFilters.forEach(btn => {
+            btn.addEventListener('click', function() {
+                teamFilters.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.role;
+                filterMembers();
+            });
+        });
+
+        // =========================
+        // LOGIN MODAL (Legacy)
+        // =========================
         const loginModal = document.getElementById('loginModal');
-        const openLoginBtn = document.getElementById('openLoginBtn');
         const loginClose = document.getElementById('loginClose');
         const loginForm = document.getElementById('loginForm');
-
-        function openLoginModal() {
-            loginModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
 
         function closeLoginModal() {
             loginModal.classList.remove('active');
             document.body.style.overflow = '';
         }
-
-        // Keep the modal functionality for backward compatibility
-        // The button in the navbar now links to the external login page
-        // But we keep the modal for any other references
 
         loginClose.addEventListener('click', closeLoginModal);
         loginModal.addEventListener('click', (e) => {
@@ -2363,61 +2326,100 @@
             closeLoginModal();
         });
 
-        // The openLoginBtn now links to external page, but we keep this as fallback
-        // The href in the HTML already points to the external URL
-
-        /* =========================
-               CONTACT FORM
-               ========================= */
+        // =========================
+        // CONTACT FORM
+        // =========================
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('📬 Thank you for reaching out! We\'ll get back to you soon.');
             this.reset();
         });
 
-        /* =========================
-               3D CARD EFFECT
-               ========================= */
-        teamCards.forEach(card => {
-            if (card.classList.contains('coming-soon')) return;
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const cx = rect.width / 2;
-                const cy = rect.height / 2;
-                const rx = ((y - cy) / cy) * -3.5;
-                const ry = ((x - cx) / cx) * 3.5;
-                card.style.transform =
-                    `translateY(-12px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
-
-        /* =========================
-               IMAGE FALLBACK
-               ========================= */
-        document.querySelectorAll('.profile img').forEach(img => {
-            img.addEventListener('error', function() {
-                if (!this.src.includes('ui-avatars.com')) {
-                    const name = encodeURIComponent(this.alt || 'Member');
-                    this.src =
-                        `https://ui-avatars.com/api/?name=${name}&background=111111&color=ffffff&size=300`;
+        // =========================
+        // SCROLL REVEAL (for static sections)
+        // =========================
+        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
             });
+        }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(el => revealObserver.observe(el));
+
+        // Services staggered reveal
+        const serviceCards = document.querySelectorAll('.service-card');
+        const serviceObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+        serviceCards.forEach(card => serviceObserver.observe(card));
+
+        // =========================
+        // SCROLL TO TOP
+        // =========================
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 450);
+        });
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        console.log('🚀 EIAFSDO — East Indian Amateur Full-Stack Developers Organization');
+        // =========================
+        // NAVBAR SCROLL
+        // =========================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // =========================
+        // HAMBURGER MENU
+        // =========================
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // =========================
+        // IMAGE FALLBACK
+        // =========================
+        document.addEventListener('error', function(e) {
+            if (e.target.tagName === 'IMG') {
+                const img = e.target;
+                if (!img.src.includes('ui-avatars.com')) {
+                    const name = encodeURIComponent(img.alt || 'Member');
+                    img.src =
+                        `https://ui-avatars.com/api/?name=${name}&background=111111&color=ffffff&size=300`;
+                }
+            }
+        }, true);
+
+        // =========================
+        // INIT — LOAD TEAM
+        // =========================
+        loadTeamMembers();
+
+        console.log('🚀 EIAFSDO — Database Driven Team Cards');
         console.log('📧 eifsdoindia@proton.me');
-        console.log('🏛️ Student-operated · HETC');
         console.log('📜 Motto: Aedificare — Disputare — Crescere');
-        console.log('👥 Founders: 4');
-        console.log('🖼️ Image lightbox enabled — click any profile picture to enlarge');
-        console.log('📱 Mobile hamburger menu enabled');
-        console.log('✨ Glow effect enabled on all profile photos');
-        console.log('🔗 Login button links to: https://priyabratacare-source.github.io/EIAFSDO/login.html');
+        console.log('🔥 Firebase Firestore connected — team data loaded dynamically.');
+        console.log('🖼️ Click any profile → view member projects from Firestore.');
     </script>
 
 </body>
