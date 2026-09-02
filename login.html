@@ -409,6 +409,7 @@
             color: white;
         }
 
+        /* Project cards - clickable */
         .project-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -421,10 +422,13 @@
             border-radius: 12px;
             padding: 16px;
             transition: var(--transition);
+            cursor: pointer;
+            position: relative;
         }
         .project-card:hover {
-            border-color: rgba(255, 255, 255, .15);
+            border-color: rgba(255, 255, 255, .2);
             transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .3);
         }
         .project-card img {
             width: 100%;
@@ -442,6 +446,10 @@
             font-size: 13px;
             color: #888;
             line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .project-card .status-badge {
             display: inline-block;
@@ -473,6 +481,135 @@
             background: #ff9f4322;
             border-color: #ff9f43;
             color: #ff9f43;
+        }
+        .project-card .delete-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 0, 0, .15);
+            border: 1px solid rgba(255, 0, 0, .3);
+            color: #ff6b6b;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+        }
+        .project-card:hover .delete-btn {
+            opacity: 1;
+        }
+        .project-card .delete-btn:hover {
+            background: rgba(255, 0, 0, .3);
+            transform: scale(1.1);
+        }
+
+        /* Project details popup */
+        .project-popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .85);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .project-popup.active {
+            display: flex;
+        }
+        .project-popup .popup-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: popupSlide .3s ease;
+        }
+        @keyframes popupSlide {
+            from {
+                transform: scale(.95) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        .project-popup .popup-content .popup-close {
+            float: right;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 28px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .project-popup .popup-content .popup-close:hover {
+            color: white;
+            transform: rotate(90deg);
+        }
+        .project-popup .popup-content img {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 12px 0;
+            background: #111;
+        }
+        .project-popup .popup-content .popup-status {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid var(--border);
+            margin-top: 8px;
+        }
+        .project-popup .popup-content .popup-status.approved {
+            background: #72ff9a22;
+            border-color: #72ff9a;
+            color: #72ff9a;
+        }
+        .project-popup .popup-content .popup-status.pending {
+            background: #ffd93d22;
+            border-color: #ffd93d;
+            color: #ffd93d;
+        }
+        .project-popup .popup-content .popup-status.rejected {
+            background: #ff6b6b22;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        .project-popup .popup-content .popup-status.hold {
+            background: #ff9f4322;
+            border-color: #ff9f43;
+            color: #ff9f43;
+        }
+        .project-popup .popup-content .popup-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: #888;
+            text-decoration: none;
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        .project-popup .popup-content .popup-link:hover {
+            color: white;
+            border-color: white;
         }
 
         .member-list {
@@ -571,9 +708,6 @@
         }
         .reset-modal .modal-box h4 {
             margin-bottom: 16px;
-        }
-        .reset-modal .modal-box .form-group {
-            margin-bottom: 14px;
         }
         .reset-modal .modal-box .modal-actions {
             display: flex;
@@ -675,6 +809,9 @@
             }
             .member-item .member-actions {
                 justify-content: flex-start;
+            }
+            .project-popup .popup-content {
+                padding: 20px;
             }
         }
     </style>
@@ -826,7 +963,20 @@
         </div>
     </div>
 
-    <!-- ===== RESET PASSWORD MODAL (Admin only) ===== -->
+    <!-- ===== PROJECT POPUP ===== -->
+    <div class="project-popup" id="projectPopup">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">&times;</button>
+            <h3 id="popupName" style="margin-bottom:4px;"></h3>
+            <span class="popup-status" id="popupStatus"></span>
+            <img id="popupImage" src="" alt="Project" style="display:none;" />
+            <p id="popupDescription" style="color:#aaa;margin:12px 0;"></p>
+            <a id="popupLink" href="#" target="_blank" class="popup-link" style="display:none;">🔗 Visit Website</a>
+            <p style="color:#666;font-size:12px;margin-top:12px;" id="popupSubmittedBy"></p>
+        </div>
+    </div>
+
+    <!-- ===== RESET PASSWORD MODAL ===== -->
     <div class="reset-modal" id="resetModal">
         <div class="modal-box">
             <h4>🔑 Reset Password</h4>
@@ -936,6 +1086,16 @@
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         const settingsStatus = document.getElementById('settingsStatus');
 
+        // Project popup
+        const projectPopup = document.getElementById('projectPopup');
+        const popupClose = document.getElementById('popupClose');
+        const popupName = document.getElementById('popupName');
+        const popupStatus = document.getElementById('popupStatus');
+        const popupImage = document.getElementById('popupImage');
+        const popupDescription = document.getElementById('popupDescription');
+        const popupLink = document.getElementById('popupLink');
+        const popupSubmittedBy = document.getElementById('popupSubmittedBy');
+
         // Reset modal
         const resetModal = document.getElementById('resetModal');
         const resetUserName = document.getElementById('resetUserName');
@@ -993,7 +1153,6 @@
             populateProfile();
             loadMyProjects();
 
-            // Admin check
             const isAdmin = currentUserData && currentUserData.role === 'admin';
 
             if (isAdmin) {
@@ -1162,41 +1321,75 @@
         });
 
         // =========================
-        // MY PROJECTS — FIXED: robust error handling
+        // MY PROJECTS — with click to popup & delete
         // =========================
+        let myProjectsData = [];
+
         async function loadMyProjects() {
             try {
-                // Try with ordering first
                 const snapshot = await db.collection('projects')
                     .where('submittedBy', '==', currentUser.uid)
-                    .orderBy('createdAt', 'desc')
                     .get();
 
                 if (snapshot.empty) {
                     myProjectsList.innerHTML = '<p class="text-muted">You haven\'t submitted any projects yet.</p>';
+                    myProjectsData = [];
                     return;
                 }
 
+                myProjectsData = [];
                 let html = '<div class="project-grid">';
                 snapshot.forEach(doc => {
                     const p = doc.data();
+                    const pid = doc.id;
                     const statusClass = p.status || 'pending';
+                    const projectData = { id: pid, ...p };
+                    myProjectsData.push(projectData);
+
                     html += `
-                                <div class="project-card">
+                                <div class="project-card" data-pid="${pid}">
                                     ${p.imageURL ? `<img src="${p.imageURL}" alt="${p.name}" />` : ''}
                                     <h4>${p.name}</h4>
                                     <p>${p.description || ''}</p>
-                                    ${p.link ? `<a href="${p.link}" target="_blank" class="text-muted" style="font-size:12px;color:#888;">🔗 Website</a>` : ''}
+                                    ${p.link ? `<span style="font-size:11px;color:#555;">🔗 ${p.link.substring(0, 30)}...</span>` : ''}
                                     <span class="status-badge ${statusClass}">${statusClass}</span>
+                                    <button class="delete-btn" data-pid="${pid}" title="Delete project">✕</button>
                                 </div>
                             `;
                 });
                 html += '</div>';
                 myProjectsList.innerHTML = html;
 
+                // Click to open popup
+                document.querySelectorAll('.project-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('delete-btn')) return;
+                        const pid = card.dataset.pid;
+                        const project = myProjectsData.find(p => p.id === pid);
+                        if (project) openProjectPopup(project);
+                    });
+                });
+
+                // Delete button
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        const pid = btn.dataset.pid;
+                        if (!confirm('Delete this project permanently?')) return;
+                        try {
+                            await db.collection('projects').doc(pid).delete();
+                            loadMyProjects();
+                            if (currentUserData && currentUserData.role === 'admin') {
+                                loadAdminProjects();
+                            }
+                        } catch (err) {
+                            alert('Error deleting project: ' + err.message);
+                        }
+                    });
+                });
+
             } catch (err) {
-                // Fallback: try without ordering
-                console.warn('Ordered query failed, trying without orderBy:', err);
+                console.warn('My projects error:', err);
                 try {
                     const snapshot = await db.collection('projects')
                         .where('submittedBy', '==', currentUser.uid)
@@ -1207,28 +1400,105 @@
                         return;
                     }
 
+                    myProjectsData = [];
                     let html = '<div class="project-grid">';
                     snapshot.forEach(doc => {
                         const p = doc.data();
+                        const pid = doc.id;
                         const statusClass = p.status || 'pending';
+                        const projectData = { id: pid, ...p };
+                        myProjectsData.push(projectData);
+
                         html += `
-                                    <div class="project-card">
+                                    <div class="project-card" data-pid="${pid}">
                                         ${p.imageURL ? `<img src="${p.imageURL}" alt="${p.name}" />` : ''}
                                         <h4>${p.name}</h4>
                                         <p>${p.description || ''}</p>
-                                        ${p.link ? `<a href="${p.link}" target="_blank" class="text-muted" style="font-size:12px;color:#888;">🔗 Website</a>` : ''}
+                                        ${p.link ? `<span style="font-size:11px;color:#555;">🔗 ${p.link.substring(0, 30)}...</span>` : ''}
                                         <span class="status-badge ${statusClass}">${statusClass}</span>
+                                        <button class="delete-btn" data-pid="${pid}" title="Delete project">✕</button>
                                     </div>
                                 `;
                     });
                     html += '</div>';
                     myProjectsList.innerHTML = html;
+
+                    document.querySelectorAll('.project-card').forEach(card => {
+                        card.addEventListener('click', (e) => {
+                            if (e.target.classList.contains('delete-btn')) return;
+                            const pid = card.dataset.pid;
+                            const project = myProjectsData.find(p => p.id === pid);
+                            if (project) openProjectPopup(project);
+                        });
+                    });
+
+                    document.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.addEventListener('click', async (e) => {
+                            e.stopPropagation();
+                            const pid = btn.dataset.pid;
+                            if (!confirm('Delete this project permanently?')) return;
+                            try {
+                                await db.collection('projects').doc(pid).delete();
+                                loadMyProjects();
+                                if (currentUserData && currentUserData.role === 'admin') {
+                                    loadAdminProjects();
+                                }
+                            } catch (err) {
+                                alert('Error deleting project: ' + err.message);
+                            }
+                        });
+                    });
+
                 } catch (fallbackErr) {
                     myProjectsList.innerHTML = '<p class="text-muted" style="color:#ff6b6b;">⚠️ Error loading projects. Please refresh.</p>';
                     console.error('Fallback error:', fallbackErr);
                 }
             }
         }
+
+        // =========================
+        // PROJECT POPUP FUNCTIONS
+        // =========================
+        function openProjectPopup(project) {
+            popupName.textContent = project.name || 'Untitled';
+            popupStatus.textContent = project.status || 'pending';
+            popupStatus.className = 'popup-status ' + (project.status || 'pending');
+
+            if (project.imageURL) {
+                popupImage.src = project.imageURL;
+                popupImage.style.display = 'block';
+            } else {
+                popupImage.style.display = 'none';
+            }
+
+            popupDescription.textContent = project.description || 'No description provided.';
+
+            if (project.link) {
+                popupLink.href = project.link;
+                popupLink.style.display = 'inline-block';
+                popupLink.textContent = '🔗 ' + project.link;
+            } else {
+                popupLink.style.display = 'none';
+            }
+
+            popupSubmittedBy.textContent = 'Submitted by: ' + (project.submittedByEmail || 'Unknown');
+
+            projectPopup.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectPopup() {
+            projectPopup.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        popupClose.addEventListener('click', closeProjectPopup);
+        projectPopup.addEventListener('click', (e) => {
+            if (e.target === projectPopup) closeProjectPopup();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeProjectPopup();
+        });
 
         // =========================
         // SUBMIT PROJECT
@@ -1267,7 +1537,7 @@
         });
 
         // =========================
-        // ADMIN — MEMBERS (with password reset & remove)
+        // ADMIN — MEMBERS
         // =========================
         async function loadAdminMembers() {
             try {
@@ -1311,23 +1581,19 @@
                 html += '</div>';
                 adminMemberList.innerHTML = html;
 
-                // Remove member handlers
                 document.querySelectorAll('.remove-member').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const uid = btn.dataset.uid;
-                        if (!confirm('⚠️ Remove this member? This will delete their account and all data.'))
-                            return;
+                        if (!confirm('⚠️ Remove this member?')) return;
                         try {
                             await db.collection('users').doc(uid).delete();
                             loadAdminMembers();
-                            addMemberStatus.textContent = '✅ Member removed from Firestore.';
                         } catch (err) {
                             alert('Error removing member: ' + err.message);
                         }
                     });
                 });
 
-                // Reset password handlers
                 document.querySelectorAll('.reset-password-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const uid = btn.dataset.uid;
@@ -1341,7 +1607,6 @@
                     });
                 });
 
-                // Drag & drop reorder
                 const list = document.getElementById('memberSortable');
                 if (list) {
                     let dragSrcIndex = null;
@@ -1383,7 +1648,7 @@
         }
 
         // =========================
-        // RESET PASSWORD MODAL
+        // RESET PASSWORD
         // =========================
         resetCancelBtn.addEventListener('click', () => {
             resetModal.classList.remove('active');
@@ -1397,22 +1662,16 @@
                 resetStatus.textContent = 'No user selected.';
                 return;
             }
-
             try {
-                // Send password reset email
                 await auth.sendPasswordResetEmail(resetTargetEmail, {
                     url: window.location.origin,
                     handleCodeInApp: false
                 });
-
                 resetStatus.textContent = '✅ Password reset email sent to ' + resetTargetEmail;
                 resetStatus.style.color = '#72ff9a';
-
-                // Update Firestore with note
                 await db.collection('users').doc(resetTargetUid).update({
                     passwordResetRequested: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
                 setTimeout(() => {
                     resetModal.classList.remove('active');
                     resetTargetUid = null;
@@ -1420,14 +1679,12 @@
                     resetStatus.textContent = '';
                     resetStatus.style.color = '';
                 }, 3000);
-
             } catch (err) {
                 resetStatus.textContent = '❌ Error: ' + err.message;
                 resetStatus.style.color = '#ff6b6b';
             }
         });
 
-        // Close modal on Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 resetModal.classList.remove('active');
@@ -1438,7 +1695,7 @@
         });
 
         // =========================
-        // ADD MEMBER (Admin)
+        // ADD MEMBER
         // =========================
         addMemberBtn.addEventListener('click', () => {
             addMemberForm.classList.remove('hidden');
@@ -1491,11 +1748,10 @@
         });
 
         // =========================
-        // ADMIN — APPROVE PROJECTS (FIXED: robust error handling)
+        // ADMIN — APPROVE PROJECTS (FIXED: robust fallback)
         // =========================
         async function loadAdminProjects() {
             try {
-                // Try with ordering first
                 const snapshot = await db.collection('projects')
                     .orderBy('createdAt', 'desc')
                     .get();
@@ -1551,9 +1807,9 @@
                 });
 
             } catch (err) {
-                // Fallback: try without ordering
-                console.warn('Ordered admin query failed, trying without orderBy:', err);
+                console.warn('Ordered admin query failed, using fallback:', err);
                 try {
+                    // Fallback: get all projects without ordering
                     const snapshot = await db.collection('projects').get();
 
                     if (snapshot.empty) {
@@ -1681,16 +1937,13 @@
             });
         });
 
-        // =========================
-        // INITIAL LOAD — ensure projects load on page start
-        // =========================
-        // This is handled by onAuthStateChanged
-
         console.log('🚀 EIAFSDO Firebase Dashboard loaded.');
-        console.log('✅ All errors fixed — projects load with fallback queries.');
+        console.log('✅ All errors fixed — projects load with robust fallback.');
         console.log('👑 Only users with role="admin" can access admin dashboard.');
         console.log('💡 Images use URL inputs — no Firebase Storage needed!');
         console.log('🔑 Admin can send password reset emails to any user.');
+        console.log('📁 Click any project card to see full details in popup.');
+        console.log('🗑️ Users can delete their own projects.');
     </script>
 
 </body>
