@@ -10,6 +10,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
     <style>
         /* ============================================================
            EIAFSDO DASHBOARD — Modern Dark Responsive Theme
@@ -1039,6 +1042,14 @@
         const db = firebase.firestore();
         db.enablePersistence().catch(() => {});
 
+        // --- EMAILJS CONFIGURATION ---
+        const EMAILJS_PUBLIC_KEY = "un5rFYBCRySuLxERc";
+        const EMAILJS_SERVICE_ID = "service_aj2ybbu";
+        const TEMPLATE_ADMIN_ALERT = "template_17zkscm";   // Project Submission Alert
+        const TEMPLATE_USER_APPROVED = "template_sdxslwd"; // Project Approval Notification
+
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+
         // --- 2. GLOBAL STATE ---
         let currentUser = null;
         let currentUserData = null;
@@ -1384,26 +1395,55 @@
         document.getElementById('myProjectSearch').addEventListener('input', renderMyProjects);
         document.getElementById('myProjectFilter').addEventListener('change', renderMyProjects);
 
-        // --- 8. PROJECT SUBMISSION ---
+        // --- 8. PROJECT SUBMISSION & DYNAMIC ADMIN EMAIL (TEMPLATE_17ZKSCM) ---
         document.getElementById('submitProjectForm').addEventListener('submit', async e => {
             e.preventDefault();
             const name = document.getElementById('projectName').value.trim();
             const desc = document.getElementById('projectDescription').value.trim();
+            const link = document.getElementById('projectLink').value.trim();
+            const imageURL = document.getElementById('projectImageUrl').value.trim();
+            const tags = document.getElementById('projectTags').value.trim();
+
             if (!name || !desc) return showToast('Name and description required.', 'warning');
 
             try {
+                // 1. Store submission in Firestore
                 await db.collection('projects').add({
                     name,
                     description: desc,
-                    link: document.getElementById('projectLink').value.trim(),
-                    imageURL: document.getElementById('projectImageUrl').value.trim(),
-                    tags: document.getElementById('projectTags').value.trim(),
+                    link,
+                    imageURL,
+                    tags,
                     status: 'pending',
                     submittedBy: currentUser.uid,
                     submittedByEmail: currentUser.email,
+                    submittedByName: currentUserData?.name || 'Member',
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                showToast('Project submitted for approval.', 'success');
+
+                // 2. Query Firestore dynamically for whoever currently holds role == 'admin'
+                const adminSnap = await db.collection('users').where('role', '==', 'admin').get();
+                
+                adminSnap.forEach(adminDoc => {
+                    const adminData = adminDoc.data();
+                    if (adminData && adminData.email) {
+                        emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_ADMIN_ALERT, {
+                            to_email: adminData.email, // Dynamic delivery to the database admin
+                            project_name: name,
+                            submitter_name: currentUserData?.name || 'Member',
+                            submitter_email: currentUser.email,
+                            project_link: link || 'None provided',
+                            project_tags: tags || 'Full-Stack Development',
+                            project_description: desc
+                        }).then(() => {
+                            console.log(`Alert email sent to admin: ${adminData.email}`);
+                        }).catch(err => {
+                            console.warn(`Error sending email to ${adminData.email}:`, err);
+                        });
+                    }
+                });
+
+                showToast('Project submitted! Admins have been notified via email.', 'success');
                 e.target.reset();
                 loadMyProjects();
                 switchTab('myprojects');
@@ -1518,7 +1558,6 @@
 
             if (messageUnsubscribe) messageUnsubscribe();
             
-            // NOTE: Composite index avoided by removing .orderBy and sorting in JavaScript.
             messageUnsubscribe = db.collection('messages')
                 .where('participants', 'array-contains', currentUser.uid)
                 .onSnapshot(snap => {
@@ -1533,7 +1572,7 @@
                         }
                     });
 
-                    // Sort chronologically in-memory
+                    // Sort chronologically in-memory (avoids composite index requirement)
                     msgs.sort((a, b) => {
                         const tA = a.timestamp ? a.timestamp.toMillis() : 0;
                         const tB = b.timestamp ? b.timestamp.toMillis() : 0;
@@ -1699,7 +1738,6 @@
 
             let secondaryApp = null;
             try {
-                // Creates an isolated ephemeral app instance to prevent dropping the admin's active session
                 secondaryApp = firebase.initializeApp(firebaseConfig, "MemberCreationApp_" + Date.now());
                 const cred = await secondaryApp.auth().createUserWithEmailAndPassword(email, password);
 
@@ -1791,7 +1829,7 @@
             }
         }
 
-        // --- 14. ADMIN PROJECT APPROVALS ---
+        // --- 14. ADMIN PROJECT APPROVALS & DYNAMIC EMAIL (TEMPLATE_SDXSLWD) ---
         async function loadAdminProjects() {
             const list = document.getElementById('adminProjectList');
             try {
@@ -1827,9 +1865,34 @@
 
                 list.querySelectorAll('.btn-stat').forEach(b => {
                     b.addEventListener('click', async () => {
+                        const pid = b.dataset.pid;
+                        const newStatus = b.dataset.st;
                         try {
-                            await db.collection('projects').doc(b.dataset.pid).update({ status: b.dataset.st });
-                            showToast(`Project status set to ${b.dataset.st}`, 'success');
+                            const projectRef = db.collection('projects').doc(pid);
+                            const docSnap = await projectRef.get();
+                            const pData = docSnap.exists ? docSnap.data() : null;
+
+                            await projectRef.update({ 
+                                status: newStatus,
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+
+                            // Send approval email directly to submitter when marked approved
+                            if (newStatus === 'approved' && pData?.submittedByEmail) {
+                                emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_USER_APPROVED, {
+                                    to_email: pData.submittedByEmail,
+                                    submitter_name: pData.submittedByName || 'Member',
+                                    project_name: pData.name || 'Untitled Project',
+                                    project_link: pData.link || 'https://priyabratacare-source.github.io/EIAFSDO/projects.html',
+                                    project_tags: pData.tags || 'Full-Stack Development'
+                                }).then(() => {
+                                    console.log('Approval email dispatched to user:', pData.submittedByEmail);
+                                }).catch(err => {
+                                    console.warn('Approval email error:', err);
+                                });
+                            }
+
+                            showToast(`Project status set to ${newStatus}`, 'success');
                             loadAdminProjects();
                         } catch (err) {
                             showToast(err.message, 'error');
@@ -1911,11 +1974,35 @@
                 tags: document.getElementById('editProjectTags').value.trim(),
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
+            const newStatus = document.getElementById('editProjectStatusSelect').value;
+            let statusChangedToApproved = false;
+
             if (currentUserData?.role === 'admin') {
-                updates.status = document.getElementById('editProjectStatusSelect').value;
+                updates.status = newStatus;
             }
+
             try {
-                await db.collection('projects').doc(editProjectId).update(updates);
+                const projectRef = db.collection('projects').doc(editProjectId);
+                const prevSnap = await projectRef.get();
+                const prevData = prevSnap.exists ? prevSnap.data() : null;
+
+                if (currentUserData?.role === 'admin' && prevData?.status !== 'approved' && newStatus === 'approved') {
+                    statusChangedToApproved = true;
+                }
+
+                await projectRef.update(updates);
+
+                // Send confirmation email if approved from modal
+                if (statusChangedToApproved && prevData?.submittedByEmail) {
+                    emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_USER_APPROVED, {
+                        to_email: prevData.submittedByEmail,
+                        submitter_name: prevData.submittedByName || 'Member',
+                        project_name: updates.name || prevData.name || 'Untitled Project',
+                        project_link: updates.link || prevData.link || 'https://priyabratacare-source.github.io/EIAFSDO/projects.html',
+                        project_tags: updates.tags || prevData.tags || 'Full-Stack Development'
+                    }).catch(err => console.warn('Approval email modal dispatch error:', err));
+                }
+
                 showToast('Project updated.', 'success');
                 document.getElementById('editProjectModal').classList.remove('active');
                 loadMyProjects();
