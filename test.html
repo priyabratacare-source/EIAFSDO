@@ -1045,8 +1045,8 @@
         // --- EMAILJS CONFIGURATION ---
         const EMAILJS_PUBLIC_KEY = "un5rFYBCRySuLxERc";
         const EMAILJS_SERVICE_ID = "service_aj2ybbu";
-        const TEMPLATE_ADMIN_ALERT = "template_17zkscm";   // Project Submission Alert to Admin
-        const TEMPLATE_USER_APPROVED = "template_sdxslwd"; // Project Approval Notification to User
+        const TEMPLATE_ADMIN_ALERT = "template_17zkscm";   // Project Submission Alert
+        const TEMPLATE_USER_APPROVED = "template_sdxslwd"; // Project Approval Notification
 
         emailjs.init(EMAILJS_PUBLIC_KEY);
 
@@ -1395,7 +1395,7 @@
         document.getElementById('myProjectSearch').addEventListener('input', renderMyProjects);
         document.getElementById('myProjectFilter').addEventListener('change', renderMyProjects);
 
-        // --- 8. PROJECT SUBMISSION & EMAIL NOTIFICATION (TEMPLATE_17ZKSCM) ---
+        // --- 8. PROJECT SUBMISSION & DYNAMIC ADMIN EMAIL (TEMPLATE_17ZKSCM) ---
         document.getElementById('submitProjectForm').addEventListener('submit', async e => {
             e.preventDefault();
             const name = document.getElementById('projectName').value.trim();
@@ -1407,6 +1407,7 @@
             if (!name || !desc) return showToast('Name and description required.', 'warning');
 
             try {
+                // 1. Store submission in Firestore
                 await db.collection('projects').add({
                     name,
                     description: desc,
@@ -1420,21 +1421,29 @@
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                // Dispatch EmailJS alert to Admin
-                emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_ADMIN_ALERT, {
-                    project_name: name,
-                    submitter_name: currentUserData?.name || 'Member',
-                    submitter_email: currentUser.email,
-                    project_link: link || 'None provided',
-                    project_tags: tags || 'Full-Stack Development',
-                    project_description: desc
-                }).then(() => {
-                    console.log('Submission notification email delivered to admin.');
-                }).catch(err => {
-                    console.warn('Submission email alert error:', err);
+                // 2. Query Firestore dynamically for whoever currently holds role == 'admin'
+                const adminSnap = await db.collection('users').where('role', '==', 'admin').get();
+                
+                adminSnap.forEach(adminDoc => {
+                    const adminData = adminDoc.data();
+                    if (adminData && adminData.email) {
+                        emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_ADMIN_ALERT, {
+                            to_email: adminData.email, // Dynamic delivery to the database admin
+                            project_name: name,
+                            submitter_name: currentUserData?.name || 'Member',
+                            submitter_email: currentUser.email,
+                            project_link: link || 'None provided',
+                            project_tags: tags || 'Full-Stack Development',
+                            project_description: desc
+                        }).then(() => {
+                            console.log(`Alert email sent to admin: ${adminData.email}`);
+                        }).catch(err => {
+                            console.warn(`Error sending email to ${adminData.email}:`, err);
+                        });
+                    }
                 });
 
-                showToast('Project submitted! Admin has been notified via email.', 'success');
+                showToast('Project submitted! Admins have been notified via email.', 'success');
                 e.target.reset();
                 loadMyProjects();
                 switchTab('myprojects');
@@ -1820,7 +1829,7 @@
             }
         }
 
-        // --- 14. ADMIN PROJECT APPROVALS & EMAIL NOTIFICATION (TEMPLATE_SDXSLWD) ---
+        // --- 14. ADMIN PROJECT APPROVALS & DYNAMIC EMAIL (TEMPLATE_SDXSLWD) ---
         async function loadAdminProjects() {
             const list = document.getElementById('adminProjectList');
             try {
@@ -1983,7 +1992,7 @@
 
                 await projectRef.update(updates);
 
-                // Dispatch approval email if status changed to approved from within edit modal
+                // Send confirmation email if approved from modal
                 if (statusChangedToApproved && prevData?.submittedByEmail) {
                     emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_USER_APPROVED, {
                         to_email: prevData.submittedByEmail,
