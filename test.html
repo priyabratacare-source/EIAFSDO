@@ -671,13 +671,22 @@
             bottom: -3px;
         }
 
+        /* Member Name with Centered Verified Tick */
         .name {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
             text-align: center;
             font-size: 23px;
             font-weight: 700;
             margin-bottom: 5px;
             letter-spacing: -0.5px;
         }
+        .name-text {
+            color: #fff;
+        }
+
         .role {
             text-align: center;
             color: #aaa;
@@ -917,20 +926,31 @@
             color: #fff;
             letter-spacing: -0.3px;
         }
+
+        /* Unified Verified Check Badge (Used in Team & Talks) */
         .verified-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 16px;
-            height: 16px;
+            width: 17px;
+            height: 17px;
             background: #2563eb;
-            color: #fff;
+            color: #ffffff;
             border-radius: 50%;
-            font-size: 9.5px;
-            font-weight: 900;
-            box-shadow: 0 0 10px rgba(37, 99, 235, 0.55);
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
             flex-shrink: 0;
+            border: 1.5px solid #050505;
         }
+        .verified-badge svg {
+            width: 9.5px;
+            height: 9.5px;
+            stroke: currentColor;
+            stroke-width: 3.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         .talk-date {
             font-size: 11px;
             color: #666;
@@ -1279,7 +1299,7 @@
         </div>
     </section>
 
-    <!-- TEAM SECTION (DATABASE DRIVEN - ALL FOUNDERS) -->
+    <!-- TEAM SECTION (DATABASE DRIVEN - ALL FOUNDERS WITH VERIFIED TICK) -->
     <div id="team-section" style="padding-top:20px;">
         <div style="max-width:1100px;margin:auto;padding:0 25px;">
             <div class="section-label reveal">Our Leadership</div>
@@ -1440,7 +1460,7 @@
     </div>
 
     <!-- ============================================================
-       SCRIPT: FIRESTORE, TEAM RENDERING & DEDUPLICATED TALKS
+       SCRIPT: FIRESTORE, VERIFIED TEAM CARDS & DEDUPLICATED TALKS
        ============================================================ -->
     <script>
         const firebaseConfig = {
@@ -1474,6 +1494,15 @@
 
         let allMembers = [];
         let activeFilter = 'all';
+
+        // Consistent SVG Verified Tick Badge Component
+        const VERIFIED_TICK_ICON = `
+            <span class="verified-badge" title="Verified Member">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </span>
+        `;
 
         function escapeHTML(str) {
             if (!str) return '';
@@ -1560,7 +1589,12 @@
                             <img src="${photoURL}" alt="${escapeHTML(member.name || 'Founder')}" loading="lazy" />
                         </div>
 
-                        <h2 class="name">${escapeHTML(member.name || 'Founder')}</h2>
+                        <!-- Member Name with Verified Tick Beside It -->
+                        <h2 class="name">
+                            <span class="name-text">${escapeHTML(member.name || 'Founder')}</span>
+                            ${VERIFIED_TICK_ICON}
+                        </h2>
+
                         <p class="role">Founder · ${role.toLowerCase() === 'admin' ? 'Lead Architect' : escapeHTML(role)}</p>
                         <div class="badge">${escapeHTML(org)}</div>
                         
@@ -1635,7 +1669,7 @@
         }
 
         /* ============================================================
-           LOAD TALKS (ONLY LATEST 1 TALK PER USER WITH VERIFIED ICON)
+           LOAD TALKS (LATEST 1 TALK PER USER WITH VERIFIED BADGE)
            ============================================================ */
         async function loadTalks() {
             try {
@@ -1653,14 +1687,12 @@
                     allTalks.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Sort descending in-memory by timestamp
                 allTalks.sort((a, b) => {
                     const tA = a.timestamp ? (a.timestamp.toMillis ? a.timestamp.toMillis() : a.timestamp) : 0;
                     const tB = b.timestamp ? (b.timestamp.toMillis ? b.timestamp.toMillis() : b.timestamp) : 0;
                     return tB - tA;
                 });
 
-                // De-duplicate: Keep only the single most recent talk per user
                 const seenUsers = new Set();
                 const latestTalks = [];
                 allTalks.forEach(t => {
@@ -1695,7 +1727,7 @@
                                 <div class="talk-meta">
                                     <div class="talk-user-row">
                                         <h3 class="talk-user-name">${escapeHTML(name)}</h3>
-                                        <span class="verified-badge" title="Verified Member">✓</span>
+                                        ${VERIFIED_TICK_ICON}
                                     </div>
                                     <span class="talk-date">${time}</span>
                                 </div>
@@ -1708,8 +1740,6 @@
                 });
 
                 talksGrid.innerHTML = html;
-
-                // Bind reveal observer to dynamically injected talk cards
                 talksGrid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
             } catch (err) {
                 console.error('Error fetching talks:', err);
