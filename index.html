@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#050505" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>EIAFSDO — Admin & User Dashboard</title>
 
-    <title>EIAFSDO — East Indian Amateur Full‑Stack Developers Organization</title>
-
-    <!-- Firebase SDK (Firestore for public page) -->
+    <!-- Firebase SDKs (v10 Compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
         /* ============================================================
-           GLOBAL RESETS & TOKENS
+           EIAFSDO DASHBOARD — Modern Dark Responsive Theme
            ============================================================ */
         * {
             margin: 0;
@@ -24,1445 +26,1006 @@
         :root {
             --bg: #050505;
             --card: #0d0d0d;
-            --card2: #121212;
-            --border: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, .08);
             --text: #ffffff;
             --muted: #999999;
-            --shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
-            --radius: 26px;
-            --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow: 0 20px 60px rgba(0, 0, 0, .45);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: .3s cubic-bezier(.22, .68, 0, 1);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
         html {
+            -webkit-tap-highlight-color: transparent;
             scroll-behavior: smooth;
-            scroll-padding-top: 80px;
         }
 
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-            background:
-                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.05), transparent 25%),
-                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.03), transparent 30%),
-                var(--bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+            background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 16px;
+            padding-bottom: calc(16px + var(--safe-bottom));
+            background-image: radial-gradient(circle at 20% 10%, rgba(255, 255, 255, .06), transparent 25%),
+                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, .04), transparent 30%);
             overflow-x: hidden;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* Ambient Background Grid & Glows */
-        .bg-grid {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            opacity: 0.18;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 44px 44px;
-            pointer-events: none;
-        }
-
-        .glow {
-            position: fixed;
-            width: 520px;
-            height: 520px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.025);
-            filter: blur(140px);
-            z-index: -1;
-            pointer-events: none;
-            animation: floatGlow 22s ease-in-out infinite alternate;
-        }
-        .glow.one { top: -10%; left: -10%; animation-delay: 0s; }
-        .glow.two { bottom: -10%; right: -10%; animation-delay: -7s; }
-        .glow.three {
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 750px;
-            height: 750px;
-            opacity: 0.15;
-            animation-delay: -14s;
-        }
-
-        @keyframes floatGlow {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(70px, 45px) scale(1.18); }
-        }
-
-        /* Fluid Reveal Animation */
-        .reveal {
-            opacity: 0;
-            transform: translateY(45px);
-            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-45px);
-            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
-        }
-        .reveal-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .reveal-right {
-            opacity: 0;
-            transform: translateX(45px);
-            transition: opacity 0.85s var(--smooth-ease), transform 0.85s var(--smooth-ease);
-        }
-        .reveal-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* ============================================================
-           NAVBAR
-           ============================================================ */
-        .navbar {
+        .container {
             width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(5, 5, 5, 0.7);
-            border-bottom: 1px solid var(--border);
-            transition: background 0.4s ease, box-shadow 0.4s ease;
-        }
-        .navbar.scrolled {
-            background: rgba(5, 5, 5, 0.94);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        }
-        .nav-inner {
             max-width: 1200px;
-            margin: auto;
-            padding: 15px 25px;
+            margin: 0 auto;
+        }
+
+        /* ---------- TOAST NOTIFICATIONS ---------- */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 360px;
+            width: calc(100% - 40px);
+            pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px 20px;
+            box-shadow: var(--shadow);
+            animation: toastSlide .4s ease;
             display: flex;
             align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            backdrop-filter: blur(12px);
+            transform-origin: top right;
+        }
+        .toast-success { border-left: 4px solid #72ff9a; }
+        .toast-error { border-left: 4px solid #ff6b6b; }
+        .toast-warning { border-left: 4px solid #ffd93d; }
+        .toast-info { border-left: 4px solid #4fc3f7; }
+        .toast .toast-icon { font-size: 18px; flex-shrink: 0; }
+        .toast .toast-msg { flex: 1; color: #ddd; word-break: break-word; }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 4px;
+            transition: var(--transition);
+        }
+        .toast .toast-close:hover { color: white; }
+
+        @keyframes toastSlide {
+            from { opacity: 0; transform: translateX(40px) scale(.96); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        /* ---------- AUTH ---------- */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            gap: 30px;
+            width: 100%;
+        }
+        .auth-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow);
+        }
+        .auth-box h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            font-size: 26px;
+        }
+        .auth-box h2 span { color: #777; }
+        .auth-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 15px;
+            margin-bottom: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+        .auth-box input:focus {
+            border-color: rgba(255, 255, 255, .25);
+            box-shadow: 0 0 20px rgba(255, 255, 255, .05);
+        }
+        .auth-box button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .auth-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, .12);
+        }
+        .auth-error {
+            color: #ff6b6b;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+
+        /* ---------- DASHBOARD ---------- */
+        .dashboard {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+        .dashboard.active { display: flex; }
+
+        /* ---------- TOP NAV ---------- */
+        .dash-nav {
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: rgba(13, 13, 13, .9);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
             flex-wrap: wrap;
             gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .logo {
+        .dash-nav .logo {
             font-size: 18px;
             font-weight: 800;
             letter-spacing: -0.5px;
-            line-height: 1.2;
-            text-decoration: none;
-            color: #fff;
-            transition: opacity 0.3s;
-        }
-        .logo:hover { opacity: 0.85; }
-        .logo small {
-            display: block;
-            font-size: 8.5px;
-            font-weight: 400;
-            color: #777;
-            letter-spacing: 0.8px;
-            margin-top: 2px;
-        }
-        .nav-links {
             display: flex;
             align-items: center;
-            gap: 22px;
+            gap: 8px;
         }
-        .nav-links a {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.3s ease;
-            position: relative;
-            padding: 4px 0;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #fff;
-            transition: width 0.35s var(--smooth-ease);
-        }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-links a:hover { color: #fff; }
-        .nav-links .btn-login {
-            background: rgba(255, 255, 255, 0.06);
-            padding: 8px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            font-weight: 600;
-            font-size: 12px;
-            transition: all 0.35s var(--smooth-ease);
-        }
-        .nav-links .btn-login::after { display: none; }
-        .nav-links .btn-login:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
-        }
+        .dash-nav .logo span { color: #777; font-weight: 400; }
+        .dash-nav .nav-right { display: flex; align-items: center; gap: 12px; }
 
         .hamburger {
             display: none;
             flex-direction: column;
             gap: 5px;
-            cursor: pointer;
             background: none;
             border: none;
-            padding: 4px;
+            cursor: pointer;
+            padding: 6px 4px;
+            z-index: 110;
         }
         .hamburger span {
             display: block;
-            width: 25px;
-            height: 2px;
-            background: #aaa;
-            transition: all 0.35s var(--smooth-ease);
-            border-radius: 2px;
+            width: 24px;
+            height: 2.5px;
+            background: white;
+            border-radius: 4px;
+            transition: var(--transition);
         }
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-            background: #fff;
-        }
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-            transform: scaleX(0);
-        }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-            background: #fff;
-        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        /* ============================================================
-           HERO & GENERAL SECTIONS
-           ============================================================ */
-        section {
-            padding: 90px 25px;
-            max-width: 1200px;
-            margin: auto;
-        }
-        .hero {
-            max-width: 1100px;
-            margin: auto;
-            padding: 150px 25px 80px;
-            text-align: center;
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .small-title {
-            display: inline-block;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.04);
-            padding: 8px 24px;
-            border-radius: 50px;
-            color: #aaa;
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 24px;
-            backdrop-filter: blur(4px);
-        }
-        .hero h1 {
-            font-size: clamp(42px, 8vw, 84px);
-            line-height: 0.95;
-            letter-spacing: -3.5px;
-            margin-bottom: 20px;
-        }
-        .hero h1 span { color: #777; }
-        .hero .motto {
-            font-size: 20px;
-            color: #aaa;
-            font-style: italic;
-            letter-spacing: 1px;
-            margin-bottom: 22px;
-            font-weight: 300;
-        }
-        .hero .motto strong { color: #fff; font-weight: 500; }
-        .hero p {
-            max-width: 650px;
-            margin: auto;
-            color: var(--muted);
-            line-height: 1.85;
-            font-size: 16px;
-        }
-        .hero .cta-group {
-            margin-top: 38px;
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .hero .cta-group a {
-            padding: 15px 36px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.35s var(--smooth-ease);
-        }
-        .hero .cta-primary {
-            background: #fff;
-            color: #000;
-        }
-        .hero .cta-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 14px 45px rgba(255, 255, 255, 0.16);
-        }
-        .hero .cta-secondary {
-            border: 1px solid var(--border);
-            color: #aaa;
-        }
-        .hero .cta-secondary:hover {
-            border-color: #fff;
-            color: #fff;
-            transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.04);
-        }
-
-        .section-label {
-            display: inline-block;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.04);
-            padding: 6px 18px;
-            border-radius: 50px;
-            color: #aaa;
-            font-size: 10px;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-        }
-        .section-title {
-            font-size: clamp(34px, 4.8vw, 54px);
-            letter-spacing: -2px;
-            margin-bottom: 16px;
-        }
-        .section-title span { color: #777; }
-        .section-sub {
-            color: var(--muted);
-            max-width: 700px;
-            font-size: 15px;
-            line-height: 1.85;
-        }
-
-        /* ============================================================
-           ABOUT & STATS
-           ============================================================ */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            margin-top: 35px;
-            align-items: center;
-        }
-        .about-text p {
-            color: #aaa;
-            line-height: 1.95;
-            margin-bottom: 18px;
-            font-size: 15px;
-        }
-        .about-text .highlight { color: #fff; font-weight: 600; }
-        .about-text .motto-highlight {
-            display: block;
-            font-size: 19px;
-            font-style: italic;
-            color: #ccc;
-            padding: 16px 24px;
-            border-left: 3px solid #fff;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 0 14px 14px 0;
-            margin: 22px 0;
-            transition: background 0.3s;
-        }
-        .about-text .motto-highlight:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-        .about-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .about-stats .stat {
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 28px 20px;
-            text-align: center;
-            transition: all 0.4s var(--smooth-ease);
-        }
-        .about-stats .stat:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
-        }
-        .about-stats .stat .number {
-            font-size: 34px;
-            font-weight: 800;
-            color: #fff;
-            display: block;
-            letter-spacing: -1px;
-        }
-        .about-stats .stat .label {
-            font-size: 11px;
-            color: #777;
-            margin-top: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-
-        /* ============================================================
-           SERVICES
-           ============================================================ */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 26px;
-            margin-top: 34px;
-        }
-        .service-card {
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 34px 26px;
-            text-align: center;
-            transition: all 0.4s var(--smooth-ease);
-        }
-        .service-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(255, 255, 255, 0.22);
-            background: rgba(255, 255, 255, 0.055);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
-        .service-card .icon {
-            font-size: 40px;
-            margin-bottom: 18px;
-            display: block;
-        }
-        .service-card h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .service-card p {
-            color: #888;
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        /* ============================================================
-           SMOOTH FOUNDER CARDS & TEAM SECTION
-           ============================================================ */
-        .team-controls {
-            max-width: 1100px;
-            margin: 30px auto 40px;
-            padding: 0 25px;
-        }
-        .team-search {
-            position: relative;
-            margin-bottom: 18px;
-        }
-        .team-search input {
-            width: 100%;
-            padding: 17px 22px 17px 52px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.035);
-            color: #fff;
-            outline: none;
-            font-size: 14.5px;
-            transition: all 0.3s ease;
-        }
-        .team-search input:focus {
-            border-color: rgba(255, 255, 255, 0.35);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 35px rgba(255, 255, 255, 0.04);
-        }
-        .team-search input::placeholder { color: #555; }
-        .team-search .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #777;
-            font-size: 18px;
-        }
-        .team-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .team-filters .filter {
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.03);
-            color: #aaa;
-            padding: 9px 22px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.35s var(--smooth-ease);
-            font-size: 13px;
-        }
-        .team-filters .filter:hover {
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        .team-filters .filter.active {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-            font-weight: 700;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 28px;
-            padding: 0 25px 60px;
-            max-width: 1100px;
-            margin: auto;
-        }
-
-        .team-card {
-            position: relative;
-            min-height: 440px;
-            padding: 22px;
-            border-radius: var(--radius);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.018));
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            will-change: transform;
-            transition: transform 0.18s ease-out, border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
-        }
-        .team-card::before {
-            content: "";
-            position: absolute;
-            width: 220px;
-            height: 220px;
-            top: -110px;
-            right: -90px;
-            background: rgba(255, 255, 255, 0.035);
-            border-radius: 50%;
-            filter: blur(40px);
-            pointer-events: none;
-            transition: transform 0.6s var(--smooth-ease), opacity 0.6s;
-        }
-        .team-card:hover {
-            border-color: rgba(255, 255, 255, 0.28);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
-            box-shadow: 0 35px 90px rgba(0, 0, 0, 0.7);
-        }
-        .team-card:hover::before {
-            transform: scale(1.4);
-            opacity: 0.09;
-        }
-
-        .founder-tag {
-            position: absolute;
-            top: 18px;
-            left: 18px;
-            padding: 5px 14px;
-            border-radius: 8px;
-            background: #ffffff;
-            color: #000000;
-            font-size: 8.5px;
-            font-weight: 800;
-            letter-spacing: 1.4px;
-            text-transform: uppercase;
-            z-index: 2;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
-            pointer-events: none;
-        }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .card-label {
-            font-size: 9.5px;
-            letter-spacing: 2.2px;
-            color: #777;
-            text-transform: uppercase;
-        }
-        .status {
-            width: 10px;
-            height: 10px;
-            background: #72ff9a;
-            border-radius: 50%;
-            box-shadow: 0 0 14px rgba(114, 255, 154, 0.6);
-            animation: pulseDot 2.2s ease-in-out infinite;
-        }
-        @keyframes pulseDot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.85); }
-        }
-
-        .profile {
-            width: 145px;
-            height: 145px;
-            margin: 15px auto 20px;
-            border-radius: 50%;
-            padding: 4px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), #333, rgba(255, 255, 255, 0.8));
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.4s var(--smooth-ease), box-shadow 0.4s var(--smooth-ease);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.06);
-            animation: glowPulse 3.2s ease-in-out infinite;
-        }
-        .profile:hover {
-            transform: scale(1.05);
-            animation-play-state: paused;
-            box-shadow: 0 0 45px rgba(255, 255, 255, 0.22);
-        }
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 22px rgba(255, 255, 255, 0.05); }
-            50% { box-shadow: 0 0 44px rgba(255, 255, 255, 0.16); }
-        }
-        .profile img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            display: block;
-            background: #111;
-            transition: filter 0.35s ease;
-        }
-        .profile:hover img {
-            filter: brightness(1.08) saturate(1.04);
-        }
-        .profile::after {
-            content: "👤 Projects";
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 9px;
-            color: #ddd;
-            border: 1px solid var(--border);
-            white-space: nowrap;
-            opacity: 0;
-            transition: all 0.3s var(--smooth-ease);
-        }
-        .profile:hover::after {
-            opacity: 1;
-            bottom: -3px;
-        }
-
-        /* Member Name with Centered Verified Tick */
-        .name {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            text-align: center;
-            font-size: 23px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            letter-spacing: -0.5px;
-        }
-        .name-text {
-            color: #fff;
-        }
-
-        .role {
-            text-align: center;
-            color: #aaa;
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
-        .badge {
-            width: max-content;
-            margin: auto;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border);
-        }
-        .divider {
-            height: 1px;
-            background: var(--border);
-            margin: 20px 0;
-        }
-        .details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .detail {
-            padding: 11px 12px;
-            background: rgba(255, 255, 255, 0.025);
-            border-radius: 12px;
-            transition: background 0.3s;
-        }
-        .team-card:hover .detail {
-            background: rgba(255, 255, 255, 0.045);
-        }
-        .detail small {
-            display: block;
-            color: #666;
-            font-size: 8.5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-        }
-        .detail strong {
-            font-size: 12px;
-            color: #ddd;
-            word-break: break-word;
-        }
-        .bio {
-            margin-top: 16px;
-            color: #888;
-            line-height: 1.65;
-            font-size: 12.5px;
-            text-align: center;
-        }
-        .socials {
-            display: flex;
-            justify-content: center;
-            gap: 9px;
-            margin-top: 18px;
-        }
-        .socials a {
+        .dash-nav .user-info { display: flex; align-items: center; gap: 12px; }
+        .dash-nav .user-info .user-avatar {
             width: 34px;
             height: 34px;
-            display: grid;
-            place-items: center;
-            color: #aaa;
-            text-decoration: none;
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            font-size: 10px;
-            font-weight: 700;
-            transition: all 0.3s var(--smooth-ease);
-        }
-        .socials a:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
-        }
-        .socials a.codebihin-link {
-            width: auto;
-            min-width: 34px;
-            padding: 0 7px;
-            font-size: 8.5px;
-            letter-spacing: 0.4px;
-        }
-
-        .empty {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            color: #777;
-        }
-
-        /* ============================================================
-           PROJECTS SHOWCASE SECTION
-           ============================================================ */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
-        }
-        .project-card {
-            padding: 28px 24px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.025);
-            transition: all 0.35s var(--smooth-ease);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .project-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-6px);
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-        }
-        .project-card .p-icon { font-size: 30px; margin-bottom: 14px; display: block; }
-        .project-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-        .project-card p { font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 14px; }
-        .project-card .p-tag {
-            display: inline-block;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #666;
-            border: 1px solid var(--border);
-            padding: 4px 14px;
-            border-radius: 50px;
-            width: fit-content;
-        }
-
-        .projects-cta-box {
-            margin-top: 48px;
-            padding: 36px 28px;
-            border-radius: var(--radius);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: 18px;
-            box-shadow: var(--shadow);
-        }
-        .projects-cta-box h3 {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .projects-cta-box p {
-            color: #888;
-            max-width: 600px;
-            font-size: 14px;
-        }
-        .btn-showcase {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 34px;
-            border-radius: 50px;
-            background: #fff;
-            color: #000;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            transition: all 0.35s var(--smooth-ease);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
-        }
-        .btn-showcase:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 16px 45px rgba(255, 255, 255, 0.25);
-        }
-
-        /* ============================================================
-           TALKS (PUBLIC VOICES) SECTION
-           ============================================================ */
-        .talks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-top: 36px;
-        }
-        .talk-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 24px 22px;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s var(--smooth-ease);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .talk-card:hover {
-            border-color: rgba(255, 255, 255, 0.25);
-            transform: translateY(-5px);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-        }
-        .talk-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-        .talk-avatar {
-            width: 44px;
-            height: 44px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--border);
             background: #111;
             flex-shrink: 0;
         }
-        .talk-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            flex: 1;
-        }
-        .talk-user-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .talk-user-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.3px;
-        }
-
-        /* Unified Verified Check Badge (Used in Team & Talks) */
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 17px;
-            height: 17px;
-            background: #2563eb;
-            color: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
-            flex-shrink: 0;
-            border: 1.5px solid #050505;
-        }
-        .verified-badge svg {
-            width: 9.5px;
-            height: 9.5px;
-            stroke: currentColor;
-            stroke-width: 3.2;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .talk-date {
-            font-size: 11px;
-            color: #666;
-        }
-        .talk-body {
-            font-size: 13.5px;
-            color: #ccc;
-            line-height: 1.7;
-            font-style: italic;
-            word-break: break-word;
-        }
-
-        /* ============================================================
-           JOIN & CONTACT
-           ============================================================ */
-        #join { text-align: center; }
-        .join-btn {
-            display: inline-block;
-            padding: 17px 52px;
-            border-radius: 50px;
-            background: #fff;
-            color: #000;
-            font-weight: 700;
-            font-size: 15.5px;
-            text-decoration: none;
-            margin-top: 24px;
-            transition: all 0.35s var(--smooth-ease);
-        }
-        .join-btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 16px 50px rgba(255, 255, 255, 0.16);
-        }
-
-        #contact .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            margin-top: 32px;
-        }
-        .contact-info p {
-            color: #aaa;
-            margin-bottom: 18px;
-            font-size: 15px;
-        }
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.035);
-            color: #fff;
+        .dash-nav .user-info .user-name {
+            color: #ddd;
             font-size: 14px;
-            margin-bottom: 15px;
-            outline: none;
-            font-family: inherit;
-            transition: border-color 0.3s;
+            font-weight: 500;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            border-color: rgba(255, 255, 255, 0.35);
+        .dash-nav .user-info .user-role {
+            font-size: 10px;
+            color: #aaa;
+            background: rgba(255, 255, 255, .06);
+            padding: 2px 10px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            text-transform: uppercase;
         }
-        .contact-form textarea { resize: vertical; min-height: 130px; }
-        .contact-form button {
-            padding: 15px 36px;
-            border-radius: 14px;
-            border: none;
-            background: #fff;
-            color: #000;
-            font-weight: 700;
-            font-size: 14.5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .contact-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 32px rgba(255, 255, 255, 0.12);
-        }
-
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 40px 25px;
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-            max-width: 1200px;
-            margin: auto;
-        }
-        footer strong { color: #aaa; }
-
-        .scroll-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+        .dash-nav .user-info .logout-btn {
+            background: rgba(255, 255, 255, .06);
             border: 1px solid var(--border);
             color: #aaa;
-            font-size: 22px;
+            padding: 5px 14px;
+            border-radius: 50px;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.35s var(--smooth-ease);
-            z-index: 999;
+            transition: var(--transition);
+            font-size: 12px;
         }
-        .scroll-top.visible { display: flex; }
-        .scroll-top:hover {
-            background: #fff;
-            color: #000;
-            transform: translateY(-3px);
-        }
+        .dash-nav .user-info .logout-btn:hover { background: white; color: black; border-color: white; }
 
-        /* ============================================================
-           MODALS (PROJECTS & LIGHTBOX)
-           ============================================================ */
-        .modal-overlay {
+        /* ---------- MOBILE SIDEBAR ---------- */
+        .mobile-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.84);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            z-index: 9999;
+            background: rgba(0, 0, 0, .75);
+            backdrop-filter: blur(6px);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+        .mobile-overlay.active { display: block; opacity: 1; }
+
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            max-width: 80vw;
+            height: 100%;
+            background: var(--card);
+            border-right: 1px solid var(--border);
+            z-index: 300;
+            padding: 20px 0;
+            transition: left .35s cubic-bezier(.22, .68, 0, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .mobile-sidebar.open { left: 0; }
+        .mobile-sidebar .sidebar-header {
+            padding: 0 20px 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .mobile-sidebar .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            background: #111;
+        }
+        .mobile-sidebar .sidebar-header .sidebar-user { font-weight: 600; font-size: 15px; }
+        .mobile-sidebar .sidebar-header .sidebar-user span {
+            display: block;
+            font-weight: 400;
+            font-size: 12px;
+            color: #666;
+        }
+        .menu-item {
+            padding: 12px 20px;
+            color: #aaa;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .menu-item:hover { color: white; background: rgba(255, 255, 255, .04); }
+        .menu-item.active {
+            color: white;
+            border-left-color: white;
+            background: rgba(255, 255, 255, .06);
+        }
+        .menu-item .menu-icon { font-size: 16px; width: 24px; text-align: center; }
+
+        /* ---------- DESKTOP SIDEBAR & CONTENT ---------- */
+        .dash-body {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        .dash-sidebar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 0;
+            position: sticky;
+            top: 80px;
+        }
+        .dash-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            min-height: 520px;
+        }
+        .dash-content .tab { display: none; }
+        .dash-content .tab.active { display: block; animation: fadeTab .3s ease; }
+        @keyframes fadeTab {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dash-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dash-content h3 span { color: #777; font-weight: 400; }
+
+        /* ---------- FORMS & INPUTS ---------- */
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .04);
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: rgba(255, 255, 255, .25);
+            box-shadow: 0 0 20px rgba(255, 255, 255, .05);
+        }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group select option { background: #0d0d0d; }
+
+        /* ---------- BUTTONS ---------- */
+        .btn-primary, .btn-secondary, .btn-danger, .btn-success, .btn-warning {
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.active { display: flex; }
-
-        .modal-content {
-            background: #0d0d0d;
-            border: 1px solid var(--border);
-            border-radius: 26px;
-            max-width: 490px;
-            width: 100%;
-            padding: 36px 30px 30px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.85);
-            position: relative;
-            max-height: 88vh;
-            overflow-y: auto;
-        }
-        .modal-close {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 28px;
-            line-height: 1;
-            color: #777;
-            cursor: pointer;
-            background: none;
+            gap: 8px;
             border: none;
-            transition: all 0.3s;
         }
-        .modal-close:hover { color: #fff; transform: scale(1.1); }
-        .modal-project {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 18px 20px;
-            margin-bottom: 14px;
+        .btn-primary { background: white; color: black; }
+        .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        .btn-secondary { background: transparent; border: 1px solid var(--border); color: #aaa; }
+        .btn-secondary:hover { background: rgba(255, 255, 255, .04); color: white; }
+        .btn-danger { background: rgba(255, 107, 107, .12); color: #ff6b6b; border: 1px solid #ff6b6b; }
+        .btn-danger:hover { background: #ff6b6b; color: black; }
+        .btn-success { background: rgba(114, 255, 154, .12); color: #72ff9a; border: 1px solid #72ff9a; }
+        .btn-success:hover { background: #72ff9a; color: black; }
+        .btn-warning { background: rgba(255, 217, 61, .12); color: #ffd93d; border: 1px solid #ffd93d; }
+        .btn-warning:hover { background: #ffd93d; color: black; }
+        .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+        /* ---------- PROFILE SECTION ---------- */
+        .profile-upload {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
         }
-        .modal-project h3 { font-size: 16px; margin-bottom: 4px; }
-        .modal-project p { font-size: 13px; color: #888; line-height: 1.6; }
-        .modal-project .tech-tag {
-            display: inline-block;
-            margin-top: 8px;
-            font-size: 9.5px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #666;
-            border: 1px solid var(--border);
-            padding: 3px 12px;
-            border-radius: 50px;
+        .profile-upload img {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            background: #111;
+            flex-shrink: 0;
+        }
+        .profile-upload .upload-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            flex: 1;
+            min-width: 200px;
         }
 
-        .image-modal .modal-content {
-            background: transparent;
-            box-shadow: none;
-            padding: 0;
-            max-width: 92vw;
-            max-height: 92vh;
+        /* ---------- PROJECT GRID ---------- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+        .project-card {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+        .project-card:hover {
+            border-color: rgba(255, 255, 255, .2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .3);
+        }
+        .project-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            margin-bottom: 10px;
+            background: #111;
+        }
+        .project-card h4 { font-size: 15px; margin-bottom: 4px; font-weight: 600; }
+        .project-card p {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .project-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .project-card .card-actions { display: flex; gap: 6px; }
+        .project-card .card-actions button {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            color: #888;
         }
-        .image-modal .modal-content img {
-            max-width: 90vw;
-            max-height: 85vh;
-            border-radius: 18px;
+        .project-card .card-actions button:hover { background: rgba(255, 255, 255, .15); color: white; }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, .06);
             border: 1px solid var(--border);
-            object-fit: contain;
-            background: #0d0d0d;
+            letter-spacing: .3px;
+        }
+        .status-badge.approved { background: #72ff9a22; border-color: #72ff9a; color: #72ff9a; }
+        .status-badge.pending { background: #ffd93d22; border-color: #ffd93d; color: #ffd93d; }
+        .status-badge.rejected { background: #ff6b6b22; border-color: #ff6b6b; color: #ff6b6b; }
+        .status-badge.hold { background: #ff9f4322; border-color: #ff9f43; color: #ff9f43; }
+
+        /* ---------- POPUPS & MODALS ---------- */
+        .project-popup, .edit-modal, .admin-profile-modal, .reset-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .85);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .project-popup.active, .edit-modal.active, .admin-profile-modal.active, .reset-modal.active { display: flex; }
+        .popup-content, .modal-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 26px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            animation: popupSlide .3s ease;
+        }
+        @keyframes popupSlide {
+            from { transform: scale(.95) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .popup-close {
+            float: right;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        .popup-close:hover { color: white; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        .modal-actions button { flex: 1; min-width: 100px; }
+
+        /* ---------- MEMBERS LIST ---------- */
+        .member-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .member-item .member-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+        .member-item .member-info img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #111;
+        }
+        .member-item .member-info .email { color: #666; font-size: 12px; }
+
+        /* ---------- TALKS FEED ---------- */
+        .talks-feed { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+        .talk-item {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+        }
+        .talk-item .talk-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .talk-item .talk-header img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .talk-item .talk-header .talk-user { font-weight: 600; font-size: 14px; color: #ddd; }
+        .talk-item .talk-header .talk-time { font-size: 11px; color: #666; margin-left: auto; }
+        .talk-item .talk-content { font-size: 14px; color: #ccc; line-height: 1.6; word-break: break-word; }
+
+        /* ---------- MESSAGING ---------- */
+        .message-container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 16px;
+            margin-top: 12px;
+            min-height: 420px;
+        }
+        .msg-sidebar {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .msg-user {
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        .msg-user:hover, .msg-user.active { background: rgba(255, 255, 255, .06); }
+        .msg-user img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .msg-chat {
+            background: rgba(255, 255, 255, .02);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            flex-direction: column;
+            max-height: 500px;
+        }
+        .msg-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-weight: 600; }
+        .msg-messages {
+            flex: 1;
+            padding: 14px 16px;
+            overflow-y: auto;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .msg-bubble {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        .msg-bubble.sent { align-self: flex-end; background: rgba(255, 255, 255, .12); }
+        .msg-bubble.received { align-self: flex-start; background: rgba(255, 255, 255, .04); }
+        .msg-input-area { display: flex; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--border); }
+
+        /* ---------- ORG PAD ---------- */
+        .org-pad .pad-editor {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            min-height: 180px;
+            font-size: 14px;
+            line-height: 1.7;
+            outline: none;
+            white-space: pre-wrap;
+        }
+        .org-pad .pad-signature {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
         }
 
-        /* ============================================================
-           RESPONSIVE BREAKPOINTS
-           ============================================================ */
-        @media (max-width: 768px) {
-            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+        /* ---------- UTILITIES ---------- */
+        .hidden { display: none !important; }
+        .text-muted { color: #666; font-size: 13px; }
+        .mt-16 { margin-top: 16px; }
+
+        /* ---------- RESPONSIVE BREAKPOINTS ---------- */
+        @media (max-width: 820px) {
+            .dash-body { grid-template-columns: 1fr; }
+            .dash-sidebar { display: none; }
             .hamburger { display: flex; }
-            .nav-links {
-                display: none;
-                width: 100%;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 14px;
-                padding: 18px 0 8px;
-                border-top: 1px solid var(--border);
-            }
-            .nav-links.open { display: flex; }
-            .hero { padding-top: 110px; min-height: auto; }
-            .team-grid { grid-template-columns: 1fr; }
-            .talks-grid { grid-template-columns: 1fr; }
+            .message-container { grid-template-columns: 1fr; }
+            .msg-sidebar { max-height: 180px; }
         }
     </style>
 </head>
-
 <body>
 
-    <div class="bg-grid"></div>
-    <div class="glow one"></div>
-    <div class="glow two"></div>
-    <div class="glow three"></div>
+    <div class="container">
+        <!-- Toast Alerts -->
+        <div class="toast-container" id="toastContainer"></div>
 
-    <!-- NAVBAR -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-inner">
-            <a href="#hero" class="logo">
-                EIAFSDO
-                <small>East Indian Amateur Full‑Stack Developers Org.</small>
-            </a>
-
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
-            <div class="nav-links" id="navLinks">
-                <a href="#about">About</a>
-                <a href="#services">What We Do</a>
-                <a href="#team-section">Team</a>
-                <a href="projects.html" title="Projects Showcase — EIAFSDO">Projects</a>
-                <a href="#talks">Talks</a>
-                <a href="#contact">Contact</a>
-                <a href="https://priyabratacare-source.github.io/EIAFSDO/login.html" class="btn-login">🔑 Login</a>
+        <!-- 1. AUTH SCREEN -->
+        <div id="authContainer" class="auth-container">
+            <div class="auth-box" id="loginBox">
+                <h2>Welcome <span>Back</span></h2>
+                <div id="authError" class="auth-error"></div>
+                <input type="email" id="loginEmail" placeholder="Email Address" autocomplete="email" />
+                <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" />
+                <button id="loginBtn">Sign In</button>
             </div>
         </div>
-    </nav>
 
-    <!-- HERO -->
-    <section class="hero" id="hero">
-        <div class="small-title">East Indian Amateur Full‑Stack Developers Organization</div>
-        <h1>Build. Learn. <span>Grow.</span></h1>
-        <div class="motto">
-            <strong>“Aedificare — Disputare — Crescere”</strong><br />
-            <span style="font-size:13.5px; color:#777;">Build · Discuss · Grow</span>
+        <!-- 2. MAIN DASHBOARD -->
+        <div id="dashboard" class="dashboard">
+            <nav class="dash-nav">
+                <div class="logo">
+                    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <span>⚡</span> EIAFSDO <span>Dashboard</span>
+                </div>
+                <div class="nav-right">
+                    <div class="user-info">
+                        <img class="user-avatar" id="navUserImg" src="" alt="User" />
+                        <span class="user-name" id="navUserName">User</span>
+                        <span class="user-role" id="navUserRole"></span>
+                        <button class="logout-btn" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Mobile Drawer -->
+            <div class="mobile-overlay" id="mobileOverlay"></div>
+            <div class="mobile-sidebar" id="mobileSidebar">
+                <div class="sidebar-header">
+                    <img id="mobileUserImg" src="" alt="User" />
+                    <div class="sidebar-user">
+                        <span id="mobileUserName">User</span>
+                        <span id="mobileUserRole">Member</span>
+                    </div>
+                </div>
+                <div class="menu-item active" data-tab="profile"><span class="menu-icon">👤</span> My Profile</div>
+                <div class="menu-item" data-tab="myprojects"><span class="menu-icon">📁</span> My Projects</div>
+                <div class="menu-item" data-tab="submitproject"><span class="menu-icon">➕</span> Submit Project</div>
+                <div class="menu-item" data-tab="talks"><span class="menu-icon">💬</span> Talks</div>
+                <div class="menu-item" data-tab="messages"><span class="menu-icon">✉️</span> Messages</div>
+                <div class="menu-item" data-tab="plans"><span class="menu-icon">📝</span> My Plans</div>
+                <div class="menu-item hidden" data-tab="orgpad" id="mobileOrgPadTab"><span class="menu-icon">📄</span> Org Pad</div>
+                <div class="menu-item hidden" data-tab="admin-members" id="mobileAdminMembersTab"><span class="menu-icon">👥</span> Members</div>
+                <div class="menu-item hidden" data-tab="admin-projects" id="mobileAdminProjectsTab"><span class="menu-icon">📋</span> Approve</div>
+                <div class="menu-item" data-tab="activity"><span class="menu-icon">📊</span> Activity</div>
+            </div>
+
+            <div class="dash-body">
+                <!-- Desktop Sidebar -->
+                <aside class="dash-sidebar" id="sidebar">
+                    <div class="menu-item active" data-tab="profile"><span class="menu-icon">👤</span> My Profile</div>
+                    <div class="menu-item" data-tab="myprojects"><span class="menu-icon">📁</span> My Projects</div>
+                    <div class="menu-item" data-tab="submitproject"><span class="menu-icon">➕</span> Submit Project</div>
+                    <div class="menu-item" data-tab="talks"><span class="menu-icon">💬</span> Talks</div>
+                    <div class="menu-item" data-tab="messages"><span class="menu-icon">✉️</span> Messages</div>
+                    <div class="menu-item" data-tab="plans"><span class="menu-icon">📝</span> My Plans</div>
+                    <div class="menu-item hidden" data-tab="orgpad" id="desktopOrgPadTab"><span class="menu-icon">📄</span> Org Pad</div>
+                    <div class="menu-item hidden" data-tab="admin-members" id="desktopAdminMembersTab"><span class="menu-icon">👥</span> Members</div>
+                    <div class="menu-item hidden" data-tab="admin-projects" id="desktopAdminProjectsTab"><span class="menu-icon">📋</span> Approve</div>
+                    <div class="menu-item" data-tab="activity"><span class="menu-icon">📊</span> Activity</div>
+                </aside>
+
+                <!-- Workspace Panels -->
+                <main class="dash-content">
+                    <!-- Tab: Profile -->
+                    <div class="tab active" id="tab-profile">
+                        <h3>My <span>Profile</span></h3>
+                        <div class="profile-upload">
+                            <img id="profilePreview" src="" alt="Profile" />
+                            <div class="upload-actions">
+                                <input type="url" id="profilePhotoUrl" placeholder="Paste image URL" />
+                                <button class="btn-secondary btn-sm" id="applyPhotoUrlBtn">Apply</button>
+                                <button class="btn-danger btn-sm" id="deletePhotoBtn">Remove</button>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Full Name</label><input type="text" id="profileName" /></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="profileEmail" disabled /></div>
+                        <div class="form-group"><label>Bio</label><textarea id="profileBio" rows="3"></textarea></div>
+                        <div class="form-group"><label>Tech Stack / Skills</label><input type="text" id="profileStack" /></div>
+                        <div class="form-group"><label>Organization</label><input type="text" id="profileOrg" /></div>
+                        <div class="form-group"><label>Status</label>
+                            <select id="profileStatus">
+                                <option value="Active">Active</option>
+                                <option value="On Leave">On Leave</option>
+                                <option value="Alumni">Alumni</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>LinkedIn</label><input type="url" id="profileLinkedin" /></div>
+                        <div class="form-group"><label>GitHub</label><input type="url" id="profileGithub" /></div>
+                        <div class="form-group"><label>Portfolio / Dribbble</label><input type="url" id="profileDribbble" /></div>
+                        <div class="form-group"><label>New Password (min 6 chars, optional)</label><input type="password" id="profilePassword" autocomplete="new-password" /></div>
+                        <button class="btn-primary" id="updateProfileBtn">Update Profile</button>
+                    </div>
+
+                    <!-- Tab: My Projects -->
+                    <div class="tab" id="tab-myprojects">
+                        <h3>My <span>Projects</span></h3>
+                        <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+                            <input type="text" id="myProjectSearch" placeholder="🔍 Search..." style="padding:8px 12px; flex:1;" />
+                            <select id="myProjectFilter" style="padding:8px 12px;">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="hold">On Hold</option>
+                            </select>
+                        </div>
+                        <div id="myProjectsList"></div>
+                    </div>
+
+                    <!-- Tab: Submit Project -->
+                    <div class="tab" id="tab-submitproject">
+                        <h3>Submit a <span>Project</span></h3>
+                        <form id="submitProjectForm">
+                            <div class="form-group"><label>Project Name</label><input type="text" id="projectName" required /></div>
+                            <div class="form-group"><label>Description</label><textarea id="projectDescription" rows="4" required></textarea></div>
+                            <div class="form-group"><label>Demo Link</label><input type="url" id="projectLink" /></div>
+                            <div class="form-group"><label>Image URL</label><input type="url" id="projectImageUrl" /></div>
+                            <div class="form-group"><label>Tags (e.g. React, IoT)</label><input type="text" id="projectTags" /></div>
+                            <button type="submit" class="btn-primary">Submit Entry</button>
+                        </form>
+                    </div>
+
+                    <!-- Tab: Talks -->
+                    <div class="tab" id="tab-talks">
+                        <h3>💬 <span>Talks</span></h3>
+                        <p class="text-muted" style="margin-bottom:12px;">Public board (max 280 characters).</p>
+                        <div style="margin-bottom: 16px;">
+                            <textarea id="talkInput" placeholder="What's on your mind?" maxlength="280" style="width:100%; min-height:70px; padding:10px;"></textarea>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                                <span id="talkCharCount" class="text-muted">0 / 280</span>
+                                <button class="btn-primary btn-sm" id="postTalkBtn">Post Talk</button>
+                            </div>
+                        </div>
+                        <div id="talksFeed"></div>
+                    </div>
+
+                    <!-- Tab: Messages -->
+                    <div class="tab" id="tab-messages">
+                        <h3>✉️ <span>Direct Messages</span></h3>
+                        <div class="message-container">
+                            <div class="msg-sidebar" id="msgUserList"></div>
+                            <div class="msg-chat">
+                                <div class="msg-header" id="msgChatHeader">Select a user</div>
+                                <div class="msg-messages" id="msgMessages"></div>
+                                <div class="msg-input-area">
+                                    <input type="text" id="msgInput" placeholder="Type a message..." disabled />
+                                    <button class="btn-primary btn-sm" id="msgSendBtn" disabled>Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Plans -->
+                    <div class="tab" id="tab-plans">
+                        <h3>📝 <span>My Plans & Notepad</span></h3>
+                        <div class="form-group"><label>Plan Title</label><input type="text" id="planTitle" /></div>
+                        <div class="form-group"><label>Description</label><textarea id="planDesc" rows="3"></textarea></div>
+                        <div style="display:flex; gap:10px; margin-bottom:14px;">
+                            <select id="planStatus" style="flex:1;"><option value="planned">Planned</option><option value="in-progress">In Progress</option><option value="completed">Completed</option></select>
+                            <select id="planPriority" style="flex:1;"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select>
+                            <input type="date" id="planDueDate" style="flex:1;" />
+                        </div>
+                        <button class="btn-primary btn-sm" id="savePlanBtn">Save Plan</button>
+                        <div id="myPlansList" style="margin-top:16px;"></div>
+                    </div>
+
+                    <!-- Tab: Org Pad (Admin) -->
+                    <div class="tab" id="tab-orgpad">
+                        <h3>📄 <span>Organization Pad</span></h3>
+                        <div class="org-pad">
+                            <div class="pad-editor" id="orgPadEditor" contenteditable="true"></div>
+                            <div class="pad-signature">
+                                <span id="sigAdminName">—</span>
+                                <span id="sigTimestamp">—</span>
+                            </div>
+                            <div style="display:flex; gap:10px; margin-top:12px;">
+                                <button class="btn-primary btn-sm" id="orgPadSaveBtn">Save Pad</button>
+                                <button class="btn-secondary btn-sm" id="orgPadPrintBtn">Print</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Admin Members -->
+                    <div class="tab" id="tab-admin-members">
+                        <h3>Platform <span>Members</span></h3>
+                        <button class="btn-primary btn-sm" id="addMemberToggleBtn">+ Add Member</button>
+                        <div id="addMemberForm" class="hidden" style="margin: 16px 0; padding:16px; border:1px solid var(--border); border-radius:8px;">
+                            <div class="form-group"><input type="text" id="newMemberName" placeholder="Full Name" /></div>
+                            <div class="form-group"><input type="email" id="newMemberEmail" placeholder="Email" /></div>
+                            <div class="form-group"><input type="password" id="newMemberPassword" placeholder="Temporary Password (min 6 chars)" /></div>
+                            <div style="display:flex; gap:10px;">
+                                <button class="btn-primary btn-sm" id="saveMemberBtn">Save Member</button>
+                                <button class="btn-secondary btn-sm" id="cancelAddMemberBtn">Cancel</button>
+                            </div>
+                        </div>
+                        <div id="adminMemberList" style="margin-top:16px;"></div>
+                    </div>
+
+                    <!-- Tab: Admin Approve Projects -->
+                    <div class="tab" id="tab-admin-projects">
+                        <h3>Review <span>Projects</span></h3>
+                        <div id="adminProjectList"></div>
+                    </div>
+
+                    <!-- Tab: Activity -->
+                    <div class="tab" id="tab-activity">
+                        <h3>Platform <span>Activity</span></h3>
+                        <div id="activityFeed"></div>
+                    </div>
+                </main>
+            </div>
         </div>
-        <p>
-            A collective of passionate students from <strong style="color:#fff;">HETC</strong> dedicated to exploring the craftsmanship behind the modern web and mobile applications we rely on every day.
-        </p>
-        <div class="cta-group">
-            <a href="#about" class="cta-primary">Who We Are</a>
-            <a href="projects.html" class="cta-secondary">Projects Showcase →</a>
+    </div>
+
+    <!-- MODAL: PROJECT DETAIL VIEW -->
+    <div class="project-popup" id="projectPopup">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">&times;</button>
+            <h3 id="popupName"></h3>
+            <span class="status-badge" id="popupStatus" style="margin: 8px 0;"></span>
+            <img id="popupImage" src="" alt="Project" style="display:none; width:100%; border-radius:8px; margin: 10px 0;" />
+            <p id="popupDescription" style="color:#aaa; font-size:14px; margin: 10px 0;"></p>
+            <a id="popupLink" href="#" target="_blank" style="color:#4fc3f7; font-size:13px; display:none;">🔗 Visit Link</a>
+            <p id="popupSubmittedBy" style="font-size:11px; color:#666; margin-top:10px;"></p>
         </div>
-    </section>
+    </div>
 
-    <!-- ABOUT -->
-    <section id="about">
-        <div class="section-label reveal">Who We Are</div>
-        <h2 class="section-title reveal">About <span>EIAFSDO</span></h2>
-        <p class="section-sub reveal">
-            We are an ambitious student-operated organization fostering collaborative engineering, project building, and knowledge exchange.
-        </p>
-
-        <div class="about-grid">
-            <div class="about-text reveal-left">
-                <p>
-                    <span class="highlight">East Indian Amateur Full-Stack Developers Organization</span> (EIAFSDO) sprouted from a close-knit group of inquisitive engineering students at <span class="highlight">HETC</span>.
-                </p>
-                <p>
-                    Guided by our foundation <strong style="color:white;">“Aedificare — Disputare — Crescere”</strong>, we believe real skill develops when theory meets practical implementation and peer feedback.
-                </p>
-                <div class="motto-highlight">
-                    “Aedificare — Disputare — Crescere”
-                    <span style="display:block; font-size:13px; color:#888; font-style:normal; margin-top:4px;">
-                        Build · Discuss · Grow
-                    </span>
-                </div>
+    <!-- MODAL: EDIT PROJECT -->
+    <div class="edit-modal" id="editProjectModal">
+        <div class="modal-box">
+            <h4>✏️ Edit Project</h4>
+            <div class="form-group"><label>Project Name</label><input type="text" id="editProjectName" /></div>
+            <div class="form-group"><label>Description</label><textarea id="editProjectDescription" rows="3"></textarea></div>
+            <div class="form-group"><label>Demo Link</label><input type="url" id="editProjectLink" /></div>
+            <div class="form-group"><label>Image URL</label><input type="url" id="editProjectImageUrl" /></div>
+            <div class="form-group"><label>Tags</label><input type="text" id="editProjectTags" /></div>
+            <div class="form-group" id="editStatusGroup"><label>Status</label>
+                <select id="editProjectStatusSelect">
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="hold">On Hold</option>
+                </select>
             </div>
-            <div class="about-stats reveal-right">
-                <div class="stat">
-                    <span class="number">4</span>
-                    <span class="label">Founders</span>
-                </div>
-                <div class="stat">
-                    <span class="number">4+</span>
-                    <span class="label">Core Projects</span>
-                </div>
-                <div class="stat">
-                    <span class="number">100%</span>
-                    <span class="label">Student‑Operated</span>
-                </div>
-                <div class="stat">
-                    <span class="number">🌏</span>
-                    <span class="label">East India · Global</span>
-                </div>
+            <div class="modal-actions">
+                <button class="btn-primary" id="editProjectSaveBtn">Save</button>
+                <button class="btn-secondary" id="editProjectCancelBtn">Cancel</button>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- SERVICES -->
-    <section id="services">
-        <div class="section-label reveal">What We Do</div>
-        <h2 class="section-title reveal">Our <span>Focus Areas</span></h2>
-        <p class="section-sub reveal">
-            Bridging academic curriculum and production environments through community engineering.
-        </p>
-
-        <div class="services-grid">
-            <div class="service-card reveal">
-                <span class="icon">💻</span>
-                <h3>Full‑Stack Systems</h3>
-                <p>Developing dependable applications with React, Node, Python, Django, and cloud databases.</p>
+    <!-- MODAL: ADMIN USER PROFILE EDIT -->
+    <div class="admin-profile-modal" id="adminProfileModal">
+        <div class="modal-box">
+            <h4>👤 Edit Member Profile</h4>
+            <div class="form-group"><label>Full Name</label><input type="text" id="adminEditName" /></div>
+            <div class="form-group"><label>Role</label>
+                <select id="adminEditRole">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
             </div>
-            <div class="service-card reveal">
-                <span class="icon">📦</span>
-                <h3>Open Source Tools</h3>
-                <p>Maintaining modular starter kits, utility generators, and educational frameworks.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="icon">🧑‍🏫</span>
-                <h3>Peer Mentorship</h3>
-                <p>Equipping junior engineers with modern version control, code review, and architectural habits.</p>
-            </div>
-            <div class="service-card reveal">
-                <span class="icon">🤝</span>
-                <h3>Community Craft</h3>
-                <p>Hosting interactive discussions, hack nights, and collaborative project development.</p>
+            <div class="modal-actions">
+                <button class="btn-primary" id="adminEditSaveBtn">Save Changes</button>
+                <button class="btn-secondary" id="adminEditCancelBtn">Cancel</button>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- TEAM SECTION (DATABASE DRIVEN - ALL FOUNDERS WITH VERIFIED TICK) -->
-    <div id="team-section" style="padding-top:20px;">
-        <div style="max-width:1100px;margin:auto;padding:0 25px;">
-            <div class="section-label reveal">Our Leadership</div>
-            <h2 class="section-title reveal">Meet the <span>Team</span></h2>
-            <p class="section-sub reveal">
-                The builders, architects, and founders driving the development and vision of EIAFSDO.
+    <!-- MODAL: PASSWORD RESET -->
+    <div class="reset-modal" id="resetModal">
+        <div class="modal-box">
+            <h4>🔑 Dispatch Password Reset</h4>
+            <p style="color:#aaa; font-size:13px; margin: 12px 0;">
+                Send an official Firebase password reset email to: <strong id="resetTargetEmail" style="color:white;"></strong>
             </p>
-        </div>
-
-        <div class="team-controls">
-            <div class="team-search">
-                <span class="search-icon">⌕</span>
-                <input type="text" id="teamSearch" placeholder="Search founder by name, role, tech stack, or bio…" />
+            <div class="modal-actions">
+                <button class="btn-primary" id="resetConfirmBtn">Send Email</button>
+                <button class="btn-secondary" id="resetCancelBtn">Cancel</button>
             </div>
-            <div class="team-filters">
-                <button class="filter active" data-role="all">All</button>
-                <button class="filter" data-role="leadership">Founders</button>
-            </div>
-        </div>
-
-        <div class="team-grid" id="teamGrid">
-            <div class="empty" id="teamEmpty">Connecting to database and loading team members...</div>
         </div>
     </div>
 
-    <!-- PROJECTS PREVIEW & LINK TO SHOWCASE -->
-    <section id="projects">
-        <div class="section-label reveal">Our Work</div>
-        <h2 class="section-title reveal">Projects <span>we're building.</span></h2>
-        <p class="section-sub reveal">
-            Open-source platforms engineered and maintained by the EIAFSDO community.
-        </p>
-
-        <div class="project-grid">
-            <div class="project-card reveal">
-                <div>
-                    <span class="p-icon">⚡</span>
-                    <h3>DevConnect</h3>
-                    <p>Community platform for developers to share milestones, troubleshoot, and collaborate in real-time.</p>
-                </div>
-                <span class="p-tag">React · Node · Socket.io</span>
-            </div>
-            <div class="project-card reveal">
-                <div>
-                    <span class="p-icon">📦</span>
-                    <h3>StackStarter</h3>
-                    <p>Automated command-line scaffolder configuring full-stack applications with built-in auth and ORM.</p>
-                </div>
-                <span class="p-tag">CLI · TypeScript · Prisma</span>
-            </div>
-            <div class="project-card reveal">
-                <div>
-                    <span class="p-icon">🧠</span>
-                    <h3>EduTrack</h3>
-                    <p>Open learning management system engineered for structured coding roadmaps and tracking progress.</p>
-                </div>
-                <span class="p-tag">Django · React · PostgreSQL</span>
-            </div>
-            <div class="project-card reveal">
-                <div>
-                    <span class="p-icon">📊</span>
-                    <h3>Analytics Lite</h3>
-                    <p>Lightweight, privacy-first analytics dashboard tailored for personal utilities and indie web tools.</p>
-                </div>
-                <span class="p-tag">Vue · FastAPI · ClickHouse</span>
-            </div>
-        </div>
-
-        <!-- CALL TO ACTION LINKING TO PROJECTS SHOWCASE -->
-        <div class="projects-cta-box reveal">
-            <h3>Projects Showcase — EIAFSDO</h3>
-            <p>
-                Looking for verified, live applications deployed by our collective? Explore the dedicated registry featuring member-submitted, approved projects with author verification badges.
-            </p>
-            <a href="projects.html" class="btn-showcase">
-                <span>View All Approved Projects</span> →
-            </a>
-        </div>
-    </section>
-
-    <!-- TALKS SECTION (LATEST 1 TALK PER USER WITH VERIFIED BADGE) -->
-    <section id="talks">
-        <div class="section-label reveal">Community Voice</div>
-        <h2 class="section-title reveal">Member <span>Talks</span></h2>
-        <p class="section-sub reveal">
-            Thoughts, technical insights, and updates shared directly by verified builders across our community.
-        </p>
-
-        <div class="talks-grid" id="talksGrid">
-            <div class="empty" id="talksEmpty">Loading community talks...</div>
-        </div>
-    </section>
-
-    <!-- JOIN US -->
-    <section id="join">
-        <div class="section-label reveal">Get Involved</div>
-        <h2 class="section-title reveal">Join <span>the Movement</span></h2>
-        <p class="section-sub" style="margin: 0 auto;">
-            Whether you are learning to build or already shipping software, collaborate with us to grow together.
-        </p>
-        <a href="#contact" class="join-btn reveal">🚀 Connect With Us</a>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-        <div class="section-label reveal">Connect</div>
-        <h2 class="section-title reveal">Get in <span>Touch</span></h2>
-        <p class="section-sub reveal">
-            Have questions, feedback, or open-source partnership inquiries? Reach out to our team.
-        </p>
-
-        <div class="contact-grid">
-            <div class="contact-info reveal-left">
-                <p>
-                    <strong style="color:white;">Email:</strong><br />
-                    <a href="mailto:eifsdoindia@proton.me" style="color:#aaa;text-decoration:none;">eifsdoindia@proton.me</a>
-                </p>
-                <p>
-                    <strong style="color:white;">Headquarters:</strong><br />
-                    <span style="color:#aaa;">HETC Campus, Hooghly, West Bengal, India</span>
-                </p>
-            </div>
-
-            <div class="contact-form reveal-right">
-                <form id="contactForm">
-                    <input type="text" placeholder="Your Name" required />
-                    <input type="email" placeholder="Your Email" required />
-                    <textarea placeholder="Write your message here…" required></textarea>
-                    <button type="submit">Send Message</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        © 2026 <strong>East Indian Amateur Full-Stack Developers Organization</strong>. All rights reserved.
-    </footer>
-
-    <!-- SCROLL TO TOP -->
-    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
-
-    <!-- MEMBER APPROVED PROJECTS MODAL -->
-    <div class="modal-overlay" id="profileModal">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">&times;</button>
-            <h2 id="modalName" style="font-size:22px;margin-bottom:18px;">Projects by <span></span></h2>
-            <div id="modalProjects"></div>
-        </div>
-    </div>
-
-    <!-- IMAGE LIGHTBOX MODAL -->
-    <div class="modal-overlay image-modal" id="imageModal">
-        <div class="modal-content">
-            <button class="modal-close" id="imageModalClose">&times;</button>
-            <div id="imageModalContent"></div>
-        </div>
-    </div>
-
-    <!-- ============================================================
-       SCRIPT: FIRESTORE, VERIFIED TEAM CARDS & DEDUPLICATED TALKS
-       ============================================================ -->
+    <!-- APPLICATION LOGIC -->
     <script>
+        // --- 1. FIREBASE SETUP ---
         const firebaseConfig = {
             apiKey: "AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
             authDomain: "eiafsdo-dashboard.firebaseapp.com",
@@ -1472,38 +1035,37 @@
             appId: "1:171714190075:web:ee3dfe78f82896cc736e5e"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
         const db = firebase.firestore();
+        db.enablePersistence().catch(() => {});
 
-        const teamGrid = document.getElementById('teamGrid');
-        const teamEmpty = document.getElementById('teamEmpty');
-        const teamSearch = document.getElementById('teamSearch');
-        const teamFilters = document.querySelectorAll('.team-filters .filter');
+        // --- EMAILJS CONFIGURATION ---
+        const EMAILJS_PUBLIC_KEY = "un5rFYBCRySuLxERc";
+        const EMAILJS_SERVICE_ID = "service_aj2ybbu";
+        const TEMPLATE_ADMIN_ALERT = "template_17zkscm";   // Project Submission Alert
+        const TEMPLATE_USER_APPROVED = "template_sdxslwd"; // Project Approval Notification
 
-        const talksGrid = document.getElementById('talksGrid');
-        const talksEmpty = document.getElementById('talksEmpty');
+        emailjs.init(EMAILJS_PUBLIC_KEY);
 
-        const profileModal = document.getElementById('profileModal');
-        const modalName = document.getElementById('modalName');
-        const modalProjects = document.getElementById('modalProjects');
-        const modalClose = document.getElementById('modalClose');
-
-        const imageModal = document.getElementById('imageModal');
-        const imageModalContent = document.getElementById('imageModalContent');
-        const imageModalClose = document.getElementById('imageModalClose');
-
+        // --- 2. GLOBAL STATE ---
+        let currentUser = null;
+        let currentUserData = null;
+        let allMyProjects = [];
+        let allAdminProjects = [];
         let allMembers = [];
-        let activeFilter = 'all';
+        let allUsers = [];
+        let selectedChatUser = null;
+        let messageUnsubscribe = null;
+        let talksUnsubscribe = null;
+        let orgPadDocId = null;
+        let editProjectId = null;
+        let adminEditTargetUid = null;
+        let resetTargetEmailVal = null;
 
-        // Consistent SVG Verified Tick Badge Component
-        const VERIFIED_TICK_ICON = `
-            <span class="verified-badge" title="Verified Member">
-                <svg viewBox="0 0 24 24">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            </span>
-        `;
-
+        // --- 3. SANITIZATION & TOAST UTILITIES ---
         function escapeHTML(str) {
             if (!str) return '';
             return String(str).replace(/[&<>'"]/g, tag => ({
@@ -1515,378 +1077,981 @@
             }[tag] || tag));
         }
 
-        async function loadTeamMembers() {
+        function showToast(message, type = 'info', duration = 3500) {
+            const container = document.getElementById('toastContainer');
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
+                <span class="toast-msg">${escapeHTML(message)}</span>
+                <button class="toast-close">&times;</button>
+            `;
+            container.appendChild(toast);
+            toast.querySelector('.toast-close').addEventListener('click', () => toast.remove());
+            setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration);
+        }
+
+        async function logActivity(action) {
             try {
-                const snapshot = await db.collection('users').get();
-
-                if (snapshot.empty) {
-                    teamGrid.innerHTML = '';
-                    teamEmpty.style.display = 'block';
-                    teamEmpty.textContent = 'No founders found in database.';
-                    return;
-                }
-
-                allMembers = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    allMembers.push({ id: doc.id, ...data });
+                await db.collection('activities').add({
+                    action,
+                    userId: currentUser.uid,
+                    userName: currentUserData?.name || 'User',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
-                allMembers.sort((a, b) => {
-                    const orderA = a.order !== undefined ? a.order : 9999;
-                    const orderB = b.order !== undefined ? b.order : 9999;
-                    return orderA - orderB;
-                });
-
-                renderTeamCards(allMembers);
             } catch (err) {
-                console.error('Error fetching team from Firestore:', err);
-                teamEmpty.style.display = 'block';
-                teamEmpty.textContent = '⚠️ Unable to load founders from database. Please refresh.';
+                console.warn('Logging error:', err);
             }
         }
 
-        function renderTeamCards(members) {
-            if (!members || members.length === 0) {
-                teamGrid.innerHTML = '';
-                teamEmpty.style.display = 'block';
-                teamEmpty.textContent = 'No matching founders found.';
+        // --- 4. AUTH STATE & EVENT LISTENERS ---
+        const authContainer = document.getElementById('authContainer');
+        const dashboard = document.getElementById('dashboard');
+        const authError = document.getElementById('authError');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        loginBtn.addEventListener('click', async () => {
+            const email = loginEmail.value.trim();
+            const pass = loginPassword.value.trim();
+            if (!email || !pass) {
+                authError.textContent = 'Please provide both email and password.';
+                return;
+            }
+            try {
+                authError.textContent = '';
+                await auth.signInWithEmailAndPassword(email, pass);
+            } catch (err) {
+                authError.textContent = err.message;
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            if (messageUnsubscribe) messageUnsubscribe();
+            if (talksUnsubscribe) talksUnsubscribe();
+            auth.signOut();
+        });
+
+        auth.onAuthStateChanged(async user => {
+            if (user) {
+                currentUser = user;
+                try {
+                    const doc = await db.collection('users').doc(user.uid).get();
+                    if (doc.exists) {
+                        currentUserData = doc.data();
+                    } else {
+                        currentUserData = {
+                            name: user.displayName || user.email.split('@')[0],
+                            email: user.email,
+                            role: 'user',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        };
+                        await db.collection('users').doc(user.uid).set(currentUserData);
+                    }
+                    renderDashboardForUser();
+                } catch (err) {
+                    showToast('Failed to load profile details.', 'error');
+                }
+            } else {
+                currentUser = null;
+                currentUserData = null;
+                dashboard.classList.remove('active');
+                authContainer.style.display = 'flex';
+            }
+        });
+
+        function renderDashboardForUser() {
+            authContainer.style.display = 'none';
+            dashboard.classList.add('active');
+
+            const isAdmin = currentUserData.role === 'admin';
+            const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name || 'U')}&background=111111&color=ffffff&size=64`;
+            const avatar = currentUserData.photoURL || fallbackAvatar;
+
+            document.getElementById('navUserImg').src = avatar;
+            document.getElementById('mobileUserImg').src = avatar;
+            document.getElementById('navUserName').textContent = currentUserData.name || 'User';
+            document.getElementById('mobileUserName').textContent = currentUserData.name || 'User';
+            document.getElementById('navUserRole').textContent = isAdmin ? 'Admin' : 'Member';
+            document.getElementById('mobileUserRole').textContent = isAdmin ? 'Admin' : 'Member';
+
+            const adminTabs = [
+                document.getElementById('desktopAdminMembersTab'),
+                document.getElementById('desktopAdminProjectsTab'),
+                document.getElementById('mobileAdminMembersTab'),
+                document.getElementById('mobileAdminProjectsTab'),
+                document.getElementById('desktopOrgPadTab'),
+                document.getElementById('mobileOrgPadTab')
+            ];
+            adminTabs.forEach(tab => {
+                if (tab) tab.classList.toggle('hidden', !isAdmin);
+            });
+
+            populateProfile();
+            loadMyProjects();
+            loadTalks();
+            loadUsersForMessages();
+            loadPlans();
+            loadActivity();
+            if (isAdmin) {
+                loadAdminMembers();
+                loadAdminProjects();
+                loadOrgPad();
+            }
+            switchTab('profile');
+        }
+
+        // --- 5. TABS & NAVIGATION ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+
+            const target = document.getElementById('tab-' + tabId);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll(`[data-tab="${tabId}"]`).forEach(m => m.classList.add('active'));
+            toggleMobileMenu(false);
+        }
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const tab = item.dataset.tab;
+                if (tab) switchTab(tab);
+            });
+        });
+
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function toggleMobileMenu(open) {
+            const isOpen = open !== undefined ? open : !mobileSidebar.classList.contains('open');
+            mobileSidebar.classList.toggle('open', isOpen);
+            mobileOverlay.classList.toggle('active', isOpen);
+            hamburgerBtn.classList.toggle('active', isOpen);
+        }
+        hamburgerBtn.addEventListener('click', () => toggleMobileMenu());
+        mobileOverlay.addEventListener('click', () => toggleMobileMenu(false));
+
+        // --- 6. PROFILE ---
+        function populateProfile() {
+            if (!currentUserData) return;
+            const fallback = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name || 'U')}&background=111111&color=ffffff&size=150`;
+            document.getElementById('profilePreview').src = currentUserData.photoURL || fallback;
+            document.getElementById('profilePhotoUrl').value = currentUserData.photoURL || '';
+            document.getElementById('profileName').value = currentUserData.name || '';
+            document.getElementById('profileEmail').value = currentUserData.email || '';
+            document.getElementById('profileBio').value = currentUserData.bio || '';
+            document.getElementById('profileStack').value = currentUserData.stack || '';
+            document.getElementById('profileOrg').value = currentUserData.org || '';
+            document.getElementById('profileStatus').value = currentUserData.status || 'Active';
+            document.getElementById('profileLinkedin').value = currentUserData.linkedin || '';
+            document.getElementById('profileGithub').value = currentUserData.github || '';
+            document.getElementById('profileDribbble').value = currentUserData.dribbble || '';
+        }
+
+        document.getElementById('applyPhotoUrlBtn').addEventListener('click', async () => {
+            const url = document.getElementById('profilePhotoUrl').value.trim();
+            if (!url) return showToast('Please enter an image URL.', 'warning');
+            try {
+                await db.collection('users').doc(currentUser.uid).update({ photoURL: url });
+                currentUserData.photoURL = url;
+                document.getElementById('profilePreview').src = url;
+                document.getElementById('navUserImg').src = url;
+                showToast('Profile photo updated.', 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        document.getElementById('deletePhotoBtn').addEventListener('click', async () => {
+            try {
+                await db.collection('users').doc(currentUser.uid).update({ photoURL: '' });
+                currentUserData.photoURL = '';
+                populateProfile();
+                showToast('Photo removed.', 'info');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        document.getElementById('updateProfileBtn').addEventListener('click', async () => {
+            const name = document.getElementById('profileName').value.trim();
+            if (!name) return showToast('Name is mandatory.', 'warning');
+
+            const updates = {
+                name,
+                bio: document.getElementById('profileBio').value.trim(),
+                stack: document.getElementById('profileStack').value.trim(),
+                org: document.getElementById('profileOrg').value.trim(),
+                status: document.getElementById('profileStatus').value,
+                linkedin: document.getElementById('profileLinkedin').value.trim(),
+                github: document.getElementById('profileGithub').value.trim(),
+                dribbble: document.getElementById('profileDribbble').value.trim()
+            };
+
+            try {
+                await db.collection('users').doc(currentUser.uid).update(updates);
+                currentUserData = { ...currentUserData, ...updates };
+                document.getElementById('navUserName').textContent = name;
+                showToast('Profile saved.', 'success');
+
+                const newPass = document.getElementById('profilePassword').value.trim();
+                if (newPass) {
+                    if (newPass.length < 6) return showToast('Password must be 6+ chars.', 'warning');
+                    await currentUser.updatePassword(newPass);
+                    document.getElementById('profilePassword').value = '';
+                    showToast('Password changed successfully.', 'success');
+                }
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        // --- 7. USER PROJECTS ---
+        async function loadMyProjects() {
+            const list = document.getElementById('myProjectsList');
+            try {
+                const snap = await db.collection('projects').where('submittedBy', '==', currentUser.uid).get();
+                allMyProjects = [];
+                snap.forEach(doc => allMyProjects.push({ id: doc.id, ...doc.data() }));
+                renderMyProjects();
+            } catch (err) {
+                list.innerHTML = '<p class="text-muted">Error loading projects.</p>';
+            }
+        }
+
+        function renderMyProjects() {
+            const list = document.getElementById('myProjectsList');
+            const search = document.getElementById('myProjectSearch').value.toLowerCase().trim();
+            const filter = document.getElementById('myProjectFilter').value;
+
+            let filtered = allMyProjects.filter(p => {
+                const matchesSearch = !search || (p.name && p.name.toLowerCase().includes(search)) || (p.description && p.description.toLowerCase().includes(search));
+                const matchesStatus = filter === 'all' || (p.status || 'pending') === filter;
+                return matchesSearch && matchesStatus;
+            });
+
+            if (!filtered.length) {
+                list.innerHTML = '<p class="text-muted">No projects found.</p>';
                 return;
             }
 
-            teamEmpty.style.display = 'none';
-
-            let html = '';
-            members.forEach((member) => {
-                const fallbackImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Founder')}&background=111111&color=ffffff&size=300`;
-                const photoURL = member.photoURL && member.photoURL.trim() !== '' ? member.photoURL : fallbackImg;
-                const role = member.role || 'Full-Stack Developer';
-                const status = member.status || 'Active';
-                const bio = member.bio || 'Founder at EIAFSDO engineering collective.';
-                const stack = member.stack || 'Full-Stack Development';
-                const org = member.org || 'EIAFSDO';
-                const linkedin = member.linkedin || '';
-                const github = member.github || '';
-                const dribbble = member.dribbble || '';
-
-                const searchMeta = `${member.name || ''} ${role} ${stack} ${org} ${bio}`.toLowerCase();
-                const isPriyabrata = (member.name || '').toLowerCase().includes('priyabrata');
-
+            let html = '<div class="project-grid">';
+            filtered.forEach(p => {
+                const status = p.status || 'pending';
                 html += `
-                    <article class="team-card" 
-                             data-category="leadership" 
-                             data-member-id="${member.id}" 
-                             data-search="${searchMeta}">
-                        
-                        <div class="founder-tag">FOUNDER</div>
-                        
-                        <div class="card-top">
-                            <span class="card-label">EIAFSDO ID</span>
-                            <span class="status"></span>
+                    <div class="project-card" data-pid="${p.id}">
+                        ${p.imageURL ? `<img src="${escapeHTML(p.imageURL)}" alt="Preview" loading="lazy" />` : ''}
+                        <h4>${escapeHTML(p.name)}</h4>
+                        <p>${escapeHTML(p.description)}</p>
+                        <div class="card-footer">
+                            <span class="status-badge ${status}">${status}</span>
+                            <div class="card-actions">
+                                <button class="btn-edit" data-pid="${p.id}">✎</button>
+                                <button class="btn-del" data-pid="${p.id}">✕</button>
+                            </div>
                         </div>
-
-                        <div class="profile" data-member-id="${member.id}" data-member-name="${escapeHTML(member.name || 'Founder')}" data-image="${photoURL}">
-                            <img src="${photoURL}" alt="${escapeHTML(member.name || 'Founder')}" loading="lazy" />
-                        </div>
-
-                        <!-- Member Name with Verified Tick Beside It -->
-                        <h2 class="name">
-                            <span class="name-text">${escapeHTML(member.name || 'Founder')}</span>
-                            ${VERIFIED_TICK_ICON}
-                        </h2>
-
-                        <p class="role">Founder · ${role.toLowerCase() === 'admin' ? 'Lead Architect' : escapeHTML(role)}</p>
-                        <div class="badge">${escapeHTML(org)}</div>
-                        
-                        <div class="divider"></div>
-
-                        <div class="details">
-                            <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                            <div class="detail"><small>Stack</small><strong>${escapeHTML(stack)}</strong></div>
-                            <div class="detail"><small>Org</small><strong>${escapeHTML(org)}</strong></div>
-                            <div class="detail"><small>Status</small><strong>${escapeHTML(status)}</strong></div>
-                        </div>
-
-                        <p class="bio">${escapeHTML(bio)}</p>
-
-                        <div class="socials">
-                            ${linkedin && linkedin !== '#' ? `<a href="${linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>` : ''}
-                            ${github && github !== '#' ? `<a href="${github}" target="_blank" rel="noopener" aria-label="GitHub">GH</a>` : ''}
-                            ${dribbble && dribbble !== '#' ? `<a href="${dribbble}" target="_blank" rel="noopener" aria-label="Portfolio">DR</a>` : ''}
-                            ${isPriyabrata ? `<a href="https://codebihin.in" target="_blank" rel="noopener" class="codebihin-link" aria-label="Codebihin">CB</a>` : ''}
-                        </div>
-                    </article>
+                    </div>
                 `;
             });
+            html += '</div>';
+            list.innerHTML = html;
 
-            teamGrid.innerHTML = html;
-            attachCardInteractions();
-        }
-
-        function attachCardInteractions() {
-            document.querySelectorAll('.profile').forEach(el => {
-                el.addEventListener('click', function() {
-                    const memberId = this.dataset.memberId;
-                    const memberName = this.dataset.memberName || 'Founder';
-                    if (memberId) openMemberProjects(memberId, memberName);
+            list.querySelectorAll('.project-card').forEach(c => {
+                c.addEventListener('click', e => {
+                    if (e.target.closest('.card-actions')) return;
+                    const proj = allMyProjects.find(x => x.id === c.dataset.pid);
+                    if (proj) openProjectPopup(proj);
                 });
             });
 
-            document.querySelectorAll('.profile img').forEach(img => {
-                img.addEventListener('click', function(e) {
+            list.querySelectorAll('.btn-edit').forEach(btn => {
+                btn.addEventListener('click', e => {
                     e.stopPropagation();
-                    const profile = this.closest('.profile');
-                    if (profile) {
-                        const imageSrc = profile.dataset.image;
-                        const altText = this.alt || 'Founder';
-                        if (imageSrc) openImageModal(imageSrc, altText);
+                    const proj = allMyProjects.find(x => x.id === btn.dataset.pid);
+                    if (proj) openEditProjectModal(proj);
+                });
+            });
+
+            list.querySelectorAll('.btn-del').forEach(btn => {
+                btn.addEventListener('click', async e => {
+                    e.stopPropagation();
+                    if (!confirm('Permanently delete project?')) return;
+                    try {
+                        await db.collection('projects').doc(btn.dataset.pid).delete();
+                        showToast('Project removed.', 'info');
+                        loadMyProjects();
+                    } catch (err) {
+                        showToast(err.message, 'error');
                     }
                 });
             });
+        }
 
-            document.querySelectorAll('.team-card').forEach(card => {
-                let rafId = null;
-                card.addEventListener('mousemove', function(e) {
-                    const rect = this.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const cx = rect.width / 2;
-                    const cy = rect.height / 2;
-                    const rx = ((y - cy) / cy) * -4.5;
-                    const ry = ((x - cx) / cx) * 4.5;
+        document.getElementById('myProjectSearch').addEventListener('input', renderMyProjects);
+        document.getElementById('myProjectFilter').addEventListener('change', renderMyProjects);
 
-                    if (rafId) cancelAnimationFrame(rafId);
-                    rafId = requestAnimationFrame(() => {
-                        this.style.transform = `translateY(-8px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+        // --- 8. PROJECT SUBMISSION & DYNAMIC ADMIN EMAIL (TEMPLATE_17ZKSCM) ---
+        document.getElementById('submitProjectForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const name = document.getElementById('projectName').value.trim();
+            const desc = document.getElementById('projectDescription').value.trim();
+            const link = document.getElementById('projectLink').value.trim();
+            const imageURL = document.getElementById('projectImageUrl').value.trim();
+            const tags = document.getElementById('projectTags').value.trim();
+
+            if (!name || !desc) return showToast('Name and description required.', 'warning');
+
+            try {
+                // 1. Store submission in Firestore
+                await db.collection('projects').add({
+                    name,
+                    description: desc,
+                    link,
+                    imageURL,
+                    tags,
+                    status: 'pending',
+                    submittedBy: currentUser.uid,
+                    submittedByEmail: currentUser.email,
+                    submittedByName: currentUserData?.name || 'Member',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // 2. Query Firestore dynamically for whoever currently holds role == 'admin'
+                const adminSnap = await db.collection('users').where('role', '==', 'admin').get();
+                
+                adminSnap.forEach(adminDoc => {
+                    const adminData = adminDoc.data();
+                    if (adminData && adminData.email) {
+                        emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_ADMIN_ALERT, {
+                            to_email: adminData.email, // Dynamic delivery to the database admin
+                            project_name: name,
+                            submitter_name: currentUserData?.name || 'Member',
+                            submitter_email: currentUser.email,
+                            project_link: link || 'None provided',
+                            project_tags: tags || 'Full-Stack Development',
+                            project_description: desc
+                        }).then(() => {
+                            console.log(`Alert email sent to admin: ${adminData.email}`);
+                        }).catch(err => {
+                            console.warn(`Error sending email to ${adminData.email}:`, err);
+                        });
+                    }
+                });
+
+                showToast('Project submitted! Admins have been notified via email.', 'success');
+                e.target.reset();
+                loadMyProjects();
+                switchTab('myprojects');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        // --- 9. TALKS (SHOUTBOX) ---
+        function loadTalks() {
+            if (talksUnsubscribe) talksUnsubscribe();
+            talksUnsubscribe = db.collection('talks').orderBy('timestamp', 'desc').limit(50).onSnapshot(snap => {
+                const feed = document.getElementById('talksFeed');
+                if (snap.empty) {
+                    feed.innerHTML = '<p class="text-muted">No talks posted yet.</p>';
+                    return;
+                }
+                let html = '<div class="talks-feed">';
+                snap.forEach(doc => {
+                    const t = doc.data();
+                    const avatar = t.userPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(t.userName || 'U')}&background=111111&color=ffffff&size=32`;
+                    const isOwner = t.userId === currentUser?.uid || currentUserData?.role === 'admin';
+                    html += `
+                        <div class="talk-item">
+                            <div class="talk-header">
+                                <img src="${avatar}" alt="User" />
+                                <span class="talk-user">${escapeHTML(t.userName)}</span>
+                                <span class="talk-time">${t.timestamp ? new Date(t.timestamp.toDate()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Just now'}</span>
+                                ${isOwner ? `<button class="del-talk" data-tid="${doc.id}" style="background:none;border:none;color:#666;cursor:pointer;margin-left:8px;">✕</button>` : ''}
+                            </div>
+                            <div class="talk-content">${escapeHTML(t.content)}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                feed.innerHTML = html;
+
+                feed.querySelectorAll('.del-talk').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        await db.collection('talks').doc(btn.dataset.tid).delete();
+                        showToast('Talk deleted.', 'info');
+                    });
+                });
+            });
+        }
+
+        document.getElementById('talkInput').addEventListener('input', e => {
+            document.getElementById('talkCharCount').textContent = `${e.target.value.length} / 280`;
+        });
+
+        document.getElementById('postTalkBtn').addEventListener('click', async () => {
+            const input = document.getElementById('talkInput');
+            const content = input.value.trim();
+            if (!content) return showToast('Please enter a message.', 'warning');
+            try {
+                await db.collection('talks').add({
+                    userId: currentUser.uid,
+                    userName: currentUserData.name || 'User',
+                    userPhoto: currentUserData.photoURL || '',
+                    content,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                input.value = '';
+                document.getElementById('talkCharCount').textContent = '0 / 280';
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        // --- 10. DIRECT MESSAGES (WITH IN-MEMORY CHRONOLOGICAL SORTING) ---
+        async function loadUsersForMessages() {
+            const list = document.getElementById('msgUserList');
+            try {
+                const snap = await db.collection('users').get();
+                allUsers = [];
+                snap.forEach(doc => {
+                    if (doc.id !== currentUser.uid) allUsers.push({ id: doc.id, ...doc.data() });
+                });
+                if (!allUsers.length) {
+                    list.innerHTML = '<p class="text-muted">No other members available.</p>';
+                    return;
+                }
+                let html = '';
+                allUsers.forEach(u => {
+                    const avatar = u.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.name || 'U')}&background=111111&color=ffffff&size=30`;
+                    html += `
+                        <div class="msg-user" data-uid="${u.id}">
+                            <img src="${avatar}" alt="Avatar" />
+                            <span style="font-size:13px;">${escapeHTML(u.name || 'User')}</span>
+                        </div>
+                    `;
+                });
+                list.innerHTML = html;
+
+                list.querySelectorAll('.msg-user').forEach(row => {
+                    row.addEventListener('click', () => {
+                        const target = allUsers.find(x => x.id === row.dataset.uid);
+                        if (target) selectChatUser(target);
+                    });
+                });
+            } catch (err) {
+                list.innerHTML = '<p class="text-muted">Error loading user list.</p>';
+            }
+        }
+
+        function selectChatUser(user) {
+            selectedChatUser = user;
+            document.querySelectorAll('.msg-user').forEach(r => r.classList.toggle('active', r.dataset.uid === user.id));
+            document.getElementById('msgChatHeader').textContent = `Chat with ${user.name || 'User'}`;
+            document.getElementById('msgInput').disabled = false;
+            document.getElementById('msgSendBtn').disabled = false;
+
+            if (messageUnsubscribe) messageUnsubscribe();
+            
+            messageUnsubscribe = db.collection('messages')
+                .where('participants', 'array-contains', currentUser.uid)
+                .onSnapshot(snap => {
+                    const box = document.getElementById('msgMessages');
+                    const msgs = [];
+
+                    snap.forEach(doc => {
+                        const m = doc.data();
+                        if ((m.senderId === currentUser.uid && m.receiverId === user.id) ||
+                            (m.senderId === user.id && m.receiverId === currentUser.uid)) {
+                            msgs.push({ id: doc.id, ...m });
+                        }
+                    });
+
+                    // Sort chronologically in-memory (avoids composite index requirement)
+                    msgs.sort((a, b) => {
+                        const tA = a.timestamp ? a.timestamp.toMillis() : 0;
+                        const tB = b.timestamp ? b.timestamp.toMillis() : 0;
+                        return tA - tB;
+                    });
+
+                    let html = '';
+                    msgs.forEach(m => {
+                        const isSent = m.senderId === currentUser.uid;
+                        html += `
+                            <div class="msg-bubble ${isSent ? 'sent' : 'received'}">
+                                ${escapeHTML(m.content)}
+                            </div>
+                        `;
+                    });
+                    box.innerHTML = html || '<p class="text-muted" style="text-align:center;">No conversation yet.</p>';
+                    box.scrollTop = box.scrollHeight;
+                }, err => {
+                    console.error('Snapshot listener error:', err);
+                });
+        }
+
+        document.getElementById('msgSendBtn').addEventListener('click', sendDirectMessage);
+        document.getElementById('msgInput').addEventListener('keydown', e => { if (e.key === 'Enter') sendDirectMessage(); });
+
+        async function sendDirectMessage() {
+            const input = document.getElementById('msgInput');
+            const text = input.value.trim();
+            if (!text || !selectedChatUser) return;
+            try {
+                await db.collection('messages').add({
+                    senderId: currentUser.uid,
+                    receiverId: selectedChatUser.id,
+                    content: text,
+                    participants: [currentUser.uid, selectedChatUser.id],
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                input.value = '';
+            } catch (err) {
+                showToast('Failed to send message.', 'error');
+            }
+        }
+
+        // --- 11. PERSONAL PLANS ---
+        async function loadPlans() {
+            try {
+                const snap = await db.collection('userPlans').where('userId', '==', currentUser.uid).get();
+                const list = document.getElementById('myPlansList');
+                if (snap.empty) {
+                    list.innerHTML = '<p class="text-muted">No personal plans saved.</p>';
+                    return;
+                }
+                let html = '<div class="project-grid">';
+                snap.forEach(doc => {
+                    const p = doc.data();
+                    html += `
+                        <div class="project-card">
+                            <h4>${escapeHTML(p.title)}</h4>
+                            <p>${escapeHTML(p.description)}</p>
+                            <div class="card-footer">
+                                <span class="status-badge ${p.status}">${p.status}</span>
+                                <button class="btn-del-plan" data-pid="${doc.id}" style="background:none;border:none;color:#ff6b6b;cursor:pointer;">✕</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                list.innerHTML = html;
+
+                list.querySelectorAll('.btn-del-plan').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        await db.collection('userPlans').doc(btn.dataset.pid).delete();
+                        showToast('Plan deleted.', 'info');
+                        loadPlans();
+                    });
+                });
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+
+        document.getElementById('savePlanBtn').addEventListener('click', async () => {
+            const title = document.getElementById('planTitle').value.trim();
+            if (!title) return showToast('Title is required.', 'warning');
+            try {
+                await db.collection('userPlans').add({
+                    userId: currentUser.uid,
+                    title,
+                    description: document.getElementById('planDesc').value.trim(),
+                    status: document.getElementById('planStatus').value,
+                    priority: document.getElementById('planPriority').value,
+                    dueDate: document.getElementById('planDueDate').value,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                document.getElementById('planTitle').value = '';
+                document.getElementById('planDesc').value = '';
+                showToast('Plan recorded.', 'success');
+                loadPlans();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        // --- 12. ORG PAD (ADMIN ONLY) ---
+        async function loadOrgPad() {
+            try {
+                const snap = await db.collection('orgPad').limit(1).get();
+                if (!snap.empty) {
+                    const doc = snap.docs[0];
+                    orgPadDocId = doc.id;
+                    const data = doc.data();
+                    document.getElementById('orgPadEditor').innerHTML = data.content || '';
+                    document.getElementById('sigAdminName').textContent = `✍️ Signed by ${escapeHTML(data.adminName || 'Admin')}`;
+                    document.getElementById('sigTimestamp').textContent = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleDateString() : '';
+                } else {
+                    const ref = await db.collection('orgPad').add({
+                        content: 'Welcome to EIAFSDO Organization Pad.',
+                        adminName: currentUserData.name || 'Admin',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    orgPadDocId = ref.id;
+                }
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+
+        document.getElementById('orgPadSaveBtn').addEventListener('click', async () => {
+            if (!orgPadDocId) return;
+            const content = document.getElementById('orgPadEditor').innerHTML;
+            try {
+                await db.collection('orgPad').doc(orgPadDocId).update({
+                    content,
+                    adminName: currentUserData.name || 'Admin',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showToast('Organization Pad updated.', 'success');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        document.getElementById('orgPadPrintBtn').addEventListener('click', () => window.print());
+
+        // --- 13. ADMIN MEMBERS & DUAL-APP REGISTRATION ---
+        const addMemberToggleBtn = document.getElementById('addMemberToggleBtn');
+        const addMemberForm = document.getElementById('addMemberForm');
+
+        addMemberToggleBtn.addEventListener('click', () => {
+            addMemberForm.classList.toggle('hidden');
+        });
+        document.getElementById('cancelAddMemberBtn').addEventListener('click', () => {
+            addMemberForm.classList.add('hidden');
+        });
+
+        document.getElementById('saveMemberBtn').addEventListener('click', async () => {
+            const name = document.getElementById('newMemberName').value.trim();
+            const email = document.getElementById('newMemberEmail').value.trim();
+            const password = document.getElementById('newMemberPassword').value.trim();
+
+            if (!name || !email || !password) return showToast('All fields required.', 'warning');
+            if (password.length < 6) return showToast('Password must be 6+ chars.', 'warning');
+
+            let secondaryApp = null;
+            try {
+                secondaryApp = firebase.initializeApp(firebaseConfig, "MemberCreationApp_" + Date.now());
+                const cred = await secondaryApp.auth().createUserWithEmailAndPassword(email, password);
+
+                await db.collection('users').doc(cred.user.uid).set({
+                    name,
+                    email,
+                    role: 'user',
+                    status: 'Active',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    order: Date.now()
+                });
+
+                showToast('Member created successfully.', 'success');
+                document.getElementById('newMemberName').value = '';
+                document.getElementById('newMemberEmail').value = '';
+                document.getElementById('newMemberPassword').value = '';
+                addMemberForm.classList.add('hidden');
+                loadAdminMembers();
+            } catch (err) {
+                showToast(err.message, 'error');
+            } finally {
+                if (secondaryApp) await secondaryApp.delete();
+            }
+        });
+
+        async function loadAdminMembers() {
+            const list = document.getElementById('adminMemberList');
+            try {
+                const snap = await db.collection('users').get();
+                allMembers = [];
+                snap.forEach(doc => allMembers.push({ id: doc.id, ...doc.data() }));
+
+                let html = '<div class="member-list">';
+                allMembers.forEach(m => {
+                    const avatar = m.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || 'U')}&background=111111&color=ffffff&size=32`;
+                    const isSelf = m.id === currentUser.uid;
+                    html += `
+                        <div class="member-item">
+                            <div class="member-info">
+                                <img src="${avatar}" alt="Avatar" />
+                                <div>
+                                    <strong style="font-size:13px;">${escapeHTML(m.name || 'User')}</strong>
+                                    <span class="email">${escapeHTML(m.email)}</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:6px; align-items:center;">
+                                <span class="status-badge ${m.role === 'admin' ? 'approved' : 'pending'}">${m.role || 'user'}</span>
+                                ${!isSelf ? `
+                                    <button class="btn-warning btn-sm btn-edit-mem" data-uid="${m.id}">✎</button>
+                                    <button class="btn-success btn-sm btn-reset-mem" data-email="${m.email}">🔑</button>
+                                    <button class="btn-danger btn-sm btn-del-mem" data-uid="${m.id}">✕</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                list.innerHTML = html;
+
+                list.querySelectorAll('.btn-edit-mem').forEach(b => {
+                    b.addEventListener('click', () => {
+                        const target = allMembers.find(x => x.id === b.dataset.uid);
+                        if (target) openAdminEditModal(target);
                     });
                 });
 
-                card.addEventListener('mouseleave', function() {
-                    if (rafId) cancelAnimationFrame(rafId);
-                    this.style.transform = '';
-                });
-            });
-        }
-
-        /* ============================================================
-           LOAD TALKS (LATEST 1 TALK PER USER WITH VERIFIED BADGE)
-           ============================================================ */
-        async function loadTalks() {
-            try {
-                const snapshot = await db.collection('talks').get();
-
-                if (snapshot.empty) {
-                    talksGrid.innerHTML = '';
-                    talksEmpty.style.display = 'block';
-                    talksEmpty.textContent = 'No community talks shared yet.';
-                    return;
-                }
-
-                const allTalks = [];
-                snapshot.forEach(doc => {
-                    allTalks.push({ id: doc.id, ...doc.data() });
+                list.querySelectorAll('.btn-reset-mem').forEach(b => {
+                    b.addEventListener('click', () => {
+                        resetTargetEmailVal = b.dataset.email;
+                        document.getElementById('resetTargetEmail').textContent = resetTargetEmailVal;
+                        document.getElementById('resetModal').classList.add('active');
+                    });
                 });
 
-                allTalks.sort((a, b) => {
-                    const tA = a.timestamp ? (a.timestamp.toMillis ? a.timestamp.toMillis() : a.timestamp) : 0;
-                    const tB = b.timestamp ? (b.timestamp.toMillis ? b.timestamp.toMillis() : b.timestamp) : 0;
-                    return tB - tA;
+                list.querySelectorAll('.btn-del-mem').forEach(b => {
+                    b.addEventListener('click', async () => {
+                        if (!confirm('Remove this member document?')) return;
+                        try {
+                            await db.collection('users').doc(b.dataset.uid).delete();
+                            showToast('Member removed from database.', 'info');
+                            loadAdminMembers();
+                        } catch (err) {
+                            showToast(err.message, 'error');
+                        }
+                    });
                 });
-
-                const seenUsers = new Set();
-                const latestTalks = [];
-                allTalks.forEach(t => {
-                    const key = t.userId || (t.userName ? t.userName.trim().toLowerCase() : t.id);
-                    if (!seenUsers.has(key)) {
-                        seenUsers.add(key);
-                        latestTalks.push(t);
-                    }
-                });
-
-                if (latestTalks.length === 0) {
-                    talksGrid.innerHTML = '';
-                    talksEmpty.style.display = 'block';
-                    talksEmpty.textContent = 'No community talks found.';
-                    return;
-                }
-
-                talksEmpty.style.display = 'none';
-
-                let html = '';
-                latestTalks.forEach(t => {
-                    const name = t.userName || 'Verified Member';
-                    const fallbackImg = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=111111&color=ffffff&size=100`;
-                    const photoURL = t.userPhoto && t.userPhoto.trim() !== '' ? t.userPhoto : fallbackImg;
-                    const time = t.timestamp ? new Date(t.timestamp.toDate ? t.timestamp.toDate() : t.timestamp).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
-                    const content = escapeHTML(t.content || '');
-
-                    html += `
-                        <article class="talk-card reveal">
-                            <div class="talk-header">
-                                <img src="${photoURL}" alt="${escapeHTML(name)}" class="talk-avatar" loading="lazy" />
-                                <div class="talk-meta">
-                                    <div class="talk-user-row">
-                                        <h3 class="talk-user-name">${escapeHTML(name)}</h3>
-                                        ${VERIFIED_TICK_ICON}
-                                    </div>
-                                    <span class="talk-date">${time}</span>
-                                </div>
-                            </div>
-                            <div class="talk-body">
-                                <p>“${content}”</p>
-                            </div>
-                        </article>
-                    `;
-                });
-
-                talksGrid.innerHTML = html;
-                talksGrid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
             } catch (err) {
-                console.error('Error fetching talks:', err);
-                talksEmpty.style.display = 'block';
-                talksEmpty.textContent = '⚠️ Unable to load member talks. Please refresh.';
+                list.innerHTML = '<p class="text-muted">Error loading members.</p>';
             }
         }
 
-        async function openMemberProjects(memberId, memberName) {
-            modalName.innerHTML = `Projects by <span>${escapeHTML(memberName)}</span>`;
-            modalProjects.innerHTML = '<p style="color:#777;text-align:center;padding:24px 0;">Loading projects...</p>';
-            profileModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
+        // --- 14. ADMIN PROJECT APPROVALS & DYNAMIC EMAIL (TEMPLATE_SDXSLWD) ---
+        async function loadAdminProjects() {
+            const list = document.getElementById('adminProjectList');
             try {
-                const snapshot = await db.collection('projects')
-                    .where('submittedBy', '==', memberId)
-                    .where('status', '==', 'approved')
-                    .get();
+                const snap = await db.collection('projects').get();
+                allAdminProjects = [];
+                snap.forEach(doc => allAdminProjects.push({ id: doc.id, ...doc.data() }));
 
-                if (snapshot.empty) {
-                    modalProjects.innerHTML = '<p style="color:#666;text-align:center;padding:24px 0;">No approved projects listed for this founder yet.</p>';
+                if (!allAdminProjects.length) {
+                    list.innerHTML = '<p class="text-muted">No submissions found.</p>';
                     return;
                 }
 
                 let html = '';
-                snapshot.forEach(doc => {
-                    const p = doc.data();
+                allAdminProjects.forEach(p => {
+                    const status = p.status || 'pending';
                     html += `
-                        <div class="modal-project">
-                            ${p.imageURL ? `<img src="${p.imageURL}" alt="${escapeHTML(p.name)}" style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#111;" />` : ''}
-                            <h3>${escapeHTML(p.name || 'Untitled Project')}</h3>
-                            <p>${escapeHTML(p.description || '')}</p>
-                            ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="tech-tag" style="text-decoration:none;display:inline-block;margin-top:8px;">🔗 Visit Website</a>` : ''}
+                        <div class="project-card" style="margin-bottom:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <strong>${escapeHTML(p.name)}</strong>
+                                <span class="status-badge ${status}">${status}</span>
+                            </div>
+                            <p style="margin:6px 0; color:#aaa;">${escapeHTML(p.description)}</p>
+                            <span style="font-size:11px; color:#666;">by ${escapeHTML(p.submittedByEmail || 'Unknown')}</span>
+                            <div style="display:flex; gap:8px; margin-top:10px;">
+                                <button class="btn-success btn-sm btn-stat" data-pid="${p.id}" data-st="approved">Approve</button>
+                                <button class="btn-danger btn-sm btn-stat" data-pid="${p.id}" data-st="rejected">Reject</button>
+                                <button class="btn-warning btn-sm btn-stat" data-pid="${p.id}" data-st="hold">Hold</button>
+                            </div>
                         </div>
                     `;
                 });
-                modalProjects.innerHTML = html;
+                list.innerHTML = html;
+
+                list.querySelectorAll('.btn-stat').forEach(b => {
+                    b.addEventListener('click', async () => {
+                        const pid = b.dataset.pid;
+                        const newStatus = b.dataset.st;
+                        try {
+                            const projectRef = db.collection('projects').doc(pid);
+                            const docSnap = await projectRef.get();
+                            const pData = docSnap.exists ? docSnap.data() : null;
+
+                            await projectRef.update({ 
+                                status: newStatus,
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+
+                            // Send approval email directly to submitter when marked approved
+                            if (newStatus === 'approved' && pData?.submittedByEmail) {
+                                emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_USER_APPROVED, {
+                                    to_email: pData.submittedByEmail,
+                                    submitter_name: pData.submittedByName || 'Member',
+                                    project_name: pData.name || 'Untitled Project',
+                                    project_link: pData.link || 'https://priyabratacare-source.github.io/EIAFSDO/projects.html',
+                                    project_tags: pData.tags || 'Full-Stack Development'
+                                }).then(() => {
+                                    console.log('Approval email dispatched to user:', pData.submittedByEmail);
+                                }).catch(err => {
+                                    console.warn('Approval email error:', err);
+                                });
+                            }
+
+                            showToast(`Project status set to ${newStatus}`, 'success');
+                            loadAdminProjects();
+                        } catch (err) {
+                            showToast(err.message, 'error');
+                        }
+                    });
+                });
             } catch (err) {
-                console.error('Error fetching member projects:', err);
-                modalProjects.innerHTML = '<p style="color:#ff6b6b;text-align:center;padding:20px 0;">Error loading projects. Please try again.</p>';
+                list.innerHTML = '<p class="text-muted">Error loading admin project queue.</p>';
             }
         }
 
-        function openImageModal(src, alt) {
-            imageModalContent.innerHTML = `<img src="${src}" alt="${escapeHTML(alt)}" />`;
-            imageModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAllModals() {
-            profileModal.classList.remove('active');
-            imageModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        modalClose.addEventListener('click', closeAllModals);
-        imageModalClose.addEventListener('click', closeAllModals);
-
-        window.addEventListener('click', (e) => {
-            if (e.target === profileModal || e.target === imageModal) closeAllModals();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeAllModals();
-        });
-
-        function filterMembers() {
-            const query = teamSearch.value.toLowerCase().trim();
-
-            const filtered = allMembers.filter(member => {
-                const searchMeta = `${member.name || ''} ${member.role || ''} ${member.stack || ''} ${member.org || ''} ${member.bio || ''}`.toLowerCase();
-                const matchesSearch = query === '' || searchMeta.includes(query);
-                return matchesSearch;
-            });
-
-            renderTeamCards(filtered);
-        }
-
-        teamSearch.addEventListener('input', filterMembers);
-
-        teamFilters.forEach(btn => {
-            btn.addEventListener('click', function() {
-                teamFilters.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                activeFilter = this.dataset.role;
-                filterMembers();
-            });
-        });
-
-        const navbar = document.getElementById('navbar');
-        const scrollBtn = document.getElementById('scrollTopBtn');
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-            scrollBtn.classList.toggle('visible', window.scrollY > 400);
-        });
-
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('open');
-        });
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('open');
-            });
-        });
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        // --- 15. ACTIVITY LOGS ---
+        async function loadActivity() {
+            const feed = document.getElementById('activityFeed');
+            try {
+                const snap = await db.collection('activities').limit(30).get();
+                if (snap.empty) {
+                    feed.innerHTML = '<p class="text-muted">No activity logged.</p>';
+                    return;
                 }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-            revealObserver.observe(el);
-        });
-
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('📬 Thank you for contacting EIAFSDO! We will respond shortly.');
-            this.reset();
-        });
-
-        document.addEventListener('error', function(e) {
-            if (e.target.tagName === 'IMG') {
-                const img = e.target;
-                if (!img.src.includes('ui-avatars.com')) {
-                    const fallbackName = encodeURIComponent(img.alt || 'Founder');
-                    img.src = `https://ui-avatars.com/api/?name=${fallbackName}&background=111111&color=ffffff&size=300`;
-                }
+                let html = '<div class="member-list">';
+                snap.forEach(doc => {
+                    const a = doc.data();
+                    html += `
+                        <div class="member-item">
+                            <span><strong>${escapeHTML(a.userName || 'User')}</strong> ${escapeHTML(a.action)}</span>
+                            <span class="text-muted">${a.timestamp ? new Date(a.timestamp.toDate()).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : ''}</span>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                feed.innerHTML = html;
+            } catch (err) {
+                feed.innerHTML = '<p class="text-muted">Error retrieving activity.</p>';
             }
-        }, true);
+        }
 
-        // Initial Data Load
-        loadTeamMembers();
-        loadTalks();
+        // --- 16. MODAL UTILITIES ---
+        function openProjectPopup(p) {
+            document.getElementById('popupName').textContent = p.name || 'Untitled';
+            document.getElementById('popupStatus').textContent = p.status || 'pending';
+            document.getElementById('popupStatus').className = `status-badge ${p.status || 'pending'}`;
+            document.getElementById('popupDescription').textContent = p.description || '';
+            const img = document.getElementById('popupImage');
+            if (p.imageURL) { img.src = p.imageURL; img.style.display = 'block'; } else { img.style.display = 'none'; }
+            const link = document.getElementById('popupLink');
+            if (p.link) { link.href = p.link; link.style.display = 'inline-block'; } else { link.style.display = 'none'; }
+            document.getElementById('popupSubmittedBy').textContent = `Submitted by: ${p.submittedByEmail || 'Unknown'}`;
+            document.getElementById('projectPopup').classList.add('active');
+        }
+
+        document.getElementById('popupClose').addEventListener('click', () => {
+            document.getElementById('projectPopup').classList.remove('active');
+        });
+
+        function openEditProjectModal(p) {
+            editProjectId = p.id;
+            document.getElementById('editProjectName').value = p.name || '';
+            document.getElementById('editProjectDescription').value = p.description || '';
+            document.getElementById('editProjectLink').value = p.link || '';
+            document.getElementById('editProjectImageUrl').value = p.imageURL || '';
+            document.getElementById('editProjectTags').value = p.tags || '';
+            document.getElementById('editProjectStatusSelect').value = p.status || 'pending';
+            document.getElementById('editStatusGroup').style.display = currentUserData?.role === 'admin' ? 'block' : 'none';
+            document.getElementById('editProjectModal').classList.add('active');
+        }
+
+        document.getElementById('editProjectCancelBtn').addEventListener('click', () => {
+            document.getElementById('editProjectModal').classList.remove('active');
+        });
+
+        document.getElementById('editProjectSaveBtn').addEventListener('click', async () => {
+            if (!editProjectId) return;
+            const updates = {
+                name: document.getElementById('editProjectName').value.trim(),
+                description: document.getElementById('editProjectDescription').value.trim(),
+                link: document.getElementById('editProjectLink').value.trim(),
+                imageURL: document.getElementById('editProjectImageUrl').value.trim(),
+                tags: document.getElementById('editProjectTags').value.trim(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            const newStatus = document.getElementById('editProjectStatusSelect').value;
+            let statusChangedToApproved = false;
+
+            if (currentUserData?.role === 'admin') {
+                updates.status = newStatus;
+            }
+
+            try {
+                const projectRef = db.collection('projects').doc(editProjectId);
+                const prevSnap = await projectRef.get();
+                const prevData = prevSnap.exists ? prevSnap.data() : null;
+
+                if (currentUserData?.role === 'admin' && prevData?.status !== 'approved' && newStatus === 'approved') {
+                    statusChangedToApproved = true;
+                }
+
+                await projectRef.update(updates);
+
+                // Send confirmation email if approved from modal
+                if (statusChangedToApproved && prevData?.submittedByEmail) {
+                    emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_USER_APPROVED, {
+                        to_email: prevData.submittedByEmail,
+                        submitter_name: prevData.submittedByName || 'Member',
+                        project_name: updates.name || prevData.name || 'Untitled Project',
+                        project_link: updates.link || prevData.link || 'https://priyabratacare-source.github.io/EIAFSDO/projects.html',
+                        project_tags: updates.tags || prevData.tags || 'Full-Stack Development'
+                    }).catch(err => console.warn('Approval email modal dispatch error:', err));
+                }
+
+                showToast('Project updated.', 'success');
+                document.getElementById('editProjectModal').classList.remove('active');
+                loadMyProjects();
+                if (currentUserData?.role === 'admin') loadAdminProjects();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        function openAdminEditModal(user) {
+            adminEditTargetUid = user.id;
+            document.getElementById('adminEditName').value = user.name || '';
+            document.getElementById('adminEditRole').value = user.role || 'user';
+            document.getElementById('adminProfileModal').classList.add('active');
+        }
+
+        document.getElementById('adminEditCancelBtn').addEventListener('click', () => {
+            document.getElementById('adminProfileModal').classList.remove('active');
+        });
+
+        document.getElementById('adminEditSaveBtn').addEventListener('click', async () => {
+            if (!adminEditTargetUid) return;
+            try {
+                await db.collection('users').doc(adminEditTargetUid).update({
+                    name: document.getElementById('adminEditName').value.trim(),
+                    role: document.getElementById('adminEditRole').value
+                });
+                showToast('Member profile saved.', 'success');
+                document.getElementById('adminProfileModal').classList.remove('active');
+                loadAdminMembers();
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
+
+        document.getElementById('resetCancelBtn').addEventListener('click', () => {
+            document.getElementById('resetModal').classList.remove('active');
+        });
+
+        document.getElementById('resetConfirmBtn').addEventListener('click', async () => {
+            if (!resetTargetEmailVal) return;
+            try {
+                await auth.sendPasswordResetEmail(resetTargetEmailVal);
+                showToast(`Reset email sent to ${resetTargetEmailVal}`, 'success');
+                document.getElementById('resetModal').classList.remove('active');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        });
     </script>
 </body>
 </html>
