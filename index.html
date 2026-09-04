@@ -15,7 +15,7 @@
 
     <style>
         /* ============================================================
-           GLOBAL RESETS & TOKENS
+           GLOBAL RESETS & TOKENS — BLUE THEME
            ============================================================ */
         * {
             margin: 0;
@@ -35,6 +35,9 @@
             --smooth-ease: cubic-bezier(0.16, 1, 0.3, 1);
             --verified: #38bdf8;
             --approved: #72ff9a;
+            --blue-glow: rgba(22, 135, 255, 0.3);
+            --blue-primary: #1687ff;
+            --blue-gradient: linear-gradient(135deg, #0878ff, #005de0);
         }
 
         html {
@@ -44,18 +47,44 @@
 
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-            background:
-                radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.05), transparent 25%),
-                radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.03), transparent 30%),
-                var(--bg);
+            background: #000;
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            background:
+                radial-gradient(circle at 50% 40%, rgba(0, 90, 255, .16), transparent 32%),
+                radial-gradient(circle at 15% 85%, rgba(0, 110, 255, .10), transparent 28%),
+                radial-gradient(circle at 90% 10%, rgba(0, 70, 255, .12), transparent 25%),
+                #000;
         }
 
-        /* Ambient Background Grid & Glows */
+        /* Moving background dots */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -50%;
+            background-image: radial-gradient(circle, rgba(40, 130, 255, .18) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: starsMove 45s linear infinite;
+            opacity: .25;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes starsMove {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+            50% {
+                transform: translate3d(25px, 35px, 0);
+            }
+            100% {
+                transform: translate3d(50px, 50px, 0);
+            }
+        }
+
         .bg-grid {
             position: fixed;
             inset: 0;
@@ -73,7 +102,7 @@
             width: 520px;
             height: 520px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.025);
+            background: rgba(22, 135, 255, 0.06);
             filter: blur(140px);
             z-index: -1;
             pointer-events: none;
@@ -138,7 +167,7 @@
         }
 
         /* ============================================================
-           NAVBAR
+           NAVBAR — BLUE THEME
            ============================================================ */
         .navbar {
             width: 100%;
@@ -173,6 +202,7 @@
             text-decoration: none;
             color: #fff;
             transition: opacity 0.3s;
+            text-shadow: 0 0 25px rgba(0, 120, 255, .25);
         }
         .logo:hover {
             opacity: 0.85;
@@ -205,7 +235,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #fff;
+            background: var(--blue-primary);
             transition: width 0.35s var(--smooth-ease);
         }
         .nav-links a:hover::after {
@@ -227,11 +257,11 @@
             display: none;
         }
         .nav-links .btn-login:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 120, 255, 0.25);
         }
 
         .hamburger {
@@ -265,7 +295,7 @@
         }
 
         /* ============================================================
-           HERO & GENERAL SECTIONS
+           HERO & GENERAL SECTIONS — BLUE THEME
            ============================================================ */
         section {
             padding: 90px 25px;
@@ -303,7 +333,8 @@
             margin-bottom: 20px;
         }
         .hero h1 span {
-            color: #777;
+            color: var(--blue-primary);
+            text-shadow: 0 0 18px rgba(0, 120, 255, .5), 0 0 50px rgba(0, 90, 255, .2);
         }
         .hero .motto {
             font-size: 20px;
@@ -340,22 +371,23 @@
             transition: all 0.35s var(--smooth-ease);
         }
         .hero .cta-primary {
-            background: #fff;
-            color: #000;
+            background: var(--blue-gradient);
+            color: #fff;
+            box-shadow: 0 10px 35px rgba(0, 105, 255, .30);
         }
         .hero .cta-primary:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 14px 45px rgba(255, 255, 255, 0.16);
+            box-shadow: 0 14px 45px rgba(0, 120, 255, 0.35);
         }
         .hero .cta-secondary {
             border: 1px solid var(--border);
             color: #aaa;
         }
         .hero .cta-secondary:hover {
-            border-color: #fff;
+            border-color: var(--blue-primary);
             color: #fff;
             transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(0, 100, 255, 0.04);
         }
 
         .section-label {
@@ -376,7 +408,8 @@
             margin-bottom: 16px;
         }
         .section-title span {
-            color: #777;
+            color: var(--blue-primary);
+            text-shadow: 0 0 18px rgba(0, 120, 255, .3);
         }
         .section-sub {
             color: var(--muted);
@@ -386,7 +419,7 @@
         }
 
         /* ============================================================
-           ABOUT & STATS
+           ABOUT & STATS — BLUE THEME
            ============================================================ */
         .about-grid {
             display: grid;
@@ -411,14 +444,14 @@
             font-style: italic;
             color: #ccc;
             padding: 16px 24px;
-            border-left: 3px solid #fff;
-            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--blue-primary);
+            background: rgba(0, 100, 255, 0.03);
             border-radius: 0 14px 14px 0;
             margin: 22px 0;
             transition: background 0.3s;
         }
         .about-text .motto-highlight:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(0, 100, 255, 0.06);
         }
         .about-stats {
             display: grid;
@@ -434,17 +467,18 @@
             transition: all 0.4s var(--smooth-ease);
         }
         .about-stats .stat:hover {
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(22, 135, 255, 0.4);
             transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(0, 100, 255, 0.06);
             box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
         }
         .about-stats .stat .number {
             font-size: 34px;
             font-weight: 800;
-            color: #fff;
+            color: var(--blue-primary);
             display: block;
             letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(0, 120, 255, 0.3);
         }
         .about-stats .stat .label {
             font-size: 11px;
@@ -455,7 +489,7 @@
         }
 
         /* ============================================================
-           SERVICES
+           SERVICES — BLUE THEME
            ============================================================ */
         .services-grid {
             display: grid;
@@ -473,8 +507,8 @@
         }
         .service-card:hover {
             transform: translateY(-6px);
-            border-color: rgba(255, 255, 255, 0.22);
-            background: rgba(255, 255, 255, 0.055);
+            border-color: rgba(22, 135, 255, 0.4);
+            background: rgba(0, 100, 255, 0.04);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
         .service-card .icon {
@@ -494,7 +528,7 @@
         }
 
         /* ============================================================
-           SMOOTH FOUNDER CARDS & TEAM SECTION
+           TEAM CARDS — FLIP + SMOOTH + VERIFIED PROFILE
            ============================================================ */
         .team-controls {
             max-width: 1100px;
@@ -517,9 +551,9 @@
             transition: all 0.3s ease;
         }
         .team-search input:focus {
-            border-color: rgba(255, 255, 255, 0.35);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 0 35px rgba(255, 255, 255, 0.04);
+            border-color: rgba(22, 135, 255, 0.5);
+            background: rgba(0, 100, 255, 0.04);
+            box-shadow: 0 0 35px rgba(0, 120, 255, 0.08);
         }
         .team-search input::placeholder {
             color: #555;
@@ -549,88 +583,169 @@
         }
         .team-filters .filter:hover {
             color: #fff;
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(22, 135, 255, 0.3);
             transform: translateY(-2px);
         }
         .team-filters .filter.active {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
+            background: var(--blue-gradient);
+            color: #fff;
+            border-color: var(--blue-primary);
             font-weight: 700;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 120, 255, 0.25);
         }
 
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 28px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
             padding: 0 25px 60px;
             max-width: 1100px;
             margin: auto;
         }
 
-        .team-card {
+        /* FLIP CARD CONTAINER */
+        .team-card-flip {
+            perspective: 1200px;
+            height: 480px;
+            cursor: pointer;
+        }
+
+        .team-card-inner {
             position: relative;
-            min-height: 440px;
-            padding: 22px;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+        }
+
+        .team-card-flip.flipped .team-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* FRONT & BACK */
+        .team-card-front,
+        .team-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
             border-radius: var(--radius);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.018));
+            padding: 28px 24px;
+            overflow: hidden;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
-            overflow: hidden;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.018));
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            will-change: transform;
-            transition: transform 0.18s ease-out, border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
         }
-        .team-card::before {
+
+        .team-card-front {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .team-card-back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            background: linear-gradient(145deg, rgba(0, 100, 255, 0.08), rgba(255, 255, 255, 0.02));
+            border-color: rgba(22, 135, 255, 0.3);
+        }
+
+        .team-card-back .back-bio {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 90%;
+            font-style: italic;
+        }
+
+        .team-card-back .back-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--blue-primary);
+            font-weight: 700;
+        }
+
+        .team-card-back .back-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+        .team-card-back .back-stats span {
+            font-size: 12px;
+            color: #888;
+        }
+        .team-card-back .back-stats strong {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .team-card-front::before,
+        .team-card-back::before {
             content: "";
             position: absolute;
             width: 220px;
             height: 220px;
             top: -110px;
             right: -90px;
-            background: rgba(255, 255, 255, 0.035);
+            background: rgba(22, 135, 255, 0.08);
             border-radius: 50%;
             filter: blur(40px);
             pointer-events: none;
             transition: transform 0.6s var(--smooth-ease), opacity 0.6s;
         }
-        .team-card:hover {
-            border-color: rgba(255, 255, 255, 0.28);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025));
+
+        .team-card-front:hover,
+        .team-card-back:hover {
+            border-color: rgba(22, 135, 255, 0.35);
             box-shadow: 0 35px 90px rgba(0, 0, 0, 0.7);
         }
-        .team-card:hover::before {
+        .team-card-front:hover::before,
+        .team-card-back:hover::before {
             transform: scale(1.4);
-            opacity: 0.09;
+            opacity: 0.2;
         }
 
+        /* FOUNDER TAG — BLUE */
         .founder-tag {
             position: absolute;
-            top: 18px;
-            left: 18px;
+            top: 16px;
+            left: 16px;
             padding: 5px 14px;
             border-radius: 8px;
-            background: #ffffff;
-            color: #000000;
+            background: var(--blue-primary);
+            color: #fff;
             font-size: 8.5px;
             font-weight: 800;
             letter-spacing: 1.4px;
             text-transform: uppercase;
             z-index: 2;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 120, 255, 0.3);
             pointer-events: none;
+        }
+        .founder-tag.member {
+            background: rgba(255, 255, 255, 0.1);
+            color: #999;
+            box-shadow: none;
+            border: 1px solid var(--border);
         }
 
         .card-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            width: 100%;
+            margin-bottom: 12px;
         }
         .card-label {
             font-size: 9.5px;
@@ -638,14 +753,21 @@
             color: #777;
             text-transform: uppercase;
         }
-        .status {
+        .status-dot {
             width: 10px;
             height: 10px;
-            background: #72ff9a;
             border-radius: 50%;
             box-shadow: 0 0 14px rgba(114, 255, 154, 0.6);
             animation: pulseDot 2.2s ease-in-out infinite;
         }
+        .status-dot.active {
+            background: #72ff9a;
+        }
+        .status-dot.inactive {
+            background: #ff6b6b;
+            box-shadow: 0 0 14px rgba(255, 107, 107, 0.6);
+        }
+
         @keyframes pulseDot {
             0%,
             100% {
@@ -659,30 +781,30 @@
         }
 
         .profile {
-            width: 145px;
-            height: 145px;
-            margin: 15px auto 20px;
+            width: 130px;
+            height: 130px;
+            margin: 8px auto 16px;
             border-radius: 50%;
             padding: 4px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), #333, rgba(255, 255, 255, 0.8));
+            background: linear-gradient(135deg, rgba(22, 135, 255, 0.8), #333, rgba(22, 135, 255, 0.8));
             position: relative;
-            cursor: pointer;
             transition: transform 0.4s var(--smooth-ease), box-shadow 0.4s var(--smooth-ease);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 25px rgba(22, 135, 255, 0.15);
             animation: glowPulse 3.2s ease-in-out infinite;
+            flex-shrink: 0;
         }
         .profile:hover {
             transform: scale(1.05);
             animation-play-state: paused;
-            box-shadow: 0 0 45px rgba(255, 255, 255, 0.22);
+            box-shadow: 0 0 45px rgba(22, 135, 255, 0.35);
         }
         @keyframes glowPulse {
             0%,
             100% {
-                box-shadow: 0 0 22px rgba(255, 255, 255, 0.05);
+                box-shadow: 0 0 22px rgba(22, 135, 255, 0.1);
             }
             50% {
-                box-shadow: 0 0 44px rgba(255, 255, 255, 0.16);
+                box-shadow: 0 0 44px rgba(22, 135, 255, 0.3);
             }
         }
         .profile img {
@@ -697,133 +819,144 @@
         .profile:hover img {
             filter: brightness(1.08) saturate(1.04);
         }
-        .profile::after {
-            content: "👤 Projects";
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 9px;
-            color: #ddd;
-            border: 1px solid var(--border);
-            white-space: nowrap;
-            opacity: 0;
-            transition: all 0.3s var(--smooth-ease);
-        }
-        .profile:hover::after {
-            opacity: 1;
-            bottom: -3px;
-        }
 
-        /* Member Name with Centered Verified Tick */
         .name {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 7px;
             text-align: center;
-            font-size: 23px;
+            font-size: 21px;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             letter-spacing: -0.5px;
         }
         .name-text {
             color: #fff;
         }
 
-        .role {
+        .role-text {
             text-align: center;
             color: #aaa;
             font-size: 13px;
-            margin-bottom: 18px;
+            margin-bottom: 10px;
         }
-        .badge {
-            width: max-content;
-            margin: auto;
-            padding: 6px 16px;
+        .badge-org {
+            padding: 4px 14px;
             border-radius: 50px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             letter-spacing: 1.2px;
             text-transform: uppercase;
             background: rgba(255, 255, 255, 0.06);
             border: 1px solid var(--border);
+            color: #aaa;
         }
-        .divider {
+
+        .divider-light {
             height: 1px;
             background: var(--border);
-            margin: 20px 0;
+            margin: 14px 0;
+            width: 80%;
         }
-        .details {
+
+        .details-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
+            width: 100%;
         }
-        .detail {
-            padding: 11px 12px;
+        .detail-item {
+            padding: 8px 10px;
             background: rgba(255, 255, 255, 0.025);
-            border-radius: 12px;
-            transition: background 0.3s;
+            border-radius: 10px;
+            text-align: center;
         }
-        .team-card:hover .detail {
-            background: rgba(255, 255, 255, 0.045);
-        }
-        .detail small {
+        .detail-item small {
             display: block;
             color: #666;
-            font-size: 8.5px;
+            font-size: 7.5px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
-        .detail strong {
-            font-size: 12px;
+        .detail-item strong {
+            font-size: 11px;
             color: #ddd;
             word-break: break-word;
         }
-        .bio {
-            margin-top: 16px;
-            color: #888;
-            line-height: 1.65;
-            font-size: 12.5px;
-            text-align: center;
-        }
-        .socials {
+
+        .socials-row {
             display: flex;
             justify-content: center;
-            gap: 9px;
-            margin-top: 18px;
+            gap: 8px;
+            margin-top: 12px;
         }
-        .socials a {
-            width: 34px;
-            height: 34px;
+        .socials-row a {
+            width: 32px;
+            height: 32px;
             display: grid;
             place-items: center;
             color: #aaa;
             text-decoration: none;
             border: 1px solid var(--border);
-            border-radius: 9px;
-            font-size: 10px;
+            border-radius: 8px;
+            font-size: 9px;
             font-weight: 700;
             transition: all 0.3s var(--smooth-ease);
         }
-        .socials a:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
+        .socials-row a:hover {
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
             transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(22, 135, 255, 0.25);
         }
-        .socials a.codebihin-link {
+        .socials-row a.codebihin-link {
             width: auto;
-            min-width: 34px;
-            padding: 0 7px;
-            font-size: 8.5px;
+            min-width: 32px;
+            padding: 0 6px;
+            font-size: 8px;
             letter-spacing: 0.4px;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: #2563eb;
+            color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
+            flex-shrink: 0;
+            border: 1.5px solid #050505;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .verified-badge:hover {
+            transform: scale(1.15);
+        }
+        .verified-badge svg {
+            width: 10px;
+            height: 10px;
+            stroke: currentColor;
+            stroke-width: 3.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .flip-hint {
+            font-size: 9px;
+            color: #555;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+        .team-card-flip:hover .flip-hint {
+            color: #888;
         }
 
         .empty {
@@ -834,7 +967,7 @@
         }
 
         /* ============================================================
-           PROJECTS SHOWCASE SECTION
+           PROJECTS — BLUE THEME
            ============================================================ */
         .project-grid {
             display: grid;
@@ -853,9 +986,9 @@
             justify-content: space-between;
         }
         .project-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(22, 135, 255, 0.3);
             transform: translateY(-6px);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 100, 255, 0.04);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
         }
         .project-card .p-icon {
@@ -879,8 +1012,8 @@
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1.2px;
-            color: #666;
-            border: 1px solid var(--border);
+            color: var(--blue-primary);
+            border: 1px solid rgba(22, 135, 255, 0.2);
             padding: 4px 14px;
             border-radius: 50px;
             width: fit-content;
@@ -890,8 +1023,8 @@
             margin-top: 48px;
             padding: 36px 28px;
             border-radius: var(--radius);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.015) 100%);
+            border: 1px solid rgba(22, 135, 255, 0.2);
+            background: linear-gradient(135deg, rgba(0, 100, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -916,21 +1049,21 @@
             gap: 8px;
             padding: 14px 34px;
             border-radius: 50px;
-            background: #fff;
-            color: #000;
+            background: var(--blue-gradient);
+            color: #fff;
             text-decoration: none;
             font-weight: 700;
             font-size: 14px;
             transition: all 0.35s var(--smooth-ease);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 120, 255, 0.25);
         }
         .btn-showcase:hover {
             transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 16px 45px rgba(255, 255, 255, 0.25);
+            box-shadow: 0 16px 45px rgba(0, 120, 255, 0.35);
         }
 
         /* ============================================================
-           TALKS (PUBLIC VOICES) SECTION
+           TALKS — BLUE THEME
            ============================================================ */
         .talks-grid {
             display: grid;
@@ -950,9 +1083,9 @@
             justify-content: space-between;
         }
         .talk-card:hover {
-            border-color: rgba(255, 255, 255, 0.25);
+            border-color: rgba(22, 135, 255, 0.35);
             transform: translateY(-5px);
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
+            background: linear-gradient(145deg, rgba(0, 100, 255, 0.06), rgba(255, 255, 255, 0.025));
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
         }
         .talk-header {
@@ -966,7 +1099,7 @@
             height: 44px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--border);
+            border: 2px solid rgba(22, 135, 255, 0.3);
             background: #111;
             flex-shrink: 0;
         }
@@ -987,31 +1120,6 @@
             color: #fff;
             letter-spacing: -0.3px;
         }
-
-        /* Unified Verified Check Badge (Used in Team & Talks) */
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 17px;
-            height: 17px;
-            background: #2563eb;
-            color: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
-            flex-shrink: 0;
-            border: 1.5px solid #050505;
-        }
-        .verified-badge svg {
-            width: 9.5px;
-            height: 9.5px;
-            stroke: currentColor;
-            stroke-width: 3.2;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
         .talk-date {
             font-size: 11px;
             color: #666;
@@ -1025,7 +1133,7 @@
         }
 
         /* ============================================================
-           SOCIAL LINKS SECTION
+           SOCIAL LINKS — BLUE THEME
            ============================================================ */
         .social-links-section {
             text-align: center;
@@ -1055,8 +1163,8 @@
             transition: all 0.35s var(--smooth-ease);
         }
         .social-links-section .social-icon-link:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(22, 135, 255, 0.4);
+            background: rgba(0, 100, 255, 0.06);
             color: #fff;
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
@@ -1079,11 +1187,11 @@
             letter-spacing: 1px;
         }
         .social-links-section .handle-tag strong {
-            color: #ccc;
+            color: var(--blue-primary);
         }
 
         /* ============================================================
-           JOIN & CONTACT
+           JOIN & CONTACT — BLUE THEME
            ============================================================ */
         #join {
             text-align: center;
@@ -1092,17 +1200,18 @@
             display: inline-block;
             padding: 17px 52px;
             border-radius: 50px;
-            background: #fff;
-            color: #000;
+            background: var(--blue-gradient);
+            color: #fff;
             font-weight: 700;
             font-size: 15.5px;
             text-decoration: none;
             margin-top: 24px;
             transition: all 0.35s var(--smooth-ease);
+            box-shadow: 0 10px 35px rgba(0, 105, 255, .30);
         }
         .join-btn:hover {
             transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 16px 50px rgba(255, 255, 255, 0.16);
+            box-shadow: 0 16px 50px rgba(0, 120, 255, 0.3);
         }
 
         #contact .contact-grid {
@@ -1132,7 +1241,7 @@
         }
         .contact-form input:focus,
         .contact-form textarea:focus {
-            border-color: rgba(255, 255, 255, 0.35);
+            border-color: rgba(22, 135, 255, 0.5);
         }
         .contact-form textarea {
             resize: vertical;
@@ -1142,16 +1251,17 @@
             padding: 15px 36px;
             border-radius: 14px;
             border: none;
-            background: #fff;
-            color: #000;
+            background: var(--blue-gradient);
+            color: #fff;
             font-weight: 700;
             font-size: 14.5px;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 105, 255, .25);
         }
         .contact-form button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 32px rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 32px rgba(0, 120, 255, 0.35);
         }
 
         footer {
@@ -1183,7 +1293,7 @@
             gap: 4px;
         }
         footer .footer-socials a:hover {
-            color: #fff;
+            color: var(--blue-primary);
         }
         footer .footer-handle {
             display: block;
@@ -1193,7 +1303,7 @@
             letter-spacing: 0.5px;
         }
         footer .footer-handle strong {
-            color: #888;
+            color: var(--blue-primary);
         }
 
         .scroll-top {
@@ -1219,13 +1329,14 @@
             display: flex;
         }
         .scroll-top:hover {
-            background: #fff;
-            color: #000;
+            background: var(--blue-primary);
+            color: #fff;
             transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 120, 255, 0.3);
         }
 
         /* ============================================================
-           MODALS (PROJECTS & LIGHTBOX)
+           MODALS — BLUE THEME
            ============================================================ */
         .modal-overlay {
             display: none;
@@ -1293,8 +1404,8 @@
             font-size: 9.5px;
             text-transform: uppercase;
             letter-spacing: 1.2px;
-            color: #666;
-            border: 1px solid var(--border);
+            color: var(--blue-primary);
+            border: 1px solid rgba(22, 135, 255, 0.2);
             padding: 3px 12px;
             border-radius: 50px;
         }
@@ -1317,6 +1428,56 @@
             border: 1px solid var(--border);
             object-fit: contain;
             background: #0d0d0d;
+        }
+
+        /* Verified Profile Modal */
+        .verified-profile-modal .modal-content {
+            max-width: 420px;
+            text-align: center;
+        }
+        .verified-profile-modal .modal-content .vp-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            border: 3px solid var(--blue-primary);
+            object-fit: cover;
+        }
+        .verified-profile-modal .modal-content .vp-name {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .verified-profile-modal .modal-content .vp-role {
+            color: #888;
+            margin-bottom: 12px;
+        }
+        .verified-profile-modal .modal-content .vp-bio {
+            color: #bbb;
+            line-height: 1.7;
+            font-style: italic;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin: 12px 0;
+        }
+        .verified-profile-modal .modal-content .vp-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin: 12px 0;
+        }
+        .verified-profile-modal .modal-content .vp-stats span {
+            font-size: 12px;
+            color: #777;
+        }
+        .verified-profile-modal .modal-content .vp-stats strong {
+            color: #fff;
+            display: block;
+            font-size: 18px;
         }
 
         /* ============================================================
@@ -1361,6 +1522,20 @@
                 width: 100%;
                 max-width: 320px;
                 justify-content: center;
+            }
+            .team-card-flip {
+                height: 440px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
             }
         }
     </style>
@@ -1492,7 +1667,7 @@
         </div>
     </section>
 
-    <!-- TEAM SECTION (DATABASE DRIVEN - ALL FOUNDERS WITH VERIFIED TICK) -->
+    <!-- TEAM SECTION — FLIP CARDS + VERIFIED PROFILE -->
     <div id="team-section" style="padding-top:20px;">
         <div style="max-width:1100px;margin:auto;padding:0 25px;">
             <div class="section-label reveal">Our Leadership</div>
@@ -1509,7 +1684,8 @@
             </div>
             <div class="team-filters">
                 <button class="filter active" data-role="all">All</button>
-                <button class="filter" data-role="leadership">Founders</button>
+                <button class="filter" data-role="founder">Founders (Order 1-3)</button>
+                <button class="filter" data-role="member">Members</button>
             </div>
         </div>
 
@@ -1518,7 +1694,7 @@
         </div>
     </div>
 
-    <!-- PROJECTS PREVIEW & LINK TO SHOWCASE -->
+    <!-- PROJECTS PREVIEW -->
     <section id="projects">
         <div class="section-label reveal">Our Work</div>
         <h2 class="section-title reveal">Projects <span>we're building.</span></h2>
@@ -1561,7 +1737,6 @@
             </div>
         </div>
 
-        <!-- CALL TO ACTION LINKING TO PROJECTS SHOWCASE -->
         <div class="projects-cta-box reveal">
             <h3>Projects Showcase — EIAFSDO</h3>
             <p>
@@ -1573,7 +1748,7 @@
         </div>
     </section>
 
-    <!-- TALKS SECTION (LATEST 1 TALK PER USER WITH VERIFIED BADGE) -->
+    <!-- TALKS -->
     <section id="talks">
         <div class="section-label reveal">Community Voice</div>
         <h2 class="section-title reveal">Member <span>Talks</span></h2>
@@ -1586,7 +1761,7 @@
         </div>
     </section>
 
-    <!-- SOCIAL LINKS SECTION — LinkedIn, Twitter, Handle, Hashtag -->
+    <!-- SOCIAL LINKS -->
     <div class="social-links-section reveal">
         <div class="section-label">Connect With Us</div>
         <h2 class="section-title" style="font-size:clamp(28px,4vw,44px);">Follow <span>EIAFSDO</span></h2>
@@ -1614,7 +1789,7 @@
         </div>
     </div>
 
-    <!-- JOIN US -->
+    <!-- JOIN -->
     <section id="join">
         <div class="section-label reveal">Get Involved</div>
         <h2 class="section-title reveal">Join <span>the Movement</span></h2>
@@ -1673,10 +1848,10 @@
         <span class="footer-handle">Official <strong>@EIAFSDO</strong> · #<strong>EIAFSDO</strong></span>
     </footer>
 
-    <!-- SCROLL TO TOP -->
+    <!-- SCROLL TOP -->
     <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
 
-    <!-- MEMBER APPROVED PROJECTS MODAL -->
+    <!-- MODALS -->
     <div class="modal-overlay" id="profileModal">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -1685,7 +1860,6 @@
         </div>
     </div>
 
-    <!-- IMAGE LIGHTBOX MODAL -->
     <div class="modal-overlay image-modal" id="imageModal">
         <div class="modal-content">
             <button class="modal-close" id="imageModalClose">&times;</button>
@@ -1693,8 +1867,32 @@
         </div>
     </div>
 
+    <!-- VERIFIED PROFILE MODAL -->
+    <div class="modal-overlay verified-profile-modal" id="verifiedProfileModal">
+        <div class="modal-content">
+            <button class="modal-close" id="vpModalClose">&times;</button>
+            <img id="vpAvatar" src="" alt="Profile" class="vp-avatar" />
+            <div class="vp-name" id="vpName">
+                <span></span>
+                <span class="verified-badge" style="width:22px;height:22px;">
+                    <svg viewBox="0 0 24 24" style="width:12px;height:12px;">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </span>
+            </div>
+            <div class="vp-role" id="vpRole"></div>
+            <div class="vp-bio" id="vpBio"></div>
+            <div class="vp-stats">
+                <div><strong id="vpStack">—</strong><span>Tech Stack</span></div>
+                <div><strong id="vpOrg">—</strong><span>Organization</span></div>
+                <div><strong id="vpStatus">—</strong><span>Status</span></div>
+            </div>
+            <div class="socials-row" id="vpSocials"></div>
+        </div>
+    </div>
+
     <!-- ============================================================
-       SCRIPT: FIRESTORE, VERIFIED TEAM CARDS & DEDUPLICATED TALKS
+       SCRIPT: FIRESTORE + FLIP CARDS + VERIFIED PROFILE
        ============================================================ -->
     <script>
         const firebaseConfig = {
@@ -1726,15 +1924,25 @@
         const imageModalContent = document.getElementById('imageModalContent');
         const imageModalClose = document.getElementById('imageModalClose');
 
+        const vpModal = document.getElementById('verifiedProfileModal');
+        const vpClose = document.getElementById('vpModalClose');
+        const vpAvatar = document.getElementById('vpAvatar');
+        const vpName = document.getElementById('vpName');
+        const vpRole = document.getElementById('vpRole');
+        const vpBio = document.getElementById('vpBio');
+        const vpStack = document.getElementById('vpStack');
+        const vpOrg = document.getElementById('vpOrg');
+        const vpStatus = document.getElementById('vpStatus');
+        const vpSocials = document.getElementById('vpSocials');
+
         const founderCountEl = document.getElementById('founderCount');
         const projectCountEl = document.getElementById('projectCount');
 
         let allMembers = [];
         let activeFilter = 'all';
 
-        // Consistent SVG Verified Tick Badge Component
         const VERIFIED_TICK_ICON = `
-            <span class="verified-badge" title="Verified Member">
+            <span class="verified-badge" title="Verified Member" onclick="event.stopPropagation(); openVerifiedProfile(this)">
                 <svg viewBox="0 0 24 24">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
@@ -1752,58 +1960,47 @@
             } [tag] || tag));
         }
 
-        // --- Fetch dynamic counts for stats ---
+        // --- Fetch Stats ---
         async function fetchStats() {
             try {
-                // Count founders (users collection)
                 const usersSnap = await db.collection('users').get();
-                const founderCount = usersSnap.size;
-                founderCountEl.textContent = founderCount || '0';
-
-                // Count approved projects
+                founderCountEl.textContent = usersSnap.size || '0';
                 let approvedCount = 0;
                 try {
                     const projSnap = await db.collection('projects').where('status', '==', 'approved').get();
                     approvedCount = projSnap.size;
                 } catch (e) {
-                    // Fallback: if 'status' field doesn't exist yet, count all projects
                     const allProjSnap = await db.collection('projects').get();
                     approvedCount = allProjSnap.size;
                 }
                 projectCountEl.textContent = approvedCount || '0';
             } catch (err) {
-                console.warn('Could not fetch stats:', err);
                 founderCountEl.textContent = '?';
                 projectCountEl.textContent = '?';
             }
         }
 
+        // --- Load Team Members ---
         async function loadTeamMembers() {
             try {
                 const snapshot = await db.collection('users').get();
-
                 if (snapshot.empty) {
                     teamGrid.innerHTML = '';
                     teamEmpty.style.display = 'block';
                     teamEmpty.textContent = 'No founders found in database.';
                     return;
                 }
-
                 allMembers = [];
                 snapshot.forEach(doc => {
-                    const data = doc.data();
-                    allMembers.push({ id: doc.id, ...data });
+                    allMembers.push({ id: doc.id, ...doc.data() });
                 });
-
                 allMembers.sort((a, b) => {
                     const orderA = a.order !== undefined ? a.order : 9999;
                     const orderB = b.order !== undefined ? b.order : 9999;
                     return orderA - orderB;
                 });
-
                 renderTeamCards(allMembers);
             } catch (err) {
-                console.error('Error fetching team from Firestore:', err);
                 teamEmpty.style.display = 'block';
                 teamEmpty.textContent = '⚠️ Unable to load founders from database. Please refresh.';
             }
@@ -1813,85 +2010,109 @@
             if (!members || members.length === 0) {
                 teamGrid.innerHTML = '';
                 teamEmpty.style.display = 'block';
-                teamEmpty.textContent = 'No matching founders found.';
+                teamEmpty.textContent = 'No matching members found.';
                 return;
             }
-
             teamEmpty.style.display = 'none';
 
             let html = '';
             members.forEach((member) => {
                 const fallbackImg =
-                    `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Founder')}&background=111111&color=ffffff&size=300`;
+                    `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Member')}&background=111111&color=ffffff&size=300`;
                 const photoURL = member.photoURL && member.photoURL.trim() !== '' ? member.photoURL : fallbackImg;
-                const role = member.role || 'Full-Stack Developer';
+                const role = member.role || 'Developer';
                 const status = member.status || 'Active';
-                const bio = member.bio || 'Founder at EIAFSDO engineering collective.';
+                const bio = member.bio || 'Member of EIAFSDO engineering collective.';
                 const stack = member.stack || 'Full-Stack Development';
                 const org = member.org || 'EIAFSDO';
                 const linkedin = member.linkedin || '';
                 const github = member.github || '';
                 const dribbble = member.dribbble || '';
+                const order = member.order || 9999;
 
+                // Determine if Founder (order 1, 2, or 3)
+                const isFounder = order === 1 || order === 2 || order === 3;
+                const founderLabel = isFounder ? 'FOUNDER' : 'MEMBER';
+                const tagClass = isFounder ? '' : 'member';
                 const searchMeta = `${member.name || ''} ${role} ${stack} ${org} ${bio}`.toLowerCase();
                 const isPriyabrata = (member.name || '').toLowerCase().includes('priyabrata');
 
                 html += `
-                        <article class="team-card" 
-                                 data-category="leadership" 
-                                 data-member-id="${member.id}" 
-                                 data-search="${searchMeta}">
-                            
-                            <div class="founder-tag">FOUNDER</div>
-                            
-                            <div class="card-top">
-                                <span class="card-label">EIAFSDO ID</span>
-                                <span class="status"></span>
+                    <div class="team-card-flip" data-category="${isFounder ? 'founder' : 'member'}" data-search="${searchMeta}" data-member='${JSON.stringify({ id: member.id, name: member.name, photoURL, role, bio, stack, org, status, linkedin, github, dribbble, isFounder })}'>
+                        <div class="team-card-inner">
+                            <!-- FRONT -->
+                            <div class="team-card-front">
+                                <div class="founder-tag ${tagClass}">${founderLabel}</div>
+                                <div class="card-top">
+                                    <span class="card-label">EIAFSDO ID</span>
+                                    <span class="status-dot ${status.toLowerCase() === 'active' ? 'active' : 'inactive'}"></span>
+                                </div>
+                                <div class="profile" data-member-id="${member.id}" data-member-name="${escapeHTML(member.name || 'Member')}" data-image="${photoURL}">
+                                    <img src="${photoURL}" alt="${escapeHTML(member.name || 'Member')}" loading="lazy" />
+                                </div>
+                                <h2 class="name">
+                                    <span class="name-text">${escapeHTML(member.name || 'Member')}</span>
+                                    ${VERIFIED_TICK_ICON}
+                                </h2>
+                                <p class="role-text">${isFounder ? 'Founder · ' : ''}${escapeHTML(role)}</p>
+                                <span class="badge-org">${escapeHTML(org)}</span>
+                                <div class="divider-light"></div>
+                                <div class="details-grid">
+                                    <div class="detail-item"><small>Stack</small><strong>${escapeHTML(stack)}</strong></div>
+                                    <div class="detail-item"><small>Status</small><strong>${escapeHTML(status)}</strong></div>
+                                </div>
+                                <div class="flip-hint">↻ Click to flip</div>
                             </div>
-
-                            <div class="profile" data-member-id="${member.id}" data-member-name="${escapeHTML(member.name || 'Founder')}" data-image="${photoURL}">
-                                <img src="${photoURL}" alt="${escapeHTML(member.name || 'Founder')}" loading="lazy" />
+                            <!-- BACK -->
+                            <div class="team-card-back">
+                                <div class="founder-tag ${tagClass}" style="position:static;margin-bottom:8px;">${founderLabel}</div>
+                                <h3 style="font-size:20px;display:flex;align-items:center;gap:6px;">
+                                    ${escapeHTML(member.name || 'Member')}
+                                    ${VERIFIED_TICK_ICON}
+                                </h3>
+                                <p style="color:#888;font-size:13px;">${escapeHTML(role)}</p>
+                                <div class="divider-light"></div>
+                                <p class="back-bio">“${escapeHTML(bio)}”</p>
+                                <div class="back-stats">
+                                    <span><strong>${escapeHTML(stack)}</strong> Stack</span>
+                                    <span><strong>${escapeHTML(org)}</strong> Org</span>
+                                </div>
+                                <div class="socials-row" style="margin-top:8px;">
+                                    ${linkedin && linkedin !== '#' ? `<a href="${linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>` : ''}
+                                    ${github && github !== '#' ? `<a href="${github}" target="_blank" rel="noopener" aria-label="GitHub">GH</a>` : ''}
+                                    ${dribbble && dribbble !== '#' ? `<a href="${dribbble}" target="_blank" rel="noopener" aria-label="Portfolio">DR</a>` : ''}
+                                    ${isPriyabrata ? `<a href="https://codebihin.in" target="_blank" rel="noopener" class="codebihin-link" aria-label="Codebihin">CB</a>` : ''}
+                                </div>
+                                <div class="flip-hint" style="margin-top:6px;">↻ Click to flip back</div>
                             </div>
-
-                            <!-- Member Name with Verified Tick Beside It -->
-                            <h2 class="name">
-                                <span class="name-text">${escapeHTML(member.name || 'Founder')}</span>
-                                ${VERIFIED_TICK_ICON}
-                            </h2>
-
-                            <p class="role">Founder · ${role.toLowerCase() === 'admin' ? 'Lead Architect' : escapeHTML(role)}</p>
-                            <div class="badge">${escapeHTML(org)}</div>
-                            
-                            <div class="divider"></div>
-
-                            <div class="details">
-                                <div class="detail"><small>Position</small><strong>Founder</strong></div>
-                                <div class="detail"><small>Stack</small><strong>${escapeHTML(stack)}</strong></div>
-                                <div class="detail"><small>Org</small><strong>${escapeHTML(org)}</strong></div>
-                                <div class="detail"><small>Status</small><strong>${escapeHTML(status)}</strong></div>
-                            </div>
-
-                            <p class="bio">${escapeHTML(bio)}</p>
-
-                            <div class="socials">
-                                ${linkedin && linkedin !== '#' ? `<a href="${linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>` : ''}
-                                ${github && github !== '#' ? `<a href="${github}" target="_blank" rel="noopener" aria-label="GitHub">GH</a>` : ''}
-                                ${dribbble && dribbble !== '#' ? `<a href="${dribbble}" target="_blank" rel="noopener" aria-label="Portfolio">DR</a>` : ''}
-                                ${isPriyabrata ? `<a href="https://codebihin.in" target="_blank" rel="noopener" class="codebihin-link" aria-label="Codebihin">CB</a>` : ''}
-                            </div>
-                        </article>
-                    `;
+                        </div>
+                    </div>
+                `;
             });
 
             teamGrid.innerHTML = html;
-            attachCardInteractions();
+            attachFlipInteractions();
+            attachProfileInteractions();
         }
 
-        function attachCardInteractions() {
+        // --- Flip Card Interactions ---
+        function attachFlipInteractions() {
+            document.querySelectorAll('.team-card-flip').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't flip if clicking on verified badge or profile (handled separately)
+                    if (e.target.closest('.verified-badge') || e.target.closest('.profile')) return;
+                    this.classList.toggle('flipped');
+                });
+            });
+        }
+
+        // --- Profile Interactions (click to open projects, image lightbox) ---
+        function attachProfileInteractions() {
             document.querySelectorAll('.profile').forEach(el => {
-                el.addEventListener('click', function() {
+                el.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     const memberId = this.dataset.memberId;
-                    const memberName = this.dataset.memberName || 'Founder';
+                    const memberName = this.dataset.memberName || 'Member';
                     if (memberId) openMemberProjects(memberId, memberName);
                 });
             });
@@ -1902,62 +2123,75 @@
                     const profile = this.closest('.profile');
                     if (profile) {
                         const imageSrc = profile.dataset.image;
-                        const altText = this.alt || 'Founder';
+                        const altText = this.alt || 'Member';
                         if (imageSrc) openImageModal(imageSrc, altText);
                     }
                 });
             });
-
-            document.querySelectorAll('.team-card').forEach(card => {
-                let rafId = null;
-                card.addEventListener('mousemove', function(e) {
-                    const rect = this.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const cx = rect.width / 2;
-                    const cy = rect.height / 2;
-                    const rx = ((y - cy) / cy) * -4.5;
-                    const ry = ((x - cx) / cx) * 4.5;
-
-                    if (rafId) cancelAnimationFrame(rafId);
-                    rafId = requestAnimationFrame(() => {
-                        this.style.transform =
-                            `translateY(-8px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-                    });
-                });
-
-                card.addEventListener('mouseleave', function() {
-                    if (rafId) cancelAnimationFrame(rafId);
-                    this.style.transform = '';
-                });
-            });
         }
 
-        /* ============================================================
-           LOAD TALKS (LATEST 1 TALK PER USER WITH VERIFIED BADGE)
-           ============================================================ */
+        // --- Open Verified Profile Modal ---
+        function openVerifiedProfile(element) {
+            // Find the parent card and get member data
+            const card = element.closest('.team-card-flip');
+            if (!card) return;
+            const data = card.dataset.member;
+            if (!data) return;
+            const member = JSON.parse(data);
+
+            vpAvatar.src = member.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Member')}&background=111111&color=ffffff&size=200`;
+            vpAvatar.alt = member.name || 'Member';
+            vpName.innerHTML = `${escapeHTML(member.name || 'Member')} <span class="verified-badge" style="width:22px;height:22px;"><svg viewBox="0 0 24 24" style="width:12px;height:12px;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>`;
+            vpRole.textContent = member.isFounder ? `Founder · ${escapeHTML(member.role || 'Developer')}` : escapeHTML(member.role || 'Developer');
+            vpBio.textContent = member.bio || 'Member of EIAFSDO engineering collective.';
+            vpStack.textContent = member.stack || 'Full-Stack';
+            vpOrg.textContent = member.org || 'EIAFSDO';
+            vpStatus.textContent = member.status || 'Active';
+
+            // Socials
+            let socialHtml = '';
+            if (member.linkedin && member.linkedin !== '#') socialHtml += `<a href="${member.linkedin}" target="_blank" rel="noopener">IN</a>`;
+            if (member.github && member.github !== '#') socialHtml += `<a href="${member.github}" target="_blank" rel="noopener">GH</a>`;
+            if (member.dribbble && member.dribbble !== '#') socialHtml += `<a href="${member.dribbble}" target="_blank" rel="noopener">DR</a>`;
+            if ((member.name || '').toLowerCase().includes('priyabrata')) socialHtml +=
+                `<a href="https://codebihin.in" target="_blank" rel="noopener" class="codebihin-link">CB</a>`;
+            vpSocials.innerHTML = socialHtml || '<span style="color:#555;font-size:12px;">No social links</span>';
+
+            vpModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // --- Close Verified Profile Modal ---
+        vpClose.addEventListener('click', () => {
+            vpModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === vpModal) {
+                vpModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // --- Load Talks ---
         async function loadTalks() {
             try {
                 const snapshot = await db.collection('talks').get();
-
                 if (snapshot.empty) {
                     talksGrid.innerHTML = '';
                     talksEmpty.style.display = 'block';
                     talksEmpty.textContent = 'No community talks shared yet.';
                     return;
                 }
-
                 const allTalks = [];
                 snapshot.forEach(doc => {
                     allTalks.push({ id: doc.id, ...doc.data() });
                 });
-
                 allTalks.sort((a, b) => {
                     const tA = a.timestamp ? (a.timestamp.toMillis ? a.timestamp.toMillis() : a.timestamp) : 0;
                     const tB = b.timestamp ? (b.timestamp.toMillis ? b.timestamp.toMillis() : b.timestamp) : 0;
                     return tB - tA;
                 });
-
                 const seenUsers = new Set();
                 const latestTalks = [];
                 allTalks.forEach(t => {
@@ -1967,16 +2201,13 @@
                         latestTalks.push(t);
                     }
                 });
-
                 if (latestTalks.length === 0) {
                     talksGrid.innerHTML = '';
                     talksEmpty.style.display = 'block';
                     talksEmpty.textContent = 'No community talks found.';
                     return;
                 }
-
                 talksEmpty.style.display = 'none';
-
                 let html = '';
                 latestTalks.forEach(t => {
                     const name = t.userName || 'Verified Member';
@@ -1986,7 +2217,6 @@
                     const time = t.timestamp ? new Date(t.timestamp.toDate ? t.timestamp.toDate() : t.timestamp)
                         .toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
                     const content = escapeHTML(t.content || '');
-
                     html += `
                             <article class="talk-card reveal">
                                 <div class="talk-header">
@@ -2005,34 +2235,30 @@
                             </article>
                         `;
                 });
-
                 talksGrid.innerHTML = html;
                 talksGrid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
             } catch (err) {
-                console.error('Error fetching talks:', err);
                 talksEmpty.style.display = 'block';
                 talksEmpty.textContent = '⚠️ Unable to load member talks. Please refresh.';
             }
         }
 
+        // --- Member Projects Modal ---
         async function openMemberProjects(memberId, memberName) {
             modalName.innerHTML = `Projects by <span>${escapeHTML(memberName)}</span>`;
             modalProjects.innerHTML = '<p style="color:#777;text-align:center;padding:24px 0;">Loading projects...</p>';
             profileModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-
             try {
                 const snapshot = await db.collection('projects')
                     .where('submittedBy', '==', memberId)
                     .where('status', '==', 'approved')
                     .get();
-
                 if (snapshot.empty) {
                     modalProjects.innerHTML =
-                        '<p style="color:#666;text-align:center;padding:24px 0;">No approved projects listed for this founder yet.</p>';
+                        '<p style="color:#666;text-align:center;padding:24px 0;">No approved projects listed for this member yet.</p>';
                     return;
                 }
-
                 let html = '';
                 snapshot.forEach(doc => {
                     const p = doc.data();
@@ -2047,7 +2273,6 @@
                 });
                 modalProjects.innerHTML = html;
             } catch (err) {
-                console.error('Error fetching member projects:', err);
                 modalProjects.innerHTML =
                     '<p style="color:#ff6b6b;text-align:center;padding:20px 0;">Error loading projects. Please try again.</p>';
             }
@@ -2062,36 +2287,44 @@
         function closeAllModals() {
             profileModal.classList.remove('active');
             imageModal.classList.remove('active');
+            vpModal.classList.remove('active');
             document.body.style.overflow = '';
         }
-
         modalClose.addEventListener('click', closeAllModals);
         imageModalClose.addEventListener('click', closeAllModals);
 
         window.addEventListener('click', (e) => {
-            if (e.target === profileModal || e.target === imageModal) closeAllModals();
+            if (e.target === profileModal || e.target === imageModal || e.target === vpModal) closeAllModals();
         });
-
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeAllModals();
         });
 
+        // --- Filter Members ---
         function filterMembers() {
             const query = teamSearch.value.toLowerCase().trim();
+            const roleFilter = activeFilter;
 
             const filtered = allMembers.filter(member => {
+                const order = member.order || 9999;
+                const isFounder = order === 1 || order === 2 || order === 3;
+                const category = isFounder ? 'founder' : 'member';
+
+                // Role filter
+                if (roleFilter === 'founder' && !isFounder) return false;
+                if (roleFilter === 'member' && isFounder) return false;
+
+                // Search filter
                 const searchMeta =
                     `${member.name || ''} ${member.role || ''} ${member.stack || ''} ${member.org || ''} ${member.bio || ''}`
                     .toLowerCase();
-                const matchesSearch = query === '' || searchMeta.includes(query);
-                return matchesSearch;
+                return query === '' || searchMeta.includes(query);
             });
 
             renderTeamCards(filtered);
         }
 
         teamSearch.addEventListener('input', filterMembers);
-
         teamFilters.forEach(btn => {
             btn.addEventListener('click', function() {
                 teamFilters.forEach(b => b.classList.remove('active'));
@@ -2101,6 +2334,7 @@
             });
         });
 
+        // --- Navbar ---
         const navbar = document.getElementById('navbar');
         const scrollBtn = document.getElementById('scrollTopBtn');
         const hamburger = document.getElementById('hamburger');
@@ -2110,16 +2344,13 @@
             navbar.classList.toggle('scrolled', window.scrollY > 50);
             scrollBtn.classList.toggle('visible', window.scrollY > 400);
         });
-
         scrollBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('open');
         });
-
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('active');
@@ -2127,6 +2358,7 @@
             });
         });
 
+        // --- Reveal Observer ---
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -2134,29 +2366,30 @@
                 }
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
             revealObserver.observe(el);
         });
 
+        // --- Contact Form ---
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('📬 Thank you for contacting EIAFSDO! We will respond shortly.');
             this.reset();
         });
 
+        // --- Image Error Fallback ---
         document.addEventListener('error', function(e) {
             if (e.target.tagName === 'IMG') {
                 const img = e.target;
                 if (!img.src.includes('ui-avatars.com')) {
-                    const fallbackName = encodeURIComponent(img.alt || 'Founder');
+                    const fallbackName = encodeURIComponent(img.alt || 'Member');
                     img.src =
                         `https://ui-avatars.com/api/?name=${fallbackName}&background=111111&color=ffffff&size=300`;
                 }
             }
         }, true);
 
-        // --- Initial Data Load ---
+        // --- Initial Load ---
         fetchStats();
         loadTeamMembers();
         loadTalks();
