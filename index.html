@@ -60,6 +60,132 @@
                 #000;
         }
 
+
+        /* ============================================================
+           GOOGLE FLOW VIDEO BACKGROUND
+           ============================================================ */
+        body {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .flow-video-background {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: -10;
+            pointer-events: none;
+            background: #000;
+            opacity: 1;
+        }
+
+        .flow-video-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -9;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(0,0,0,.78) 0%, rgba(0,12,28,.58) 38%, rgba(0,0,0,.82) 100%),
+                radial-gradient(circle at 50% 45%, rgba(0,100,255,.16), transparent 48%);
+        }
+
+        /* Background video sound control */
+        .flow-sound-control {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 9999;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            min-width: 142px;
+            justify-content: center;
+            padding: 11px 16px;
+            border: 1px solid rgba(90, 170, 255, .42);
+            border-radius: 999px;
+            background: rgba(3, 13, 30, .78);
+            color: #fff;
+            font: 600 13px/1.2 Poppins, Arial, sans-serif;
+            letter-spacing: .2px;
+            cursor: pointer;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 24px rgba(0,110,255,.16);
+            transition: transform .25s ease, background .25s ease, border-color .25s ease, opacity .25s ease;
+        }
+
+        .flow-sound-control:hover {
+            transform: translateY(-2px);
+            background: rgba(8, 28, 58, .9);
+            border-color: rgba(110, 190, 255, .72);
+        }
+
+        .flow-sound-control:focus-visible {
+            outline: 2px solid #6bb7ff;
+            outline-offset: 3px;
+        }
+
+        .flow-sound-control.is-on {
+            background: rgba(0, 76, 155, .78);
+            border-color: rgba(130, 205, 255, .78);
+        }
+
+        .flow-sound-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .flow-sound-control.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+        /* Keep the existing animated layers above the video. */
+        body::before {
+            z-index: -8;
+        }
+
+        .bg-grid {
+            z-index: -7;
+        }
+
+        .glow {
+            z-index: -6;
+        }
+
+        @media (max-width: 768px) {
+            .flow-video-background {
+                object-position: center center;
+            }
+
+            .flow-video-overlay {
+                background:
+                    linear-gradient(180deg, rgba(0,0,0,.84) 0%, rgba(0,12,28,.68) 45%, rgba(0,0,0,.88) 100%),
+                    radial-gradient(circle at 50% 45%, rgba(0,100,255,.12), transparent 55%);
+            }
+
+            .flow-sound-control {
+                right: 14px;
+                bottom: 14px;
+                min-width: 132px;
+                padding: 10px 14px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .flow-video-background {
+                display: none;
+            }
+
+            .flow-sound-control {
+                display: none;
+            }
+        }
+
         /* Moving background dots */
         body::before {
             content: "";
@@ -1543,6 +1669,31 @@
 
 <body>
 
+    <!-- GOOGLE FLOW CINEMATIC VIDEO BACKGROUND -->
+    <video
+        id="flowVideoBackground"
+        class="flow-video-background"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+        tabindex="-1">
+        <source src="https://flow-content.google/video/a1f54945-6bc1-472b-9ec4-0552d92799fe?Expires=1790448902&KeyName=labs-flow-prod-cdn-key&Signature=IlSgJWmLabHeDlfAVnSE4D0Rlik" type="video/mp4" />
+    </video>
+    <div class="flow-video-overlay" aria-hidden="true"></div>
+
+    <button
+        type="button"
+        id="flowSoundControl"
+        class="flow-sound-control"
+        aria-label="Enable background video sound"
+        aria-pressed="false">
+        <span class="flow-sound-icon" aria-hidden="true">🔇</span>
+        <span class="flow-sound-label">Enable Sound</span>
+    </button>
+
     <div class="bg-grid"></div>
     <div class="glow one"></div>
     <div class="glow two"></div>
@@ -2388,6 +2539,86 @@
                 }
             }
         }, true);
+
+        // --- Google Flow background autoplay ---
+        const flowVideo = document.getElementById('flowVideoBackground');
+        if (flowVideo) {
+            flowVideo.muted = true;
+            flowVideo.defaultMuted = true;
+            flowVideo.playsInline = true;
+
+            const playFlowVideo = () => {
+                const playPromise = flowVideo.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {
+                        // Browser autoplay restrictions can block playback until interaction.
+                    });
+                }
+            };
+
+            playFlowVideo();
+
+            ['pointerdown', 'touchstart', 'keydown'].forEach(eventName => {
+                window.addEventListener(eventName, playFlowVideo, { once: true, passive: true });
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) playFlowVideo();
+            });
+        }
+
+        // --- Google Flow background sound control ---
+        const flowSoundControl = document.getElementById('flowSoundControl');
+
+        if (flowVideo && flowSoundControl) {
+            const soundIcon = flowSoundControl.querySelector('.flow-sound-icon');
+            const soundLabel = flowSoundControl.querySelector('.flow-sound-label');
+
+            const updateSoundUI = () => {
+                const soundOn = !flowVideo.muted && flowVideo.volume > 0;
+
+                flowSoundControl.classList.toggle('is-on', soundOn);
+                flowSoundControl.setAttribute('aria-pressed', String(soundOn));
+                flowSoundControl.setAttribute(
+                    'aria-label',
+                    soundOn ? 'Mute background video sound' : 'Enable background video sound'
+                );
+
+                if (soundIcon) soundIcon.textContent = soundOn ? '🔊' : '🔇';
+                if (soundLabel) soundLabel.textContent = soundOn ? 'Mute Sound' : 'Enable Sound';
+            };
+
+            const enableFlowSound = async () => {
+                flowVideo.muted = false;
+                flowVideo.defaultMuted = false;
+                flowVideo.volume = 1;
+
+                try {
+                    await flowVideo.play();
+                    flowSoundControl.classList.add('is-hidden');
+                } catch (error) {
+                    // The browser can still require another user gesture.
+                    flowVideo.muted = true;
+                    updateSoundUI();
+                    return;
+                }
+
+                updateSoundUI();
+            };
+
+            const toggleFlowSound = async () => {
+                if (flowVideo.muted || flowVideo.volume === 0) {
+                    await enableFlowSound();
+                } else {
+                    flowVideo.muted = true;
+                    updateSoundUI();
+                }
+            };
+
+            flowSoundControl.addEventListener('click', toggleFlowSound);
+            flowVideo.addEventListener('volumechange', updateSoundUI);
+            updateSoundUI();
+        }
 
         // --- Initial Load ---
         fetchStats();
