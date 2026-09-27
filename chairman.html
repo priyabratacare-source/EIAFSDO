@@ -1,0 +1,3316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EIAFSDO — Chairman's Desk</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@500;600;700&family=Nunito+Sans:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root{
+
+    --bg:#fffaf0;
+    --surface:#fffef8;
+    --soft:#f6eed8;
+
+    --text:#1d1a14;
+    --body:#3d3830;
+
+    --yellow:#f2c94c;
+
+    --gold:#c9972e;
+    --gold-light:#ffe68a;
+    --gold-dark:#765300;
+
+    --green:#e8ddb4;
+
+    --blue:#1687ff;
+
+    --black:#17150f;
+
+    --white:#fffef8;
+
+    --border:2px solid var(--black);
+
+    --shadow:6px 7px 0 var(--black);
+
+    --shadow-soft:3px 4px 0 var(--black);
+
+    --radius:12px;
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+
+body{
+
+    font-family:"Nunito Sans",sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:-20%;
+
+    z-index:-5;
+
+    pointer-events:none;
+
+    background:
+
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(242,201,76,.24),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(232,221,180,.38),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(242,201,76,.15),
+            transparent 32%
+        );
+
+    filter:blur(22px);
+
+    animation:bgBreath 9s ease-in-out infinite alternate;
+
+}
+
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-4;
+
+    pointer-events:none;
+
+    opacity:.22;
+
+    background-image:
+
+        linear-gradient(
+            rgba(29,26,20,.08) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(29,26,20,.08) 1px,
+            transparent 1px
+        );
+
+    background-size:48px 48px;
+
+    animation:gridMove 20s linear infinite;
+
+}
+
+
+@keyframes bgBreath{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.08);
+    }
+
+}
+
+
+@keyframes gridMove{
+
+    from{
+        background-position:0 0;
+    }
+
+    to{
+        background-position:48px 48px;
+    }
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.nav{
+
+    position:sticky;
+
+    top:12px;
+
+    z-index:1000;
+
+    width:min(
+        1180px,
+        calc(100% - 28px)
+    );
+
+    margin:12px auto 0;
+
+    min-height:66px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    padding:9px 13px;
+
+    background:rgba(
+        255,
+        254,
+        248,
+        .88
+    );
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border:var(--border);
+
+    border-radius:999px;
+
+    box-shadow:var(--shadow-soft);
+
+}
+
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:var(--text);
+
+    text-decoration:none;
+
+}
+
+
+.brand-logo{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    border:2px solid var(--black);
+
+    object-fit:cover;
+
+    background:var(--yellow);
+
+}
+
+
+.brand-text{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:15px;
+
+}
+
+
+.nav-links{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+
+.nav-links a{
+
+    color:var(--text);
+
+    text-decoration:none;
+
+    padding:9px 12px;
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    transition:.25s ease;
+
+}
+
+
+.nav-links a:hover{
+
+    background:var(--yellow);
+
+    transform:translateY(-2px);
+
+}
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+
+    width:min(
+        1120px,
+        calc(100% - 30px)
+    );
+
+    margin:auto;
+
+}
+
+
+.section{
+
+    padding:95px 0 15px;
+
+}
+
+
+.label{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    padding:7px 12px;
+
+    background:var(--yellow);
+
+    border:var(--border);
+
+    border-radius:999px;
+
+    box-shadow:var(--shadow-soft);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+
+.label::before{
+
+    content:"";
+
+    width:7px;
+
+    height:7px;
+
+    border-radius:50%;
+
+    background:var(--black);
+
+}
+
+
+.section-title{
+
+    margin-top:21px;
+
+    max-width:900px;
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:clamp(
+        38px,
+        6vw,
+        72px
+    );
+
+    line-height:.98;
+
+    letter-spacing:-2px;
+
+}
+
+
+.section-description{
+
+    max-width:790px;
+
+    margin-top:18px;
+
+    color:var(--body);
+
+    font-size:17px;
+
+    line-height:1.75;
+
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+
+    min-height:680px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:110px 0 70px;
+
+}
+
+
+.hero-inner{
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+        .95fr
+        1.05fr;
+
+    gap:60px;
+
+    align-items:center;
+
+}
+
+
+/* =====================================================
+   CHAIRMAN IMAGE
+===================================================== */
+
+.chairman-visual{
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+
+.chairman-frame{
+
+    position:relative;
+
+    width:min(
+        420px,
+        100%
+    );
+
+    aspect-ratio:1/1;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #fff0a0,
+            #f2c94c
+        );
+
+    border:var(--border);
+
+    border-radius:22px;
+
+    box-shadow:10px 12px 0 var(--black);
+
+    padding:15px;
+
+    transform:rotate(-2deg);
+
+}
+
+
+.chairman-frame::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:100px;
+
+    height:100px;
+
+    right:-40px;
+
+    top:-40px;
+
+    border-radius:50%;
+
+    background:var(--yellow);
+
+    border:var(--border);
+
+    z-index:-1;
+
+}
+
+
+.chairman-frame::after{
+
+    content:"CHAIRMAN";
+
+    position:absolute;
+
+    left:-35px;
+
+    bottom:35px;
+
+    padding:10px 14px;
+
+    background:var(--black);
+
+    color:var(--yellow);
+
+    border:2px solid var(--yellow);
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    transform:rotate(-5deg);
+
+}
+
+
+.chairman-photo{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    object-position:center;
+
+    display:block;
+
+    border:2px solid var(--black);
+
+    border-radius:13px;
+
+    background:var(--soft);
+
+}
+
+
+.image-orbit{
+
+    position:absolute;
+
+    width:25px;
+
+    height:25px;
+
+    border-radius:50%;
+
+    background:var(--blue);
+
+    border:2px solid var(--black);
+
+    top:35px;
+
+    left:20px;
+
+    animation:floatDot 3s ease-in-out infinite;
+
+}
+
+
+.image-orbit.two{
+
+    width:17px;
+
+    height:17px;
+
+    background:#35a853;
+
+    top:auto;
+
+    left:auto;
+
+    right:30px;
+
+    bottom:30px;
+
+    animation-delay:1s;
+
+}
+
+
+@keyframes floatDot{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-13px);
+    }
+
+}
+
+
+/* =====================================================
+   HERO CONTENT
+===================================================== */
+
+.hero-content{
+
+    text-align:left;
+
+}
+
+
+.status{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    padding:8px 14px;
+
+    background:var(--green);
+
+    border:var(--border);
+
+    border-radius:999px;
+
+    box-shadow:var(--shadow-soft);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+
+.status-dot{
+
+    width:9px;
+
+    height:9px;
+
+    border-radius:50%;
+
+    background:#35a853;
+
+    border:1px solid var(--black);
+
+    animation:pulse 1.6s ease-in-out infinite;
+
+}
+
+
+@keyframes pulse{
+
+    0%,100%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.35);
+    }
+
+}
+
+
+.hero h1{
+
+    margin-top:25px;
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:clamp(
+        48px,
+        7vw,
+        92px
+    );
+
+    line-height:.9;
+
+    letter-spacing:-4px;
+
+}
+
+
+.hero h1 span{
+
+    display:block;
+
+    position:relative;
+
+    width:max-content;
+
+}
+
+
+.hero h1 span::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:2%;
+
+    right:-4%;
+
+    bottom:2px;
+
+    height:14px;
+
+    background:var(--yellow);
+
+    z-index:-1;
+
+    transform:skew(-8deg);
+
+}
+
+
+.hero-sub{
+
+    max-width:650px;
+
+    margin-top:25px;
+
+    color:var(--body);
+
+    font-size:17px;
+
+    line-height:1.75;
+
+}
+
+
+.role-pills{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:24px;
+
+}
+
+
+.role-pill{
+
+    padding:8px 11px;
+
+    background:var(--surface);
+
+    border:2px solid var(--black);
+
+    border-radius:999px;
+
+    box-shadow:2px 3px 0 var(--black);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+.hero-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-top:28px;
+
+}
+
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:48px;
+
+    padding:12px 19px;
+
+    border:var(--border);
+
+    border-radius:9px;
+
+    box-shadow:var(--shadow-soft);
+
+    text-decoration:none;
+
+    color:var(--text);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    transition:.25s ease;
+
+}
+
+
+.btn:hover{
+
+    transform:translate(
+        -2px,
+        -2px
+    );
+
+    box-shadow:6px 7px 0 var(--black);
+
+}
+
+
+.btn-yellow{
+
+    background:var(--yellow);
+
+}
+
+
+.btn-white{
+
+    background:var(--surface);
+
+}
+
+
+/* =====================================================
+   PROFILE CARD
+===================================================== */
+
+.profile-card{
+
+    margin-top:40px;
+
+    padding:35px;
+
+    background:var(--surface);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+.profile-heading{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+.profile-heading h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:34px;
+
+}
+
+
+.verified{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    padding:8px 11px;
+
+    background:#e9f8e8;
+
+    border:2px solid var(--black);
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+.verified::before{
+
+    content:"✓";
+
+    width:16px;
+
+    height:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:var(--blue);
+
+    color:white;
+
+}
+
+
+.profile-text{
+
+    margin-top:22px;
+
+    color:var(--body);
+
+    font-size:15px;
+
+    line-height:1.85;
+
+}
+
+
+.profile-text + .profile-text{
+
+    margin-top:14px;
+
+}
+
+
+/* =====================================================
+   CHAIRMAN MESSAGE
+===================================================== */
+
+.message-card{
+
+    position:relative;
+
+    margin-top:40px;
+
+    padding:40px;
+
+    background:var(--black);
+
+    color:var(--surface);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+
+}
+
+
+.message-card::before{
+
+    content:"“";
+
+    position:absolute;
+
+    right:25px;
+
+    top:-35px;
+
+    color:#302b20;
+
+    font-family:Georgia,serif;
+
+    font-size:220px;
+
+    line-height:1;
+
+}
+
+
+.message-card > *{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+.message-label{
+
+    color:var(--yellow);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+
+.message-card h3{
+
+    margin-top:17px;
+
+    max-width:800px;
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:clamp(
+        31px,
+        5vw,
+        54px
+    );
+
+    line-height:1;
+
+}
+
+
+.message-card blockquote{
+
+    margin-top:24px;
+
+    max-width:850px;
+
+    color:#e5ddce;
+
+    font-size:17px;
+
+    line-height:1.85;
+
+}
+
+
+.signature{
+
+    margin-top:27px;
+
+    padding-top:18px;
+
+    border-top:1px solid #655e50;
+
+}
+
+
+.signature-name{
+
+    font-family:"Caveat",cursive;
+
+    color:var(--yellow);
+
+    font-size:38px;
+
+}
+
+
+.signature-role{
+
+    margin-top:3px;
+
+    color:#cfc6b4;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+/* =====================================================
+   ABOUT CHAIRMAN
+===================================================== */
+
+.about-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1.15fr
+        .85fr;
+
+    gap:22px;
+
+    margin-top:40px;
+
+}
+
+
+.about-card{
+
+    padding:30px;
+
+    background:var(--surface);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow-soft);
+
+}
+
+
+.about-card h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:30px;
+
+}
+
+
+.about-card p{
+
+    margin-top:15px;
+
+    color:var(--body);
+
+    font-size:14px;
+
+    line-height:1.8;
+
+}
+
+
+.fact-list{
+
+    margin-top:20px;
+
+    display:grid;
+
+    gap:10px;
+
+}
+
+
+.fact{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:13px;
+
+    background:var(--soft);
+
+    border:1px solid rgba(
+        29,
+        26,
+        20,
+        .25
+    );
+
+    border-radius:8px;
+
+}
+
+
+.fact span{
+
+    color:#6b6254;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.fact strong{
+
+    font-size:12px;
+
+    text-align:right;
+
+}
+
+
+/* =====================================================
+   TALKS
+===================================================== */
+
+.talks-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:22px;
+
+    margin-top:40px;
+
+}
+
+
+.talk-card{
+
+    position:relative;
+
+    padding:30px;
+
+    background:var(--surface);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow-soft);
+
+    transition:.3s ease;
+
+    overflow:hidden;
+
+}
+
+
+.talk-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:6px;
+
+    height:100%;
+
+    background:var(--yellow);
+
+}
+
+
+.talk-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:6px 8px 0 var(--black);
+
+}
+
+
+.talk-number{
+
+    display:inline-block;
+
+    padding:6px 10px;
+
+    background:var(--yellow);
+
+    border:2px solid var(--black);
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.talk-date{
+
+    margin-top:14px;
+
+    color:#665d50;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+.talk-card h3{
+
+    margin-top:14px;
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:27px;
+
+    line-height:1.05;
+
+}
+
+
+.talk-card p{
+
+    margin-top:13px;
+
+    color:var(--body);
+
+    font-size:14px;
+
+    line-height:1.75;
+
+}
+
+
+.talk-tag{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:7px 9px;
+
+    background:var(--soft);
+
+    border:2px solid var(--black);
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+/* =====================================================
+   VISION
+===================================================== */
+
+.vision-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:20px;
+
+    margin-top:40px;
+
+}
+
+
+.vision-card{
+
+    padding:27px;
+
+    background:var(--surface);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow-soft);
+
+    transition:.3s ease;
+
+}
+
+
+.vision-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:6px 8px 0 var(--black);
+
+}
+
+
+.vision-icon{
+
+    width:52px;
+
+    height:52px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--yellow);
+
+    border:var(--border);
+
+    border-radius:12px;
+
+    box-shadow:3px 4px 0 var(--black);
+
+    font-size:24px;
+
+}
+
+
+.vision-card h3{
+
+    margin-top:20px;
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:22px;
+
+}
+
+
+.vision-card p{
+
+    margin-top:11px;
+
+    color:var(--body);
+
+    font-size:13px;
+
+    line-height:1.7;
+
+}
+
+
+/* =====================================================
+   RESPONSIBILITIES
+===================================================== */
+
+.responsibility-box{
+
+    margin-top:40px;
+
+    padding:32px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fffef8,
+            #f8edc9
+        );
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+.responsibility-box h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:32px;
+
+}
+
+
+.responsibility-list{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:12px;
+
+    margin-top:24px;
+
+}
+
+
+.responsibility{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    padding:16px;
+
+    background:var(--surface);
+
+    border:2px solid var(--black);
+
+    border-radius:9px;
+
+}
+
+
+.responsibility-number{
+
+    flex:none;
+
+    width:30px;
+
+    height:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--yellow);
+
+    border:2px solid var(--black);
+
+    border-radius:50%;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.responsibility strong{
+
+    display:block;
+
+    font-size:14px;
+
+}
+
+
+.responsibility span{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#62594c;
+
+    font-size:11px;
+
+    line-height:1.5;
+
+}
+
+
+/* =====================================================
+   LEADERSHIP MESSAGE
+===================================================== */
+
+.statement{
+
+    margin-top:40px;
+
+    padding:35px;
+
+    background:var(--yellow);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
+
+}
+
+
+.statement h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:clamp(
+        29px,
+        5vw,
+        48px
+    );
+
+    line-height:1;
+
+}
+
+
+.statement p{
+
+    max-width:780px;
+
+    margin:16px auto 0;
+
+    color:#3b321f;
+
+    font-size:14px;
+
+    line-height:1.75;
+
+}
+
+
+.statement-seal{
+
+    display:inline-flex;
+
+    margin-top:22px;
+
+    padding:9px 13px;
+
+    background:var(--black);
+
+    color:var(--yellow);
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+/* =====================================================
+   VERIFICATION
+===================================================== */
+
+.verify-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:18px;
+
+    margin-top:40px;
+
+}
+
+
+.verify-box{
+
+    padding:23px;
+
+    background:var(--soft);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow-soft);
+
+}
+
+
+.verify-label{
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.verify-value{
+
+    margin-top:9px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:11px;
+
+    line-height:1.6;
+
+    word-break:break-word;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+
+    margin-top:105px;
+
+    padding:55px 0 30px;
+
+    background:var(--black);
+
+    color:var(--surface);
+
+    border-top:5px solid var(--yellow);
+
+}
+
+
+.footer-inner{
+
+    width:min(
+        1120px,
+        calc(100% - 30px)
+    );
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:25px;
+
+}
+
+
+.footer-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+.footer-logo{
+
+    width:49px;
+
+    height:49px;
+
+    border-radius:50%;
+
+    border:2px solid var(--surface);
+
+    object-fit:cover;
+
+}
+
+
+.footer h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+}
+
+
+.footer p{
+
+    margin-top:7px;
+
+    color:#cfc8b8;
+
+    font-size:11px;
+
+}
+
+
+.footer-code{
+
+    color:var(--yellow);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    text-align:right;
+
+    line-height:1.7;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:920px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .hero-inner{
+        grid-template-columns:1fr;
+        gap:45px;
+    }
+
+    .hero-content{
+        text-align:center;
+    }
+
+    .hero h1 span{
+        margin:auto;
+    }
+
+    .hero-sub{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .role-pills,
+    .hero-actions{
+        justify-content:center;
+    }
+
+    .chairman-visual{
+        order:1;
+    }
+
+    .hero-content{
+        order:2;
+    }
+
+    .about-grid{
+        grid-template-columns:1fr;
+    }
+
+    .talks-grid{
+        grid-template-columns:1fr;
+    }
+
+    .vision-grid{
+        grid-template-columns:1fr;
+    }
+
+    .responsibility-list{
+        grid-template-columns:1fr;
+    }
+
+    .footer-inner{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .footer-code{
+        text-align:left;
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    .nav{
+        width:calc(100% - 18px);
+        top:7px;
+        margin-top:7px;
+    }
+
+    .brand-text{
+        font-size:12px;
+    }
+
+    .brand-logo{
+        width:40px;
+        height:40px;
+    }
+
+    .hero{
+        padding-top:90px;
+    }
+
+    .hero h1{
+        font-size:clamp(
+            47px,
+            15vw,
+            72px
+        );
+
+        letter-spacing:-3px;
+    }
+
+    .section{
+        padding-top:75px;
+    }
+
+    .profile-card,
+    .message-card,
+    .about-card,
+    .talk-card,
+    .vision-card,
+    .responsibility-box,
+    .statement,
+    .verify-box{
+        padding:23px;
+    }
+
+    .profile-heading{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .chairman-frame{
+        width:90%;
+    }
+
+    .verify-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        scroll-behavior:auto !important;
+
+        transition:none !important;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="nav">
+
+    <a
+        href="#"
+        class="brand"
+    >
+
+        <img
+            class="brand-logo"
+            src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
+            alt="EIAFSDO Web Logo"
+        >
+
+        <span class="brand-text">
+            EIAFSDO
+        </span>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="#desk">
+            Chairman's Desk
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
+        <a href="#talks">
+            Talks
+        </a>
+
+        <a href="#vision">
+            Vision
+        </a>
+
+        <a href="#verify">
+            Verify
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<header
+    class="hero"
+    id="desk"
+>
+
+    <div class="container">
+
+        <div class="hero-inner">
+
+
+            <!-- CHAIRMAN PHOTO -->
+
+            <div class="chairman-visual">
+
+                <div class="image-orbit"></div>
+
+                <div class="image-orbit two"></div>
+
+
+                <div class="chairman-frame">
+
+                    <img
+                        class="chairman-photo"
+                        src="https://i.ibb.co/tp7b2m8W/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png"
+                        alt="Abhradeep Dhara — Chairman, EIAFSDO"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HERO CONTENT -->
+
+            <div class="hero-content">
+
+                <div class="status">
+
+                    <span class="status-dot"></span>
+
+                    OFFICIAL CHAIRMAN'S DESK
+
+                </div>
+
+
+                <h1>
+
+                    Abhradeep
+
+                    <span>Dhara</span>
+
+                </h1>
+
+
+                <p class="hero-sub">
+
+                    Chairman of EIAFSDO, contributing to
+                    organizational leadership, technology
+                    development, project coordination and
+                    the continued growth of the EIAFSDO
+                    community.
+
+                </p>
+
+
+                <div class="role-pills">
+
+                    <span class="role-pill">
+                        CHAIRMAN
+                    </span>
+
+                    <span class="role-pill">
+                        FOUNDER
+                    </span>
+
+                    <span class="role-pill">
+                        EIAFSDO
+                    </span>
+
+                    <span class="role-pill">
+                        TECHNOLOGY
+                    </span>
+
+                </div>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#message"
+                        class="btn btn-yellow"
+                    >
+                        MESSAGE FROM CHAIRMAN
+                    </a>
+
+                    <a
+                        href="#talks"
+                        class="btn btn-white"
+                    >
+                        CHAIRMAN TALKS
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="container">
+
+
+
+<!-- =====================================================
+     OFFICIAL PROFILE
+===================================================== -->
+
+<section
+    class="section"
+    id="about"
+>
+
+    <div class="label">
+        OFFICIAL PROFILE
+    </div>
+
+
+    <h2 class="section-title">
+        About Abhradeep Dhara
+    </h2>
+
+
+    <p class="section-description">
+
+        The Chairman's Desk provides an official digital
+        space for presenting the Chairman's profile,
+        organizational perspective, leadership message,
+        talks and vision for EIAFSDO.
+
+    </p>
+
+
+    <div class="profile-card">
+
+
+        <div class="profile-heading">
+
+            <h3>
+                Abhradeep Dhara
+            </h3>
+
+
+            <div class="verified">
+
+                VERIFIED ORGANIZATIONAL RECORD
+
+            </div>
+
+        </div>
+
+
+        <p class="profile-text">
+
+            Abhradeep Dhara is associated with EIAFSDO as
+            a founder and Chairman. His role is presented
+            through the organization's digital platform
+            as part of its leadership and organizational
+            structure.
+
+        </p>
+
+
+        <p class="profile-text">
+
+            As Chairman, the desk represents a space for
+            communication about organizational activities,
+            project development, collaboration, technology,
+            learning and the broader direction of EIAFSDO.
+
+            The position connects organizational coordination
+            with the practical work carried out through
+            projects, development initiatives and team
+            activities.
+
+        </p>
+
+
+        <p class="profile-text">
+
+            EIAFSDO places importance on practical
+            technology development, collaborative learning,
+            experimentation and responsible digital work.
+            The Chairman's Desk reflects these areas through
+            organizational messages, talks and project
+            perspectives.
+
+        </p>
+
+
+        <div class="fact-list">
+
+
+            <div class="fact">
+
+                <span>
+                    NAME
+                </span>
+
+                <strong>
+                    Abhradeep Dhara
+                </strong>
+
+            </div>
+
+
+            <div class="fact">
+
+                <span>
+                    ORGANIZATION
+                </span>
+
+                <strong>
+                    EIAFSDO
+                </strong>
+
+            </div>
+
+
+            <div class="fact">
+
+                <span>
+                    POSITION
+                </span>
+
+                <strong>
+                    Chairman
+                </strong>
+
+            </div>
+
+
+            <div class="fact">
+
+                <span>
+                    ASSOCIATION
+                </span>
+
+                <strong>
+                    Founder
+                </strong>
+
+            </div>
+
+
+            <div class="fact">
+
+                <span>
+                    PLATFORM
+                </span>
+
+                <strong>
+                    EIAFSDO Digital System
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MESSAGE FROM CHAIRMAN
+===================================================== -->
+
+<section
+    class="section"
+    id="message"
+>
+
+    <div class="label">
+        FROM THE CHAIRMAN'S DESK
+    </div>
+
+
+    <h2 class="section-title">
+        A Message for EIAFSDO
+    </h2>
+
+
+    <div class="message-card">
+
+        <div class="message-label">
+            CHAIRMAN'S MESSAGE
+        </div>
+
+
+        <h3>
+            Build with curiosity.
+            Learn through practice.
+            Grow together.
+        </h3>
+
+
+        <blockquote>
+
+            EIAFSDO is built around the idea that
+            technology becomes meaningful when people
+            learn, experiment and create together.
+
+            Every project, discussion and development
+            activity gives us an opportunity to understand
+            something new and turn that learning into
+            practical work.
+
+            Our focus should remain on building useful
+            things, supporting one another, documenting
+            what we learn and creating an environment
+            where new ideas can become real projects.
+
+            As we continue developing EIAFSDO, teamwork,
+            responsible technology and continuous learning
+            should remain important parts of our journey.
+
+        </blockquote>
+
+
+        <div class="signature">
+
+            <div class="signature-name">
+                Abhradeep Dhara
+            </div>
+
+            <div class="signature-role">
+                CHAIRMAN · EIAFSDO
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CHAIRMAN'S PERSPECTIVE
+===================================================== -->
+
+<section class="section">
+
+    <div class="label">
+        LEADERSHIP PERSPECTIVE
+    </div>
+
+
+    <h2 class="section-title">
+        What the Chairman's Desk Represents
+    </h2>
+
+
+    <div class="about-grid">
+
+
+        <article class="about-card">
+
+            <h3>
+                Technology & Development
+            </h3>
+
+            <p>
+
+                EIAFSDO's development culture is connected
+                with practical experimentation. Web
+                applications, digital systems, software
+                projects, IoT concepts and other technology
+                initiatives can provide members with
+                opportunities to learn through actual
+                implementation.
+
+            </p>
+
+            <p>
+
+                The Chairman's Desk supports a project-first
+                perspective in which ideas can move from
+                discussion to planning, development,
+                testing, documentation and eventual
+                presentation.
+
+            </p>
+
+        </article>
+
+
+        <article class="about-card">
+
+            <h3>
+                Team & Collaboration
+            </h3>
+
+            <p>
+
+                Organizational development depends on
+                communication and collaboration. EIAFSDO
+                encourages members to contribute ideas,
+                participate in projects, exchange knowledge
+                and learn from different approaches.
+
+            </p>
+
+            <p>
+
+                The Chairman's Desk therefore represents
+                communication, coordination and a shared
+                responsibility toward organizational work.
+
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TALKS
+===================================================== -->
+
+<section
+    class="section"
+    id="talks"
+>
+
+    <div class="label">
+        CHAIRMAN TALKS
+    </div>
+
+
+    <h2 class="section-title">
+        Talks, Addresses & Perspectives
+    </h2>
+
+
+    <p class="section-description">
+
+        Selected themes for Chairman-level communication,
+        organizational discussions and technology-focused
+        addresses.
+
+    </p>
+
+
+    <div class="talks-grid">
+
+
+        <!-- TALK 01 -->
+
+        <article class="talk-card">
+
+            <span class="talk-number">
+                TALK 01
+            </span>
+
+
+            <div class="talk-date">
+                EIAFSDO LEADERSHIP
+            </div>
+
+
+            <h3>
+                Building a Culture of Practical Technology
+            </h3>
+
+
+            <p>
+
+                Technology education becomes more meaningful
+                when concepts are connected with practical
+                work. Members can learn by creating,
+                testing, improving and documenting projects.
+
+                The goal is not simply to discuss technology,
+                but to understand how ideas become working
+                systems.
+
+            </p>
+
+
+            <span class="talk-tag">
+                TECHNOLOGY · LEARNING
+            </span>
+
+        </article>
+
+
+
+        <!-- TALK 02 -->
+
+        <article class="talk-card">
+
+            <span class="talk-number">
+                TALK 02
+            </span>
+
+
+            <div class="talk-date">
+                EIAFSDO ORGANIZATION
+            </div>
+
+
+            <h3>
+                Teamwork Makes Ideas Possible
+            </h3>
+
+
+            <p>
+
+                A project becomes stronger when different
+                people contribute different skills.
+
+                Collaboration allows members to learn from
+                each other while developing solutions that
+                would be difficult to build individually.
+
+            </p>
+
+
+            <span class="talk-tag">
+                TEAMWORK · COLLABORATION
+            </span>
+
+        </article>
+
+
+
+        <!-- TALK 03 -->
+
+        <article class="talk-card">
+
+            <span class="talk-number">
+                TALK 03
+            </span>
+
+
+            <div class="talk-date">
+                PROJECT DEVELOPMENT
+            </div>
+
+
+            <h3>
+                From Idea to Working Project
+            </h3>
+
+
+            <p>
+
+                A useful project normally begins with a
+                problem or an idea.
+
+                Planning, prototyping, testing,
+                documentation and improvement then turn
+                that concept into something practical.
+
+            </p>
+
+
+            <span class="talk-tag">
+                PROJECTS · DEVELOPMENT
+            </span>
+
+        </article>
+
+
+
+        <!-- TALK 04 -->
+
+        <article class="talk-card">
+
+            <span class="talk-number">
+                TALK 04
+            </span>
+
+
+            <div class="talk-date">
+                FUTURE DIRECTION
+            </div>
+
+
+            <h3>
+                Keep Learning, Keep Building
+            </h3>
+
+
+            <p>
+
+                Technology changes continuously.
+
+                A strong development community therefore
+                needs curiosity, continuous learning,
+                documentation and a willingness to explore
+                unfamiliar technologies.
+
+            </p>
+
+
+            <span class="talk-tag">
+                FUTURE · INNOVATION
+            </span>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     VISION
+===================================================== -->
+
+<section
+    class="section"
+    id="vision"
+>
+
+    <div class="label">
+        CHAIRMAN'S VISION
+    </div>
+
+
+    <h2 class="section-title">
+        Building the EIAFSDO Journey
+    </h2>
+
+
+    <p class="section-description">
+
+        The Chairman's Desk presents several principles
+        that can guide organizational development and
+        technology activities.
+
+    </p>
+
+
+    <div class="vision-grid">
+
+
+        <article class="vision-card">
+
+            <div class="vision-icon">
+                💡
+            </div>
+
+            <h3>
+                Ideas
+            </h3>
+
+            <p>
+
+                Encourage members to bring forward
+                ideas, questions, experiments and
+                technology concepts.
+
+            </p>
+
+        </article>
+
+
+        <article class="vision-card">
+
+            <div class="vision-icon">
+                🛠
+            </div>
+
+            <h3>
+                Build
+            </h3>
+
+            <p>
+
+                Convert ideas into practical projects
+                through planning, development, testing
+                and documentation.
+
+            </p>
+
+        </article>
+
+
+        <article class="vision-card">
+
+            <div class="vision-icon">
+                🌱
+            </div>
+
+            <h3>
+                Grow
+            </h3>
+
+            <p>
+
+                Learn from projects, share knowledge
+                and help the organization continuously
+                improve.
+
+            </p>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     RESPONSIBILITIES
+===================================================== -->
+
+<section class="section">
+
+    <div class="label">
+        CHAIRMAN'S ROLE
+    </div>
+
+
+    <h2 class="section-title">
+        Areas of Leadership
+    </h2>
+
+
+    <div class="responsibility-box">
+
+        <h3>
+            Chairman's Desk Responsibilities
+        </h3>
+
+
+        <div class="responsibility-list">
+
+
+            <div class="responsibility">
+
+                <div class="responsibility-number">
+                    01
+                </div>
+
+                <div>
+
+                    <strong>
+                        Organizational Coordination
+                    </strong>
+
+                    <span>
+                        Supporting organizational
+                        communication and coordination.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="responsibility">
+
+                <div class="responsibility-number">
+                    02
+                </div>
+
+                <div>
+
+                    <strong>
+                        Project Development
+                    </strong>
+
+                    <span>
+                        Encouraging practical technology
+                        projects and development initiatives.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="responsibility">
+
+                <div class="responsibility-number">
+                    03
+                </div>
+
+                <div>
+
+                    <strong>
+                        Team Communication
+                    </strong>
+
+                    <span>
+                        Supporting discussion, collaboration
+                        and knowledge exchange.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="responsibility">
+
+                <div class="responsibility-number">
+                    04
+                </div>
+
+                <div>
+
+                    <strong>
+                        Future Planning
+                    </strong>
+
+                    <span>
+                        Contributing to discussions about
+                        future organizational initiatives.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="responsibility">
+
+                <div class="responsibility-number">
+                    05
+                </div>
+
+                <div>
+
+                    <strong>
+                        Technology Culture
+                    </strong>
+
+                    <span>
+                        Supporting practical learning,
+                        experimentation and innovation.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="responsibility">
+
+                <div class="responsibility-number">
+                    06
+                </div>
+
+                <div>
+
+                    <strong>
+                        Organizational Representation
+                    </strong>
+
+                    <span>
+                        Representing the Chairman's Desk
+                        through official organizational communication.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     EIAFSDO STATEMENT
+===================================================== -->
+
+<section class="section">
+
+    <div class="statement">
+
+        <h3>
+            Build. Learn. Grow.
+        </h3>
+
+
+        <p>
+
+            EIAFSDO continues to develop as a technology
+            and learning-oriented organization.
+
+            The Chairman's Desk represents a place for
+            organizational communication, project
+            perspectives, leadership messages and
+            discussions about the journey ahead.
+
+        </p>
+
+
+        <div class="statement-seal">
+
+            ✓ EIAFSDO DIGITAL LEADERSHIP
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DIGITAL VERIFICATION
+===================================================== -->
+
+<section
+    class="section"
+    id="verify"
+>
+
+    <div class="label">
+        DIGITAL VERIFICATION
+    </div>
+
+
+    <h2 class="section-title">
+        Chairman Record
+    </h2>
+
+
+    <p class="section-description">
+
+        Digital information associated with the
+        EIAFSDO Chairman's Desk.
+
+    </p>
+
+
+    <div class="verify-grid">
+
+
+        <div class="verify-box">
+
+            <div class="verify-label">
+                RECORD NAME
+            </div>
+
+            <div class="verify-value">
+                EIAFSDO CHAIRMAN'S DESK
+            </div>
+
+        </div>
+
+
+        <div class="verify-box">
+
+            <div class="verify-label">
+                CHAIRMAN
+            </div>
+
+            <div class="verify-value">
+                ABHRADEEP DHARA
+            </div>
+
+        </div>
+
+
+        <div class="verify-box">
+
+            <div class="verify-label">
+                ORGANIZATION
+            </div>
+
+            <div class="verify-value">
+                EIAFSDO
+            </div>
+
+        </div>
+
+
+        <div class="verify-box">
+
+            <div class="verify-label">
+                DIGITAL SYSTEM
+            </div>
+
+            <div class="verify-value">
+                EIAFSDO OFFICIAL WEB PLATFORM
+            </div>
+
+        </div>
+
+
+        <div class="verify-box">
+
+            <div class="verify-label">
+                RECORD TYPE
+            </div>
+
+            <div class="verify-value">
+                ORGANIZATIONAL LEADERSHIP PROFILE
+            </div>
+
+        </div>
+
+
+        <div class="verify-box">
+
+            <div class="verify-label">
+                STATUS
+            </div>
+
+            <div class="verify-value">
+                OFFICIAL DIGITAL RECORD
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-inner">
+
+
+        <div class="footer-brand">
+
+            <img
+                class="footer-logo"
+                src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
+                alt="EIAFSDO Web Logo"
+            >
+
+
+            <div>
+
+                <h3>
+                    EIAFSDO
+                </h3>
+
+                <p>
+                    Official Chairman's Desk
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-code">
+
+            CHAIRMAN'S DESK<br>
+
+            ABHRADEEP DHARA<br>
+
+            EIAFSDO · 2026
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+/* =====================================================
+   SCROLL REVEAL
+===================================================== */
+
+const revealItems =
+    document.querySelectorAll(
+        ".profile-card," +
+        ".message-card," +
+        ".about-card," +
+        ".talk-card," +
+        ".vision-card," +
+        ".responsibility-box," +
+        ".statement," +
+        ".verify-box"
+    );
+
+
+const revealObserver =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    if(
+                        entry.isIntersecting
+                    ){
+
+                        entry.target.animate(
+
+                            [
+
+                                {
+                                    opacity:0,
+                                    transform:
+                                        "translateY(22px)"
+                                },
+
+                                {
+                                    opacity:1,
+                                    transform:
+                                        "translateY(0)"
+                                }
+
+                            ],
+
+                            {
+
+                                duration:650,
+
+                                easing:
+                                    "cubic-bezier(.2,.75,.2,1)",
+
+                                fill:"forwards"
+
+                            }
+
+                        );
+
+
+                        revealObserver.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                }
+            );
+
+        },
+
+        {
+            threshold:.08
+        }
+
+    );
+
+
+revealItems.forEach(
+    item => {
+
+        item.style.opacity = "0";
+
+        revealObserver.observe(
+            item
+        );
+
+    }
+);
+
+
+/* =====================================================
+   NAV SHADOW
+===================================================== */
+
+const nav =
+    document.querySelector(".nav");
+
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        if(
+            window.scrollY > 40
+        ){
+
+            nav.style.boxShadow =
+                "5px 7px 0 rgba(23,21,15,.9)";
+
+        }else{
+
+            nav.style.boxShadow =
+                "3px 4px 0 rgba(23,21,15,1)";
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* =====================================================
+   IMAGE FALLBACK
+===================================================== */
+
+const chairmanPhoto =
+    document.querySelector(
+        ".chairman-photo"
+    );
+
+
+chairmanPhoto.addEventListener(
+    "error",
+    () => {
+
+        chairmanPhoto.src =
+            "https://placehold.co/700x700/f2c94c/17150f?text=Abhradeep+Dhara";
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>
