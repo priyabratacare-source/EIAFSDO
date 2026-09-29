@@ -472,6 +472,9 @@
             padding: 2px 8px; border-radius: var(--radius-pill); border: var(--border-subtle);
             text-transform: uppercase; font-weight: 800;
         }
+        .dash-nav .user-info .user-role.role-chairman { background: #fdf0c4; border-color: #b88600; color: #8a6500; }
+        .dash-nav .user-info .user-role.role-admin { background: #d4f5d4; border-color: #2e7d32; color: #1b5e20; }
+        .dash-nav .user-info .user-role.role-super { background: #f2c94c; border-color: #8d6f00; color: #4a3a00; }
         .dash-nav .user-info .logout-btn {
             background: var(--surface); border: var(--border-subtle); color: var(--text-color);
             padding: 5px 12px; border-radius: var(--radius-pill); cursor: pointer;
@@ -566,6 +569,10 @@
         .status-badge.pending  { background: #fff3d6; border-color: #f57f17; color: #e65100; }
         .status-badge.rejected { background: #ffe0e0; border-color: #b71c1c; color: #b71c1c; }
         .status-badge.hold     { background: #fff0d4; border-color: #e65100; color: #bf360c; }
+        /* Role badges */
+        .status-badge.role-user     { background: var(--surface-soft); border-color: var(--text-color); color: var(--text-muted); }
+        .status-badge.role-admin    { background: #d4f5d4; border-color: #2e7d32; color: #1b5e20; }
+        .status-badge.role-chairman { background: #fdf0c4; border-color: #b88600; color: #8a6500; }
 
         /* ---------- PROFILE ---------- */
         .profile-container { display: flex; flex-direction: column; gap: 18px; margin-top: 14px; }
@@ -688,6 +695,7 @@
         /* ---------- MEMBERS LIST ---------- */
         .member-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
         .member-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg-color); border: var(--border-thick); border-radius: var(--radius-sm); flex-wrap: wrap; gap: 8px; box-shadow: 2px 3px 0 var(--text-color); }
+        .member-item.is-chairman-row { background: #fffbe9; border-color: #b88600; }
         .member-item .member-info { display: flex; align-items: center; gap: 10px; flex: 1; }
         .member-item .member-info img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: var(--surface-soft); border: 1px solid var(--text-color); }
         .member-item .member-info .email { color: var(--text-muted); font-size: 11.5px; font-weight: 600; }
@@ -732,6 +740,7 @@
         .admin-restriction-note { font-size: 11px; color: var(--text-color); background: #fff3d6; border: var(--border-subtle); border-radius: var(--radius-sm); padding: 8px 12px; margin-top: 8px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
         .admin-restriction-note .icon { font-size: 14px; }
         .super-admin-note { background: #d4f5d4; }
+        .chairman-note { background: #fdf0c4; }
 
         /* ---------- MARQUEE ---------- */
         .marquee { background: var(--accent-yellow); border: var(--border-thick); border-radius: var(--radius); overflow: hidden; padding: 10px 0; margin-bottom: 18px; box-shadow: var(--shadow-thick); }
@@ -889,7 +898,7 @@
 
                 <div class="auth-footer">
                     <span><span class="dot"></span>Systems Online</span>
-                    <span>v2026.1 · EIAFSDO</span>
+                    <span>v2026.2 · EIAFSDO</span>
                 </div>
             </div>
         </div>
@@ -1013,6 +1022,10 @@
                                             <option value="Alumni">Alumni</option>
                                             <option value="Inactive">Inactive</option>
                                         </select>
+                                    </div>
+                                    <div class="form-group full-span">
+                                        <label>Account Role (read-only)</label>
+                                        <input type="text" id="profileRoleDisplay" disabled style="opacity:.6; cursor:not-allowed;" />
                                     </div>
                                 </div>
                             </div>
@@ -1195,7 +1208,7 @@
                         </div>
                     </div>
 
-                    <!-- Tab: Org Pad (Admin) -->
+                    <!-- Tab: Org Pad (Admin / Chairman) -->
                     <div class="tab" id="tab-orgpad">
                         <h3>📄 <span>Organization Pad</span></h3>
                         <p class="text-muted">A shared editor for internal notes. Your signature updates automatically to your logged-in name.</p>
@@ -1212,15 +1225,15 @@
                         </div>
                     </div>
 
-                    <!-- Tab: Website Control (Admin only) -->
+                    <!-- Tab: Website Control (Admin / Chairman) -->
                     <div class="tab" id="tab-webcontrol">
                         <h3>🎛️ <span>Website Control</span></h3>
-                        <p class="text-muted">Admin‑only control center for managing the public EIAFSDO website.</p>
+                        <p class="text-muted">Admin &amp; Chairman control center for managing the public EIAFSDO website.</p>
                         <div class="coming-soon-screen">
                             <div class="cs-icon">⚙️</div>
                             <div class="cs-pill">Building in Progress</div>
                             <h4>Website Control Is Coming</h4>
-                            <p>The Website Control center is actively under development. Soon admins will be able to manage hero content, team profiles, public pages, and site‑wide announcements directly from here.</p>
+                            <p>The Website Control center is actively under development. Soon admins and the chairman will be able to manage hero content, team profiles, public pages, and site‑wide announcements directly from here.</p>
                             <div class="coming-soon-progress">
                                 <div class="seg on"></div>
                                 <div class="seg on"></div>
@@ -1355,6 +1368,7 @@
                 <select id="adminEditRole">
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
+                    <option value="chairman" id="adminEditChairmanOption">Chairman</option>
                 </select>
             </div>
             <div class="admin-restriction-note" id="adminRestrictionNote">
@@ -1376,7 +1390,7 @@
             </p>
             <div class="admin-restriction-note">
                 <span class="icon">🛡️</span>
-                <span>Admin accounts cannot be reset via this tool for security (unless you are the Super Admin).</span>
+                <span>Admin, Chairman and Super Admin accounts cannot be reset via this tool for security.</span>
             </div>
             <div class="modal-actions">
                 <button class="btn-primary" id="resetConfirmBtn">Send Email</button>
@@ -1414,6 +1428,19 @@
         const SUPER_ADMIN_NAMES = ['priyabrata patra'];
         const SUPER_ADMIN_EMAILS = ['priyabratacare@gmail.com', 'priyabrata@eiafsdo.in'];
 
+        // --- ROLE SYSTEM -------------------------------------------------
+        //  user (1)  <  admin (2)  <  chairman (3)  <  super admin (4, by name/email)
+        const ROLE_RANK = { user: 1, admin: 2, chairman: 3 };
+
+        function normalizeRole(role) {
+            const r = (role || 'user').toString().toLowerCase().trim();
+            return ROLE_RANK[r] ? r : 'user';
+        }
+
+        function roleRank(role) {
+            return ROLE_RANK[normalizeRole(role)] || 1;
+        }
+
         function isSuperAdmin() {
             if (!currentUserData) return false;
             const n = (currentUserData.name || '').toLowerCase().trim();
@@ -1421,6 +1448,57 @@
             if (SUPER_ADMIN_NAMES.some(name => n === name || n.includes(name))) return true;
             if (SUPER_ADMIN_EMAILS.some(mail => e === mail)) return true;
             return false;
+        }
+
+        function isChairman() {
+            if (!currentUserData) return false;
+            return normalizeRole(currentUserData.role) === 'chairman';
+        }
+
+        function isAdminRole() {
+            if (!currentUserData) return false;
+            return normalizeRole(currentUserData.role) === 'admin';
+        }
+
+        /** Any elevated role that gets the admin panels (admin, chairman, super admin) */
+        function isStaff() {
+            return isSuperAdmin() || isChairman() || isAdminRole();
+        }
+
+        /** Alias kept for readability where "admin" meant "staff" */
+        function isAdmin() { return isStaff(); }
+
+        function myRank() {
+            if (isSuperAdmin()) return 4;
+            return roleRank(currentUserData?.role);
+        }
+
+        /** Can the current user manage (edit / delete / reset) the target member? */
+        function canManageUser(target) {
+            if (!target || !currentUser) return false;
+            if (target.id === currentUser.uid) return false;       // never manage yourself
+            if (isSuperAdmin()) return true;                        // super admin: everyone
+            return myRank() > roleRank(target.role);                // strictly higher rank only
+        }
+
+        /** Can the current user assign the chairman role? */
+        function canAssignChairman() {
+            return isSuperAdmin() || isChairman();
+        }
+
+        function roleLabel(role) {
+            switch (normalizeRole(role)) {
+                case 'chairman': return 'Chairman';
+                case 'admin':    return 'Admin';
+                default:         return 'Member';
+            }
+        }
+
+        function roleLabelForCurrentUser() {
+            if (isSuperAdmin()) return '★ Super Admin';
+            if (isChairman()) return '★ Chairman';
+            if (isAdminRole()) return 'Admin';
+            return 'Member';
         }
 
         // --- GLOBAL STATE ---
@@ -1647,6 +1725,8 @@
                         };
                         await db.collection('users').doc(user.uid).set(currentUserData);
                     }
+                    // Safety: normalise unknown roles
+                    currentUserData.role = normalizeRole(currentUserData.role);
                 } catch (err) {
                     console.error("Firestore user profile fetch error:", err);
                     currentUserData = {
@@ -1670,7 +1750,7 @@
             authContainer.style.display = 'none';
             dashboard.classList.add('active');
 
-            const isAdmin = currentUserData.role === 'admin';
+            const staff = isStaff();
             const superA = isSuperAdmin();
             const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUserData.name || 'U')}&background=f3ead2&color=1d1a14&size=64`;
             const avatar = currentUserData.photoURL || fallbackAvatar;
@@ -1680,11 +1760,14 @@
             document.getElementById('navUserName').textContent = currentUserData.name || 'User';
             document.getElementById('mobileUserName').textContent = currentUserData.name || 'User';
 
-            const roleLabel = superA ? '★ Super Admin' : (isAdmin ? 'Admin' : 'Member');
-            document.getElementById('navUserRole').textContent = roleLabel;
-            document.getElementById('mobileUserRole').textContent = roleLabel;
+            const roleLabelText = roleLabelForCurrentUser();
+            const roleEl = document.getElementById('navUserRole');
+            roleEl.textContent = roleLabelText;
+            roleEl.className = 'user-role' +
+                (superA ? ' role-super' : isChairman() ? ' role-chairman' : isAdminRole() ? ' role-admin' : '');
+            document.getElementById('mobileUserRole').textContent = roleLabelText;
 
-            const adminTabs = [
+            const staffTabs = [
                 document.getElementById('desktopAdminMembersTab'),
                 document.getElementById('desktopAdminProjectsTab'),
                 document.getElementById('mobileAdminMembersTab'),
@@ -1694,7 +1777,7 @@
                 document.getElementById('desktopWebControlTab'),
                 document.getElementById('mobileWebControlTab')
             ];
-            adminTabs.forEach(tab => { if (tab) tab.classList.toggle('hidden', !isAdmin); });
+            staffTabs.forEach(tab => { if (tab) tab.classList.toggle('hidden', !staff); });
 
             populateProfile();
             updateIdCard();
@@ -1704,7 +1787,7 @@
             loadPlans();
             loadActivity();
 
-            if (isAdmin) {
+            if (staff) {
                 loadAdminMembers();
                 loadAdminProjects();
                 loadOrgPad();
@@ -1757,6 +1840,8 @@
             document.getElementById('profileLinkedin').value = currentUserData.linkedin || '';
             document.getElementById('profileGithub').value = currentUserData.github || '';
             document.getElementById('profileDribbble').value = currentUserData.dribbble || '';
+            const roleDisplay = document.getElementById('profileRoleDisplay');
+            if (roleDisplay) roleDisplay.value = roleLabelForCurrentUser();
         }
 
         document.getElementById('profilePhotoUrl').addEventListener('input', (e) => {
@@ -1826,13 +1911,15 @@
             document.getElementById('idCardName').textContent = currentUserData.name || '—';
             document.getElementById('idCardRole').textContent =
                 isSuperAdmin() ? 'Super Admin · Founder' :
-                currentUserData.role === 'admin' ? 'Admin · Founder' : 'Member · Developer';
+                isChairman() ? 'Chairman · EIAFSDO' :
+                isAdminRole() ? 'Admin · Founder' : 'Member · Developer';
             document.getElementById('idCardEmail').textContent = currentUserData.email || '—';
             document.getElementById('idCardUid').textContent = `UID: ${currentUser.uid.substring(0, 16)}...`;
 
             const qrPayload = JSON.stringify({
                 app: "EIAFSDO", uid: currentUser.uid,
                 name: currentUserData.name || 'Member',
+                role: normalizeRole(currentUserData.role),
                 email: currentUserData.email || ''
             });
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrPayload)}&format=png&ecc=H&color=1d1a14&bgcolor=fffef8&margin=1`;
@@ -1909,21 +1996,21 @@
                 }).catch(err => console.warn('User receipt dispatch error:', err));
 
                 try {
-                    const adminSnap = await db.collection('users').where('role', '==', 'admin').get();
-                    adminSnap.forEach(adminDoc => {
-                        const adminData = adminDoc.data();
-                        if (adminData && adminData.email && adminData.email !== currentUser.email) {
+                    const staffSnap = await db.collection('users').where('role', 'in', ['admin', 'chairman']).get();
+                    staffSnap.forEach(staffDoc => {
+                        const staffData = staffDoc.data();
+                        if (staffData && staffData.email && staffData.email !== currentUser.email) {
                             emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_ADMIN_ALERT, {
-                                to_email: adminData.email, email: adminData.email, user_email: adminData.email,
-                                to_name: adminData.name || 'Admin',
+                                to_email: staffData.email, email: staffData.email, user_email: staffData.email,
+                                to_name: staffData.name || 'Admin',
                                 submitter_name: currentUserData?.name || 'Member',
                                 submitter_email: currentUser.email,
                                 project_name: name, project_link: link || 'None provided',
                                 project_tags: tags || 'Full-Stack', project_description: desc
-                            }).catch(err => console.warn('Admin alert email error:', err));
+                            }).catch(err => console.warn('Staff alert email error:', err));
                         }
                     });
-                } catch (adminErr) { console.warn("Could not alert admins:", adminErr); }
+                } catch (staffErr) { console.warn("Could not alert staff:", staffErr); }
 
                 showToast('Project submitted! Confirmation email dispatched.', 'success');
                 e.target.reset();
@@ -2097,7 +2184,8 @@
                     new Date(p.createdAt.toDate()).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recently';
                 const tagsArray = (p.tags || '').split(',').map(t => t.trim()).filter(Boolean);
                 const isSelf = p.submittedBy === currentUser.uid;
-                const canReview = !isSelf || isSuperAdmin();
+                // Super Admin & Chairman may review their own submissions; plain admins may not.
+                const canReview = !isSelf || isSuperAdmin() || isChairman();
 
                 html += `
                     <div class="admin-review-card is-${status}" data-pid="${p.id}">
@@ -2148,7 +2236,7 @@
                     const pid = b.dataset.pid;
                     const newStatus = b.dataset.st;
                     const project = allAdminProjects.find(p => p.id === pid);
-                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin()) {
+                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin() && !isChairman()) {
                         showToast('You cannot review your own project.', 'warning');
                         return;
                     }
@@ -2185,7 +2273,7 @@
             list.querySelectorAll('.btn-del-admin').forEach(b => {
                 b.addEventListener('click', async () => {
                     const project = allAdminProjects.find(p => p.id === b.dataset.pid);
-                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin()) {
+                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin() && !isChairman()) {
                         showToast('You cannot delete your own project from admin panel.', 'warning');
                         return;
                     }
@@ -2239,7 +2327,7 @@
                 snap.forEach(doc => {
                     const t = doc.data();
                     const avatar = t.userPhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(t.userName || 'U')}&background=f3ead2&color=1d1a14&size=32`;
-                    const isOwner = t.userId === currentUser?.uid || currentUserData?.role === 'admin' || isSuperAdmin();
+                    const isOwner = t.userId === currentUser?.uid || isStaff();
                     html += `
                         <div class="talk-item">
                             <div class="talk-header">
@@ -2428,19 +2516,19 @@
                     const data = doc.data();
                     document.getElementById('orgPadEditor').innerHTML = data.content || '';
                     document.getElementById('sigAdminName').innerHTML =
-                        `✍️ Signed by <strong>${escapeHTML(currentUserData?.name || 'Admin')}</strong>`;
+                        `✍️ Signed by <strong>${escapeHTML(currentUserData?.name || 'Staff')}</strong>`;
                     document.getElementById('sigTimestamp').textContent = data.timestamp
                         ? `Last edited: ${new Date(data.timestamp.toDate()).toLocaleString([], {dateStyle:'medium', timeStyle:'short'})}`
                         : 'Not saved yet';
                 } else {
                     const ref = await db.collection('orgPad').add({
                         content: 'Welcome to EIAFSDO Organization Pad.',
-                        adminName: currentUserData?.name || 'Admin',
+                        adminName: currentUserData?.name || 'Staff',
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     orgPadDocId = ref.id;
                     document.getElementById('sigAdminName').innerHTML =
-                        `✍️ Signed by <strong>${escapeHTML(currentUserData?.name || 'Admin')}</strong>`;
+                        `✍️ Signed by <strong>${escapeHTML(currentUserData?.name || 'Staff')}</strong>`;
                     document.getElementById('sigTimestamp').textContent = 'Not saved yet';
                 }
             } catch (err) { console.warn(err); }
@@ -2449,7 +2537,7 @@
         document.getElementById('orgPadSaveBtn').addEventListener('click', async () => {
             if (!orgPadDocId) return;
             const content = document.getElementById('orgPadEditor').innerHTML;
-            const signerName = currentUserData?.name || 'Admin';
+            const signerName = currentUserData?.name || 'Staff';
             try {
                 await db.collection('orgPad').doc(orgPadDocId).update({
                     content,
@@ -2507,29 +2595,45 @@
                 allMembers = [];
                 snap.forEach(doc => allMembers.push({ id: doc.id, ...doc.data() }));
 
-                const superA = isSuperAdmin();
+                // Sort by rank desc, then name
+                allMembers.sort((a, b) => {
+                    const ra = a.id === currentUser.uid && isSuperAdmin() ? 4 : roleRank(a.role);
+                    const rb = b.id === currentUser.uid && isSuperAdmin() ? 4 : roleRank(b.role);
+                    if (rb !== ra) return rb - ra;
+                    return (a.name || '').localeCompare(b.name || '');
+                });
 
                 let html = '<div class="member-list">';
                 allMembers.forEach(m => {
                     const avatar = m.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || 'U')}&background=f3ead2&color=1d1a14&size=32`;
                     const isSelf = m.id === currentUser.uid;
-                    const isAdmin = m.role === 'admin';
-                    const canAct = !isSelf && (!isAdmin || superA);
-                    const protectedBadge = (isAdmin && !superA && !isSelf) ? '<span style="font-size:9px;color:var(--text-muted); font-weight:700;">⛔ Protected</span>' : '';
+                    const mRole = normalizeRole(m.role);
+                    const isChair = mRole === 'chairman';
+                    const isAdm = mRole === 'admin';
+                    const canAct = canManageUser(m);
+
+                    let crown = '';
+                    if (isChair) crown = ' <span style="font-size:9px;color:#b88600;font-weight:800;">★ Chairman</span>';
+                    else if (isAdm) crown = ' <span style="font-size:9px;color:#1b5e20;font-weight:800;">👑 Admin</span>';
+
+                    let protectedBadge = '';
+                    if (!canAct && !isSelf) {
+                        protectedBadge = '<span style="font-size:9px;color:var(--text-muted); font-weight:700;">⛔ Protected</span>';
+                    }
 
                     html += `
-                        <div class="member-item">
+                        <div class="member-item ${isChair ? 'is-chairman-row' : ''}">
                             <div class="member-info">
                                 <img src="${avatar}" alt="Avatar" onerror="this.src='https://ui-avatars.com/api/?name=U&background=f3ead2&color=1d1a14';" />
                                 <div>
                                     <strong style="font-size:13px; font-weight:800;">${escapeHTML(m.name || 'User')}</strong>
                                     <span class="email">${escapeHTML(m.email)}</span>
                                     ${isSelf ? ' <span style="font-size:9px;color:#b88600;font-weight:800;">(You)</span>' : ''}
-                                    ${isAdmin ? ' <span style="font-size:9px;color:#b88600;font-weight:800;">👑 Admin</span>' : ''}
+                                    ${crown}
                                 </div>
                             </div>
                             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                                <span class="status-badge ${m.role === 'admin' ? 'approved' : 'pending'}">${m.role || 'user'}</span>
+                                <span class="status-badge role-${mRole}">${roleLabel(mRole)}</span>
                                 ${isSelf
                                     ? '<span style="font-size:9px;color:var(--text-muted); font-weight:700;">Self</span>'
                                     : `
@@ -2550,8 +2654,8 @@
                     b.addEventListener('click', () => {
                         const target = allMembers.find(x => x.id === b.dataset.uid);
                         if (!target) return;
-                        if (target.role === 'admin' && !isSuperAdmin()) {
-                            showToast('Admin accounts are protected from editing.', 'warning');
+                        if (!canManageUser(target)) {
+                            showToast(`${roleLabel(target.role)} accounts are protected from editing.`, 'warning');
                             return;
                         }
                         openAdminEditModal(target);
@@ -2562,8 +2666,8 @@
                     b.addEventListener('click', () => {
                         const target = allMembers.find(x => x.id === b.dataset.uid);
                         if (!target) return;
-                        if (target.role === 'admin' && !isSuperAdmin()) {
-                            showToast('Admin password resets are restricted for security.', 'warning');
+                        if (!canManageUser(target)) {
+                            showToast('Password resets for this account are restricted for security.', 'warning');
                             return;
                         }
                         resetTargetEmailVal = b.dataset.email;
@@ -2576,8 +2680,8 @@
                     b.addEventListener('click', async () => {
                         const target = allMembers.find(x => x.id === b.dataset.uid);
                         if (!target) return;
-                        if (target.role === 'admin' && !isSuperAdmin()) {
-                            showToast('Cannot delete admin accounts.', 'warning');
+                        if (!canManageUser(target)) {
+                            showToast(`Cannot delete ${roleLabel(target.role)} accounts.`, 'warning');
                             return;
                         }
                         if (!confirm('Remove this member document?')) return;
@@ -2640,8 +2744,7 @@
             document.getElementById('editProjectImageUrl').value = p.imageURL || '';
             document.getElementById('editProjectTags').value = p.tags || '';
             document.getElementById('editProjectStatusSelect').value = p.status || 'pending';
-            document.getElementById('editStatusGroup').style.display =
-                (currentUserData?.role === 'admin' || isSuperAdmin()) ? 'block' : 'none';
+            document.getElementById('editStatusGroup').style.display = isStaff() ? 'block' : 'none';
             document.getElementById('editProjectModal').classList.add('active');
         }
 
@@ -2660,27 +2763,38 @@
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
             const newStatus = document.getElementById('editProjectStatusSelect').value;
-            if (currentUserData?.role === 'admin' || isSuperAdmin()) updates.status = newStatus;
+            if (isStaff()) updates.status = newStatus;
             try {
                 await db.collection('projects').doc(editProjectId).update(updates);
                 showToast('Project updated.', 'success');
                 document.getElementById('editProjectModal').classList.remove('active');
                 loadMyProjects();
-                if (currentUserData?.role === 'admin') loadAdminProjects();
+                if (isStaff()) loadAdminProjects();
             } catch (err) { showToast(err.message, 'error'); }
         });
 
         function openAdminEditModal(user) {
             adminEditTargetUid = user.id;
             document.getElementById('adminEditName').value = user.name || '';
-            document.getElementById('adminEditRole').value = user.role || 'user';
+            document.getElementById('adminEditRole').value = normalizeRole(user.role);
+
+            // Chairman option availability
+            const chairOpt = document.getElementById('adminEditChairmanOption');
+            const allowChair = canAssignChairman();
+            chairOpt.disabled = !allowChair;
+            chairOpt.hidden = !allowChair;
+
             const note = document.getElementById('adminRestrictionNote');
-            if (isSuperAdmin() && user.id !== currentUser.uid) {
+            note.classList.remove('super-admin-note', 'chairman-note');
+
+            if (isSuperAdmin()) {
                 note.classList.add('super-admin-note');
-                note.innerHTML = `<span class="icon">★</span><span>You are the Super Admin — you can edit any account including other admins.</span>`;
+                note.innerHTML = `<span class="icon">★</span><span>You are the Super Admin — you can edit any account, including admins and the chairman.</span>`;
+            } else if (isChairman()) {
+                note.classList.add('chairman-note');
+                note.innerHTML = `<span class="icon">★</span><span>You are the Chairman — you can manage members and admins. Super Admin and other Chairmen are protected.</span>`;
             } else {
-                note.classList.remove('super-admin-note');
-                note.innerHTML = `<span class="icon">🛡️</span><span>You cannot edit your own role or delete your own account. Admin protections are enabled.</span>`;
+                note.innerHTML = `<span class="icon">🛡️</span><span>You cannot edit your own role, admins, or the chairman. Higher-rank protections are enabled.</span>`;
             }
             document.getElementById('adminProfileModal').classList.add('active');
         }
@@ -2692,16 +2806,36 @@
         document.getElementById('adminEditSaveBtn').addEventListener('click', async () => {
             if (!adminEditTargetUid) return;
             const targetUser = allMembers.find(m => m.id === adminEditTargetUid);
-            const superA = isSuperAdmin();
 
-            if (targetUser && targetUser.role === 'admin' && targetUser.id !== currentUser.uid && !superA) {
-                showToast('Admin accounts are protected from modification.', 'warning');
+            if (!targetUser) { showToast('Member not found.', 'error'); return; }
+
+            if (!canManageUser(targetUser)) {
+                showToast('This account is protected from modification.', 'warning');
                 return;
             }
 
-            const newRole = document.getElementById('adminEditRole').value;
-            if (targetUser && targetUser.id === currentUser.uid && newRole !== 'admin') {
-                showToast('You cannot demote your own admin status.', 'warning');
+            const newRole = normalizeRole(document.getElementById('adminEditRole').value);
+
+            // Chairman assignment restriction
+            if (newRole === 'chairman' && !canAssignChairman()) {
+                showToast('Only the Super Admin or the Chairman can assign the Chairman role.', 'warning');
+                return;
+            }
+
+            // Cannot promote above your own rank
+            if (!isSuperAdmin() && roleRank(newRole) >= myRank()) {
+                showToast('You cannot assign a role equal to or higher than your own.', 'warning');
+                return;
+            }
+
+            // Cannot demote a higher-ranked member
+            if (!isSuperAdmin() && roleRank(targetUser.role) >= myRank()) {
+                showToast('You cannot modify a member with an equal or higher role.', 'warning');
+                return;
+            }
+
+            if (targetUser.id === currentUser.uid && newRole !== normalizeRole(currentUserData.role)) {
+                showToast('You cannot change your own role.', 'warning');
                 return;
             }
 
@@ -2723,8 +2857,8 @@
         document.getElementById('resetConfirmBtn').addEventListener('click', async () => {
             if (!resetTargetEmailVal) return;
             const targetUser = allMembers.find(m => m.email === resetTargetEmailVal);
-            if (targetUser && targetUser.role === 'admin' && !isSuperAdmin()) {
-                showToast('Admin password resets are restricted.', 'warning');
+            if (targetUser && !canManageUser(targetUser)) {
+                showToast('Password resets for this account are restricted.', 'warning');
                 document.getElementById('resetModal').classList.remove('active');
                 return;
             }
