@@ -127,7 +127,6 @@
             isolation: isolate;
         }
 
-        /* --- Background layer: matrix rain + grid + glow --- */
         .code-bg {
             position: absolute;
             inset: 0;
@@ -136,7 +135,6 @@
             overflow: hidden;
         }
 
-        /* Moving warm glow that breathes */
         .code-bg::before {
             content: "";
             position: absolute;
@@ -156,7 +154,6 @@
             100% { transform: translate(-50%, -50%) scale(1.15) rotate(20deg); opacity: 1; }
         }
 
-        /* Grid overlay masked to centre */
         .code-bg::after {
             content: "";
             position: absolute;
@@ -176,7 +173,6 @@
             to   { background-position: 44px 44px, 44px 44px; }
         }
 
-        /* Matrix rain columns */
         .matrix-rain {
             position: absolute;
             inset: 0;
@@ -206,7 +202,6 @@
             to   { transform: translateY(100%); }
         }
 
-        /* Floating code tokens */
         .floating-tokens {
             position: absolute;
             inset: 0;
@@ -245,7 +240,6 @@
             }
         }
 
-        /* --- Auth box --- */
         .auth-box {
             position: relative;
             z-index: 10;
@@ -330,7 +324,6 @@
             max-width: none;
         }
 
-        /* Terminal typing line */
         .terminal-line {
             display: flex;
             align-items: center;
@@ -379,7 +372,6 @@
 
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* Auth inputs */
         .auth-box input {
             width: 100%; padding: 12px 15px; border-radius: var(--radius-sm);
             border: var(--border-thick); background: var(--bg-color); color: var(--text-color);
@@ -408,7 +400,6 @@
             font-weight: 700;
         }
 
-        /* Floating badge footer on login */
         .auth-footer {
             margin-top: 22px;
             padding-top: 18px;
@@ -472,9 +463,12 @@
             padding: 2px 8px; border-radius: var(--radius-pill); border: var(--border-subtle);
             text-transform: uppercase; font-weight: 800;
         }
-        .dash-nav .user-info .user-role.role-chairman { background: #fdf0c4; border-color: #b88600; color: #8a6500; }
-        .dash-nav .user-info .user-role.role-admin { background: #d4f5d4; border-color: #2e7d32; color: #1b5e20; }
-        .dash-nav .user-info .user-role.role-super { background: #f2c94c; border-color: #8d6f00; color: #4a3a00; }
+        .dash-nav .user-info .user-role.role-super   { background: #f2c94c; border-color: #8d6f00; color: #4a3a00; }
+        .dash-nav .user-info .user-role.role-chair   { background: #fdf0c4; border-color: #b88600; color: #8a6500; }
+        .dash-nav .user-info .user-role.role-found   { background: #e3d4ff; border-color: #6a3fb5; color: #4a2482; }
+        .dash-nav .user-info .user-role.role-admin   { background: #d4f5d4; border-color: #2e7d32; color: #1b5e20; }
+        .dash-nav .user-info .user-role.role-itadmin { background: #d6e9ff; border-color: #1565c0; color: #0d3d72; }
+
         .dash-nav .user-info .logout-btn {
             background: var(--surface); border: var(--border-subtle); color: var(--text-color);
             padding: 5px 12px; border-radius: var(--radius-pill); cursor: pointer;
@@ -569,10 +563,14 @@
         .status-badge.pending  { background: #fff3d6; border-color: #f57f17; color: #e65100; }
         .status-badge.rejected { background: #ffe0e0; border-color: #b71c1c; color: #b71c1c; }
         .status-badge.hold     { background: #fff0d4; border-color: #e65100; color: #bf360c; }
+
         /* Role badges */
-        .status-badge.role-user     { background: var(--surface-soft); border-color: var(--text-color); color: var(--text-muted); }
-        .status-badge.role-admin    { background: #d4f5d4; border-color: #2e7d32; color: #1b5e20; }
-        .status-badge.role-chairman { background: #fdf0c4; border-color: #b88600; color: #8a6500; }
+        .status-badge.role-user           { background: var(--surface-soft); border-color: var(--text-color); color: var(--text-muted); }
+        .status-badge.role-it-admin       { background: #d6e9ff; border-color: #1565c0; color: #0d3d72; }
+        .status-badge.role-admin          { background: #d4f5d4; border-color: #2e7d32; color: #1b5e20; }
+        .status-badge.role-chairman       { background: #fdf0c4; border-color: #b88600; color: #8a6500; }
+        .status-badge.role-founding-member{ background: #e3d4ff; border-color: #6a3fb5; color: #4a2482; }
+        .status-badge.role-super-admin    { background: #f2c94c; border-color: #8d6f00; color: #4a3a00; }
 
         /* ---------- PROFILE ---------- */
         .profile-container { display: flex; flex-direction: column; gap: 18px; margin-top: 14px; }
@@ -695,7 +693,9 @@
         /* ---------- MEMBERS LIST ---------- */
         .member-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
         .member-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg-color); border: var(--border-thick); border-radius: var(--radius-sm); flex-wrap: wrap; gap: 8px; box-shadow: 2px 3px 0 var(--text-color); }
-        .member-item.is-chairman-row { background: #fffbe9; border-color: #b88600; }
+        .member-item.is-chairman-row   { background: #fffbe9; border-color: #b88600; }
+        .member-item.is-founding-row   { background: #f7f1ff; border-color: #6a3fb5; }
+        .member-item.is-superadmin-row { background: #fff7dc; border-color: #8d6f00; }
         .member-item .member-info { display: flex; align-items: center; gap: 10px; flex: 1; }
         .member-item .member-info img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: var(--surface-soft); border: 1px solid var(--text-color); }
         .member-item .member-info .email { color: var(--text-muted); font-size: 11.5px; font-weight: 600; }
@@ -741,6 +741,7 @@
         .admin-restriction-note .icon { font-size: 14px; }
         .super-admin-note { background: #d4f5d4; }
         .chairman-note { background: #fdf0c4; }
+        .protected-note { background: #e3d4ff; color: #4a2482; }
 
         /* ---------- MARQUEE ---------- */
         .marquee { background: var(--accent-yellow); border: var(--border-thick); border-radius: var(--radius); overflow: hidden; padding: 10px 0; margin-bottom: 18px; box-shadow: var(--shadow-thick); }
@@ -846,7 +847,6 @@
             .matrix-rain { font-size: 12px !important; }
         }
 
-        /* Reduce animation load */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: .01ms !important;
@@ -864,16 +864,14 @@
         <div class="toast-container" id="toastContainer"></div>
 
         <!-- ============================================================
-             1. AUTH SCREEN — Animated Coding Background
+             1. AUTH SCREEN
              ============================================================ -->
         <div id="authContainer" class="auth-container">
-            <!-- Background layers -->
             <div class="code-bg" aria-hidden="true">
                 <div class="matrix-rain" id="matrixRain"></div>
                 <div class="floating-tokens" id="floatingTokens"></div>
             </div>
 
-            <!-- Auth card -->
             <div class="auth-box" id="loginBox">
                 <div class="auth-brand">
                     <span class="auth-brand-icon">⚡</span>
@@ -883,7 +881,6 @@
                 <h2>Welcome Back <span class="eiafsdoian">EIAFSDOian</span></h2>
                 <p class="auth-sub">Sign in to your developer dashboard and keep building.</p>
 
-                <!-- Terminal typing line -->
                 <div class="terminal-line" aria-hidden="true">
                     <span class="prompt">$</span>
                     <span class="cmd" id="typedCmd"></span>
@@ -898,7 +895,7 @@
 
                 <div class="auth-footer">
                     <span><span class="dot"></span>Systems Online</span>
-                    <span>v2026.2 · EIAFSDO</span>
+                    <span>v2026.3 · EIAFSDO</span>
                 </div>
             </div>
         </div>
@@ -907,7 +904,6 @@
              2. MAIN DASHBOARD
              ============================================================ -->
         <div id="dashboard" class="dashboard">
-            <!-- Marquee Banner -->
             <div class="marquee">
                 <div class="marquee-track">
                     <span>⚡ EIAFSDO Dashboard</span>
@@ -942,7 +938,6 @@
                 </div>
             </nav>
 
-            <!-- Mobile Drawer -->
             <div class="mobile-overlay" id="mobileOverlay"></div>
             <div class="mobile-sidebar" id="mobileSidebar">
                 <div class="sidebar-header">
@@ -1189,7 +1184,7 @@
                         <div id="myPlansList" style="margin-top:16px;"></div>
                     </div>
 
-                    <!-- Tab: EIAFSDO Board (visible to all) -->
+                    <!-- Tab: EIAFSDO Board -->
                     <div class="tab" id="tab-board">
                         <h3>🏛️ <span>EIAFSDO Board</span></h3>
                         <p class="text-muted">Announcements, collective decisions, and the future home of everything EIAFSDO.</p>
@@ -1208,7 +1203,7 @@
                         </div>
                     </div>
 
-                    <!-- Tab: Org Pad (Admin / Chairman) -->
+                    <!-- Tab: Org Pad -->
                     <div class="tab" id="tab-orgpad">
                         <h3>📄 <span>Organization Pad</span></h3>
                         <p class="text-muted">A shared editor for internal notes. Your signature updates automatically to your logged-in name.</p>
@@ -1225,15 +1220,15 @@
                         </div>
                     </div>
 
-                    <!-- Tab: Website Control (Admin / Chairman) -->
+                    <!-- Tab: Website Control -->
                     <div class="tab" id="tab-webcontrol">
                         <h3>🎛️ <span>Website Control</span></h3>
-                        <p class="text-muted">Admin &amp; Chairman control center for managing the public EIAFSDO website.</p>
+                        <p class="text-muted">Staff control center for managing the public EIAFSDO website.</p>
                         <div class="coming-soon-screen">
                             <div class="cs-icon">⚙️</div>
                             <div class="cs-pill">Building in Progress</div>
                             <h4>Website Control Is Coming</h4>
-                            <p>The Website Control center is actively under development. Soon admins and the chairman will be able to manage hero content, team profiles, public pages, and site‑wide announcements directly from here.</p>
+                            <p>The Website Control center is actively under development. Soon staff will be able to manage hero content, team profiles, public pages, and site‑wide announcements directly from here.</p>
                             <div class="coming-soon-progress">
                                 <div class="seg on"></div>
                                 <div class="seg on"></div>
@@ -1367,13 +1362,15 @@
             <div class="form-group"><label>Role</label>
                 <select id="adminEditRole">
                     <option value="user">User</option>
+                    <option value="it-admin" id="adminEditITAdminOption">IT Admin</option>
                     <option value="admin">Admin</option>
+                    <option value="founding-member" id="adminEditFoundingOption">Founding Member</option>
                     <option value="chairman" id="adminEditChairmanOption">Chairman</option>
                 </select>
             </div>
             <div class="admin-restriction-note" id="adminRestrictionNote">
                 <span class="icon">🛡️</span>
-                <span>You cannot edit your own role or delete your own account. Admin protections are enabled.</span>
+                <span>Role protections are enabled.</span>
             </div>
             <div class="modal-actions">
                 <button class="btn-primary" id="adminEditSaveBtn">Save Changes</button>
@@ -1390,7 +1387,7 @@
             </p>
             <div class="admin-restriction-note">
                 <span class="icon">🛡️</span>
-                <span>Admin, Chairman and Super Admin accounts cannot be reset via this tool for security.</span>
+                <span>Higher-ranked accounts cannot be reset via this tool for security.</span>
             </div>
             <div class="modal-actions">
                 <button class="btn-primary" id="resetConfirmBtn">Send Email</button>
@@ -1424,30 +1421,68 @@
         const TEMPLATE_USER_APPROVED = "template_sdxslwd";
         emailjs.init(EMAILJS_PUBLIC_KEY);
 
+        // ============================================================
+        //   ROLE SYSTEM
+        // ============================================================
+        // Ranks:
+        //   user              1
+        //   it-admin          2  (assignable only by Super Admin)
+        //   admin             3
+        //   founding-member   4  (PROTECTED — cannot be removed/changed by anyone)
+        //   chairman          5  (PROTECTED — only ONE, cannot be removed/changed by anyone except… nothing)
+        //   super-admin       6  (determined by name/email list)
+        //
+        // Special rules implemented:
+        //   • Chairman cannot remove / edit Super Admin.
+        //   • Super Admin cannot change / demote the Chairman.
+        //   • Chairman cannot appoint a User as Chairman.
+        //   • Only ONE Chairman can exist at any time.
+        //   • Founding Members are protected from removal / role changes by EVERYONE.
+        //   • Chairman also cannot remove Founding Members.
+        //   • "IT Admin" role is a special role assignable ONLY by the Super Admin.
+        //   • Super Admin can only move an account to IT Admin (per request) — the IT Admin option
+        //     appears only for the Super Admin and is the only "changed-to" elevated role they own exclusively.
+        // ============================================================
+
+        const ROLE_RANK = {
+            'user':            1,
+            'it-admin':        2,
+            'admin':           3,
+            'founding-member': 4,
+            'chairman':        5
+            // super-admin = 6 handled dynamically
+        };
+
+        const PROTECTED_ROLES = ['founding-member', 'chairman'];   // cannot be removed / demoted by anyone
+
         // --- SUPER ADMIN CONFIG ---
         const SUPER_ADMIN_NAMES = ['priyabrata patra'];
         const SUPER_ADMIN_EMAILS = ['priyabratacare@gmail.com', 'priyabrata@eiafsdo.in'];
 
-        // --- ROLE SYSTEM -------------------------------------------------
-        //  user (1)  <  admin (2)  <  chairman (3)  <  super admin (4, by name/email)
-        const ROLE_RANK = { user: 1, admin: 2, chairman: 3 };
-
         function normalizeRole(role) {
             const r = (role || 'user').toString().toLowerCase().trim();
-            return ROLE_RANK[r] ? r : 'user';
+            if (r === 'super-admin' || r === 'superadmin' || r === 'super_admin') return 'super-admin';
+            return Object.prototype.hasOwnProperty.call(ROLE_RANK, r) ? r : 'user';
         }
 
         function roleRank(role) {
-            return ROLE_RANK[normalizeRole(role)] || 1;
+            const r = normalizeRole(role);
+            if (r === 'super-admin') return 6;
+            return ROLE_RANK[r] || 1;
         }
 
-        function isSuperAdmin() {
-            if (!currentUserData) return false;
-            const n = (currentUserData.name || '').toLowerCase().trim();
-            const e = (currentUserData.email || '').toLowerCase().trim();
+        /** Check if ANY user object (not necessarily current) is a Super Admin by name/email */
+        function isUserSuperAdmin(user) {
+            if (!user) return false;
+            const n = (user.name || '').toLowerCase().trim();
+            const e = (user.email || '').toLowerCase().trim();
             if (SUPER_ADMIN_NAMES.some(name => n === name || n.includes(name))) return true;
             if (SUPER_ADMIN_EMAILS.some(mail => e === mail)) return true;
             return false;
+        }
+
+        function isSuperAdmin() {
+            return isUserSuperAdmin(currentUserData);
         }
 
         function isChairman() {
@@ -1460,45 +1495,124 @@
             return normalizeRole(currentUserData.role) === 'admin';
         }
 
-        /** Any elevated role that gets the admin panels (admin, chairman, super admin) */
-        function isStaff() {
-            return isSuperAdmin() || isChairman() || isAdminRole();
+        function isITAdmin() {
+            if (!currentUserData) return false;
+            return normalizeRole(currentUserData.role) === 'it-admin';
         }
 
-        /** Alias kept for readability where "admin" meant "staff" */
-        function isAdmin() { return isStaff(); }
+        function isFoundingMember() {
+            if (!currentUserData) return false;
+            return normalizeRole(currentUserData.role) === 'founding-member';
+        }
+
+        /** Any elevated role that gets the staff panels (it-admin, admin, founding-member, chairman, super-admin) */
+        function isStaff() {
+            if (!currentUserData) return false;
+            if (isSuperAdmin()) return true;
+            const r = normalizeRole(currentUserData.role);
+            return r !== 'user';
+        }
 
         function myRank() {
-            if (isSuperAdmin()) return 4;
+            if (isSuperAdmin()) return 6;
             return roleRank(currentUserData?.role);
         }
 
-        /** Can the current user manage (edit / delete / reset) the target member? */
+        // ---- MEMBER MANAGEMENT PERMISSIONS ----
+        /**
+         * Can the current user manage (edit/delete/reset) the target member?
+         *
+         * Rules:
+         *  - Never yourself.
+         *  - Super Admin accounts: nobody can manage them (they're set by name/email).
+         *  - Founding Members: protected — nobody can manage them.
+         *  - Chairman: protected — nobody can manage them (including Super Admin per requirement).
+         *  - Otherwise: current user must be strictly higher rank.
+         *  - Additionally: Chairman cannot manage Super Admin (already covered by rank, but explicit).
+         */
         function canManageUser(target) {
             if (!target || !currentUser) return false;
-            if (target.id === currentUser.uid) return false;       // never manage yourself
-            if (isSuperAdmin()) return true;                        // super admin: everyone
-            return myRank() > roleRank(target.role);                // strictly higher rank only
+            if (target.id === currentUser.uid) return false;    // never self
+
+            const targetRole = normalizeRole(target.role);
+
+            // Super Admin target → nobody can manage
+            if (isUserSuperAdmin(target)) return false;
+
+            // Founding Member target → protected from everyone
+            if (targetRole === 'founding-member') return false;
+
+            // Chairman target → protected from everyone (per requirement: Super Admin cannot change Chairman either)
+            if (targetRole === 'chairman') return false;
+
+            // Current user is Super Admin → can manage anyone left
+            if (isSuperAdmin()) return true;
+
+            // Current user is Chairman → cannot manage Super Admin (already covered), otherwise rank-based
+            // (Founding members already blocked above)
+            // General rule: strictly higher rank
+            return myRank() > roleRank(target.role);
         }
 
-        /** Can the current user assign the chairman role? */
-        function canAssignChairman() {
-            return isSuperAdmin() || isChairman();
+        /**
+         * Can the current user assign the given role to someone?
+         */
+        function canAssignRole(newRole) {
+            const r = normalizeRole(newRole);
+
+            // Chairman & Founding Member: only Super Admin may assign.
+            // Chairman may NOT appoint anyone as Chairman.
+            if (r === 'chairman' || r === 'founding-member') {
+                return isSuperAdmin();
+            }
+
+            // IT Admin: only Super Admin may assign (per requirement — "superadmin change to IT admin also do this only")
+            if (r === 'it-admin') {
+                return isSuperAdmin();
+            }
+
+            // Super Admin role cannot be assigned via UI at all
+            if (r === 'super-admin') return false;
+
+            // For everything else: cannot assign equal or higher than your own rank
+            if (isSuperAdmin()) return true;
+            return roleRank(r) < myRank();
+        }
+
+        /** Check if a Chairman already exists */
+        function existingChairman() {
+            return allMembers.find(m => normalizeRole(m.role) === 'chairman') || null;
         }
 
         function roleLabel(role) {
             switch (normalizeRole(role)) {
-                case 'chairman': return 'Chairman';
-                case 'admin':    return 'Admin';
-                default:         return 'Member';
+                case 'super-admin':     return 'Super Admin';
+                case 'chairman':        return 'Chairman';
+                case 'founding-member': return 'Founding Member';
+                case 'admin':           return 'Admin';
+                case 'it-admin':        return 'IT Admin';
+                default:                return 'Member';
             }
         }
 
         function roleLabelForCurrentUser() {
             if (isSuperAdmin()) return '★ Super Admin';
             if (isChairman()) return '★ Chairman';
+            if (isFoundingMember()) return '◆ Founding Member';
             if (isAdminRole()) return 'Admin';
+            if (isITAdmin()) return 'IT Admin';
             return 'Member';
+        }
+
+        function roleCssClass(role) {
+            switch (normalizeRole(role)) {
+                case 'super-admin':     return 'role-super-admin';
+                case 'chairman':        return 'role-chairman';
+                case 'founding-member': return 'role-founding-member';
+                case 'admin':           return 'role-admin';
+                case 'it-admin':        return 'role-it-admin';
+                default:                return 'role-user';
+            }
         }
 
         // --- GLOBAL STATE ---
@@ -1549,7 +1663,6 @@
         // ============================================================
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        /* --- 1. Matrix rain columns --- */
         function buildMatrixRain() {
             const container = document.getElementById('matrixRain');
             if (!container || prefersReducedMotion) return;
@@ -1579,7 +1692,6 @@
             }
         }
 
-        /* --- 2. Floating code tokens --- */
         const codeTokens = [
             '<div>', '</div>', 'const', 'let', 'var', '=>', 'async', 'await',
             'function()', '{ }', '[ ]', '&&', '||', '===', '!==', '+=',
@@ -1617,7 +1729,6 @@
             }
         }
 
-        /* --- 3. Terminal typing line --- */
         const typedCommands = [
             'npm run build',
             'firebase deploy --only hosting',
@@ -1668,12 +1779,10 @@
             typeTimer = setTimeout(runTypingEffect, speed);
         }
 
-        // Initialise background animations
         buildMatrixRain();
         buildFloatingTokens();
         setTimeout(runTypingEffect, 500);
 
-        // Rebuild on viewport resize (debounced)
         let resizeTimer = null;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
@@ -1725,8 +1834,10 @@
                         };
                         await db.collection('users').doc(user.uid).set(currentUserData);
                     }
-                    // Safety: normalise unknown roles
-                    currentUserData.role = normalizeRole(currentUserData.role);
+                    // Normalise unknown roles (keeps 'super-admin' as-is for display but we treat that via name/email)
+                    const originalRole = currentUserData.role;
+                    currentUserData.role = normalizeRole(originalRole);
+                    if (currentUserData.role === 'super-admin') currentUserData.role = 'user'; // super admin is name/email based
                 } catch (err) {
                     console.error("Firestore user profile fetch error:", err);
                     currentUserData = {
@@ -1740,7 +1851,6 @@
                 currentUser = null; currentUserData = null;
                 dashboard.classList.remove('active');
                 authContainer.style.display = 'flex';
-                // Rebuild bg if needed
                 if (!document.querySelector('.matrix-col')) buildMatrixRain();
                 if (!document.querySelector('.floating-token')) buildFloatingTokens();
             }
@@ -1763,8 +1873,14 @@
             const roleLabelText = roleLabelForCurrentUser();
             const roleEl = document.getElementById('navUserRole');
             roleEl.textContent = roleLabelText;
-            roleEl.className = 'user-role' +
-                (superA ? ' role-super' : isChairman() ? ' role-chairman' : isAdminRole() ? ' role-admin' : '');
+
+            let roleCls = '';
+            if (superA) roleCls = 'role-super';
+            else if (isChairman()) roleCls = 'role-chair';
+            else if (isFoundingMember()) roleCls = 'role-found';
+            else if (isAdminRole()) roleCls = 'role-admin';
+            else if (isITAdmin()) roleCls = 'role-itadmin';
+            roleEl.className = 'user-role' + (roleCls ? ' ' + roleCls : '');
             document.getElementById('mobileUserRole').textContent = roleLabelText;
 
             const staffTabs = [
@@ -1912,7 +2028,10 @@
             document.getElementById('idCardRole').textContent =
                 isSuperAdmin() ? 'Super Admin · Founder' :
                 isChairman() ? 'Chairman · EIAFSDO' :
-                isAdminRole() ? 'Admin · Founder' : 'Member · Developer';
+                isFoundingMember() ? 'Founding Member · EIAFSDO' :
+                isAdminRole() ? 'Admin · EIAFSDO' :
+                isITAdmin() ? 'IT Admin · EIAFSDO' :
+                'Member · Developer';
             document.getElementById('idCardEmail').textContent = currentUserData.email || '—';
             document.getElementById('idCardUid').textContent = `UID: ${currentUser.uid.substring(0, 16)}...`;
 
@@ -1996,13 +2115,13 @@
                 }).catch(err => console.warn('User receipt dispatch error:', err));
 
                 try {
-                    const staffSnap = await db.collection('users').where('role', 'in', ['admin', 'chairman']).get();
+                    const staffSnap = await db.collection('users').where('role', 'in', ['admin', 'chairman', 'it-admin', 'founding-member']).get();
                     staffSnap.forEach(staffDoc => {
                         const staffData = staffDoc.data();
                         if (staffData && staffData.email && staffData.email !== currentUser.email) {
                             emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_ADMIN_ALERT, {
                                 to_email: staffData.email, email: staffData.email, user_email: staffData.email,
-                                to_name: staffData.name || 'Admin',
+                                to_name: staffData.name || 'Staff',
                                 submitter_name: currentUserData?.name || 'Member',
                                 submitter_email: currentUser.email,
                                 project_name: name, project_link: link || 'None provided',
@@ -2184,8 +2303,8 @@
                     new Date(p.createdAt.toDate()).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recently';
                 const tagsArray = (p.tags || '').split(',').map(t => t.trim()).filter(Boolean);
                 const isSelf = p.submittedBy === currentUser.uid;
-                // Super Admin & Chairman may review their own submissions; plain admins may not.
-                const canReview = !isSelf || isSuperAdmin() || isChairman();
+                // Super Admin, Chairman, Founding Member may review their own submissions; plain admins/IT may not.
+                const canReview = !isSelf || isSuperAdmin() || isChairman() || isFoundingMember();
 
                 html += `
                     <div class="admin-review-card is-${status}" data-pid="${p.id}">
@@ -2236,7 +2355,7 @@
                     const pid = b.dataset.pid;
                     const newStatus = b.dataset.st;
                     const project = allAdminProjects.find(p => p.id === pid);
-                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin() && !isChairman()) {
+                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin() && !isChairman() && !isFoundingMember()) {
                         showToast('You cannot review your own project.', 'warning');
                         return;
                     }
@@ -2273,7 +2392,7 @@
             list.querySelectorAll('.btn-del-admin').forEach(b => {
                 b.addEventListener('click', async () => {
                     const project = allAdminProjects.find(p => p.id === b.dataset.pid);
-                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin() && !isChairman()) {
+                    if (project && project.submittedBy === currentUser.uid && !isSuperAdmin() && !isChairman() && !isFoundingMember()) {
                         showToast('You cannot delete your own project from admin panel.', 'warning');
                         return;
                     }
@@ -2506,7 +2625,7 @@
             } catch (err) { showToast(err.message, 'error'); }
         });
 
-        // --- ORG PAD (signed by CURRENT logged-in user) ---
+        // --- ORG PAD ---
         async function loadOrgPad() {
             try {
                 const snap = await db.collection('orgPad').limit(1).get();
@@ -2595,10 +2714,10 @@
                 allMembers = [];
                 snap.forEach(doc => allMembers.push({ id: doc.id, ...doc.data() }));
 
-                // Sort by rank desc, then name
+                // Sort by effective rank desc, then name
                 allMembers.sort((a, b) => {
-                    const ra = a.id === currentUser.uid && isSuperAdmin() ? 4 : roleRank(a.role);
-                    const rb = b.id === currentUser.uid && isSuperAdmin() ? 4 : roleRank(b.role);
+                    const ra = isUserSuperAdmin(a) ? 6 : roleRank(a.role);
+                    const rb = isUserSuperAdmin(b) ? 6 : roleRank(b.role);
                     if (rb !== ra) return rb - ra;
                     return (a.name || '').localeCompare(b.name || '');
                 });
@@ -2608,21 +2727,39 @@
                     const avatar = m.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || 'U')}&background=f3ead2&color=1d1a14&size=32`;
                     const isSelf = m.id === currentUser.uid;
                     const mRole = normalizeRole(m.role);
+                    const isSuper = isUserSuperAdmin(m);
                     const isChair = mRole === 'chairman';
-                    const isAdm = mRole === 'admin';
-                    const canAct = canManageUser(m);
+                    const isFound = mRole === 'founding-member';
+                    const isAdm   = mRole === 'admin';
+                    const isIT    = mRole === 'it-admin';
+                    const canAct  = canManageUser(m);
 
                     let crown = '';
-                    if (isChair) crown = ' <span style="font-size:9px;color:#b88600;font-weight:800;">★ Chairman</span>';
-                    else if (isAdm) crown = ' <span style="font-size:9px;color:#1b5e20;font-weight:800;">👑 Admin</span>';
+                    if (isSuper)      crown = ' <span style="font-size:9px;color:#8d6f00;font-weight:800;">★ Super Admin</span>';
+                    else if (isChair) crown = ' <span style="font-size:9px;color:#b88600;font-weight:800;">★ Chairman</span>';
+                    else if (isFound) crown = ' <span style="font-size:9px;color:#6a3fb5;font-weight:800;">◆ Founding Member</span>';
+                    else if (isAdm)   crown = ' <span style="font-size:9px;color:#1b5e20;font-weight:800;">👑 Admin</span>';
+                    else if (isIT)    crown = ' <span style="font-size:9px;color:#1565c0;font-weight:800;">🛠 IT Admin</span>';
 
                     let protectedBadge = '';
                     if (!canAct && !isSelf) {
-                        protectedBadge = '<span style="font-size:9px;color:var(--text-muted); font-weight:700;">⛔ Protected</span>';
+                        const reason = isSuper ? 'Super Admin'
+                                     : isChair ? 'Chairman'
+                                     : isFound ? 'Founding'
+                                     : 'Protected';
+                        protectedBadge = `<span style="font-size:9px;color:var(--text-muted); font-weight:700;">⛔ ${reason}</span>`;
                     }
 
+                    let rowClass = '';
+                    if (isSuper) rowClass = 'is-superadmin-row';
+                    else if (isChair) rowClass = 'is-chairman-row';
+                    else if (isFound) rowClass = 'is-founding-row';
+
+                    // Display role badge: super-admin overrides
+                    const displayRole = isSuper ? 'super-admin' : mRole;
+
                     html += `
-                        <div class="member-item ${isChair ? 'is-chairman-row' : ''}">
+                        <div class="member-item ${rowClass}">
                             <div class="member-info">
                                 <img src="${avatar}" alt="Avatar" onerror="this.src='https://ui-avatars.com/api/?name=U&background=f3ead2&color=1d1a14';" />
                                 <div>
@@ -2633,7 +2770,7 @@
                                 </div>
                             </div>
                             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                                <span class="status-badge role-${mRole}">${roleLabel(mRole)}</span>
+                                <span class="status-badge ${roleCssClass(displayRole)}">${roleLabel(displayRole)}</span>
                                 ${isSelf
                                     ? '<span style="font-size:9px;color:var(--text-muted); font-weight:700;">Self</span>'
                                     : `
@@ -2667,7 +2804,7 @@
                         const target = allMembers.find(x => x.id === b.dataset.uid);
                         if (!target) return;
                         if (!canManageUser(target)) {
-                            showToast('Password resets for this account are restricted for security.', 'warning');
+                            showToast('Password resets for this account are restricted.', 'warning');
                             return;
                         }
                         resetTargetEmailVal = b.dataset.email;
@@ -2778,23 +2915,37 @@
             document.getElementById('adminEditName').value = user.name || '';
             document.getElementById('adminEditRole').value = normalizeRole(user.role);
 
-            // Chairman option availability
+            // Hide/show role options based on permission
+            const itOpt = document.getElementById('adminEditITAdminOption');
             const chairOpt = document.getElementById('adminEditChairmanOption');
-            const allowChair = canAssignChairman();
-            chairOpt.disabled = !allowChair;
-            chairOpt.hidden = !allowChair;
+            const foundOpt = document.getElementById('adminEditFoundingOption');
+
+            itOpt.hidden = !isSuperAdmin();
+            itOpt.disabled = !isSuperAdmin();
+
+            chairOpt.hidden = !isSuperAdmin();
+            chairOpt.disabled = !isSuperAdmin();
+
+            foundOpt.hidden = !isSuperAdmin();
+            foundOpt.disabled = !isSuperAdmin();
+
+            // Reflect current role if it's a hidden option — add a temporary entry so the select shows it
+            const currentRole = normalizeRole(user.role);
+            if (currentRole === 'chairman' && chairOpt.hidden) chairOpt.hidden = false;
+            if (currentRole === 'it-admin' && itOpt.hidden) itOpt.hidden = false;
+            if (currentRole === 'founding-member' && foundOpt.hidden) foundOpt.hidden = false;
 
             const note = document.getElementById('adminRestrictionNote');
-            note.classList.remove('super-admin-note', 'chairman-note');
+            note.classList.remove('super-admin-note', 'chairman-note', 'protected-note');
 
             if (isSuperAdmin()) {
                 note.classList.add('super-admin-note');
-                note.innerHTML = `<span class="icon">★</span><span>You are the Super Admin — you can edit any account, including admins and the chairman.</span>`;
+                note.innerHTML = `<span class="icon">★</span><span>You are the Super Admin. You can assign <strong>IT Admin</strong>, <strong>Admin</strong>, and <strong>Founding Member</strong> roles. The <strong>Chairman</strong> role is protected and cannot be changed.</span>`;
             } else if (isChairman()) {
                 note.classList.add('chairman-note');
-                note.innerHTML = `<span class="icon">★</span><span>You are the Chairman — you can manage members and admins. Super Admin and other Chairmen are protected.</span>`;
+                note.innerHTML = `<span class="icon">★</span><span>You are the Chairman. You can manage standard members and admins below your rank. You <strong>cannot</strong> appoint anyone as Chairman, and you cannot touch Super Admin or Founding Members.</span>`;
             } else {
-                note.innerHTML = `<span class="icon">🛡️</span><span>You cannot edit your own role, admins, or the chairman. Higher-rank protections are enabled.</span>`;
+                note.innerHTML = `<span class="icon">🛡️</span><span>You can only manage members with a lower role than your own. Higher ranks are protected.</span>`;
             }
             document.getElementById('adminProfileModal').classList.add('active');
         }
@@ -2809,6 +2960,7 @@
 
             if (!targetUser) { showToast('Member not found.', 'error'); return; }
 
+            // Basic self/rank protection
             if (!canManageUser(targetUser)) {
                 showToast('This account is protected from modification.', 'warning');
                 return;
@@ -2816,24 +2968,54 @@
 
             const newRole = normalizeRole(document.getElementById('adminEditRole').value);
 
-            // Chairman assignment restriction
-            if (newRole === 'chairman' && !canAssignChairman()) {
-                showToast('Only the Super Admin or the Chairman can assign the Chairman role.', 'warning');
+            // Cannot assign 'super-admin' via UI
+            if (newRole === 'super-admin') {
+                showToast('Super Admin role cannot be assigned manually.', 'warning');
                 return;
             }
 
-            // Cannot promote above your own rank
+            // --- Specific rule checks ---
+
+            // 1) Only one Chairman allowed
+            if (newRole === 'chairman') {
+                const existing = existingChairman();
+                if (existing && existing.id !== targetUser.id) {
+                    showToast('Only one Chairman is allowed. Please demote the existing Chairman first (Super Admin only).', 'warning');
+                    return;
+                }
+            }
+
+            // 2) Chairman cannot appoint a user as Chairman
+            if (newRole === 'chairman' && !isSuperAdmin()) {
+                showToast('Only the Super Admin can appoint a Chairman.', 'warning');
+                return;
+            }
+
+            // 3) Founding Member assignment is Super Admin only
+            if (newRole === 'founding-member' && !isSuperAdmin()) {
+                showToast('Only the Super Admin can assign the Founding Member role.', 'warning');
+                return;
+            }
+
+            // 4) IT Admin assignment is Super Admin only
+            if (newRole === 'it-admin' && !isSuperAdmin()) {
+                showToast('Only the Super Admin can assign the IT Admin role.', 'warning');
+                return;
+            }
+
+            // 5) Super Admin cannot change Chairman — already protected via canManageUser, but keep explicit
+            if (normalizeRole(targetUser.role) === 'chairman' && !isSuperAdmin()) {
+                showToast('Chairman role is protected. Only the Super Admin can consider changes — but Chairman is fully protected.', 'warning');
+                return;
+            }
+
+            // 6) Cannot assign equal or higher rank than your own (except Super Admin)
             if (!isSuperAdmin() && roleRank(newRole) >= myRank()) {
                 showToast('You cannot assign a role equal to or higher than your own.', 'warning');
                 return;
             }
 
-            // Cannot demote a higher-ranked member
-            if (!isSuperAdmin() && roleRank(targetUser.role) >= myRank()) {
-                showToast('You cannot modify a member with an equal or higher role.', 'warning');
-                return;
-            }
-
+            // 7) Self-demotion guard
             if (targetUser.id === currentUser.uid && newRole !== normalizeRole(currentUserData.role)) {
                 showToast('You cannot change your own role.', 'warning');
                 return;
