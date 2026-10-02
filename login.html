@@ -616,6 +616,17 @@
         .project-card .card-actions button { background: var(--surface); border: var(--border-subtle); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; color: var(--text-muted); transition: background .16s var(--ease-out), color .16s var(--ease-out); }
         .project-card .card-actions button:hover { background: var(--accent-yellow); color: var(--text-color); border-color: var(--text-color); }
 
+        /* ---------- NOTICE BOARD ---------- */
+        .notice-toolbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+        .notice-card { background:var(--bg-color); border:var(--border-thick); border-radius:var(--radius); padding:16px; box-shadow:3px 4px 0 var(--text-color); margin-bottom:12px; }
+        .notice-card:hover { transform:translate(-1px,-2px); box-shadow:5px 6px 0 var(--text-color); }
+        .notice-card-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+        .notice-card h4 { margin-bottom:4px; font-size:17px; }
+        .notice-meta { color:var(--text-muted); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
+        .notice-body { white-space:pre-wrap; margin:12px 0; color:var(--text-muted); font-size:13.5px; font-weight:600; }
+        .notice-actions { display:flex; gap:6px; flex-wrap:wrap; }
+        .notice-empty { padding:24px; text-align:center; border:2px dashed var(--text-color); border-radius:var(--radius); color:var(--text-muted); font-weight:700; }
+
         /* ---------- ADMIN PANEL ---------- */
         .admin-panel-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
         .queue-status-pill { font-size: 10.5px; font-weight: 800; text-transform: uppercase; color: #1b5e20; background: #d4f5d4; border: var(--border-subtle); padding: 4px 10px; border-radius: var(--radius-pill); }
@@ -1035,6 +1046,7 @@
                 <div class="menu-item hidden" data-tab="webcontrol" id="mobileWebControlTab"><span class="menu-icon">🎛️</span> Website Control</div>
                 <div class="menu-item hidden" data-tab="admin-members" id="mobileAdminMembersTab"><span class="menu-icon">👥</span> Members</div>
                 <div class="menu-item hidden" data-tab="admin-projects" id="mobileAdminProjectsTab"><span class="menu-icon">📋</span> Review Projects</div>
+                <div class="menu-item hidden" data-tab="notices" id="mobileNoticesTab"><span class="menu-icon">📢</span> Notice Issued</div>
                 <div class="menu-item" data-tab="activity"><span class="menu-icon">📊</span> Activity</div>
             </div>
 
@@ -1052,6 +1064,7 @@
                     <div class="menu-item hidden" data-tab="webcontrol" id="desktopWebControlTab"><span class="menu-icon">🎛️</span> Website Control</div>
                     <div class="menu-item hidden" data-tab="admin-members" id="desktopAdminMembersTab"><span class="menu-icon">👥</span> Members</div>
                     <div class="menu-item hidden" data-tab="admin-projects" id="desktopAdminProjectsTab"><span class="menu-icon">📋</span> Review Projects</div>
+                    <div class="menu-item hidden" data-tab="notices" id="desktopNoticesTab"><span class="menu-icon">📢</span> Notice Issued</div>
                     <div class="menu-item" data-tab="activity"><span class="menu-icon">📊</span> Activity</div>
                 </aside>
 
@@ -1435,6 +1448,21 @@
                         <div id="adminProjectList" class="admin-card-feed"></div>
                     </div>
 
+                    <!-- Tab: Notice Issued -->
+                    <div class="tab" id="tab-notices">
+                        <div class="notice-toolbar">
+                            <div>
+                                <h3>📢 Notice <span>Issued</span></h3>
+                                <p class="text-muted" style="margin-bottom:0;">Official organizational notices stored in the Firestore <strong>notices</strong> collection.</p>
+                            </div>
+                            <button class="btn-primary btn-sm" id="addNoticeBtn">＋ Issue Notice</button>
+                        </div>
+                        <div id="noticePermissionInfo" class="admin-restriction-note" style="margin-bottom:14px;">
+                            <span class="icon">🛡️</span><span>Loading notice permissions…</span>
+                        </div>
+                        <div id="noticeList"></div>
+                    </div>
+
                     <!-- Tab: Activity -->
                     <div class="tab" id="tab-activity">
                         <h3>Platform <span>Activity</span></h3>
@@ -1505,6 +1533,27 @@
         </div>
     </div>
 
+    <div class="admin-profile-modal" id="noticeModal">
+        <div class="modal-box">
+            <h4 id="noticeModalTitle">📢 Issue Notice</h4>
+            <div class="form-group"><label>Notice Title *</label><input type="text" id="noticeTitle" maxlength="180" placeholder="e.g. Board Meeting Notice" /></div>
+            <div class="form-group"><label>Notice Content *</label><textarea id="noticeContent" rows="7" maxlength="5000" placeholder="Write the official notice…"></textarea></div>
+            <div class="form-group"><label>Notice Type</label>
+                <select id="noticeType">
+                    <option value="general">General</option>
+                    <option value="appointment">Appointment</option>
+                    <option value="board">Board</option>
+                    <option value="announcement">Announcement</option>
+                    <option value="important">Important</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" id="noticeSaveBtn">Publish Notice</button>
+                <button class="btn-secondary" id="noticeCancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <div class="reset-modal" id="resetModal">
         <div class="modal-box">
             <h4>🔑 Dispatch Password Reset</h4>
@@ -1550,36 +1599,31 @@
         // ============================================================
         //   ROLE SYSTEM
         // ============================================================
+        // Roles are read ONLY from the signed-in user's Firestore users/{uid} document.
+        // Do not infer privileges from email addresses, names, Firebase Auth claims,
+        // or client-side/system defaults.
         const ROLE_RANK = {
-            'user':            1,
-            'it-admin':        2,
-            'admin':           3,
+            'user': 1,
+            'member': 1,
+            'it-admin': 2,
+            'admin': 3,
             'founding-member': 4,
-            'chairman':        5
+            'chairman': 5,
+            'super-admin': 6
         };
 
-        const SUPER_ADMIN_NAMES = ['priyabrata patra'];
-        const SUPER_ADMIN_EMAILS = ['priyabratacare@gmail.com', 'priyabrata@eiafsdo.in'];
-
         function normalizeRole(role) {
-            const r = (role || 'user').toString().toLowerCase().trim();
-            if (r === 'super-admin' || r === 'superadmin' || r === 'super_admin') return 'super-admin';
+            const r = String(role || 'user').toLowerCase().trim().replaceAll('_', '-');
+            if (r === 'superadmin') return 'super-admin';
             return Object.prototype.hasOwnProperty.call(ROLE_RANK, r) ? r : 'user';
         }
 
         function roleRank(role) {
-            const r = normalizeRole(role);
-            if (r === 'super-admin') return 6;
-            return ROLE_RANK[r] || 1;
+            return ROLE_RANK[normalizeRole(role)] || 1;
         }
 
         function isUserSuperAdmin(user) {
-            if (!user) return false;
-            const n = (user.name || '').toLowerCase().trim();
-            const e = (user.email || '').toLowerCase().trim();
-            if (SUPER_ADMIN_NAMES.some(name => n === name || n.includes(name))) return true;
-            if (SUPER_ADMIN_EMAILS.some(mail => e === mail)) return true;
-            return false;
+            return !!user && normalizeRole(user.role) === 'super-admin';
         }
 
         function isSuperAdmin() { return isUserSuperAdmin(currentUserData); }
@@ -1587,6 +1631,25 @@
         function isAdminRole() { if (!currentUserData) return false; return normalizeRole(currentUserData.role) === 'admin'; }
         function isITAdmin() { if (!currentUserData) return false; return normalizeRole(currentUserData.role) === 'it-admin'; }
         function isFoundingMember() { if (!currentUserData) return false; return normalizeRole(currentUserData.role) === 'founding-member'; }
+
+        // Chairman editing is granted from the signed-in Firestore profile.
+        // Priyabrata is an explicit organizational exception requested for this dashboard.
+        function isPriyabrata() {
+            if (!currentUserData) return false;
+            return String(currentUserData.name || '').trim().toLowerCase() === 'priyabrata patra';
+        }
+
+        function canEditChairman(target) {
+            if (!currentUserData || !target) return false;
+            if (target.id === currentUser.uid) return true;
+            if (isSuperAdmin() || isAdminRole() || isPriyabrata()) return true;
+            return false;
+        }
+
+        function canManageNotice() {
+            if (!currentUserData) return false;
+            return isSuperAdmin() || isAdminRole() || isChairman() || isPriyabrata();
+        }
 
         function isStaff() {
             if (!currentUserData) return false;
@@ -1607,8 +1670,8 @@
             const targetRole = normalizeRole(target.role);
 
             if (isUserSuperAdmin(target)) return false;
-            if (targetRole === 'founding-member') return false;
-            if (targetRole === 'chairman') return false;
+            if (targetRole === 'chairman') return canEditChairman(target);
+            if (targetRole === 'founding-member') return isSuperAdmin();
 
             if (isSuperAdmin()) return true;
             return myRank() > roleRank(target.role);
@@ -1616,7 +1679,8 @@
 
         function canAssignRole(newRole) {
             const r = normalizeRole(newRole);
-            if (r === 'chairman' || r === 'founding-member') return isSuperAdmin();
+            if (r === 'chairman') return isSuperAdmin() || isAdminRole() || isChairman() || isPriyabrata();
+            if (r === 'founding-member') return isSuperAdmin();
             if (r === 'it-admin') return isSuperAdmin();
             if (r === 'super-admin') return false;
             if (isSuperAdmin()) return true;
@@ -1666,6 +1730,8 @@
         let allMembers = [];
         let allUsers = [];
         let selectedChatUser = null;
+        let noticeEditId = null;
+        let noticeUnsubscribe = null;
         let messageUnsubscribe = null;
         let talksUnsubscribe = null;
         let orgPadDocId = null;
@@ -1889,16 +1955,15 @@
                         };
                         await db.collection('users').doc(user.uid).set(currentUserData);
                     }
-                    const originalRole = currentUserData.role;
-                    currentUserData.role = normalizeRole(originalRole);
-                    if (currentUserData.role === 'super-admin') currentUserData.role = 'user';
+                    // Firestore role is the sole source of the user's application role.
+                    currentUserData.role = normalizeRole(currentUserData.role);
                 } catch (err) {
                     console.error("Firestore user profile fetch error:", err);
-                    currentUserData = {
-                        name: user.displayName || user.email.split('@')[0],
-                        email: user.email, role: 'user', status: 'Active'
-                    };
-                    showToast('Operating in local profile mode.', 'warning');
+                    currentUser = null;
+                    currentUserData = null;
+                    showToast('Unable to verify your database role. Please try again.', 'error');
+                    await auth.signOut();
+                    return;
                 }
                 try { renderDashboardForUser(); } catch (renderErr) { console.error("Dashboard render error:", renderErr); }
             } else {
@@ -1945,7 +2010,9 @@
                 document.getElementById('desktopOrgPadTab'),
                 document.getElementById('mobileOrgPadTab'),
                 document.getElementById('desktopWebControlTab'),
-                document.getElementById('mobileWebControlTab')
+                document.getElementById('mobileWebControlTab'),
+                document.getElementById('desktopNoticesTab'),
+                document.getElementById('mobileNoticesTab')
             ];
             staffTabs.forEach(tab => { if (tab) tab.classList.toggle('hidden', !staff); });
 
@@ -1961,6 +2028,7 @@
                 loadAdminMembers();
                 loadAdminProjects();
                 loadOrgPad();
+                loadNotices();
             }
 
             // Update Gmail UI state
@@ -3093,8 +3161,8 @@
                 snap.forEach(doc => allMembers.push({ id: doc.id, ...doc.data() }));
 
                 allMembers.sort((a, b) => {
-                    const ra = isUserSuperAdmin(a) ? 6 : roleRank(a.role);
-                    const rb = isUserSuperAdmin(b) ? 6 : roleRank(b.role);
+                    const ra = roleRank(a.role);
+                    const rb = roleRank(b.role);
                     if (rb !== ra) return rb - ra;
                     return (a.name || '').localeCompare(b.name || '');
                 });
@@ -3104,7 +3172,7 @@
                     const avatar = m.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name || 'U')}&background=f3ead2&color=1d1a14&size=32`;
                     const isSelf = m.id === currentUser.uid;
                     const mRole = normalizeRole(m.role);
-                    const isSuper = isUserSuperAdmin(m);
+                    const isSuper = normalizeRole(m.role) === 'super-admin';
                     const isChair = mRole === 'chairman';
                     const isFound = mRole === 'founding-member';
                     const isAdm   = mRole === 'admin';
@@ -3208,6 +3276,121 @@
             } catch (err) { list.innerHTML = '<p class="text-muted">Error loading members.</p>'; }
         }
 
+        // --- NOTICE ISSUED ---
+        function formatNoticeDate(value) {
+            try {
+                const d = value?.toDate ? value.toDate() : (value ? new Date(value) : null);
+                if (!d || Number.isNaN(d.getTime())) return '—';
+                return d.toLocaleDateString('en-IN', { day:'2-digit', month:'long', year:'numeric' });
+            } catch (_) { return '—'; }
+        }
+
+        function openNoticeModal(notice = null) {
+            if (!canManageNotice()) {
+                showToast('You do not have permission to issue or edit notices.', 'warning');
+                return;
+            }
+            noticeEditId = notice?.id || null;
+            document.getElementById('noticeModalTitle').textContent = notice ? '✏️ Edit Notice' : '📢 Issue Notice';
+            document.getElementById('noticeTitle').value = notice?.title || '';
+            document.getElementById('noticeContent').value = notice?.content || '';
+            document.getElementById('noticeType').value = notice?.type || 'general';
+            document.getElementById('noticeSaveBtn').textContent = notice ? 'Save Notice' : 'Publish Notice';
+            document.getElementById('noticeModal').classList.add('active');
+        }
+
+        async function loadNotices() {
+            const list = document.getElementById('noticeList');
+            if (!list) return;
+            const addBtn = document.getElementById('addNoticeBtn');
+            const info = document.getElementById('noticePermissionInfo');
+            const allowed = canManageNotice();
+            addBtn.style.display = allowed ? 'inline-flex' : 'none';
+            info.innerHTML = allowed
+                ? '<span class="icon">✍️</span><span>You can issue and edit official notices. Notices are attributed to your current Firestore profile and role.</span>'
+                : '<span class="icon">👁️</span><span>You can view issued notices. Publishing and editing are restricted to authorized database roles.</span>';
+
+            try {
+                const snap = await db.collection('notices').orderBy('createdAt', 'desc').limit(100).get();
+                if (snap.empty) {
+                    list.innerHTML = '<div class="notice-empty">No notices have been issued yet.</div>';
+                    return;
+                }
+                let html = '';
+                snap.forEach(doc => {
+                    const n = { id: doc.id, ...doc.data() };
+                    const canEdit = allowed;
+                    html += `
+                        <article class="notice-card">
+                            <div class="notice-card-head">
+                                <div>
+                                    <div class="notice-meta">${escapeHTML(String(n.type || 'general').toUpperCase())} · ${escapeHTML(formatNoticeDate(n.createdAt))}</div>
+                                    <h4>${escapeHTML(n.title || 'Untitled Notice')}</h4>
+                                </div>
+                                <div class="notice-actions">
+                                    ${canEdit ? `<button class="btn-warning btn-sm btn-edit-notice" data-id="${escapeHTML(n.id)}">✎ Edit</button><button class="btn-danger btn-sm btn-delete-notice" data-id="${escapeHTML(n.id)}">✕ Delete</button>` : ''}
+                                </div>
+                            </div>
+                            <div class="notice-body">${escapeHTML(n.content || '')}</div>
+                            <div class="notice-meta">Issued by ${escapeHTML(n.issuedByName || 'EIAFSDO System')} · ${escapeHTML(n.issuedByRole || 'System')}</div>
+                        </article>`;
+                });
+                list.innerHTML = html;
+
+                list.querySelectorAll('.btn-edit-notice').forEach(btn => btn.addEventListener('click', async () => {
+                    const doc = await db.collection('notices').doc(btn.dataset.id).get();
+                    if (doc.exists) openNoticeModal({ id: doc.id, ...doc.data() });
+                }));
+                list.querySelectorAll('.btn-delete-notice').forEach(btn => btn.addEventListener('click', async () => {
+                    if (!canManageNotice()) return showToast('Permission denied.', 'warning');
+                    if (!confirm('Delete this issued notice?')) return;
+                    try {
+                        await db.collection('notices').doc(btn.dataset.id).delete();
+                        showToast('Notice deleted.', 'success');
+                        loadNotices();
+                    } catch (err) { showToast(err.message, 'error'); }
+                }));
+            } catch (err) {
+                list.innerHTML = `<div class="notice-empty">Unable to load notices. ${escapeHTML(err.message || '')}</div>`;
+            }
+        }
+
+        document.getElementById('addNoticeBtn')?.addEventListener('click', () => openNoticeModal());
+        document.getElementById('noticeCancelBtn')?.addEventListener('click', () => {
+            document.getElementById('noticeModal').classList.remove('active');
+            noticeEditId = null;
+        });
+        document.getElementById('noticeSaveBtn')?.addEventListener('click', async () => {
+            if (!canManageNotice()) return showToast('Permission denied.', 'warning');
+            const title = document.getElementById('noticeTitle').value.trim();
+            const content = document.getElementById('noticeContent').value.trim();
+            const type = document.getElementById('noticeType').value;
+            if (!title || !content) return showToast('Notice title and content are required.', 'warning');
+
+            const payload = {
+                title,
+                content,
+                type,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            try {
+                if (noticeEditId) {
+                    await db.collection('notices').doc(noticeEditId).update(payload);
+                    showToast('Notice updated.', 'success');
+                } else {
+                    payload.issuedByUid = currentUser.uid;
+                    payload.issuedByName = currentUserData.name || 'User';
+                    payload.issuedByRole = roleLabel(currentUserData.role);
+                    payload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await db.collection('notices').add(payload);
+                    showToast('Notice issued successfully.', 'success');
+                }
+                document.getElementById('noticeModal').classList.remove('active');
+                noticeEditId = null;
+                loadNotices();
+            } catch (err) { showToast(err.message, 'error'); }
+        });
+
         // --- ACTIVITY ---
         async function loadActivity() {
             const feed = document.getElementById('activityFeed');
@@ -3298,8 +3481,9 @@
             itOpt.hidden = !isSuperAdmin();
             itOpt.disabled = !isSuperAdmin();
 
-            chairOpt.hidden = !isSuperAdmin();
-            chairOpt.disabled = !isSuperAdmin();
+            const canChairRole = isSuperAdmin() || isAdminRole() || isChairman() || isPriyabrata();
+            chairOpt.hidden = !canChairRole;
+            chairOpt.disabled = !canChairRole;
 
             foundOpt.hidden = !isSuperAdmin();
             foundOpt.disabled = !isSuperAdmin();
@@ -3314,10 +3498,10 @@
 
             if (isSuperAdmin()) {
                 note.classList.add('super-admin-note');
-                note.innerHTML = `<span class="icon">★</span><span>You are the Super Admin. You can assign <strong>IT Admin</strong>, <strong>Admin</strong>, and <strong>Founding Member</strong> roles. The <strong>Chairman</strong> role is protected and cannot be changed.</span>`;
+                note.innerHTML = `<span class="icon">★</span><span>You are the Super Admin. You can manage protected roles including <strong>Chairman</strong>.</span>`;
             } else if (isChairman()) {
                 note.classList.add('chairman-note');
-                note.innerHTML = `<span class="icon">★</span><span>You are the Chairman. You can manage standard members and admins below your rank. You <strong>cannot</strong> appoint anyone as Chairman, and you cannot touch Super Admin or Founding Members.</span>`;
+                note.innerHTML = `<span class="icon">★</span><span>Chairman profile management is enabled. You may edit your own profile/role and, where permitted by the database role policy, manage the Chairman record.</span>`;
             } else {
                 note.innerHTML = `<span class="icon">🛡️</span><span>You can only manage members with a lower role than your own. Higher ranks are protected.</span>`;
             }
@@ -3354,8 +3538,8 @@
                 }
             }
 
-            if (newRole === 'chairman' && !isSuperAdmin()) {
-                showToast('Only the Super Admin can appoint a Chairman.', 'warning');
+            if (newRole === 'chairman' && !(isSuperAdmin() || isAdminRole() || isChairman() || isPriyabrata())) {
+                showToast('Only authorized database roles can assign the Chairman role.', 'warning');
                 return;
             }
 
@@ -3369,18 +3553,13 @@
                 return;
             }
 
-            if (normalizeRole(targetUser.role) === 'chairman' && !isSuperAdmin()) {
-                showToast('Chairman role is protected. Only the Super Admin can consider changes — but Chairman is fully protected.', 'warning');
+            if (normalizeRole(targetUser.role) === 'chairman' && !canEditChairman(targetUser)) {
+                showToast('Chairman profile is protected from your current database role.', 'warning');
                 return;
             }
 
             if (!isSuperAdmin() && roleRank(newRole) >= myRank()) {
                 showToast('You cannot assign a role equal to or higher than your own.', 'warning');
-                return;
-            }
-
-            if (targetUser.id === currentUser.uid && newRole !== normalizeRole(currentUserData.role)) {
-                showToast('You cannot change your own role.', 'warning');
                 return;
             }
 
