@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Contact | EIAFSDO</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@500;600;700&family=Nunito+Sans:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root{
+
+    --bg:#fffaf0;
+    --surface:#fffef8;
+    --soft:#f6eed8;
+
+    --text:#1d1a14;
+    --body:#3d3830;
+
+    --yellow:#f2c94c;
+
+    --gold:#c9972e;
+    --gold-light:#ffe68a;
+    --gold-dark:#765300;
+
+    --green:#e8ddb4;
+
+    --blue:#1687ff;
+
+    --black:#17150f;
+
+    --white:#fffef8;
+
+    --danger:#c0392b;
+    --success:#2f7d3a;
+
+    --border:2px solid var(--black);
+
+    --shadow:6px 7px 0 var(--black);
+
+    --shadow-soft:3px 4px 0 var(--black);
+
+    --radius:12px;
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+
+body{
+
+    font-family:"Nunito Sans",sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    overflow-x:hidden;
+
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:-20%;
+
+    z-index:-5;
+
+    pointer-events:none;
+
+    background:
+
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(242,201,76,.24),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(232,221,180,.38),
+            transparent 27%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(242,201,76,.15),
+            transparent 32%
+        );
+
+    filter:blur(22px);
+
+    animation:bgBreath 9s ease-in-out infinite alternate;
+
+}
+
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-4;
+
+    pointer-events:none;
+
+    opacity:.22;
+
+    background-image:
+
+        linear-gradient(
+            rgba(29,26,20,.08) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(29,26,20,.08) 1px,
+            transparent 1px
+        );
+
+    background-size:48px 48px;
+
+    animation:gridMove 20s linear infinite;
+
+}
+
+
+@keyframes bgBreath{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.08);
+    }
+
+}
+
+
+@keyframes gridMove{
+
+    from{
+        background-position:0 0;
+    }
+
+    to{
+        background-position:48px 48px;
+    }
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.nav{
+
+    position:sticky;
+
+    top:12px;
+
+    z-index:1000;
+
+    width:min(
+        1180px,
+        calc(100% - 28px)
+    );
+
+    margin:12px auto 0;
+
+    min-height:66px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    padding:9px 13px;
+
+    background:rgba(
+        255,
+        254,
+        248,
+        .88
+    );
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    border:var(--border);
+
+    border-radius:999px;
+
+    box-shadow:var(--shadow-soft);
+
+}
+
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:var(--text);
+
+    text-decoration:none;
+
+}
+
+
+.brand-logo{
+
+    width:44px;
+
+    height:44px;
+
+    border-radius:50%;
+
+    border:2px solid var(--black);
+
+    object-fit:cover;
+
+    background:var(--yellow);
+
+}
+
+
+.brand-text{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:15px;
+
+}
+
+
+.nav-links{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+}
+
+
+.nav-links a{
+
+    color:var(--text);
+
+    text-decoration:none;
+
+    padding:9px 12px;
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    transition:.25s ease;
+
+}
+
+
+.nav-links a:hover,
+.nav-links a.active{
+
+    background:var(--yellow);
+
+    transform:translateY(-2px);
+
+}
+
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+
+    width:min(
+        1120px,
+        calc(100% - 30px)
+    );
+
+    margin:auto;
+
+}
+
+
+.section{
+
+    padding:85px 0 15px;
+
+}
+
+
+.label{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    padding:7px 12px;
+
+    background:var(--yellow);
+
+    border:var(--border);
+
+    border-radius:999px;
+
+    box-shadow:var(--shadow-soft);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+}
+
+
+.label::before{
+
+    content:"";
+
+    width:7px;
+
+    height:7px;
+
+    border-radius:50%;
+
+    background:var(--black);
+
+}
+
+
+.section-title{
+
+    margin-top:21px;
+
+    max-width:900px;
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:clamp(
+        38px,
+        6vw,
+        72px
+    );
+
+    line-height:.98;
+
+    letter-spacing:-2px;
+
+}
+
+
+.section-description{
+
+    max-width:790px;
+
+    margin-top:18px;
+
+    color:var(--body);
+
+    font-size:17px;
+
+    line-height:1.75;
+
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+
+    padding:110px 0 20px;
+
+}
+
+
+.hero-inner{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        .72fr;
+
+    gap:45px;
+
+    align-items:center;
+
+}
+
+
+.hero h1{
+
+    margin-top:25px;
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:clamp(
+        44px,
+        7vw,
+        88px
+    );
+
+    line-height:.92;
+
+    letter-spacing:-4px;
+
+}
+
+
+.hero h1 span{
+
+    display:block;
+
+    position:relative;
+
+    width:max-content;
+
+}
+
+
+.hero h1 span::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:2%;
+
+    right:-4%;
+
+    bottom:2px;
+
+    height:14px;
+
+    background:var(--yellow);
+
+    z-index:-1;
+
+    transform:skew(-8deg);
+
+}
+
+
+.hero-sub{
+
+    max-width:640px;
+
+    margin-top:24px;
+
+    color:var(--body);
+
+    font-size:17px;
+
+    line-height:1.75;
+
+}
+
+
+.hero-actions{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:12px;
+
+    margin-top:28px;
+
+}
+
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:48px;
+
+    padding:12px 19px;
+
+    border:var(--border);
+
+    border-radius:9px;
+
+    box-shadow:var(--shadow-soft);
+
+    text-decoration:none;
+
+    color:var(--text);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+}
+
+
+.btn:hover{
+
+    transform:translate(
+        -2px,
+        -2px
+    );
+
+    box-shadow:6px 7px 0 var(--black);
+
+}
+
+
+.btn-yellow{
+
+    background:var(--yellow);
+
+}
+
+
+.btn-white{
+
+    background:var(--surface);
+
+}
+
+
+.btn:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    box-shadow:var(--shadow-soft);
+
+}
+
+
+/* =====================================================
+   HERO SIDE STAMP
+===================================================== */
+
+.hero-stamp{
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+
+.stamp-card{
+
+    width:min(
+        330px,
+        100%
+    );
+
+    padding:26px;
+
+    background:var(--black);
+
+    color:var(--surface);
+
+    border:var(--border);
+
+    border-radius:18px;
+
+    box-shadow:10px 12px 0 rgba(23,21,15,.35);
+
+    transform:rotate(2deg);
+
+}
+
+
+.stamp-card h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:26px;
+
+    line-height:1;
+
+    color:var(--yellow);
+
+}
+
+
+.stamp-card p{
+
+    margin-top:14px;
+
+    color:#e5ddce;
+
+    font-size:13px;
+
+    line-height:1.75;
+
+}
+
+
+.stamp-list{
+
+    margin-top:20px;
+
+    display:grid;
+
+    gap:9px;
+
+}
+
+
+.stamp-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:11px 12px;
+
+    background:#221f17;
+
+    border:1px solid #46402f;
+
+    border-radius:8px;
+
+}
+
+
+.stamp-row span{
+
+    color:#cfc6b4;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.stamp-row strong{
+
+    font-size:11px;
+
+    text-align:right;
+
+}
+
+
+/* =====================================================
+   CONTACT GRID
+===================================================== */
+
+.contact-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1.15fr
+        .85fr;
+
+    gap:22px;
+
+    margin-top:40px;
+
+    align-items:start;
+
+}
+
+
+.card{
+
+    padding:32px;
+
+    background:var(--surface);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+.card h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:30px;
+
+    line-height:1.05;
+
+}
+
+
+.card-intro{
+
+    margin-top:12px;
+
+    color:var(--body);
+
+    font-size:14px;
+
+    line-height:1.75;
+
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form{
+
+    margin-top:26px;
+
+}
+
+
+.field{
+
+    margin-bottom:18px;
+
+}
+
+
+.field label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:.5px;
+
+    text-transform:uppercase;
+
+}
+
+
+.field label .optional{
+
+    color:#8a8170;
+
+    font-weight:700;
+
+}
+
+
+.field input,
+.field textarea{
+
+    width:100%;
+
+    padding:13px 15px;
+
+    background:var(--surface);
+
+    border:2px solid var(--black);
+
+    border-radius:9px;
+
+    box-shadow:2px 3px 0 var(--black);
+
+    font-family:"Nunito Sans",sans-serif;
+
+    font-size:14px;
+
+    color:var(--text);
+
+    transition:.2s ease;
+
+}
+
+
+.field textarea{
+
+    min-height:150px;
+
+    resize:vertical;
+
+    line-height:1.7;
+
+}
+
+
+.field input::placeholder,
+.field textarea::placeholder{
+
+    color:#a49a86;
+
+}
+
+
+.field input:focus,
+.field textarea:focus{
+
+    outline:none;
+
+    background:#fffdf0;
+
+    box-shadow:4px 5px 0 var(--black);
+
+    transform:translate(-1px,-1px);
+
+}
+
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"]{
+
+    border-color:var(--danger);
+
+    box-shadow:2px 3px 0 var(--danger);
+
+}
+
+
+.field-error{
+
+    display:block;
+
+    min-height:14px;
+
+    margin-top:6px;
+
+    color:var(--danger);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+.consent{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:10px;
+
+    padding:14px;
+
+    background:var(--soft);
+
+    border:1px solid rgba(29,26,20,.25);
+
+    border-radius:9px;
+
+}
+
+
+.consent input{
+
+    flex:none;
+
+    width:18px;
+
+    height:18px;
+
+    margin-top:2px;
+
+    accent-color:var(--gold);
+
+}
+
+
+.consent label{
+
+    margin:0;
+
+    font-family:"Nunito Sans",sans-serif;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    line-height:1.6;
+
+    text-transform:none;
+
+    letter-spacing:0;
+
+}
+
+
+.form-actions{
+
+    margin-top:24px;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+
+.form-note{
+
+    color:#6b6254;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    line-height:1.7;
+
+}
+
+
+.form-alert{
+
+    display:none;
+
+    margin-bottom:18px;
+
+    padding:14px 15px;
+
+    border:2px solid var(--black);
+
+    border-radius:9px;
+
+    box-shadow:var(--shadow-soft);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    line-height:1.7;
+
+}
+
+
+.form-alert.show{
+
+    display:block;
+
+}
+
+
+.form-alert.success{
+
+    background:#e9f8e8;
+
+    color:var(--success);
+
+}
+
+
+.form-alert.error{
+
+    background:#fdeceb;
+
+    color:var(--danger);
+
+}
+
+
+/* =====================================================
+   SIDE INFO CARDS
+===================================================== */
+
+.side-stack{
+
+    display:grid;
+
+    gap:22px;
+
+}
+
+
+.info-list{
+
+    margin-top:22px;
+
+    display:grid;
+
+    gap:10px;
+
+}
+
+
+.info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:13px;
+
+    background:var(--soft);
+
+    border:1px solid rgba(29,26,20,.25);
+
+    border-radius:8px;
+
+}
+
+
+.info span{
+
+    color:#6b6254;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.info strong{
+
+    font-size:12px;
+
+    text-align:right;
+
+}
+
+
+.steps{
+
+    margin-top:22px;
+
+    display:grid;
+
+    gap:12px;
+
+}
+
+
+.step{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    padding:15px;
+
+    background:var(--surface);
+
+    border:2px solid var(--black);
+
+    border-radius:9px;
+
+    box-shadow:2px 3px 0 var(--black);
+
+}
+
+
+.step-number{
+
+    flex:none;
+
+    width:30px;
+
+    height:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:var(--yellow);
+
+    border:2px solid var(--black);
+
+    border-radius:50%;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:8px;
+
+    font-weight:900;
+
+}
+
+
+.step strong{
+
+    display:block;
+
+    font-size:14px;
+
+}
+
+
+.step span{
+
+    display:block;
+
+    margin-top:4px;
+
+    color:#62594c;
+
+    font-size:11px;
+
+    line-height:1.5;
+
+}
+
+
+/* =====================================================
+   STATEMENT
+===================================================== */
+
+.statement{
+
+    margin-top:40px;
+
+    padding:35px;
+
+    background:var(--yellow);
+
+    border:var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
+
+}
+
+
+.statement h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+    font-size:clamp(
+        29px,
+        5vw,
+        48px
+    );
+
+    line-height:1;
+
+}
+
+
+.statement p{
+
+    max-width:780px;
+
+    margin:16px auto 0;
+
+    color:#3b321f;
+
+    font-size:14px;
+
+    line-height:1.75;
+
+}
+
+
+.statement-seal{
+
+    display:inline-flex;
+
+    margin-top:22px;
+
+    padding:9px 13px;
+
+    background:var(--black);
+
+    color:var(--yellow);
+
+    border-radius:999px;
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    font-weight:900;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+
+    margin-top:105px;
+
+    padding:55px 0 30px;
+
+    background:var(--black);
+
+    color:var(--surface);
+
+    border-top:5px solid var(--yellow);
+
+}
+
+
+.footer-inner{
+
+    width:min(
+        1120px,
+        calc(100% - 30px)
+    );
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:25px;
+
+}
+
+
+.footer-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+.footer-logo{
+
+    width:49px;
+
+    height:49px;
+
+    border-radius:50%;
+
+    border:2px solid var(--surface);
+
+    object-fit:cover;
+
+}
+
+
+.footer h3{
+
+    font-family:"Archivo Black",sans-serif;
+
+}
+
+
+.footer p{
+
+    margin-top:7px;
+
+    color:#cfc8b8;
+
+    font-size:11px;
+
+}
+
+
+.footer-code{
+
+    color:var(--yellow);
+
+    font-family:"Roboto Mono",monospace;
+
+    font-size:9px;
+
+    text-align:right;
+
+    line-height:1.7;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:920px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .hero-inner{
+        grid-template-columns:1fr;
+        gap:45px;
+    }
+
+    .hero-stamp{
+        order:2;
+    }
+
+    .contact-grid{
+        grid-template-columns:1fr;
+    }
+
+    .footer-inner{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .footer-code{
+        text-align:left;
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    .nav{
+        width:calc(100% - 18px);
+        top:7px;
+        margin-top:7px;
+    }
+
+    .brand-text{
+        font-size:12px;
+    }
+
+    .brand-logo{
+        width:40px;
+        height:40px;
+    }
+
+    .hero{
+        padding-top:90px;
+    }
+
+    .hero h1{
+        font-size:clamp(
+            42px,
+            14vw,
+            66px
+        );
+
+        letter-spacing:-3px;
+    }
+
+    .section{
+        padding-top:70px;
+    }
+
+    .card,
+    .statement,
+    .stamp-card{
+        padding:23px;
+    }
+
+    .form-actions .btn{
+        width:100%;
+    }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        scroll-behavior:auto !important;
+
+        transition:none !important;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="nav">
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+
+        <img
+            class="brand-logo"
+            src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
+            alt="EIAFSDO Web Logo"
+        >
+
+        <span class="brand-text">
+            EIAFSDO
+        </span>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="index.html#desk">
+            Chairman's Desk
+        </a>
+
+        <a href="index.html#talks">
+            Talks
+        </a>
+
+        <a href="index.html#vision">
+            Vision
+        </a>
+
+        <a
+            href="Contact.html"
+            class="active"
+        >
+            Contact
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<header class="hero">
+
+    <div class="container">
+
+        <div class="hero-inner">
+
+
+            <div>
+
+                <div class="label">
+                    CONTACT US
+                </div>
+
+
+                <h1>
+
+                    Get in
+
+                    <span>Touch</span>
+
+                </h1>
+
+
+                <p class="hero-sub">
+
+                    Have a question, an idea or a project
+                    in mind? Send a message to the EIAFSDO
+                    team and we will get back to you.
+
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#form"
+                        class="btn btn-yellow"
+                    >
+                        SEND A MESSAGE
+                    </a>
+
+                    <a
+                        href="index.html"
+                        class="btn btn-white"
+                    >
+                        BACK TO HOME
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hero-stamp">
+
+                <div class="stamp-card">
+
+                    <h3>
+                        Contact Desk
+                    </h3>
+
+                    <p>
+
+                        Official communication channel
+                        for EIAFSDO.
+
+                    </p>
+
+
+                    <div class="stamp-list">
+
+                        <div class="stamp-row">
+
+                            <span>
+                                ORGANIZATION
+                            </span>
+
+                            <strong>
+                                EIAFSDO
+                            </strong>
+
+                        </div>
+
+
+                        <div class="stamp-row">
+
+                            <span>
+                                RESPONSE
+                            </span>
+
+                            <strong>
+                                24–48 HOURS
+                            </strong>
+
+                        </div>
+
+
+                        <div class="stamp-row">
+
+                            <span>
+                                STATUS
+                            </span>
+
+                            <strong>
+                                OPEN
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     CONTACT FORM
+===================================================== -->
+
+<section
+    class="section"
+    id="form"
+>
+
+    <div class="label">
+        MESSAGE FORM
+    </div>
+
+
+    <h2 class="section-title">
+        Send Us a Message
+    </h2>
+
+
+    <p class="section-description">
+
+        Fill in the form below. Your name, email and
+        message are required. A mobile number is
+        optional.
+
+    </p>
+
+
+
+    <div class="contact-grid">
+
+
+        <!-- ================= FORM CARD ================= -->
+
+        <div class="card">
+
+            <h3>
+                Contact Form
+            </h3>
+
+
+            <p class="card-intro">
+
+                All messages are delivered directly to
+                the EIAFSDO contact desk.
+
+            </p>
+
+
+
+            <form
+                id="contactForm"
+                class="form"
+                action="https://formspree.io/f/xoevzopl"
+                method="POST"
+                novalidate
+            >
+
+                <!-- Formspree configuration -->
+
+                <input
+                    type="hidden"
+                    name="_subject"
+                    value="New message from EIAFSDO Contact page"
+                >
+
+                <input
+                    type="hidden"
+                    name="_replyto"
+                    id="replytoField"
+                >
+
+
+                <!-- Form level messages -->
+
+                <div
+                    class="form-alert success"
+                    data-fs-success
+                ></div>
+
+                <div
+                    class="form-alert error"
+                    data-fs-error
+                ></div>
+
+
+
+                <!-- NAME -->
+
+                <div class="field">
+
+                    <label for="name">
+                        Your Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                        data-fs-field
+                    >
+
+                    <span
+                        class="field-error"
+                        data-fs-error="name"
+                    ></span>
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        required
+                        data-fs-field
+                    >
+
+                    <span
+                        class="field-error"
+                        data-fs-error="email"
+                    ></span>
+
+                </div>
+
+
+
+                <!-- MOBILE -->
+
+                <div class="field">
+
+                    <label for="mobile">
+                        Mobile Number
+                        <span class="optional">(optional)</span>
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="mobile"
+                        name="mobile"
+                        placeholder="+91 00000 00000"
+                        inputmode="tel"
+                        autocomplete="tel"
+                    >
+
+                    <span
+                        class="field-error"
+                        data-fs-error="mobile"
+                    ></span>
+
+                </div>
+
+
+
+                <!-- MESSAGE -->
+
+                <div class="field">
+
+                    <label for="message">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        placeholder="Write your message here..."
+                        required
+                        data-fs-field
+                    ></textarea>
+
+                    <span
+                        class="field-error"
+                        data-fs-error="message"
+                    ></span>
+
+                </div>
+
+
+
+                <!-- CONSENT -->
+
+                <div class="consent">
+
+                    <input
+                        type="checkbox"
+                        id="consent"
+                        name="consent"
+                        value="yes"
+                        required
+                        data-fs-field
+                    >
+
+                    <label for="consent">
+
+                        I agree that EIAFSDO may store this
+                        information in order to respond to
+                        my message.
+
+                    </label>
+
+                </div>
+
+                <span
+                    class="field-error"
+                    data-fs-error="consent"
+                ></span>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-yellow"
+                        data-fs-submit-btn
+                    >
+                        SEND MESSAGE
+                    </button>
+
+                    <span class="form-note">
+
+                        SECURE FORM<br>
+                        POWERED BY FORMSPREE
+
+                    </span>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= SIDE INFO ================= -->
+
+        <div class="side-stack">
+
+
+            <!-- CONTACT INFO -->
+
+            <div class="card">
+
+                <h3>
+                    Contact Information
+                </h3>
+
+
+                <p class="card-intro">
+
+                    Details about this contact channel.
+
+                </p>
+
+
+                <div class="info-list">
+
+                    <div class="info">
+
+                        <span>
+                            ORGANIZATION
+                        </span>
+
+                        <strong>
+                            EIAFSDO
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span>
+                            CHANNEL
+                        </span>
+
+                        <strong>
+                            Official Contact Desk
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span>
+                            RESPONSE TIME
+                        </span>
+
+                        <strong>
+                            24–48 Hours
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span>
+                            REQUIRED FIELDS
+                        </span>
+
+                        <strong>
+                            Name · Email · Message
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span>
+                            OPTIONAL FIELD
+                        </span>
+
+                        <strong>
+                            Mobile Number
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info">
+
+                        <span>
+                            STATUS
+                        </span>
+
+                        <strong>
+                            Open
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STEPS -->
+
+            <div class="card">
+
+                <h3>
+                    What Happens Next
+                </h3>
+
+
+                <div class="steps">
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            01
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                You Send
+                            </strong>
+
+                            <span>
+                                Your message is submitted
+                                through the secure form.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            02
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                We Review
+                            </strong>
+
+                            <span>
+                                The EIAFSDO team reads your
+                                message and details.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            03
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                We Reply
+                            </strong>
+
+                            <span>
+                                A response is sent to the
+                                email address you provided.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- STATEMENT -->
+
+    <div class="statement">
+
+        <h3>
+            Let's Build Something Together
+        </h3>
+
+
+        <p>
+
+            Whether it is a question, a suggestion or a
+            project idea, the EIAFSDO contact desk is
+            open to hearing from you.
+
+        </p>
+
+
+        <div class="statement-seal">
+
+            ✓ EIAFSDO OFFICIAL CONTACT CHANNEL
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-inner">
+
+
+        <div class="footer-brand">
+
+            <img
+                class="footer-logo"
+                src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
+                alt="EIAFSDO Web Logo"
+            >
+
+
+            <div>
+
+                <h3>
+                    EIAFSDO
+                </h3>
+
+                <p>
+                    Official Contact Desk
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-code">
+
+            CONTACT DESK<br>
+
+            EIAFSDO<br>
+
+            EIAFSDO · 2026
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     FORMSPREE AJAX SDK
+===================================================== -->
+
+<script>
+
+    window.formspree =
+        window.formspree ||
+        function () {
+
+            (formspree.q = formspree.q || [])
+                .push(arguments);
+
+        };
+
+
+    formspree(
+        "initForm",
+        {
+            formElement:"#contactForm",
+            formId:"xoevzopl"
+        }
+    );
+
+</script>
+
+<script
+    src="https://unpkg.com/@formspree/ajax@1"
+    defer
+></script>
+
+
+
+<!-- =====================================================
+     PAGE SCRIPT
+===================================================== -->
+
+<script>
+
+/* =====================================================
+   REPLY-TO SYNC
+===================================================== */
+
+const emailField =
+    document.getElementById("email");
+
+const replytoField =
+    document.getElementById("replytoField");
+
+
+emailField.addEventListener(
+    "input",
+    () => {
+
+        replytoField.value =
+            emailField.value;
+
+    }
+);
+
+
+/* =====================================================
+   SCROLL REVEAL
+===================================================== */
+
+const revealItems =
+    document.querySelectorAll(
+        ".card," +
+        ".stamp-card," +
+        ".statement," +
+        ".step"
+    );
+
+
+const revealObserver =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    if(entry.isIntersecting){
+
+                        entry.target.animate(
+
+                            [
+
+                                {
+                                    opacity:0,
+                                    transform:
+                                        "translateY(22px)"
+                                },
+
+                                {
+                                    opacity:1,
+                                    transform:
+                                        "translateY(0)"
+                                }
+
+                            ],
+
+                            {
+
+                                duration:650,
+
+                                easing:
+                                    "cubic-bezier(.2,.75,.2,1)",
+
+                                fill:"forwards"
+
+                            }
+
+                        );
+
+
+                        revealObserver.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                }
+            );
+
+        },
+
+        {
+            threshold:.08
+        }
+
+    );
+
+
+revealItems.forEach(
+    item => {
+
+        item.style.opacity = "0";
+
+        revealObserver.observe(
+            item
+        );
+
+    }
+);
+
+
+/* =====================================================
+   NAV SHADOW
+===================================================== */
+
+const nav =
+    document.querySelector(".nav");
+
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        if(window.scrollY > 40){
+
+            nav.style.boxShadow =
+                "5px 7px 0 rgba(23,21,15,.9)";
+
+        }else{
+
+            nav.style.boxShadow =
+                "3px 4px 0 rgba(23,21,15,1)";
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+</script>
+
+
+</body>
+</html>
