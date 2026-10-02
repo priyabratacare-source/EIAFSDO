@@ -564,7 +564,6 @@
         .status-badge.rejected { background: #ffe0e0; border-color: #b71c1c; color: #b71c1c; }
         .status-badge.hold     { background: #fff0d4; border-color: #e65100; color: #bf360c; }
 
-        /* Role badges */
         .status-badge.role-user           { background: var(--surface-soft); border-color: var(--text-color); color: var(--text-muted); }
         .status-badge.role-it-admin       { background: #d6e9ff; border-color: #1565c0; color: #0d3d72; }
         .status-badge.role-admin          { background: #d4f5d4; border-color: #2e7d32; color: #1b5e20; }
@@ -732,6 +731,81 @@
         .org-pad .pad-signature { margin-top: 14px; padding: 12px 16px; background: var(--surface-soft); border: var(--border-thick); border-radius: var(--radius-sm); display: flex; justify-content: space-between; font-size: 12.5px; color: var(--text-color); font-weight: 700; gap: 8px; flex-wrap: wrap; }
         .org-pad .pad-signature .sig-badge { background: var(--accent-yellow); border: var(--border-subtle); border-radius: var(--radius-pill); padding: 3px 12px; font-weight: 800; }
 
+        /* ============================================================
+           GMAIL SECTION (NEW)
+           ============================================================ */
+        .gmail-toolbar {
+            display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+            margin-bottom: 14px; padding-bottom: 12px; border-bottom: var(--border-thick);
+        }
+        .gmail-status-text {
+            font-size: 12px; color: var(--text-muted); font-weight: 700;
+            font-family: var(--font-mono); margin-left: auto;
+        }
+        .gmail-layout {
+            display: grid; grid-template-columns: 350px 1fr; gap: 14px; min-height: 500px;
+        }
+        .gmail-list {
+            background: var(--bg-color); border: var(--border-thick);
+            border-radius: var(--radius-sm); overflow-y: auto;
+            max-height: 620px; box-shadow: 2px 3px 0 var(--text-color);
+        }
+        .gmail-item {
+            padding: 12px 14px; border-bottom: var(--border-subtle);
+            cursor: pointer; transition: background .16s var(--ease-out);
+            position: relative;
+        }
+        .gmail-item:hover { background: var(--surface-soft); }
+        .gmail-item.active { background: var(--accent-yellow); border-left: 4px solid var(--text-color); }
+        .gmail-item .gm-from {
+            font-weight: 800; font-size: 12.5px; color: var(--text-color);
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .gmail-item .gm-subject {
+            font-size: 13px; color: var(--text-color); font-weight: 700; margin-top: 3px;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .gmail-item .gm-snippet {
+            font-size: 11.5px; color: var(--text-muted); margin-top: 4px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; font-weight: 600; line-height: 1.4;
+        }
+        .gmail-item .gm-date {
+            font-size: 10px; color: var(--text-muted); font-weight: 700;
+            margin-top: 4px;
+        }
+        .gmail-detail {
+            background: var(--bg-color); border: var(--border-thick);
+            border-radius: var(--radius-sm); padding: 18px 20px;
+            overflow-y: auto; max-height: 620px; box-shadow: 2px 3px 0 var(--text-color);
+        }
+        .gmail-detail h4 { font-size: 17px; margin-bottom: 8px; line-height: 1.3; }
+        .gmail-detail .gd-meta {
+            font-size: 12px; color: var(--text-muted); margin-bottom: 14px;
+            padding-bottom: 10px; border-bottom: var(--border-subtle); font-weight: 600;
+        }
+        .gmail-detail .gd-meta div { margin-bottom: 3px; word-break: break-word; }
+        .gmail-detail .gd-body { font-size: 13px; line-height: 1.65; color: var(--text-color); word-break: break-word; }
+        .gmail-detail .gd-body iframe {
+            width: 100%; min-height: 480px; border: 1px solid var(--text-color);
+            border-radius: 4px; background: white;
+        }
+        .gmail-loading {
+            padding: 40px 20px; text-align: center; color: var(--text-muted);
+            font-weight: 700; font-size: 13px;
+        }
+        .gmail-empty {
+            padding: 60px 20px; text-align: center; color: var(--text-muted);
+            font-weight: 700;
+        }
+        .gmail-connect-panel { margin-top: 18px; }
+        .gmail-badge {
+            display: inline-block; font-size: 10px; font-weight: 800;
+            padding: 3px 10px; border-radius: var(--radius-pill);
+            background: #d4f5d4; border: var(--border-subtle); color: #1b5e20;
+            text-transform: uppercase; letter-spacing: .4px;
+        }
+
         /* ---------- UTILITIES ---------- */
         .hidden { display: none !important; }
         .text-muted { color: var(--text-muted); font-size: 12.5px; font-weight: 600; }
@@ -834,6 +908,8 @@
             .msg-sidebar { max-height: 160px; }
             .id-card { max-width: 100%; }
             .dash-nav .user-info .user-name { max-width: 80px; }
+            .gmail-layout { grid-template-columns: 1fr; }
+            .gmail-list { max-height: 300px; }
         }
         @media (max-width: 600px) {
             .profile-fields-grid { grid-template-columns: 1fr; }
@@ -952,6 +1028,7 @@
                 <div class="menu-item" data-tab="submitproject"><span class="menu-icon">➕</span> Submit Project</div>
                 <div class="menu-item" data-tab="talks"><span class="menu-icon">💬</span> Talks</div>
                 <div class="menu-item" data-tab="messages"><span class="menu-icon">✉️</span> Messages</div>
+                <div class="menu-item" data-tab="gmail"><span class="menu-icon">📧</span> Gmail Inbox</div>
                 <div class="menu-item" data-tab="plans"><span class="menu-icon">📝</span> My Plans</div>
                 <div class="menu-item" data-tab="board"><span class="menu-icon">🏛️</span> EIAFSDO Board</div>
                 <div class="menu-item hidden" data-tab="orgpad" id="mobileOrgPadTab"><span class="menu-icon">📄</span> Org Pad</div>
@@ -968,6 +1045,7 @@
                     <div class="menu-item" data-tab="submitproject"><span class="menu-icon">➕</span> Submit Project</div>
                     <div class="menu-item" data-tab="talks"><span class="menu-icon">💬</span> Talks</div>
                     <div class="menu-item" data-tab="messages"><span class="menu-icon">✉️</span> Messages</div>
+                    <div class="menu-item" data-tab="gmail"><span class="menu-icon">📧</span> Gmail Inbox</div>
                     <div class="menu-item" data-tab="plans"><span class="menu-icon">📝</span> My Plans</div>
                     <div class="menu-item" data-tab="board"><span class="menu-icon">🏛️</span> EIAFSDO Board</div>
                     <div class="menu-item hidden" data-tab="orgpad" id="desktopOrgPadTab"><span class="menu-icon">📄</span> Org Pad</div>
@@ -1157,6 +1235,54 @@
                                 <div class="msg-input-area">
                                     <input type="text" id="msgInput" placeholder="Type a message..." disabled />
                                     <button class="btn-primary btn-sm" id="msgSendBtn" disabled>Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                         Tab: Gmail Inbox (NEW)
+                         ============================================================ -->
+                    <div class="tab" id="tab-gmail">
+                        <h3>📧 <span>Gmail Inbox</span></h3>
+                        <p class="text-muted">Read your Gmail inbox directly from the EIAFSDO dashboard using the Gmail API.</p>
+
+                        <!-- Not Connected Panel -->
+                        <div id="gmailNotConnected" class="gmail-connect-panel">
+                            <div class="coming-soon-screen" style="min-height:340px;">
+                                <div class="cs-icon">📬</div>
+                                <div class="cs-pill">Connect Required</div>
+                                <h4>Connect Your Gmail</h4>
+                                <p>
+                                    Sign in with Google to view your Gmail inbox from inside the dashboard.
+                                    This uses a secure OAuth flow with <strong>read-only</strong> Gmail access.
+                                    Your emails stay in your Google account — nothing is stored on our servers.
+                                </p>
+                                <button class="btn-primary" id="connectGmailBtn" style="margin-top:8px;">
+                                    🔗 Connect Gmail
+                                </button>
+                                <p style="margin-top:16px; font-size:11.5px; color:var(--text-muted); font-weight:700;">
+                                    ⚠ Make sure your Firebase project has Google Sign-In enabled and the
+                                    Gmail API scope is added in the Google Cloud Console.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Connected Panel -->
+                        <div id="gmailConnected" class="hidden">
+                            <div class="gmail-toolbar">
+                                <span class="gmail-badge">● Connected</span>
+                                <button class="btn-secondary btn-sm" id="refreshGmailBtn">⟳ Refresh</button>
+                                <button class="btn-danger btn-sm" id="disconnectGmailBtn">Disconnect</button>
+                                <span class="gmail-status-text" id="gmailStatusText">Ready</span>
+                            </div>
+
+                            <div class="gmail-layout">
+                                <div class="gmail-list" id="gmailList">
+                                    <div class="gmail-loading">Loading messages…</div>
+                                </div>
+                                <div class="gmail-detail" id="gmailDetail">
+                                    <div class="gmail-empty">📩 Select an email to read it here.</div>
                                 </div>
                             </div>
                         </div>
@@ -1424,38 +1550,14 @@
         // ============================================================
         //   ROLE SYSTEM
         // ============================================================
-        // Ranks:
-        //   user              1
-        //   it-admin          2  (assignable only by Super Admin)
-        //   admin             3
-        //   founding-member   4  (PROTECTED — cannot be removed/changed by anyone)
-        //   chairman          5  (PROTECTED — only ONE, cannot be removed/changed by anyone except… nothing)
-        //   super-admin       6  (determined by name/email list)
-        //
-        // Special rules implemented:
-        //   • Chairman cannot remove / edit Super Admin.
-        //   • Super Admin cannot change / demote the Chairman.
-        //   • Chairman cannot appoint a User as Chairman.
-        //   • Only ONE Chairman can exist at any time.
-        //   • Founding Members are protected from removal / role changes by EVERYONE.
-        //   • Chairman also cannot remove Founding Members.
-        //   • "IT Admin" role is a special role assignable ONLY by the Super Admin.
-        //   • Super Admin can only move an account to IT Admin (per request) — the IT Admin option
-        //     appears only for the Super Admin and is the only "changed-to" elevated role they own exclusively.
-        // ============================================================
-
         const ROLE_RANK = {
             'user':            1,
             'it-admin':        2,
             'admin':           3,
             'founding-member': 4,
             'chairman':        5
-            // super-admin = 6 handled dynamically
         };
 
-        const PROTECTED_ROLES = ['founding-member', 'chairman'];   // cannot be removed / demoted by anyone
-
-        // --- SUPER ADMIN CONFIG ---
         const SUPER_ADMIN_NAMES = ['priyabrata patra'];
         const SUPER_ADMIN_EMAILS = ['priyabratacare@gmail.com', 'priyabrata@eiafsdo.in'];
 
@@ -1471,7 +1573,6 @@
             return ROLE_RANK[r] || 1;
         }
 
-        /** Check if ANY user object (not necessarily current) is a Super Admin by name/email */
         function isUserSuperAdmin(user) {
             if (!user) return false;
             const n = (user.name || '').toLowerCase().trim();
@@ -1481,31 +1582,12 @@
             return false;
         }
 
-        function isSuperAdmin() {
-            return isUserSuperAdmin(currentUserData);
-        }
+        function isSuperAdmin() { return isUserSuperAdmin(currentUserData); }
+        function isChairman() { if (!currentUserData) return false; return normalizeRole(currentUserData.role) === 'chairman'; }
+        function isAdminRole() { if (!currentUserData) return false; return normalizeRole(currentUserData.role) === 'admin'; }
+        function isITAdmin() { if (!currentUserData) return false; return normalizeRole(currentUserData.role) === 'it-admin'; }
+        function isFoundingMember() { if (!currentUserData) return false; return normalizeRole(currentUserData.role) === 'founding-member'; }
 
-        function isChairman() {
-            if (!currentUserData) return false;
-            return normalizeRole(currentUserData.role) === 'chairman';
-        }
-
-        function isAdminRole() {
-            if (!currentUserData) return false;
-            return normalizeRole(currentUserData.role) === 'admin';
-        }
-
-        function isITAdmin() {
-            if (!currentUserData) return false;
-            return normalizeRole(currentUserData.role) === 'it-admin';
-        }
-
-        function isFoundingMember() {
-            if (!currentUserData) return false;
-            return normalizeRole(currentUserData.role) === 'founding-member';
-        }
-
-        /** Any elevated role that gets the staff panels (it-admin, admin, founding-member, chairman, super-admin) */
         function isStaff() {
             if (!currentUserData) return false;
             if (isSuperAdmin()) return true;
@@ -1518,68 +1600,29 @@
             return roleRank(currentUserData?.role);
         }
 
-        // ---- MEMBER MANAGEMENT PERMISSIONS ----
-        /**
-         * Can the current user manage (edit/delete/reset) the target member?
-         *
-         * Rules:
-         *  - Never yourself.
-         *  - Super Admin accounts: nobody can manage them (they're set by name/email).
-         *  - Founding Members: protected — nobody can manage them.
-         *  - Chairman: protected — nobody can manage them (including Super Admin per requirement).
-         *  - Otherwise: current user must be strictly higher rank.
-         *  - Additionally: Chairman cannot manage Super Admin (already covered by rank, but explicit).
-         */
         function canManageUser(target) {
             if (!target || !currentUser) return false;
-            if (target.id === currentUser.uid) return false;    // never self
+            if (target.id === currentUser.uid) return false;
 
             const targetRole = normalizeRole(target.role);
 
-            // Super Admin target → nobody can manage
             if (isUserSuperAdmin(target)) return false;
-
-            // Founding Member target → protected from everyone
             if (targetRole === 'founding-member') return false;
-
-            // Chairman target → protected from everyone (per requirement: Super Admin cannot change Chairman either)
             if (targetRole === 'chairman') return false;
 
-            // Current user is Super Admin → can manage anyone left
             if (isSuperAdmin()) return true;
-
-            // Current user is Chairman → cannot manage Super Admin (already covered), otherwise rank-based
-            // (Founding members already blocked above)
-            // General rule: strictly higher rank
             return myRank() > roleRank(target.role);
         }
 
-        /**
-         * Can the current user assign the given role to someone?
-         */
         function canAssignRole(newRole) {
             const r = normalizeRole(newRole);
-
-            // Chairman & Founding Member: only Super Admin may assign.
-            // Chairman may NOT appoint anyone as Chairman.
-            if (r === 'chairman' || r === 'founding-member') {
-                return isSuperAdmin();
-            }
-
-            // IT Admin: only Super Admin may assign (per requirement — "superadmin change to IT admin also do this only")
-            if (r === 'it-admin') {
-                return isSuperAdmin();
-            }
-
-            // Super Admin role cannot be assigned via UI at all
+            if (r === 'chairman' || r === 'founding-member') return isSuperAdmin();
+            if (r === 'it-admin') return isSuperAdmin();
             if (r === 'super-admin') return false;
-
-            // For everything else: cannot assign equal or higher than your own rank
             if (isSuperAdmin()) return true;
             return roleRank(r) < myRank();
         }
 
-        /** Check if a Chairman already exists */
         function existingChairman() {
             return allMembers.find(m => normalizeRole(m.role) === 'chairman') || null;
         }
@@ -1633,6 +1676,13 @@
         let adminFilterStatus = 'all';
         let adminSearchTerm = '';
         let adminSortMode = 'newest';
+
+        // --- GMAIL STATE (NEW) ---
+        const GMAIL_SCOPE_READONLY = 'https://www.googleapis.com/auth/gmail.readonly';
+        let gmailAccessToken = null;
+        let gmailMessages = [];
+        let gmailSelectedId = null;
+        let gmailUserEmail = null;
 
         // --- UTILITIES ---
         function escapeHTML(str) {
@@ -1817,6 +1867,11 @@
         logoutBtn.addEventListener('click', () => {
             if (messageUnsubscribe) messageUnsubscribe();
             if (talksUnsubscribe) talksUnsubscribe();
+            // Reset Gmail state on logout
+            gmailAccessToken = null;
+            gmailMessages = [];
+            gmailSelectedId = null;
+            gmailUserEmail = null;
             auth.signOut();
         });
 
@@ -1834,10 +1889,9 @@
                         };
                         await db.collection('users').doc(user.uid).set(currentUserData);
                     }
-                    // Normalise unknown roles (keeps 'super-admin' as-is for display but we treat that via name/email)
                     const originalRole = currentUserData.role;
                     currentUserData.role = normalizeRole(originalRole);
-                    if (currentUserData.role === 'super-admin') currentUserData.role = 'user'; // super admin is name/email based
+                    if (currentUserData.role === 'super-admin') currentUserData.role = 'user';
                 } catch (err) {
                     console.error("Firestore user profile fetch error:", err);
                     currentUserData = {
@@ -1908,6 +1962,10 @@
                 loadAdminProjects();
                 loadOrgPad();
             }
+
+            // Update Gmail UI state
+            updateGmailUI();
+
             switchTab('profile');
         }
 
@@ -1919,6 +1977,12 @@
             if (target) target.classList.add('active');
             document.querySelectorAll(`[data-tab="${tabId}"]`).forEach(m => m.classList.add('active'));
             toggleMobileMenu(false);
+
+            // Gmail hook
+            if (tabId === 'gmail') {
+                updateGmailUI();
+                if (gmailAccessToken && !gmailMessages.length) loadGmailMessages();
+            }
         }
 
         document.querySelectorAll('.menu-item').forEach(item => {
@@ -2303,7 +2367,6 @@
                     new Date(p.createdAt.toDate()).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Recently';
                 const tagsArray = (p.tags || '').split(',').map(t => t.trim()).filter(Boolean);
                 const isSelf = p.submittedBy === currentUser.uid;
-                // Super Admin, Chairman, Founding Member may review their own submissions; plain admins/IT may not.
                 const canReview = !isSelf || isSuperAdmin() || isChairman() || isFoundingMember();
 
                 html += `
@@ -2573,6 +2636,321 @@
             } catch (err) { showToast('Failed to send message.', 'error'); }
         }
 
+        // ============================================================
+        //   GMAIL API INTEGRATION (NEW)
+        // ============================================================
+
+        /**
+         * Toggle between "not connected" and "connected" panels.
+         */
+        function updateGmailUI() {
+            const notConnected = document.getElementById('gmailNotConnected');
+            const connected = document.getElementById('gmailConnected');
+            if (!notConnected || !connected) return;
+
+            if (gmailAccessToken) {
+                notConnected.classList.add('hidden');
+                connected.classList.remove('hidden');
+                const status = document.getElementById('gmailStatusText');
+                if (status && !gmailMessages.length) status.textContent = 'Ready — click Refresh';
+            } else {
+                notConnected.classList.remove('hidden');
+                connected.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Connect Gmail using Google OAuth via Firebase Auth.
+         * Requests read-only Gmail scope and stores the access token in memory.
+         */
+        async function connectGmail() {
+            const user = auth.currentUser;
+            if (!user) return showToast('You must be signed in.', 'warning');
+
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope(GMAIL_SCOPE_READONLY);
+            provider.setCustomParameters({ prompt: 'consent select_account' });
+
+            try {
+                let result;
+                try {
+                    // Try linking Google to the current email/password account first.
+                    result = await user.linkWithPopup(provider);
+                } catch (linkErr) {
+                    // If already linked, or Google account already used elsewhere, re-authenticate.
+                    if (
+                        linkErr.code === 'auth/credential-already-in-use' ||
+                        linkErr.code === 'auth/email-already-in-use' ||
+                        linkErr.code === 'auth/provider-already-linked' ||
+                        linkErr.code === 'auth/account-exists-with-different-credential'
+                    ) {
+                        result = await user.reauthenticateWithPopup(provider);
+                    } else {
+                        throw linkErr;
+                    }
+                }
+
+                const credential = firebase.auth.GoogleAuthProvider.credentialFromResult(result);
+                if (!credential || !credential.accessToken) {
+                    throw new Error('No access token received from Google. Please try again.');
+                }
+
+                gmailAccessToken = credential.accessToken;
+                gmailUserEmail = (result.user && result.user.email) || null;
+
+                showToast('Gmail connected successfully!', 'success');
+                updateGmailUI();
+                loadGmailMessages();
+            } catch (err) {
+                console.error('Gmail connect error:', err);
+                if (err.code === 'auth/popup-closed-by-user') {
+                    showToast('Connection cancelled.', 'info');
+                } else if (err.code === 'auth/popup-blocked') {
+                    showToast('Popup blocked. Please allow popups for this site.', 'warning');
+                } else {
+                    showToast(err.message || 'Failed to connect Gmail.', 'error');
+                }
+            }
+        }
+
+        /**
+         * Disconnect Gmail by clearing the in-memory token.
+         */
+        function disconnectGmail() {
+            gmailAccessToken = null;
+            gmailMessages = [];
+            gmailSelectedId = null;
+            gmailUserEmail = null;
+
+            document.getElementById('gmailList').innerHTML =
+                '<div class="gmail-loading">Connect Gmail to load messages.</div>';
+            document.getElementById('gmailDetail').innerHTML =
+                '<div class="gmail-empty">📩 Select an email to read it here.</div>';
+
+            updateGmailUI();
+            showToast('Gmail disconnected.', 'info');
+        }
+
+        /**
+         * Fetch the latest 25 inbox messages (metadata only for the list).
+         */
+        async function loadGmailMessages() {
+            const list = document.getElementById('gmailList');
+            const status = document.getElementById('gmailStatusText');
+
+            if (!gmailAccessToken) {
+                updateGmailUI();
+                return;
+            }
+
+            list.innerHTML = '<div class="gmail-loading">Loading messages…</div>';
+            if (status) status.textContent = 'Loading…';
+
+            try {
+                const listRes = await fetch(
+                    'https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=25&labelIds=INBOX',
+                    { headers: { Authorization: `Bearer ${gmailAccessToken}` } }
+                );
+
+                if (listRes.status === 401) {
+                    gmailAccessToken = null;
+                    updateGmailUI();
+                    throw new Error('Session expired. Please reconnect Gmail.');
+                }
+                if (!listRes.ok) {
+                    throw new Error('Gmail API error (' + listRes.status + ').');
+                }
+
+                const listData = await listRes.json();
+                const messageRefs = listData.messages || [];
+
+                if (!messageRefs.length) {
+                    list.innerHTML = '<div class="gmail-empty">📭 Your inbox is empty.</div>';
+                    if (status) status.textContent = '0 messages';
+                    return;
+                }
+
+                // Fetch metadata for each message (headers only)
+                const details = await Promise.all(messageRefs.map(m =>
+                    fetch(
+                        `https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`,
+                        { headers: { Authorization: `Bearer ${gmailAccessToken}` } }
+                    ).then(r => r.ok ? r.json() : null).catch(() => null)
+                ));
+
+                gmailMessages = details.filter(Boolean);
+                renderGmailList();
+                if (status) status.textContent = `${gmailMessages.length} message${gmailMessages.length === 1 ? '' : 's'}`;
+            } catch (err) {
+                console.error('Gmail load error:', err);
+                list.innerHTML = `<div class="gmail-loading" style="color:#b71c1c;">${escapeHTML(err.message)}</div>`;
+                if (status) status.textContent = 'Error';
+            }
+        }
+
+        /**
+         * Render the message list.
+         */
+        function renderGmailList() {
+            const list = document.getElementById('gmailList');
+            if (!gmailMessages.length) {
+                list.innerHTML = '<div class="gmail-empty">📭 No messages.</div>';
+                return;
+            }
+
+            let html = '';
+            gmailMessages.forEach(m => {
+                const headers = (m.payload && m.payload.headers) || [];
+                const getH = (name) => (headers.find(h => h.name.toLowerCase() === name.toLowerCase()) || {}).value || '';
+                const from = getH('From');
+                const subject = getH('Subject') || '(No subject)';
+                const date = getH('Date');
+                const snippet = m.snippet || '';
+
+                // Extract display name from "Name <email@example.com>"
+                let fromDisplay = from;
+                const match = from.match(/^"?([^"<]+?)"?\s*<([^>]+)>/);
+                if (match) fromDisplay = match[1].trim();
+
+                const isActive = m.id === gmailSelectedId ? 'active' : '';
+
+                html += `
+                    <div class="gmail-item ${isActive}" data-mid="${m.id}">
+                        <div class="gm-from">${escapeHTML(fromDisplay || 'Unknown sender')}</div>
+                        <div class="gm-subject">${escapeHTML(subject)}</div>
+                        <div class="gm-snippet">${escapeHTML(snippet)}</div>
+                        <div class="gm-date">${escapeHTML(date)}</div>
+                    </div>
+                `;
+            });
+
+            list.innerHTML = html;
+
+            list.querySelectorAll('.gmail-item').forEach(item => {
+                item.addEventListener('click', () => openGmailMessage(item.dataset.mid));
+            });
+        }
+
+        /**
+         * Fetch and render a full Gmail message.
+         */
+        async function openGmailMessage(id) {
+            const detail = document.getElementById('gmailDetail');
+            detail.innerHTML = '<div class="gmail-loading">Loading message…</div>';
+            gmailSelectedId = id;
+
+            // Highlight selected list item
+            document.querySelectorAll('.gmail-item').forEach(el =>
+                el.classList.toggle('active', el.dataset.mid === id)
+            );
+
+            try {
+                const res = await fetch(
+                    `https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=full`,
+                    { headers: { Authorization: `Bearer ${gmailAccessToken}` } }
+                );
+
+                if (!res.ok) throw new Error('Failed to load message.');
+                const m = await res.json();
+                const headers = (m.payload && m.payload.headers) || [];
+                const getH = (name) => (headers.find(h => h.name.toLowerCase() === name.toLowerCase()) || {}).value || '';
+
+                const from = getH('From');
+                const to = getH('To');
+                const subject = getH('Subject') || '(No subject)';
+                const date = getH('Date');
+
+                const bodyHtml = extractGmailBody(m.payload);
+
+                detail.innerHTML = `
+                    <h4>${escapeHTML(subject)}</h4>
+                    <div class="gd-meta">
+                        <div><strong>From:</strong> ${escapeHTML(from)}</div>
+                        <div><strong>To:</strong> ${escapeHTML(to)}</div>
+                        <div><strong>Date:</strong> ${escapeHTML(date)}</div>
+                    </div>
+                    <div class="gd-body">${bodyHtml}</div>
+                `;
+            } catch (err) {
+                console.error('Gmail message error:', err);
+                detail.innerHTML = `<div class="gmail-loading" style="color:#b71c1c;">${escapeHTML(err.message)}</div>`;
+            }
+        }
+
+        /**
+         * Walk a Gmail payload and extract the body as safe HTML.
+         */
+        function extractGmailBody(payload) {
+            if (!payload) return '<p>No content available.</p>';
+
+            function findPart(part, mimeType) {
+                if (!part) return null;
+                if (part.mimeType === mimeType && part.body && part.body.data) {
+                    return part.body.data;
+                }
+                if (part.parts) {
+                    for (const p of part.parts) {
+                        const found = findPart(p, mimeType);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            }
+
+            function decodeBase64Url(data) {
+                try {
+                    let base64 = data.replace(/-/g, '+').replace(/_/g, '/');
+                    while (base64.length % 4) base64 += '=';
+                    const binary = atob(base64);
+                    try {
+                        return decodeURIComponent(escape(binary));
+                    } catch (e) {
+                        return binary;
+                    }
+                } catch (e) {
+                    return '';
+                }
+            }
+
+            // Prefer HTML
+            const htmlData = findPart(payload, 'text/html');
+            if (htmlData) {
+                const decoded = decodeBase64Url(htmlData);
+                // Use sandboxed iframe for safe rendering of untrusted HTML email
+                const escaped = decoded.replace(/"/g, '&quot;');
+                return `<iframe srcdoc="${escaped}" sandbox referrerpolicy="no-referrer"></iframe>`;
+            }
+
+            // Fall back to plain text
+            const textData = findPart(payload, 'text/plain');
+            if (textData) {
+                const decoded = decodeBase64Url(textData);
+                return `<pre style="white-space:pre-wrap; font-family:inherit; font-size:13px;">${escapeHTML(decoded)}</pre>`;
+            }
+
+            // Root body
+            if (payload.body && payload.body.data) {
+                const decoded = decodeBase64Url(payload.body.data);
+                return `<pre style="white-space:pre-wrap; font-family:inherit; font-size:13px;">${escapeHTML(decoded)}</pre>`;
+            }
+
+            return '<p style="color:var(--text-muted);">No readable content in this message.</p>';
+        }
+
+        // Gmail UI event listeners
+        const connectGmailBtn = document.getElementById('connectGmailBtn');
+        const disconnectGmailBtn = document.getElementById('disconnectGmailBtn');
+        const refreshGmailBtn = document.getElementById('refreshGmailBtn');
+
+        if (connectGmailBtn) connectGmailBtn.addEventListener('click', connectGmail);
+        if (disconnectGmailBtn) disconnectGmailBtn.addEventListener('click', disconnectGmail);
+        if (refreshGmailBtn) refreshGmailBtn.addEventListener('click', () => {
+            gmailSelectedId = null;
+            document.getElementById('gmailDetail').innerHTML =
+                '<div class="gmail-empty">📩 Select an email to read it here.</div>';
+            loadGmailMessages();
+        });
+
         // --- PLANS ---
         async function loadPlans() {
             try {
@@ -2714,7 +3092,6 @@
                 allMembers = [];
                 snap.forEach(doc => allMembers.push({ id: doc.id, ...doc.data() }));
 
-                // Sort by effective rank desc, then name
                 allMembers.sort((a, b) => {
                     const ra = isUserSuperAdmin(a) ? 6 : roleRank(a.role);
                     const rb = isUserSuperAdmin(b) ? 6 : roleRank(b.role);
@@ -2755,7 +3132,6 @@
                     else if (isChair) rowClass = 'is-chairman-row';
                     else if (isFound) rowClass = 'is-founding-row';
 
-                    // Display role badge: super-admin overrides
                     const displayRole = isSuper ? 'super-admin' : mRole;
 
                     html += `
@@ -2915,7 +3291,6 @@
             document.getElementById('adminEditName').value = user.name || '';
             document.getElementById('adminEditRole').value = normalizeRole(user.role);
 
-            // Hide/show role options based on permission
             const itOpt = document.getElementById('adminEditITAdminOption');
             const chairOpt = document.getElementById('adminEditChairmanOption');
             const foundOpt = document.getElementById('adminEditFoundingOption');
@@ -2929,7 +3304,6 @@
             foundOpt.hidden = !isSuperAdmin();
             foundOpt.disabled = !isSuperAdmin();
 
-            // Reflect current role if it's a hidden option — add a temporary entry so the select shows it
             const currentRole = normalizeRole(user.role);
             if (currentRole === 'chairman' && chairOpt.hidden) chairOpt.hidden = false;
             if (currentRole === 'it-admin' && itOpt.hidden) itOpt.hidden = false;
@@ -2960,7 +3334,6 @@
 
             if (!targetUser) { showToast('Member not found.', 'error'); return; }
 
-            // Basic self/rank protection
             if (!canManageUser(targetUser)) {
                 showToast('This account is protected from modification.', 'warning');
                 return;
@@ -2968,15 +3341,11 @@
 
             const newRole = normalizeRole(document.getElementById('adminEditRole').value);
 
-            // Cannot assign 'super-admin' via UI
             if (newRole === 'super-admin') {
                 showToast('Super Admin role cannot be assigned manually.', 'warning');
                 return;
             }
 
-            // --- Specific rule checks ---
-
-            // 1) Only one Chairman allowed
             if (newRole === 'chairman') {
                 const existing = existingChairman();
                 if (existing && existing.id !== targetUser.id) {
@@ -2985,37 +3354,31 @@
                 }
             }
 
-            // 2) Chairman cannot appoint a user as Chairman
             if (newRole === 'chairman' && !isSuperAdmin()) {
                 showToast('Only the Super Admin can appoint a Chairman.', 'warning');
                 return;
             }
 
-            // 3) Founding Member assignment is Super Admin only
             if (newRole === 'founding-member' && !isSuperAdmin()) {
                 showToast('Only the Super Admin can assign the Founding Member role.', 'warning');
                 return;
             }
 
-            // 4) IT Admin assignment is Super Admin only
             if (newRole === 'it-admin' && !isSuperAdmin()) {
                 showToast('Only the Super Admin can assign the IT Admin role.', 'warning');
                 return;
             }
 
-            // 5) Super Admin cannot change Chairman — already protected via canManageUser, but keep explicit
             if (normalizeRole(targetUser.role) === 'chairman' && !isSuperAdmin()) {
                 showToast('Chairman role is protected. Only the Super Admin can consider changes — but Chairman is fully protected.', 'warning');
                 return;
             }
 
-            // 6) Cannot assign equal or higher rank than your own (except Super Admin)
             if (!isSuperAdmin() && roleRank(newRole) >= myRank()) {
                 showToast('You cannot assign a role equal to or higher than your own.', 'warning');
                 return;
             }
 
-            // 7) Self-demotion guard
             if (targetUser.id === currentUser.uid && newRole !== normalizeRole(currentUserData.role)) {
                 showToast('You cannot change your own role.', 'warning');
                 return;
