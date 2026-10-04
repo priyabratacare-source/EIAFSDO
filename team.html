@@ -2,43 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>EIAFSDO Team | Founders, Chairman & Board Team</title>
 
-<meta name="description"
-content="Meet the EIAFSDO team, founding members, Chairman, Board Members, IT Department and Web Administration team of the East Indian Amateur Full-Stack Developers Organization.">
-
-<meta name="keywords"
-content="EIAFSDO team, EIAFSDO founders, EIAFSDO chairman, Ayush Chatterjee, Priyabrata Patra, Abhradeep Dhara, EIAFSDO board, EIAFSDO IT department, EIAFSDO web admin">
-
+<meta name="description" content="Meet the EIAFSDO team, founding members, Chairman, Board Members, IT Department and Web Administration team of the East Indian Amateur Full-Stack Developers Organization.">
+<meta name="keywords" content="EIAFSDO team, EIAFSDO founders, EIAFSDO chairman, Ayush Chatterjee, Priyabrata Patra, Abhradeep Dhara, EIAFSDO board, EIAFSDO IT department, EIAFSDO web admin">
 <meta name="author" content="EIAFSDO">
 <meta name="robots" content="index, follow">
-
-<link rel="canonical"
-href="https://priyabratacare-source.github.io/EIAFSDO/team.html">
+<link rel="canonical" href="https://priyabratacare-source.github.io/EIAFSDO/team.html">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="EIAFSDO Team | Founders & Chairman">
-<meta property="og:description"
-content="Explore the founding team, Chairman and administration structure of EIAFSDO.">
-<meta property="og:url"
-content="https://priyabratacare-source.github.io/EIAFSDO/team.html">
-<meta property="og:image"
-content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+<meta property="og:description" content="Explore the founding team, Chairman and administration structure of EIAFSDO.">
+<meta property="og:url" content="https://priyabratacare-source.github.io/EIAFSDO/team.html">
+<meta property="og:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="EIAFSDO Team">
-<meta name="twitter:description"
-content="Founders, Chairman, Board and administration team of EIAFSDO.">
-<meta name="twitter:image"
-content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+<meta name="twitter:description" content="Founders, Chairman, Board and administration team of EIAFSDO.">
+<meta name="twitter:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800;900&family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <style>
 
@@ -52,18 +44,18 @@ content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
     --yellow:#f2c94c;
     --gold:#a87c00;
     --green:#e8ddb4;
-
     --blue:#1687ff;
 
     --black:#17150f;
     --white:#ffffff;
 
     --border:2px solid var(--black);
-
     --shadow:6px 7px 0 var(--black);
     --shadow-small:3px 4px 0 var(--black);
-
     --radius:12px;
+
+    --ease-out:cubic-bezier(.22,.75,.2,1);
+    --ease-spring:cubic-bezier(.34,1.56,.64,1);
 }
 
 *{
@@ -74,6 +66,7 @@ content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
 
 html{
     scroll-behavior:smooth;
+    -webkit-text-size-adjust:100%;
 }
 
 body{
@@ -81,6 +74,9 @@ body{
     background:var(--bg);
     color:var(--body);
     overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
 }
 
 /* BACKGROUND */
@@ -90,25 +86,17 @@ body::before{
     position:fixed;
     inset:0;
     z-index:-4;
-
     background:
-    radial-gradient(
-        circle at 10% 10%,
-        rgba(242,201,76,.20),
-        transparent 28%
-    ),
-    radial-gradient(
-        circle at 90% 20%,
-        rgba(232,221,180,.28),
-        transparent 30%
-    ),
-    radial-gradient(
-        circle at 50% 100%,
-        rgba(242,201,76,.12),
-        transparent 35%
-    );
-
+        radial-gradient(circle at 10% 10%, rgba(242,201,76,.20), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(232,221,180,.28), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(242,201,76,.12), transparent 35%);
     filter:blur(20px);
+    animation:bgBreath 10s ease-in-out infinite alternate;
+}
+
+@keyframes bgBreath{
+    from{ transform:scale(1); }
+    to{ transform:scale(1.05); }
 }
 
 body::after{
@@ -116,31 +104,61 @@ body::after{
     position:fixed;
     inset:0;
     z-index:-3;
-
     background-image:
-    linear-gradient(
-        rgba(29,26,20,.035) 1px,
-        transparent 1px
-    ),
-    linear-gradient(
-        90deg,
-        rgba(29,26,20,.035) 1px,
-        transparent 1px
-    );
-
+        linear-gradient(rgba(29,26,20,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29,26,20,.035) 1px, transparent 1px);
     background-size:48px 48px;
-
     animation:gridMove 18s linear infinite;
 }
 
 @keyframes gridMove{
-    from{
-        background-position:0 0;
-    }
+    from{ background-position:0 0; }
+    to{ background-position:48px 48px; }
+}
 
-    to{
-        background-position:48px 48px;
-    }
+/* ANIMATIONS */
+
+@keyframes pageReveal{
+    from{ opacity:0; transform:translateY(18px); filter:blur(5px); }
+    to{ opacity:1; transform:translateY(0); filter:blur(0); }
+}
+
+@keyframes fadeSlideUp{
+    from{ opacity:0; transform:translateY(28px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+@keyframes fadeSlideLeft{
+    from{ opacity:0; transform:translateX(-28px); }
+    to{ opacity:1; transform:translateX(0); }
+}
+
+@keyframes fadeSlideRight{
+    from{ opacity:0; transform:translateX(28px); }
+    to{ opacity:1; transform:translateX(0); }
+}
+
+@keyframes fadeScaleIn{
+    from{ opacity:0; transform:scale(.92) rotate(-4deg); }
+    to{ opacity:1; transform:scale(1) rotate(-1deg); }
+}
+
+@keyframes softPulse{
+    0%,100%{ transform:scale(1); box-shadow:3px 4px 0 var(--black); }
+    50%{ transform:scale(1.04); box-shadow:5px 6px 0 var(--black); }
+}
+
+@keyframes pulse{
+    50%{ transform:scale(.65); opacity:.5; }
+}
+
+@keyframes spinRotate{
+    to{ transform:rotate(360deg); }
+}
+
+@keyframes shimmer{
+    0%{ background-position:200% 0; }
+    100%{ background-position:-200% 0; }
 }
 
 /* NAVIGATION */
@@ -152,7 +170,6 @@ body::after{
 
     width:min(1180px,calc(100% - 28px));
     margin:12px auto;
-
     padding:10px 12px;
 
     display:flex;
@@ -162,34 +179,37 @@ body::after{
 
     background:rgba(255,254,248,.88);
     backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
 
     border:var(--border);
     border-radius:999px;
-
     box-shadow:var(--shadow-small);
+
+    animation:fadeSlideUp .8s var(--ease-out) both;
+    transition:box-shadow .4s var(--ease-out);
 }
 
 .brand{
     display:flex;
     align-items:center;
     gap:10px;
-
     text-decoration:none;
     color:var(--text);
-
     font-weight:900;
 }
 
 .brand-logo{
     width:42px;
     height:42px;
-
     border:2px solid var(--black);
     border-radius:50%;
-
     background:var(--yellow);
-
     object-fit:cover;
+    transition:transform .5s var(--ease-spring);
+}
+
+.brand:hover .brand-logo{
+    transform:rotate(-8deg) scale(1.08);
 }
 
 .brand-name{
@@ -208,17 +228,13 @@ body::after{
 .nav-links a{
     text-decoration:none;
     color:var(--text);
-
     font-family:"Roboto Mono",monospace;
     font-size:11px;
     font-weight:700;
-
     padding:9px 13px;
-
     border:2px solid transparent;
     border-radius:999px;
-
-    transition:.2s ease;
+    transition:background .25s var(--ease-out), border-color .25s var(--ease-out), transform .25s var(--ease-out);
 }
 
 .nav-links a:hover{
@@ -243,7 +259,6 @@ body::after{
     padding:8px 15px;
 
     background:var(--green);
-
     border:var(--border);
     border-radius:999px;
 
@@ -252,6 +267,9 @@ body::after{
     font-family:"Roboto Mono",monospace;
     font-size:11px;
     font-weight:800;
+
+    opacity:0;
+    animation:fadeSlideUp .8s var(--ease-out) .2s forwards;
 }
 
 .status-dot{
@@ -259,32 +277,49 @@ body::after{
     height:9px;
     background:#17150f;
     border-radius:50%;
-
     animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-    50%{
-        transform:scale(.65);
-        opacity:.5;
-    }
 }
 
 .hero h1{
     margin-top:28px;
-
     font-family:"Archivo Black",sans-serif;
-
     font-size:clamp(48px,9vw,110px);
-
     line-height:.9;
     letter-spacing:-4px;
-
     color:var(--text);
 }
 
+.hero h1 .reveal-line{
+    display:block;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) forwards;
+}
+
+.hero h1 .reveal-line:nth-child(1){ animation-delay:.35s; }
+.hero h1 .reveal-line:nth-child(2){ animation-delay:.55s; }
+
 .hero h1 span{
     color:var(--gold);
+    position:relative;
+    display:inline-block;
+}
+
+.hero h1 span::after{
+    content:"";
+    position:absolute;
+    left:2%;
+    right:0;
+    bottom:2px;
+    height:14px;
+    background:var(--yellow);
+    z-index:-1;
+    transform:skew(-8deg) scaleX(0);
+    transform-origin:left center;
+    animation:underlineGrow .9s var(--ease-spring) 1s forwards;
+}
+
+@keyframes underlineGrow{
+    to{ transform:skew(-8deg) scaleX(1); }
 }
 
 .hero p{
@@ -294,33 +329,34 @@ body::after{
     font-size:18px;
     line-height:1.7;
     font-weight:600;
+
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .8s forwards;
 }
 
 .hero-meta{
     margin-top:25px;
-
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
     gap:10px;
+
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) 1.05s forwards;
 }
 
 .meta{
     padding:9px 14px;
-
     background:var(--surface);
-
     border:var(--border);
     border-radius:999px;
-
     box-shadow:var(--shadow-small);
-
     font-family:"Roboto Mono",monospace;
     font-size:11px;
     font-weight:700;
 }
 
-/* SECTION */
+/* SECTIONS */
 
 section{
     width:min(1180px,calc(100% - 28px));
@@ -329,44 +365,80 @@ section{
 
 .section-label{
     display:inline-block;
-
     padding:7px 12px;
-
     background:var(--yellow);
-
     border:var(--border);
     border-radius:999px;
-
     font-family:"Roboto Mono",monospace;
     font-size:11px;
     font-weight:800;
-
     box-shadow:var(--shadow-small);
 }
 
 .section-title{
     margin-top:20px;
-
     font-family:"Archivo Black",sans-serif;
-
     font-size:clamp(32px,6vw,65px);
-
     line-height:1;
     letter-spacing:-2px;
-
     color:var(--text);
 }
 
 .section-intro{
     max-width:760px;
-
     margin-top:18px;
-
     font-size:17px;
     line-height:1.7;
 }
 
-/* PREMIUM CHAIRMAN */
+/* REVEAL */
+
+.reveal{
+    opacity:0;
+    transform:translateY(36px);
+    filter:blur(4px);
+    transition:
+        opacity .9s var(--ease-out),
+        transform .9s var(--ease-out),
+        filter .9s var(--ease-out);
+    will-change:opacity,transform;
+}
+
+.reveal.show{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0);
+}
+
+/* PAGE LOADING */
+
+.page-loading{
+    min-height:60vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 20px;
+    text-align:center;
+    font-family:"Roboto Mono",monospace;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.5px;
+    animation:pageReveal .6s var(--ease-out);
+}
+
+.page-loading .spin{
+    display:inline-block;
+    width:26px;
+    height:26px;
+    border:4px solid var(--soft);
+    border-top-color:var(--black);
+    border-radius:50%;
+    animation:spinRotate .8s linear infinite;
+    vertical-align:middle;
+    margin-right:12px;
+}
+
+/* CHAIRMAN */
 
 .chairman-card{
     position:relative;
@@ -379,68 +451,74 @@ section{
 
     padding:32px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #17150f,
-            #2b261b
-        );
-
+    background:linear-gradient(135deg,#17150f,#2b261b);
     color:white;
 
     border:3px solid var(--black);
     border-radius:18px;
-
     box-shadow:10px 11px 0 var(--gold);
 
     overflow:hidden;
+
+    transition:transform .5s var(--ease-out), box-shadow .5s var(--ease-out);
+}
+
+.chairman-card:hover{
+    transform:translateY(-4px);
+    box-shadow:12px 14px 0 var(--gold);
 }
 
 .chairman-card::before{
     content:"PREMIUM";
-
     position:absolute;
     top:20px;
     right:-42px;
-
     width:170px;
-
     padding:7px;
-
     text-align:center;
-
     background:var(--yellow);
     color:var(--black);
-
     font-family:"Roboto Mono",monospace;
     font-size:11px;
     font-weight:900;
-
     transform:rotate(45deg);
-
     border:2px solid var(--black);
+
+    opacity:0;
+    animation:fadeSlideRight .8s var(--ease-out) .8s forwards;
 }
 
 .chairman-image{
     min-height:430px;
-
     border:3px solid var(--yellow);
     border-radius:14px;
-
     overflow:hidden;
-
     background:#000;
+
+    animation:fadeScaleIn 1s var(--ease-spring) .2s both;
 }
 
 .chairman-image img{
     width:100%;
     height:100%;
-
     min-height:430px;
-
     object-fit:cover;
-
     display:block;
+}
+
+.chairman-image .chairman-initials-fallback{
+    width:100%;
+    height:100%;
+    min-height:430px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#fff0a4,#d1a235,#8a6500);
+    color:#17150f;
+    font-family:"Archivo Black",sans-serif;
+    font-size:130px;
+    letter-spacing:-4px;
+    line-height:1;
 }
 
 .chairman-content{
@@ -451,31 +529,25 @@ section{
 
 .chairman-kicker{
     color:var(--yellow);
-
     font-family:"Roboto Mono",monospace;
     font-size:12px;
     font-weight:800;
-
     letter-spacing:1px;
 }
 
 .chairman-name{
     margin-top:12px;
-
     font-family:"Archivo Black",sans-serif;
-
     font-size:clamp(38px,5vw,68px);
-
     line-height:.95;
+    word-break:break-word;
 }
 
 .chairman-role{
     display:inline-block;
-
     width:max-content;
 
     margin-top:18px;
-
     padding:8px 13px;
 
     background:var(--yellow);
@@ -491,16 +563,15 @@ section{
 
 .chairman-content p{
     margin-top:23px;
-
     font-size:16px;
     line-height:1.75;
-
     color:#eee9dc;
+    white-space:pre-wrap;
+    word-break:break-word;
 }
 
 .chairman-details{
     margin-top:25px;
-
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:10px;
@@ -508,62 +579,46 @@ section{
 
 .detail{
     padding:13px;
-
     border:1px solid rgba(242,201,76,.45);
     border-radius:10px;
-
     background:rgba(242,201,76,.06);
 }
 
 .detail strong{
     display:block;
-
     color:var(--yellow);
-
     font-family:"Roboto Mono",monospace;
     font-size:10px;
 }
 
 .detail span{
     display:block;
-
     margin-top:5px;
-
     color:white;
-
     font-weight:800;
+    word-break:break-word;
 }
 
 /* FOUNDERS */
 
 .founder-grid{
     margin-top:35px;
-
     display:grid;
     grid-template-columns:repeat(3,1fr);
-
     gap:25px;
 }
 
 .founder-card{
     position:relative;
 
-    background:linear-gradient(
-        145deg,
-        #fffef8,
-        #f7e7a9
-    );
-
+    background:linear-gradient(145deg,#fffef8,#f7e7a9);
     border:3px solid var(--black);
     border-radius:16px;
-
     box-shadow:8px 9px 0 var(--black);
-
     padding:24px;
-
     overflow:hidden;
 
-    transition:.25s ease;
+    transition:transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
 }
 
 .founder-card:hover{
@@ -573,39 +628,34 @@ section{
 
 .founder-card::after{
     content:"FOUNDER";
-
     position:absolute;
-
     top:18px;
     right:-36px;
-
     padding:7px 45px;
-
     background:var(--black);
     color:var(--yellow);
-
     font-family:"Roboto Mono",monospace;
     font-size:10px;
     font-weight:900;
-
     transform:rotate(45deg);
 }
 
 .founder-photo{
     width:125px;
     height:125px;
-
     margin:auto;
-
     border-radius:50%;
-
     overflow:hidden;
-
     border:4px solid var(--black);
-
     background:var(--yellow);
-
     box-shadow:5px 5px 0 var(--gold);
+
+    animation:fadeScaleIn .9s var(--ease-spring) .1s both;
+    transition:transform .5s var(--ease-spring);
+}
+
+.founder-card:hover .founder-photo{
+    transform:scale(1.06) rotate(-3deg);
 }
 
 .founder-photo img{
@@ -614,33 +664,39 @@ section{
     object-fit:cover;
 }
 
+.founder-photo .initials{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#fff0a4,#d1a235,#8a6500);
+    color:#17150f;
+    font-family:"Archivo Black",sans-serif;
+    font-size:46px;
+    letter-spacing:-2px;
+}
+
 .founder-name{
     margin-top:25px;
-
     text-align:center;
-
     font-family:"Archivo Black",sans-serif;
-
     font-size:25px;
-
     color:var(--text);
+    word-break:break-word;
 }
 
 .verified{
     display:flex;
     justify-content:center;
-
     margin-top:8px;
 }
 
 .verified span{
     padding:5px 9px;
-
     background:var(--blue);
     color:white;
-
     border-radius:999px;
-
     font-family:"Roboto Mono",monospace;
     font-size:9px;
     font-weight:800;
@@ -648,63 +704,46 @@ section{
 
 .founder-role{
     margin-top:15px;
-
     text-align:center;
-
     font-family:"Roboto Mono",monospace;
-
     font-size:11px;
     font-weight:900;
-
     color:var(--gold);
 }
 
 .batch{
     margin-top:16px;
-
     padding:10px;
-
     background:var(--surface);
-
     border:2px solid var(--black);
     border-radius:9px;
-
     text-align:center;
 }
 
 .batch-label{
     display:block;
-
     font-family:"Roboto Mono",monospace;
-
     font-size:9px;
     font-weight:700;
 }
 
 .batch-value{
     display:block;
-
     margin-top:4px;
-
     font-family:"Archivo Black",sans-serif;
-
     font-size:14px;
 }
 
 .founder-description{
     margin-top:17px;
-
     font-size:14px;
     line-height:1.7;
-
     text-align:center;
+    word-break:break-word;
 }
-
-/* ROLE TAGS */
 
 .role-tags{
     margin-top:18px;
-
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
@@ -713,208 +752,165 @@ section{
 
 .role-tags span{
     padding:6px 9px;
-
     background:var(--yellow);
-
     border:1px solid var(--black);
     border-radius:999px;
-
     font-family:"Roboto Mono",monospace;
-
     font-size:9px;
     font-weight:800;
 }
 
-/* FOUNDER NOTE */
-
 .founder-note{
     margin-top:30px;
-
     padding:25px;
-
     background:var(--black);
     color:white;
-
     border:3px solid var(--black);
     border-radius:14px;
-
     box-shadow:var(--shadow);
 }
 
 .founder-note strong{
     color:var(--yellow);
-
     font-family:"Roboto Mono",monospace;
     font-size:12px;
 }
 
 .founder-note p{
     margin-top:12px;
-
     line-height:1.7;
-
     color:#eee;
 }
 
-/* TEAM STRUCTURE */
+/* STRUCTURE */
 
 .structure{
     margin-top:35px;
-
     display:grid;
     grid-template-columns:repeat(3,1fr);
-
     gap:20px;
 }
 
 .structure-card{
     padding:24px;
-
     background:var(--surface);
-
     border:var(--border);
     border-radius:var(--radius);
-
     box-shadow:var(--shadow-small);
 
-    transition:.2s;
+    transition:transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
 }
 
 .structure-card:hover{
     transform:translateY(-5px);
+    box-shadow:6px 8px 0 var(--black);
 }
 
 .structure-icon{
     width:48px;
     height:48px;
-
     display:grid;
     place-items:center;
-
     background:var(--yellow);
-
     border:2px solid var(--black);
     border-radius:10px;
-
     font-size:23px;
+
+    transition:transform .5s var(--ease-spring);
+}
+
+.structure-card:hover .structure-icon{
+    transform:rotate(-8deg) scale(1.1);
 }
 
 .structure-card h3{
     margin-top:18px;
-
     font-family:"Archivo Black",sans-serif;
-
     font-size:22px;
-
     color:var(--text);
 }
 
 .structure-card p{
     margin-top:10px;
-
     line-height:1.65;
-
     font-size:14px;
 }
 
-/* BATCH SECTION */
+/* BATCH */
 
 .batch-box{
     margin-top:35px;
-
     padding:30px;
-
     background:var(--soft);
-
     border:var(--border);
     border-radius:15px;
-
     box-shadow:var(--shadow);
 }
 
 .batch-box h3{
     font-family:"Archivo Black",sans-serif;
-
     font-size:30px;
-
     color:var(--text);
 }
 
 .batch-box p{
     margin-top:12px;
-
     line-height:1.7;
 }
 
 .batch-list{
     margin-top:22px;
-
     display:grid;
     grid-template-columns:repeat(3,1fr);
-
     gap:12px;
 }
 
 .batch-item{
     padding:16px;
-
     background:var(--surface);
-
     border:2px solid var(--black);
     border-radius:10px;
 }
 
 .batch-item strong{
     display:block;
-
     font-family:"Roboto Mono",monospace;
     font-size:10px;
 }
 
 .batch-item span{
     display:block;
-
     margin-top:5px;
-
     font-family:"Archivo Black",sans-serif;
+    word-break:break-word;
 }
 
 /* CTA */
 
 .cta{
     margin-top:80px;
-
     padding:50px 30px;
-
     text-align:center;
-
     background:var(--yellow);
-
     border:var(--border);
     border-radius:16px;
-
     box-shadow:var(--shadow);
 }
 
 .cta h2{
     font-family:"Archivo Black",sans-serif;
-
     font-size:clamp(35px,6vw,65px);
-
     color:var(--text);
 }
 
 .cta p{
     max-width:650px;
-
     margin:15px auto 0;
-
     line-height:1.7;
 }
 
 .cta-buttons{
     margin-top:25px;
-
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
@@ -923,24 +919,18 @@ section{
 
 .btn{
     display:inline-block;
-
     padding:13px 20px;
-
     text-decoration:none;
-
     background:white;
     color:var(--black);
-
     border:var(--border);
     border-radius:9px;
-
     box-shadow:var(--shadow-small);
-
     font-family:"Roboto Mono",monospace;
     font-size:11px;
     font-weight:900;
 
-    transition:.2s;
+    transition:transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
 }
 
 .btn:hover{
@@ -957,9 +947,7 @@ section{
 
 footer{
     margin-top:100px;
-
     padding:55px 20px;
-
     background:var(--black);
     color:white;
 }
@@ -967,10 +955,8 @@ footer{
 .footer-inner{
     width:min(1180px,100%);
     margin:auto;
-
     display:grid;
     grid-template-columns:1.5fr 1fr 1fr;
-
     gap:40px;
 }
 
@@ -983,10 +969,13 @@ footer{
 .footer-brand img{
     width:55px;
     height:55px;
-
     border-radius:50%;
-
     border:2px solid var(--yellow);
+    transition:transform .5s var(--ease-spring);
+}
+
+.footer-brand img:hover{
+    transform:rotate(-8deg) scale(1.08);
 }
 
 .footer-brand h3{
@@ -995,24 +984,19 @@ footer{
 
 .footer p{
     margin-top:16px;
-
     color:#d9d4c7;
-
     line-height:1.7;
     font-size:14px;
 }
 
 .footer h4{
     color:var(--yellow);
-
     font-family:"Roboto Mono",monospace;
-
     font-size:11px;
 }
 
 .footer-links{
     margin-top:15px;
-
     display:flex;
     flex-direction:column;
     gap:9px;
@@ -1020,49 +1004,29 @@ footer{
 
 .footer-links a{
     color:#eee;
-
     text-decoration:none;
-
     font-size:13px;
+    transition:color .3s ease, transform .3s ease;
 }
 
 .footer-links a:hover{
     color:var(--yellow);
+    transform:translateX(3px);
 }
 
 .copyright{
     width:min(1180px,100%);
     margin:45px auto 0;
-
     padding-top:20px;
-
     border-top:1px solid #403b30;
-
     font-family:"Roboto Mono",monospace;
-
     font-size:10px;
-
     color:#aaa;
-}
-
-/* REVEAL */
-
-.reveal{
-    opacity:0;
-    transform:translateY(25px);
-
-    transition:.7s ease;
-}
-
-.reveal.show{
-    opacity:1;
-    transform:none;
 }
 
 /* RESPONSIVE */
 
 @media(max-width:920px){
-
     .nav{
         border-radius:18px;
         align-items:flex-start;
@@ -1077,7 +1041,8 @@ footer{
     }
 
     .chairman-image,
-    .chairman-image img{
+    .chairman-image img,
+    .chairman-image .chairman-initials-fallback{
         min-height:380px;
     }
 
@@ -1099,7 +1064,6 @@ footer{
 }
 
 @media(max-width:600px){
-
     .hero{
         margin-top:55px;
     }
@@ -1118,8 +1082,13 @@ footer{
     }
 
     .chairman-image,
-    .chairman-image img{
+    .chairman-image img,
+    .chairman-image .chairman-initials-fallback{
         min-height:330px;
+    }
+
+    .chairman-initials-fallback{
+        font-size:90px !important;
     }
 
     .chairman-details{
@@ -1151,6 +1120,20 @@ footer{
     }
 }
 
+@media(prefers-reduced-motion:reduce){
+    *, *::before, *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        scroll-behavior:auto !important;
+        transition-duration:.01ms !important;
+    }
+    .reveal{
+        opacity:1 !important;
+        transform:none !important;
+        filter:none !important;
+    }
+}
+
 </style>
 </head>
 
@@ -1159,796 +1142,845 @@ footer{
 <!-- NAVIGATION -->
 
 <nav class="nav">
+    <a href="index.html" class="brand">
+        <img class="brand-logo" src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo">
+        <span class="brand-name">EIAFSDO</span>
+    </a>
 
-<a href="index.html" class="brand">
-
-<img
-class="brand-logo"
-src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
-alt="EIAFSDO Logo">
-
-<span class="brand-name">EIAFSDO</span>
-
-</a>
-
-<div class="nav-links">
-
-<a href="index.html">HOME</a>
-<a href="about.html">ABOUT</a>
-<a href="team.html">TEAM</a>
-<a href="projects.html">PROJECTS</a>
-<a href="chairman-desk.html">CHAIRMAN</a>
-<a href="notice.html">NOTICE</a>
-<a href="contact.html">CONTACT</a>
-
-</div>
-
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="about.html">ABOUT</a>
+        <a href="team.html">TEAM</a>
+        <a href="projects.html">PROJECTS</a>
+        <a href="chairman-desk.html">CHAIRMAN</a>
+        <a href="notice.html">NOTICE</a>
+        <a href="contact.html">CONTACT</a>
+    </div>
 </nav>
 
 
 <!-- HERO -->
 
 <header class="hero">
+    <div class="status">
+        <span class="status-dot"></span>
+        OFFICIAL EIAFSDO TEAM
+    </div>
 
-<div class="status">
-<span class="status-dot"></span>
-OFFICIAL EIAFSDO TEAM
-</div>
+    <h1>
+        <span class="reveal-line">Meet The</span>
+        <span class="reveal-line"><span>Team.</span></span>
+    </h1>
 
-<h1>
-Meet The<br>
-<span>Team.</span>
-</h1>
+    <p>
+        The people behind EIAFSDO — including the founding team,
+        Chairman, Board structure, IT administration and web
+        administration.
+    </p>
 
-<p>
-The people behind EIAFSDO — including the founding team,
-Chairman, Board structure, IT administration and web
-administration.
-</p>
-
-<div class="hero-meta">
-
-<div class="meta">BUILD. LEARN. GROW.</div>
-<div class="meta">FOUNDING TEAM</div>
-<div class="meta">BOARD & ADMINISTRATION</div>
-
-</div>
-
+    <div class="hero-meta">
+        <div class="meta">BUILD. LEARN. GROW.</div>
+        <div class="meta">FOUNDING TEAM</div>
+        <div class="meta">BOARD & ADMINISTRATION</div>
+    </div>
 </header>
 
 
-<!-- CHAIRMAN -->
+<!-- MAIN MOUNT -->
 
-<section class="reveal">
-
-<span class="section-label">01 / CHAIRMAN</span>
-
-<h2 class="section-title">
-Chairman's Desk
-</h2>
-
-<p class="section-intro">
-The Chairman provides organizational leadership and represents
-the Chairman's Desk within the EIAFSDO structure.
-</p>
-
-
-<div class="chairman-card">
-
-<div class="chairman-image">
-
-<img
-src="https://i.ibb.co/tp7b2m8W/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png"
-alt="Abhradeep Dhara Chairman EIAFSDO">
-
+<div id="pageMount">
+    <div class="page-loading">
+        <span class="spin"></span>
+        LOADING TEAM…
+    </div>
 </div>
-
-<div class="chairman-content">
-
-<div class="chairman-kicker">
-EIAFSDO LEADERSHIP DESK
-</div>
-
-<h2 class="chairman-name">
-Abhradeep<br>
-Dhara
-</h2>
-
-<div class="chairman-role">
-CHAIRMAN
-</div>
-
-<p>
-Abhradeep Dhara is associated with EIAFSDO as Chairman.
-The Chairman's Desk represents organizational coordination,
-leadership communication and participation in the development
-of the organization's activities and projects.
-</p>
-
-<div class="chairman-details">
-
-<div class="detail">
-<strong>POSITION</strong>
-<span>Chairman</span>
-</div>
-
-<div class="detail">
-<strong>ORGANIZATION</strong>
-<span>EIAFSDO</span>
-</div>
-
-<div class="detail">
-<strong>BATCH</strong>
-<span>Founding Team</span>
-</div>
-
-<div class="detail">
-<strong>DESK</strong>
-<span>Chairman's Office</span>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- FOUNDERS -->
-
-<section class="reveal">
-
-<span class="section-label">02 / FOUNDERS</span>
-
-<h2 class="section-title">
-Founding Team
-</h2>
-
-<p class="section-intro">
-EIAFSDO was established around its founding team. The three
-founding members form the foundation of the organization's
-identity, development and collaborative direction.
-</p>
-
-
-<div class="founder-grid">
-
-
-<!-- AYUSH -->
-
-<article class="founder-card">
-
-<div class="founder-photo">
-
-<img
-src="https://i.ibb.co/wh0zph13/Chat-GPT-Image-Sep-2-2026-04-06-19-PM.png"
-alt="Ayush Chatterjee EIAFSDO">
-
-</div>
-
-<h3 class="founder-name">
-Ayush Chatterjee
-</h3>
-
-<div class="verified">
-<span>✓ VERIFIED FOUNDING MEMBER</span>
-</div>
-
-<div class="founder-role">
-FOUNDING TEAM
-</div>
-
-<div class="batch">
-
-<span class="batch-label">
-BATCH
-</span>
-
-<span class="batch-value">
-FOUNDING BATCH
-</span>
-
-</div>
-
-<div class="role-tags">
-
-<span>FOUNDER</span>
-<span>BOARD</span>
-<span>TEAM</span>
-
-</div>
-
-<p class="founder-description">
-Ayush Chatterjee is one of the founding members of EIAFSDO
-and forms part of the organization's founding structure.
-</p>
-
-</article>
-
-
-<!-- PRIYABRATA -->
-
-<article class="founder-card">
-
-<div class="founder-photo">
-
-<img
-src="https://i.ibb.co/RT0CSwpc/Chat-GPT-Image-Sep-2-2026-03-51-53-PM.png"
-alt="Priyabrata Patra EIAFSDO">
-
-</div>
-
-<h3 class="founder-name">
-Priyabrata Patra
-</h3>
-
-<div class="verified">
-<span>✓ VERIFIED FOUNDING MEMBER</span>
-</div>
-
-<div class="founder-role">
-FOUNDING TEAM · IT & WEB
-</div>
-
-<div class="batch">
-
-<span class="batch-label">
-BATCH
-</span>
-
-<span class="batch-value">
-FOUNDING BATCH
-</span>
-
-</div>
-
-<div class="role-tags">
-
-<span>FOUNDER</span>
-<span>BOARD MEMBER</span>
-<span>IT ADMIN</span>
-<span>WEB ADMIN</span>
-
-</div>
-
-<p class="founder-description">
-Priyabrata Patra is a founding team member associated with
-EIAFSDO's IT administration, web administration and digital
-development activities.
-</p>
-
-</article>
-
-
-<!-- ABHRADEEP -->
-
-<article class="founder-card">
-
-<div class="founder-photo">
-
-<img
-src="https://i.ibb.co/tp7b2m8W/Chat-GPT-Image-Sep-2-2026-04-58-59-PM.png"
-alt="Abhradeep Dhara EIAFSDO">
-
-</div>
-
-<h3 class="founder-name">
-Abhradeep Dhara
-</h3>
-
-<div class="verified">
-<span>✓ VERIFIED FOUNDING MEMBER</span>
-</div>
-
-<div class="founder-role">
-CHAIRMAN · FOUNDING TEAM
-</div>
-
-<div class="batch">
-
-<span class="batch-label">
-BATCH
-</span>
-
-<span class="batch-value">
-FOUNDING BATCH
-</span>
-
-</div>
-
-<div class="role-tags">
-
-<span>FOUNDER</span>
-<span>CHAIRMAN</span>
-<span>BOARD</span>
-
-</div>
-
-<p class="founder-description">
-Abhradeep Dhara is a founding member of EIAFSDO and is
-associated with the organization as Chairman.
-</p>
-
-</article>
-
-</div>
-
-
-<div class="founder-note">
-
-<strong>FOUNDING TEAM RECORD</strong>
-
-<p>
-The EIAFSDO founding team consists of
-<strong>Ayush Chatterjee</strong>,
-<strong>Priyabrata Patra</strong> and
-<strong>Abhradeep Dhara</strong>.
-Their founding status is represented separately from
-subsequent organizational roles and departments.
-</p>
-
-</div>
-
-</section>
-
-
-<!-- ORGANIZATION STRUCTURE -->
-
-<section class="reveal">
-
-<span class="section-label">03 / STRUCTURE</span>
-
-<h2 class="section-title">
-Team Structure
-</h2>
-
-<p class="section-intro">
-EIAFSDO can organize its activities through leadership,
-board participation, IT administration and web administration.
-</p>
-
-
-<div class="structure">
-
-
-<div class="structure-card">
-
-<div class="structure-icon">👑</div>
-
-<h3>Chairman's Office</h3>
-
-<p>
-The Chairman's Desk is the organizational leadership desk
-associated with Chairman Abhradeep Dhara.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">🏛️</div>
-
-<h3>Founding Board</h3>
-
-<p>
-The founding members form the core founding structure of
-EIAFSDO and participate in organizational development.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">💻</div>
-
-<h3>IT Department</h3>
-
-<p>
-The IT administration area supports digital systems,
-technology projects and technical administration.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">🌐</div>
-
-<h3>Web Administration</h3>
-
-<p>
-Web administration manages website development, pages,
-digital interfaces and web-based organizational systems.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">🧩</div>
-
-<h3>Project Development</h3>
-
-<p>
-Project development focuses on building, testing and
-documenting technology-oriented projects.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">📢</div>
-
-<h3>Communication</h3>
-
-<p>
-Official notices, talks and organizational information can
-be published through EIAFSDO's digital platforms.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- BATCH -->
-
-<section class="reveal">
-
-<span class="section-label">04 / BATCH</span>
-
-<h2 class="section-title">
-Founding Batch
-</h2>
-
-<div class="batch-box">
-
-<h3>
-The Founding Batch
-</h3>
-
-<p>
-The founding members are identified as the founding batch of
-EIAFSDO. This designation refers to their founding association
-with the organization rather than a college or academic batch.
-</p>
-
-<div class="batch-list">
-
-<div class="batch-item">
-
-<strong>FOUNDER 01</strong>
-
-<span>Ayush Chatterjee</span>
-
-</div>
-
-<div class="batch-item">
-
-<strong>FOUNDER 02</strong>
-
-<span>Priyabrata Patra</span>
-
-</div>
-
-<div class="batch-item">
-
-<strong>FOUNDER 03</strong>
-
-<span>Abhradeep Dhara</span>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ROLES -->
-
-<section class="reveal">
-
-<span class="section-label">05 / RESPONSIBILITIES</span>
-
-<h2 class="section-title">
-Roles & Responsibilities
-</h2>
-
-<div class="structure">
-
-
-<div class="structure-card">
-
-<div class="structure-icon">👑</div>
-
-<h3>Chairman</h3>
-
-<p>
-Abhradeep Dhara — Chairman of EIAFSDO and member of the
-founding team.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">⭐</div>
-
-<h3>Founder</h3>
-
-<p>
-Ayush Chatterjee, Priyabrata Patra and Abhradeep Dhara —
-founding members of EIAFSDO.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">🖥️</div>
-
-<h3>IT Administration</h3>
-
-<p>
-Priyabrata Patra — associated with IT administration and
-digital technology systems.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">🌐</div>
-
-<h3>Web Administration</h3>
-
-<p>
-Priyabrata Patra — associated with EIAFSDO web administration
-and website development.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">🏛️</div>
-
-<h3>Board Member</h3>
-
-<p>
-Founding team members may participate in organizational
-board-level activities according to the organization's
-internal structure.
-</p>
-
-</div>
-
-
-<div class="structure-card">
-
-<div class="structure-icon">🚀</div>
-
-<h3>Project Team</h3>
-
-<p>
-Members can collaborate on technology, software, web and
-experimental development projects.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- CTA -->
-
-<section>
-
-<div class="cta">
-
-<h2>
-Build. Learn. Grow.
-</h2>
-
-<p>
-EIAFSDO brings together people interested in learning,
-building technology and developing practical projects through
-collaboration.
-</p>
-
-<div class="cta-buttons">
-
-<a href="about.html" class="btn">
-ABOUT EIAFSDO
-</a>
-
-<a href="projects.html" class="btn btn-dark">
-VIEW PROJECTS
-</a>
-
-<a href="chairman-desk.html" class="btn">
-CHAIRMAN'S DESK
-</a>
-
-</div>
-
-</div>
-
-</section>
 
 
 <!-- FOOTER -->
 
 <footer>
+    <div class="footer-inner">
 
-<div class="footer-inner">
+        <div>
+            <div class="footer-brand">
+                <img src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo">
+                <h3>EIAFSDO</h3>
+            </div>
 
-<div>
+            <p>
+                East Indian Amateur Full-Stack Developers Organization.
+                <br>
+                Build. Learn. Grow.
+            </p>
+        </div>
 
-<div class="footer-brand">
+        <div>
+            <h4>EXPLORE</h4>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="team.html">Team</a>
+                <a href="projects.html">Projects</a>
+            </div>
+        </div>
 
-<img
-src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
-alt="EIAFSDO Logo">
+        <div>
+            <h4>OFFICIAL</h4>
+            <div class="footer-links">
+                <a href="chairman-desk.html">Chairman's Desk</a>
+                <a href="notice.html">Digital Notice Board</a>
+                <a href="talks.html">Talks</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
 
-<h3>EIAFSDO</h3>
+    </div>
 
-</div>
-
-<p>
-East Indian Amateur Full-Stack Developers Organization.
-<br>
-Build. Learn. Grow.
-</p>
-
-</div>
-
-
-<div>
-
-<h4>EXPLORE</h4>
-
-<div class="footer-links">
-
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="team.html">Team</a>
-<a href="projects.html">Projects</a>
-
-</div>
-
-</div>
-
-
-<div>
-
-<h4>OFFICIAL</h4>
-
-<div class="footer-links">
-
-<a href="chairman-desk.html">
-Chairman's Desk
-</a>
-
-<a href="notice.html">
-Digital Notice Board
-</a>
-
-<a href="talks.html">
-Talks
-</a>
-
-<a href="contact.html">
-Contact
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="copyright">
-
-© 2026 EIAFSDO — East Indian Amateur Full-Stack Developers Organization.
-
-</div>
-
+    <div class="copyright">
+        © 2026 EIAFSDO — East Indian Amateur Full-Stack Developers Organization.
+    </div>
 </footer>
 
 
+<!-- APPLICATION LOGIC -->
+
 <script>
 
-/* REVEAL ANIMATION */
+/* ==========================================================
+   FIREBASE
+========================================================== */
 
-const observer =
-new IntersectionObserver(
-(entries)=>{
-    entries.forEach(entry=>{
-        if(entry.isIntersecting){
-            entry.target.classList.add("show");
+const firebaseConfig = {
+    apiKey:"AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
+    authDomain:"eiafsdo-dashboard.firebaseapp.com",
+    projectId:"eiafsdo-dashboard",
+    storageBucket:"eiafsdo-dashboard.firebasestorage.app",
+    messagingSenderId:"171714190075",
+    appId:"1:171714190075:web:ee3dfe78f82896cc736e5e"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+
+/* ==========================================================
+   STATE
+========================================================== */
+
+let allUsers = [];
+let chairmanUser = null;
+let founderUsers = [];   // founding-member + admin + anyone tagged as founder
+let usersUnsubscribe = null;
+let revealObserver = null;
+let firstRender = true;
+let hasRendered = false;
+
+
+/* ==========================================================
+   CONFIG
+========================================================== */
+
+// Founding team — the three official founders of EIAFSDO.
+const FOUNDING_NAMES = [
+    'ayush chatterjee',
+    'priyabrata patra',
+    'abhradeep dhara'
+];
+
+
+/* ==========================================================
+   UTILITIES
+========================================================== */
+
+function escapeHTML(str){
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+    }[tag] || tag));
+}
+
+function normalizeRole(role){
+    const r = String(role || '').toLowerCase().trim().replaceAll('_','-');
+    if (r === 'superadmin') return 'super-admin';
+    return r;
+}
+
+function getInitials(name){
+    if (!name) return 'U';
+    const parts = String(name).trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return 'U';
+    if (parts.length === 1) return parts[0].substring(0,2).toUpperCase();
+    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
+
+function toDate(value){
+    try{
+        if (!value) return null;
+        if (typeof value.toDate === 'function') return value.toDate();
+        if (value instanceof Date) return value;
+        const d = new Date(value);
+        return Number.isNaN(d.getTime()) ? null : d;
+    } catch(_) { return null; }
+}
+
+function formatLongDate(value){
+    const d = toDate(value);
+    if (!d) return null;
+    return d.toLocaleDateString('en-IN', {
+        day:'2-digit', month:'long', year:'numeric'
+    }).toUpperCase();
+}
+
+
+/* ==========================================================
+   REVEAL OBSERVER
+========================================================== */
+
+function initRevealObserver(){
+    if (revealObserver) revealObserver.disconnect();
+
+    revealObserver = new IntersectionObserver(
+        entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting){
+                    entry.target.classList.add('show');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold:.12,
+            rootMargin:'0px 0px -40px 0px'
         }
+    );
+}
+
+
+function attachReveal(){
+    const items = document.querySelectorAll(
+        "section.reveal, .founder-card, .structure-card, .batch-item, .detail, .cta"
+    );
+
+    items.forEach((el, i) => {
+        el.classList.add('reveal');
+        el.style.transitionDelay = (Math.min(i, 8) * 60) + 'ms';
+        revealObserver.observe(el);
     });
-},
-{
-    threshold:.12
-});
-
-document
-.querySelectorAll(".reveal")
-.forEach(el=>{
-    observer.observe(el);
-});
+}
 
 
-/* NAV SCROLL */
+/* ==========================================================
+   BUILD AVATAR
+========================================================== */
 
-const nav=document.querySelector(".nav");
+function buildFounderPhotoHTML(user){
+    const name = (user && user.name) || 'Founder';
 
-window.addEventListener("scroll",()=>{
-
-    if(window.scrollY>40){
-
-        nav.style.boxShadow="3px 5px 0 #17150f";
-
-    }else{
-
-        nav.style.boxShadow="3px 4px 0 #17150f";
-
+    if (user && user.photoURL && String(user.photoURL).trim()){
+        return `
+            <img
+                src="${escapeHTML(user.photoURL)}"
+                alt="${escapeHTML(name)} EIAFSDO"
+                loading="lazy"
+                onerror="this.outerHTML='<div class=\\'initials\\'>${escapeHTML(getInitials(name))}</div>';"
+            >
+        `;
     }
 
-});
+    return `<div class="initials">${escapeHTML(getInitials(name))}</div>`;
+}
 
 
-/* PREMIUM CARD TILT */
+function buildChairmanPhotoHTML(user){
+    const name = (user && user.name) || 'Chairman';
 
-document
-.querySelectorAll(".founder-card,.structure-card")
-.forEach(card=>{
+    if (user && user.photoURL && String(user.photoURL).trim()){
+        return `
+            <img
+                src="${escapeHTML(user.photoURL)}"
+                alt="${escapeHTML(name)} Chairman EIAFSDO"
+                loading="eager"
+                onerror="this.outerHTML='<div class=\\'chairman-initials-fallback\\'>${escapeHTML(getInitials(name))}</div>';"
+            >
+        `;
+    }
 
-    card.addEventListener("mousemove",(e)=>{
+    return `<div class="chairman-initials-fallback">${escapeHTML(getInitials(name))}</div>`;
+}
 
-        const rect=card.getBoundingClientRect();
 
-        const x=e.clientX-rect.left;
-        const y=e.clientY-rect.top;
+/* ==========================================================
+   PROCESS USERS
+========================================================== */
 
-        const rotateX=((y/rect.height)-.5)*-3;
-        const rotateY=((x/rect.width)-.5)*3;
+function processUsers(users){
+    // Chairman — first user with role 'chairman'
+    chairmanUser = users.find(u => normalizeRole(u.role) === 'chairman') || null;
 
-        card.style.transform=
-        `perspective(800px)
-         rotateX(${rotateX}deg)
-         rotateY(${rotateY}deg)
-         translateY(-5px)`;
-
+    // Founders — match the three known founding names, OR any user with
+    // role 'founding-member'. Keep in the fixed canonical order:
+    // Ayush, Priyabrata, Abhradeep.
+    const byName = new Map();
+    users.forEach(u => {
+        const key = String(u.name || '').trim().toLowerCase();
+        if (key) byName.set(key, u);
     });
 
-    card.addEventListener("mouseleave",()=>{
-
-        card.style.transform="";
-
+    const ordered = [];
+    FOUNDING_NAMES.forEach(name => {
+        const u = byName.get(name);
+        if (u) ordered.push(u);
     });
 
+    // Add any remaining users with role 'founding-member'
+    users.forEach(u => {
+        if (normalizeRole(u.role) === 'founding-member' &&
+            !ordered.find(x => x.id === u.id)){
+            ordered.push(u);
+        }
+    });
+
+    founderUsers = ordered;
+}
+
+
+/* ==========================================================
+   RENDER — CHAIRMAN SECTION
+========================================================== */
+
+function renderChairmanSection(){
+    if (!chairmanUser){
+        // Fallback board-controlled card
+        return `
+            <section class="reveal">
+                <span class="section-label">01 / CHAIRMAN</span>
+
+                <h2 class="section-title">Chairman's Desk</h2>
+
+                <p class="section-intro">
+                    The Chairman provides organizational leadership and represents
+                    the Chairman's Desk within the EIAFSDO structure.
+                </p>
+
+                <div class="chairman-card">
+                    <div class="chairman-image">
+                        <div class="chairman-initials-fallback">🏛️</div>
+                    </div>
+
+                    <div class="chairman-content">
+                        <div class="chairman-kicker">BOARD-CONTROLLED STATE</div>
+                        <h2 class="chairman-name">No Chairman<br>In Office</h2>
+                        <div class="chairman-role">BOARD CONTROLLED</div>
+
+                        <p>
+                            EIAFSDO is currently operating under direct control of
+                            the board members. The Chairman's Desk will resume
+                            official leadership communication once a Chairman is
+                            officially appointed in the database.
+                        </p>
+
+                        <div class="chairman-details">
+                            <div class="detail">
+                                <strong>STATUS</strong>
+                                <span>Board Controlled</span>
+                            </div>
+                            <div class="detail">
+                                <strong>ORGANIZATION</strong>
+                                <span>EIAFSDO</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        `;
+    }
+
+    const name = chairmanUser.name || 'Chairman';
+    const firstName = name.split(/\s+/)[0] || name;
+    const lastName = name.split(/\s+/).slice(1).join(' ') || '';
+    const bio = chairmanUser.bio || chairmanUser.stack || '';
+    const org = chairmanUser.org || 'EIAFSDO';
+    const since = formatLongDate(chairmanUser.createdAt);
+
+    const photoHTML = buildChairmanPhotoHTML(chairmanUser);
+
+    return `
+        <section class="reveal">
+            <span class="section-label">01 / CHAIRMAN</span>
+
+            <h2 class="section-title">Chairman's Desk</h2>
+
+            <p class="section-intro">
+                The Chairman provides organizational leadership and represents
+                the Chairman's Desk within the EIAFSDO structure.
+            </p>
+
+            <div class="chairman-card">
+
+                <div class="chairman-image">
+                    ${photoHTML}
+                </div>
+
+                <div class="chairman-content">
+
+                    <div class="chairman-kicker">EIAFSDO LEADERSHIP DESK</div>
+
+                    <h2 class="chairman-name">
+                        ${escapeHTML(firstName)}<br>
+                        ${escapeHTML(lastName)}
+                    </h2>
+
+                    <div class="chairman-role">CHAIRMAN</div>
+
+                    <p>
+                        ${bio
+                            ? escapeHTML(bio)
+                            : `${escapeHTML(name)} is associated with EIAFSDO as Chairman. The Chairman's Desk represents organizational coordination, leadership communication and participation in the development of the organization's activities and projects.`}
+                    </p>
+
+                    <div class="chairman-details">
+
+                        <div class="detail">
+                            <strong>POSITION</strong>
+                            <span>Chairman</span>
+                        </div>
+
+                        <div class="detail">
+                            <strong>ORGANIZATION</strong>
+                            <span>${escapeHTML(org)}</span>
+                        </div>
+
+                        <div class="detail">
+                            <strong>BATCH</strong>
+                            <span>Founding Team</span>
+                        </div>
+
+                        <div class="detail">
+                            <strong>DESK</strong>
+                            <span>Chairman's Office</span>
+                        </div>
+
+                        ${since ? `
+                        <div class="detail" style="grid-column:1 / -1;">
+                            <strong>IN OFFICE SINCE</strong>
+                            <span>${escapeHTML(since)}</span>
+                        </div>
+                        ` : ''}
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    `;
+}
+
+
+/* ==========================================================
+   RENDER — FOUNDERS SECTION
+========================================================== */
+
+function renderFoundersSection(){
+
+    if (!founderUsers.length){
+        return `
+            <section class="reveal">
+                <span class="section-label">02 / FOUNDERS</span>
+
+                <h2 class="section-title">Founding Team</h2>
+
+                <p class="section-intro">
+                    Founding member profiles will appear here once they are
+                    registered in the EIAFSDO database.
+                </p>
+
+                <div class="founder-note">
+                    <strong>FOUNDING TEAM RECORD</strong>
+                    <p>
+                        The EIAFSDO founding team consists of
+                        <strong>Ayush Chatterjee</strong>,
+                        <strong>Priyabrata Patra</strong> and
+                        <strong>Abhradeep Dhara</strong>.
+                    </p>
+                </div>
+            </section>
+        `;
+    }
+
+    const cardsHTML = founderUsers.map(u => {
+        const name = u.name || 'Founder';
+        const bio = u.bio || u.stack || '';
+        const org = u.org || 'EIAFSDO';
+        const photoHTML = buildFounderPhotoHTML(u);
+
+        // Detect roles from data
+        const role = normalizeRole(u.role);
+        const isChairman = role === 'chairman';
+        const isAdmin = role === 'admin';
+        const isIT = role === 'it-admin';
+        const isFounding = role === 'founding-member' || FOUNDING_NAMES.includes(name.toLowerCase());
+
+        // Role subtitle
+        const subtitleBits = ['FOUNDING TEAM'];
+        if (isIT || /it|web/i.test(u.stack || '')) subtitleBits.push('IT & WEB');
+        const roleSubtitle = subtitleBits.join(' · ');
+
+        // Role tag pills
+        const pills = ['FOUNDER'];
+        if (isChairman) pills.push('CHAIRMAN');
+        if (isAdmin) pills.push('BOARD MEMBER');
+        if (isIT) pills.push('IT ADMIN');
+        if (/web/i.test(u.stack || '')) pills.push('WEB ADMIN');
+        else if (!isChairman && !isAdmin && !isIT) pills.push('BOARD');
+
+        const description = bio
+            ? bio
+            : `${name} is one of the founding members of EIAFSDO and forms part of the organization's founding structure.`;
+
+        return `
+            <article class="founder-card">
+                <div class="founder-photo">
+                    ${photoHTML}
+                </div>
+
+                <h3 class="founder-name">${escapeHTML(name)}</h3>
+
+                <div class="verified">
+                    <span>✓ VERIFIED FOUNDING MEMBER</span>
+                </div>
+
+                <div class="founder-role">${escapeHTML(roleSubtitle)}</div>
+
+                <div class="batch">
+                    <span class="batch-label">BATCH</span>
+                    <span class="batch-value">FOUNDING BATCH</span>
+                </div>
+
+                <div class="role-tags">
+                    ${pills.map(p => `<span>${escapeHTML(p)}</span>`).join('')}
+                </div>
+
+                <p class="founder-description">${escapeHTML(description)}</p>
+            </article>
+        `;
+    }).join('');
+
+    const founderNames = founderUsers.map(u => `<strong>${escapeHTML(u.name)}</strong>`).join(', ');
+
+    return `
+        <section class="reveal">
+            <span class="section-label">02 / FOUNDERS</span>
+
+            <h2 class="section-title">Founding Team</h2>
+
+            <p class="section-intro">
+                EIAFSDO was established around its founding team. The founding
+                members form the foundation of the organization's identity,
+                development and collaborative direction.
+            </p>
+
+            <div class="founder-grid">
+                ${cardsHTML}
+            </div>
+
+            <div class="founder-note">
+                <strong>FOUNDING TEAM RECORD</strong>
+                <p>
+                    The EIAFSDO founding team consists of
+                    ${founderNames}.
+                    Their founding status is represented separately from
+                    subsequent organizational roles and departments.
+                </p>
+            </div>
+        </section>
+    `;
+}
+
+
+/* ==========================================================
+   RENDER — STRUCTURE / BATCH / ROLES / CTA
+========================================================== */
+
+function renderStructureSection(){
+    return `
+        <section class="reveal">
+            <span class="section-label">03 / STRUCTURE</span>
+
+            <h2 class="section-title">Team Structure</h2>
+
+            <p class="section-intro">
+                EIAFSDO can organize its activities through leadership,
+                board participation, IT administration and web administration.
+            </p>
+
+            <div class="structure">
+
+                <div class="structure-card">
+                    <div class="structure-icon">👑</div>
+                    <h3>Chairman's Office</h3>
+                    <p>The Chairman's Desk is the organizational leadership desk associated with the Chairman of EIAFSDO.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🏛️</div>
+                    <h3>Founding Board</h3>
+                    <p>The founding members form the core founding structure of EIAFSDO and participate in organizational development.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">💻</div>
+                    <h3>IT Department</h3>
+                    <p>The IT administration area supports digital systems, technology projects and technical administration.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🌐</div>
+                    <h3>Web Administration</h3>
+                    <p>Web administration manages website development, pages, digital interfaces and web-based organizational systems.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🧩</div>
+                    <h3>Project Development</h3>
+                    <p>Project development focuses on building, testing and documenting technology-oriented projects.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">📢</div>
+                    <h3>Communication</h3>
+                    <p>Official notices, talks and organizational information can be published through EIAFSDO's digital platforms.</p>
+                </div>
+
+            </div>
+        </section>
+    `;
+}
+
+
+function renderBatchSection(){
+    const items = founderUsers.length
+        ? founderUsers.map((u, i) => `
+            <div class="batch-item">
+                <strong>FOUNDER ${String(i + 1).padStart(2, '0')}</strong>
+                <span>${escapeHTML(u.name)}</span>
+            </div>
+        `).join('')
+        : `
+            <div class="batch-item">
+                <strong>FOUNDER 01</strong>
+                <span>Ayush Chatterjee</span>
+            </div>
+            <div class="batch-item">
+                <strong>FOUNDER 02</strong>
+                <span>Priyabrata Patra</span>
+            </div>
+            <div class="batch-item">
+                <strong>FOUNDER 03</strong>
+                <span>Abhradeep Dhara</span>
+            </div>
+        `;
+
+    return `
+        <section class="reveal">
+            <span class="section-label">04 / BATCH</span>
+
+            <h2 class="section-title">Founding Batch</h2>
+
+            <div class="batch-box">
+                <h3>The Founding Batch</h3>
+                <p>
+                    The founding members are identified as the founding batch of
+                    EIAFSDO. This designation refers to their founding association
+                    with the organization rather than a college or academic batch.
+                </p>
+
+                <div class="batch-list">
+                    ${items}
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+
+function renderRolesSection(){
+    const chairmanName = chairmanUser ? chairmanUser.name : 'the Chairman';
+    const founderNamesList = founderUsers.length
+        ? founderUsers.map(u => u.name).join(', ')
+        : 'Ayush Chatterjee, Priyabrata Patra and Abhradeep Dhara';
+
+    // Find the IT / Web admin among founders (Priyabrata usually)
+    const itFounder = founderUsers.find(u => /it|web/i.test(u.stack || '') || normalizeRole(u.role) === 'it-admin') || founderUsers[1] || null;
+    const itFounderName = itFounder ? itFounder.name : 'Priyabrata Patra';
+
+    return `
+        <section class="reveal">
+            <span class="section-label">05 / RESPONSIBILITIES</span>
+
+            <h2 class="section-title">Roles & Responsibilities</h2>
+
+            <div class="structure">
+
+                <div class="structure-card">
+                    <div class="structure-icon">👑</div>
+                    <h3>Chairman</h3>
+                    <p>${escapeHTML(chairmanName)} — Chairman of EIAFSDO and member of the founding team.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">⭐</div>
+                    <h3>Founder</h3>
+                    <p>${escapeHTML(founderNamesList)} — founding members of EIAFSDO.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🖥️</div>
+                    <h3>IT Administration</h3>
+                    <p>${escapeHTML(itFounderName)} — associated with IT administration and digital technology systems.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🌐</div>
+                    <h3>Web Administration</h3>
+                    <p>${escapeHTML(itFounderName)} — associated with EIAFSDO web administration and website development.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🏛️</div>
+                    <h3>Board Member</h3>
+                    <p>Founding team members may participate in organizational board-level activities according to the organization's internal structure.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🚀</div>
+                    <h3>Project Team</h3>
+                    <p>Members can collaborate on technology, software, web and experimental development projects.</p>
+                </div>
+
+            </div>
+        </section>
+    `;
+}
+
+
+function renderCTA(){
+    return `
+        <section>
+            <div class="cta">
+                <h2>Build. Learn. Grow.</h2>
+                <p>EIAFSDO brings together people interested in learning, building technology and developing practical projects through collaboration.</p>
+
+                <div class="cta-buttons">
+                    <a href="about.html" class="btn">ABOUT EIAFSDO</a>
+                    <a href="projects.html" class="btn btn-dark">VIEW PROJECTS</a>
+                    <a href="chairman-desk.html" class="btn">CHAIRMAN'S DESK</a>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+
+/* ==========================================================
+   MOUNT PAGE
+========================================================== */
+
+function renderPage(){
+    document.getElementById('pageMount').innerHTML =
+        renderChairmanSection() +
+        renderFoundersSection() +
+        renderStructureSection() +
+        renderBatchSection() +
+        renderRolesSection() +
+        renderCTA();
+
+    requestAnimationFrame(() => {
+        attachReveal();
+    });
+}
+
+
+/* ==========================================================
+   FETCH / SUBSCRIBE
+========================================================== */
+
+async function fetchUsersOnce(){
+    try{
+        const snap = await db.collection('users').get();
+        const users = [];
+        snap.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+        processUsers(users);
+        renderPage();
+    } catch(err){
+        console.error('Users fetch error:', err);
+        processUsers([]);
+        renderPage();
+    }
+}
+
+
+function subscribeUsers(){
+    if (usersUnsubscribe) usersUnsubscribe();
+
+    usersUnsubscribe = db.collection('users').onSnapshot(
+        snap => {
+            const users = [];
+            snap.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+
+            const prevChairmanId = chairmanUser ? chairmanUser.id : null;
+            const prevFounderIds = founderUsers.map(u => u.id).join('|');
+
+            processUsers(users);
+
+            const newChairmanId = chairmanUser ? chairmanUser.id : null;
+            const newFounderIds = founderUsers.map(u => u.id).join('|');
+
+            // Re-render only when leadership identities change or on first render
+            if (firstRender ||
+                prevChairmanId !== newChairmanId ||
+                prevFounderIds !== newFounderIds ||
+                !hasRendered){
+
+                firstRender = false;
+                hasRendered = true;
+                renderPage();
+            }
+        },
+        err => {
+            console.error('Users subscription error:', err);
+            fetchUsersOnce();
+        }
+    );
+}
+
+
+/* ==========================================================
+   NAV SHADOW
+========================================================== */
+
+const nav = document.querySelector(".nav");
+
+window.addEventListener(
+    "scroll",
+    () => {
+        if (window.scrollY > 40){
+            nav.style.boxShadow = "3px 5px 0 #17150f";
+        } else {
+            nav.style.boxShadow = "3px 4px 0 #17150f";
+        }
+    },
+    { passive:true }
+);
+
+
+/* ==========================================================
+   BOOTSTRAP
+========================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initRevealObserver();
+    subscribeUsers();
 });
 
 </script>
