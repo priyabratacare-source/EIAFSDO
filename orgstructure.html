@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EIAFSDO — Organizational Structure</title>
+
+<meta name="description" content="Official organizational structure of EIAFSDO — Board of Directors, Founders, Chairman, CEO, IT Department and Members. IT reports directly to the Board.">
+<meta name="keywords" content="EIAFSDO structure, EIAFSDO org chart, EIAFSDO board, EIAFSDO chairman, EIAFSDO CEO, EIAFSDO IT department, EIAFSDO hierarchy">
+<meta name="author" content="EIAFSDO">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#f2c94c">
+<link rel="canonical" href="https://priyabratacare-source.github.io/EIAFSDO/orgstructure.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="EIAFSDO — Organizational Structure">
+<meta property="og:description" content="Official organizational structure of EIAFSDO — Board, Founders, Chairman, CEO, IT Department and Members.">
+<meta property="og:url" content="https://priyabratacare-source.github.io/EIAFSDO/orgstructure.html">
+<meta property="og:site_name" content="EIAFSDO">
+<meta property="og:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EIAFSDO — Organizational Structure">
+<meta name="twitter:description" content="Official organizational structure of EIAFSDO.">
+<meta name="twitter:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800;900&family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<style>
+
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root{
+    --bg:#fffaf0;
+    --surface:#fffef8;
+    --soft:#f6eed8;
+    --text:#1d1a14;
+    --body:#3d3830;
+
+    --yellow:#f2c94c;
+    --gold:#a87c00;
+    --gold-light:#ffe68a;
+    --gold-dark:#765300;
+    --green:#e8ddb4;
+    --blue:#1687ff;
+    --purple:#6a3fb5;
+    --red:#c9312e;
+    --board-blue:#3d64b8;
+    --board-blue-light:#c7d9ff;
+
+    --black:#17150f;
+    --white:#ffffff;
+
+    --border:2px solid var(--black);
+    --shadow:6px 7px 0 var(--black);
+    --shadow-small:3px 4px 0 var(--black);
+    --radius:12px;
+
+    --ease-out:cubic-bezier(.22,.75,.2,1);
+    --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+    -webkit-text-size-adjust:100%;
+}
+
+body{
+    font-family:"Nunito Sans",sans-serif;
+    background:var(--bg);
+    color:var(--body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+}
+
+/* BACKGROUND */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    z-index:-5;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(242,201,76,.24), transparent 25%),
+        radial-gradient(circle at 90% 15%, rgba(232,221,180,.38), transparent 27%),
+        radial-gradient(circle at 50% 100%, rgba(242,201,76,.15), transparent 32%);
+    filter:blur(22px);
+    animation:bgBreath 9s ease-in-out infinite alternate;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-4;
+    pointer-events:none;
+    opacity:.22;
+    background-image:
+        linear-gradient(rgba(29,26,20,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29,26,20,.08) 1px, transparent 1px);
+    background-size:48px 48px;
+    animation:gridMove 20s linear infinite;
+}
+
+@keyframes bgBreath{
+    from{ transform:scale(1); }
+    to{ transform:scale(1.08); }
+}
+
+@keyframes gridMove{
+    from{ background-position:0 0; }
+    to{ background-position:48px 48px; }
+}
+
+/* ANIMATIONS */
+
+@keyframes pageReveal{
+    from{ opacity:0; transform:translateY(18px); filter:blur(5px); }
+    to{ opacity:1; transform:translateY(0); filter:blur(0); }
+}
+
+@keyframes fadeSlideUp{
+    from{ opacity:0; transform:translateY(28px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+@keyframes softPulse{
+    0%,100%{ transform:scale(1); box-shadow:3px 4px 0 var(--black); }
+    50%{ transform:scale(1.04); box-shadow:5px 6px 0 var(--black); }
+}
+
+@keyframes pulse{
+    50%{ transform:scale(.65); opacity:.5; }
+}
+
+@keyframes spinRotate{
+    to{ transform:rotate(360deg); }
+}
+
+@keyframes connectorFlow{
+    from{ background-position:0 0; }
+    to{ background-position:0 24px; }
+}
+
+/* NAVIGATION */
+
+.nav{
+    position:sticky;
+    top:12px;
+    z-index:1000;
+    width:min(1180px, calc(100% - 28px));
+    margin:12px auto 0;
+    min-height:66px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:9px 13px;
+    background:rgba(255,254,248,.88);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-small);
+    animation:fadeSlideUp .8s var(--ease-out) both;
+    transition:box-shadow .4s var(--ease-out);
+}
+
+.nav:hover{ box-shadow:5px 7px 0 var(--black); }
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--text);
+    text-decoration:none;
+    min-width:0;
+}
+
+.brand-logo{
+    width:44px;
+    height:44px;
+    flex:none;
+    border-radius:50%;
+    border:2px solid var(--black);
+    object-fit:cover;
+    background:var(--yellow);
+    transition:transform .5s var(--ease-spring);
+}
+
+.brand:hover .brand-logo{
+    transform:rotate(-8deg) scale(1.08);
+}
+
+.brand-text{
+    font-family:"Archivo Black",sans-serif;
+    font-size:15px;
+    white-space:nowrap;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+
+.nav-links a{
+    color:var(--text);
+    text-decoration:none;
+    padding:9px 12px;
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:11px;
+    font-weight:800;
+    transition:background .25s var(--ease-out), transform .25s var(--ease-out);
+}
+
+.nav-links a:hover{
+    background:var(--yellow);
+    transform:translateY(-2px);
+}
+
+/* CONTAINER */
+
+.container{
+    width:min(1200px, calc(100% - 30px));
+    margin:auto;
+}
+
+/* HERO */
+
+.hero{
+    width:min(1200px, calc(100% - 28px));
+    margin:75px auto 50px;
+    text-align:center;
+}
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:8px 14px;
+    background:var(--green);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-small);
+    font-family:"Roboto Mono",monospace;
+    font-size:11px;
+    font-weight:900;
+    opacity:0;
+    animation:fadeSlideUp .8s var(--ease-out) .2s forwards;
+}
+
+.status-dot{
+    width:9px;
+    height:9px;
+    background:#17150f;
+    border-radius:50%;
+    animation:pulse 1.5s infinite;
+}
+
+.hero h1{
+    margin-top:28px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(46px,8vw,105px);
+    line-height:.9;
+    letter-spacing:-4px;
+    color:var(--text);
+}
+
+.hero h1 .line{
+    display:block;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) forwards;
+}
+
+.hero h1 .line:nth-child(1){ animation-delay:.35s; }
+.hero h1 .line:nth-child(2){ animation-delay:.55s; }
+
+/* ★ REMOVED the yellow underline — no ::after on hero h1 span */
+
+.hero h1 span{
+    color:var(--gold);
+    display:inline-block;
+}
+
+.hero p{
+    max-width:780px;
+    margin:28px auto 0;
+    font-size:18px;
+    line-height:1.7;
+    font-weight:600;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .8s forwards;
+}
+
+.hero-meta{
+    margin-top:25px;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) 1.05s forwards;
+}
+
+.meta{
+    padding:9px 14px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-small);
+    font-family:"Roboto Mono",monospace;
+    font-size:11px;
+    font-weight:700;
+}
+
+/* SECTION */
+
+.section{
+    width:min(1200px, calc(100% - 28px));
+    margin:90px auto;
+}
+
+.section-label{
+    display:inline-block;
+    padding:7px 12px;
+    background:var(--yellow);
+    border:var(--border);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:11px;
+    font-weight:800;
+    box-shadow:var(--shadow-small);
+}
+
+.section-title{
+    margin-top:20px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(32px,5.5vw,62px);
+    line-height:1;
+    letter-spacing:-2px;
+    color:var(--text);
+}
+
+.section-intro{
+    max-width:780px;
+    margin-top:18px;
+    font-size:17px;
+    line-height:1.7;
+    color:var(--body);
+}
+
+/* =====================================================
+   HIERARCHY FLOW
+===================================================== */
+
+.hierarchy{
+    margin-top:60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0;
+    position:relative;
+}
+
+/* LEVEL BLOCK */
+
+.level{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    animation:fadeSlideUp .9s var(--ease-out) both;
+}
+
+.level[data-level="1"]{ animation-delay:.15s; }
+.level[data-level="2"]{ animation-delay:.3s; }
+.level[data-level="3"]{ animation-delay:.45s; }
+.level[data-level="4"]{ animation-delay:.6s; }
+.level[data-level="5"]{ animation-delay:.75s; }
+.level[data-level="6"]{ animation-delay:.9s; }
+.level[data-level="7"]{ animation-delay:1.05s; }
+
+/* LEVEL BADGE */
+
+.level-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 14px;
+    margin-bottom:14px;
+    border:2px solid var(--black);
+    border-radius:999px;
+    background:var(--surface);
+    box-shadow:var(--shadow-small);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--text);
+    z-index:2;
+    position:relative;
+}
+
+.level-tag .lvl-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:var(--yellow);
+    border:2px solid var(--black);
+    font-size:9px;
+    font-weight:900;
+}
+
+.level[data-level="1"] .level-tag{ background:var(--black); color:var(--yellow); border-color:var(--yellow); }
+.level[data-level="1"] .level-tag .lvl-num{ background:var(--yellow); color:var(--black); border-color:var(--yellow); }
+
+.level[data-level="2"] .level-tag{ background:var(--yellow); }
+.level[data-level="3"] .level-tag{ background:var(--board-blue-light); border-color:var(--board-blue); }
+.level[data-level="4"] .level-tag{ background:#d6e9ff; border-color:var(--blue); }
+.level[data-level="5"] .level-tag{ background:#e0f2e0; border-color:#2e7d32; }
+.level[data-level="6"] .level-tag{ background:#e8dcff; border-color:var(--purple); }
+.level[data-level="7"] .level-tag{ background:var(--soft); }
+
+.level-title{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(22px,3vw,32px);
+    color:var(--text);
+    letter-spacing:-1px;
+    text-align:center;
+    margin-bottom:6px;
+}
+
+.level-subtitle{
+    font-family:"Roboto Mono",monospace;
+    font-size:11px;
+    color:var(--body);
+    font-weight:700;
+    text-align:center;
+    margin-bottom:22px;
+    max-width:640px;
+    line-height:1.6;
+}
+
+.level-cards{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:18px;
+    position:relative;
+    z-index:2;
+}
+
+/* =====================================================
+   ★ SPECIAL: PARALLEL CHANNEL (CEO + IT side-by-side)
+===================================================== */
+
+.parallel-channel{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    margin-top:8px;
+    align-items:start;
+}
+
+.channel{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    padding:22px 18px;
+    background:var(--surface);
+    border:2px dashed var(--black);
+    border-radius:16px;
+}
+
+.channel.channel-it{
+    background:linear-gradient(135deg,#f4f7ff,#e0ecff);
+    border-color:var(--board-blue);
+    border-style:dashed;
+}
+
+.channel.channel-ceo{
+    background:linear-gradient(135deg,#eef4ff,#d6e9ff);
+    border-color:var(--board-blue);
+    border-style:dashed;
+}
+
+.channel-label{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 12px;
+    margin-bottom:14px;
+    background:var(--black);
+    color:var(--yellow);
+    border:2px solid var(--yellow);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9.5px;
+    font-weight:900;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
+
+.channel.channel-it .channel-label{
+    background:var(--board-blue);
+    color:#fff;
+    border-color:var(--black);
+}
+
+.channel.channel-ceo .channel-label{
+    background:var(--black);
+    color:var(--yellow);
+    border-color:var(--yellow);
+}
+
+.channel-desc{
+    font-family:"Roboto Mono",monospace;
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--body);
+    text-align:center;
+    line-height:1.6;
+    max-width:300px;
+    margin-bottom:16px;
+}
+
+.channel-desc strong{
+    color:var(--text);
+}
+
+/* =====================================================
+   DIRECT REPORT FLAG (Board → IT, bypassing CEO)
+===================================================== */
+
+.direct-report-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:5px 11px;
+    margin-top:14px;
+    background:linear-gradient(135deg,#ffe68a,#f2c94c);
+    border:2px solid var(--black);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    color:var(--text);
+    animation:softPulse 3s ease-in-out infinite;
+}
+
+/* =====================================================
+   PERSON CARD
+===================================================== */
+
+.person-card{
+    position:relative;
+    width:270px;
+    max-width:100%;
+    padding:22px 20px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:16px;
+    box-shadow:var(--shadow-small);
+    text-align:center;
+    transition:transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+    overflow:hidden;
+}
+
+.person-card:hover{
+    transform:translateY(-6px);
+    box-shadow:8px 9px 0 var(--black);
+}
+
+.person-card .photo{
+    width:80px;
+    height:80px;
+    margin:auto;
+    border-radius:50%;
+    overflow:hidden;
+    border:3px solid var(--black);
+    background:var(--yellow);
+    box-shadow:4px 4px 0 var(--gold);
+    transition:transform .5s var(--ease-spring);
+}
+
+.person-card:hover .photo{
+    transform:scale(1.06) rotate(-4deg);
+}
+
+.person-card .photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.person-card .photo .initials{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#fff0a4,#d1a235,#8a6500);
+    color:#17150f;
+    font-family:"Archivo Black",sans-serif;
+    font-size:28px;
+    letter-spacing:-2px;
+}
+
+.person-card .name{
+    margin-top:16px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:19px;
+    color:var(--text);
+    line-height:1.1;
+    word-break:break-word;
+}
+
+.person-card .role-badge{
+    display:inline-block;
+    margin-top:10px;
+    padding:5px 11px;
+    background:var(--yellow);
+    border:2px solid var(--black);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    max-width:100%;
+    line-height:1.4;
+    word-break:break-word;
+}
+
+.person-card .bio{
+    margin-top:12px;
+    font-size:12.5px;
+    line-height:1.6;
+    color:var(--body);
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    word-break:break-word;
+}
+
+.person-card .meta-line{
+    display:block;
+    margin-top:8px;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:700;
+    color:#8a8275;
+}
+
+/* ─── VARIANT: Board tier ─── */
+.person-card.tier-board{
+    background:linear-gradient(135deg,#1a1a15,#2b261b);
+    color:#f3ead2;
+    border-color:var(--yellow);
+    box-shadow:6px 7px 0 var(--yellow);
+}
+
+.person-card.tier-board .name{ color:#fffdf4; }
+.person-card.tier-board .bio{ color:#cfc8b8; }
+.person-card.tier-board .role-badge{
+    background:var(--yellow);
+    color:var(--black);
+    border-color:var(--yellow);
+}
+.person-card.tier-board .photo{
+    border-color:var(--yellow);
+    box-shadow:4px 4px 0 var(--gold-dark);
+}
+.person-card.tier-board .meta-line{ color:#a8a08c; }
+
+.person-card.tier-board::before{
+    content:"★ TOP GOVERNANCE";
+    position:absolute;
+    top:0;
+    left:50%;
+    transform:translate(-50%,0);
+    padding:3px 12px;
+    background:var(--yellow);
+    color:var(--black);
+    font-family:"Roboto Mono",monospace;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.6px;
+    border-bottom-left-radius:8px;
+    border-bottom-right-radius:8px;
+}
+
+/* ─── VARIANT: Chairman tier ─── */
+.person-card.tier-chairman{
+    background:linear-gradient(135deg,#fffbe9,#ffe9a8);
+    border-color:var(--black);
+    box-shadow:6px 7px 0 var(--gold);
+}
+
+/* ─── VARIANT: CEO tier ─── */
+.person-card.tier-ceo{
+    background:linear-gradient(135deg,#d6e9ff,#a8c8ff);
+    border-color:var(--board-blue);
+    box-shadow:6px 7px 0 var(--board-blue);
+}
+
+.person-card.tier-ceo .photo{
+    border-color:var(--board-blue);
+    box-shadow:4px 4px 0 var(--board-blue);
+}
+
+.person-card.tier-ceo .role-badge{
+    background:var(--board-blue);
+    color:#fff;
+    border-color:var(--board-blue);
+}
+
+/* ─── VARIANT: Executive tier ─── */
+.person-card.tier-executive{
+    background:linear-gradient(135deg,#e8dcff,#c9b6ff);
+    border-color:var(--purple);
+    box-shadow:6px 7px 0 var(--purple);
+}
+
+.person-card.tier-executive .photo{
+    border-color:var(--purple);
+    box-shadow:4px 4px 0 var(--purple);
+}
+
+.person-card.tier-executive .role-badge{
+    background:var(--purple);
+    color:#fff;
+    border-color:var(--purple);
+}
+
+/* ─── VARIANT: Admin tier ─── */
+.person-card.tier-admin{
+    background:linear-gradient(135deg,#e0f2e0,#c1e8c1);
+    border-color:#2e7d32;
+    box-shadow:6px 7px 0 #2e7d32;
+}
+
+.person-card.tier-admin .photo{
+    border-color:#2e7d32;
+    box-shadow:4px 4px 0 #2e7d32;
+}
+
+.person-card.tier-admin .role-badge{
+    background:#2e7d32;
+    color:#fff;
+    border-color:#2e7d32;
+}
+
+/* ─── VARIANT: IT tier ─── */
+.person-card.tier-it{
+    background:linear-gradient(135deg,#d6e9ff,#a8c8ff);
+    border-color:var(--blue);
+    box-shadow:6px 7px 0 var(--blue);
+}
+
+.person-card.tier-it .photo{
+    border-color:var(--blue);
+    box-shadow:4px 4px 0 var(--blue);
+}
+
+.person-card.tier-it .role-badge{
+    background:var(--blue);
+    color:#fff;
+    border-color:var(--blue);
+}
+
+/* ─── VARIANT: Member tier ─── */
+.person-card.tier-member{
+    background:var(--surface);
+}
+
+/* ─── VARIANT: Vacant card ─── */
+.person-card.vacant{
+    background:linear-gradient(135deg,#f3f0e5,#e6e2d2);
+    border-style:dashed;
+    border-color:#8a8275;
+    box-shadow:6px 7px 0 #8a8275;
+}
+
+.person-card.vacant .photo{
+    background:linear-gradient(135deg,#f3ead2,#e8ddb4);
+    border-color:#8a8275;
+    box-shadow:4px 4px 0 #8a8275;
+}
+
+.person-card.vacant .photo .initials{
+    background:linear-gradient(135deg,#f3ead2,#e8ddb4);
+    color:#8a8275;
+    font-size:34px;
+}
+
+.person-card.vacant .name{
+    color:#6b6459;
+    font-style:italic;
+}
+
+.person-card.vacant .role-badge{
+    background:#8a8275;
+    color:#fffef8;
+    border-color:#8a8275;
+}
+
+.person-card.vacant .bio{
+    color:#8a8275;
+}
+
+/* =====================================================
+   CONNECTOR
+===================================================== */
+
+.connector{
+    width:4px;
+    height:48px;
+    background:repeating-linear-gradient(
+        to bottom,
+        var(--black) 0,
+        var(--black) 12px,
+        transparent 12px,
+        transparent 24px
+    );
+    background-size:4px 24px;
+    animation:connectorFlow 1s linear infinite;
+    position:relative;
+    z-index:1;
+}
+
+.connector::before,
+.connector::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--yellow);
+    border:2px solid var(--black);
+}
+
+.connector::before{ top:-10px; }
+.connector::after{ bottom:-10px; }
+
+/* Special connector for parallel channel: forks */
+.connector.split{
+    height:64px;
+    background:transparent;
+    position:relative;
+}
+
+.connector.split::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:4px;
+    height:24px;
+    background:var(--black);
+}
+
+.connector.split::after{
+    content:"";
+    position:absolute;
+    top:24px;
+    left:25%;
+    right:25%;
+    height:4px;
+    background:var(--black);
+    border-radius:2px;
+}
+
+.connector.split .drop{
+    position:absolute;
+    top:24px;
+    width:4px;
+    height:40px;
+    background:var(--black);
+}
+
+.connector.split .drop.left{ left:25%; transform:translateX(-50%); }
+.connector.split .drop.right{ right:25%; transform:translateX(50%); }
+
+/* =====================================================
+   LEGEND
+===================================================== */
+
+.legend{
+    margin-top:70px;
+    padding:32px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+}
+
+.legend h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:26px;
+    color:var(--text);
+    margin-bottom:20px;
+}
+
+.legend-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.legend-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+    background:var(--soft);
+    border:2px solid var(--black);
+    border-radius:10px;
+    transition:transform .3s var(--ease-out);
+}
+
+.legend-item:hover{
+    transform:translateY(-3px);
+}
+
+.legend-dot{
+    width:24px;
+    height:24px;
+    flex-shrink:0;
+    border-radius:50%;
+    border:2px solid var(--black);
+}
+
+.legend-dot.board{ background:var(--black); border-color:var(--yellow); }
+.legend-dot.chairman{ background:var(--gold); }
+.legend-dot.ceo{ background:var(--board-blue); }
+.legend-dot.it{ background:var(--blue); }
+.legend-dot.admin{ background:#2e7d32; }
+.legend-dot.executive{ background:var(--purple); }
+.legend-dot.member{ background:var(--soft); border-color:var(--black); }
+
+.legend-item strong{
+    display:block;
+    font-family:"Archivo Black",sans-serif;
+    font-size:14px;
+    color:var(--text);
+}
+
+.legend-item span{
+    display:block;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    color:#6b6254;
+    margin-top:2px;
+    font-weight:700;
+}
+
+/* =====================================================
+   FLOW SUMMARY
+===================================================== */
+
+.flow-summary{
+    margin-top:40px;
+    padding:32px;
+    background:linear-gradient(135deg,#fffef8,#f8edc9);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    text-align:center;
+}
+
+.flow-summary h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:26px;
+    color:var(--text);
+    margin-bottom:16px;
+}
+
+.flow-chain{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    font-family:"Roboto Mono",monospace;
+    font-size:12px;
+    font-weight:900;
+    margin-top:14px;
+}
+
+.flow-chain .step{
+    padding:8px 14px;
+    background:var(--yellow);
+    border:2px solid var(--black);
+    border-radius:999px;
+    color:var(--text);
+}
+
+.flow-chain .step.muted{
+    background:var(--surface);
+    color:var(--body);
+}
+
+.flow-chain .step.it-step{
+    background:var(--board-blue-light);
+    border-color:var(--board-blue);
+    color:#0f172a;
+}
+
+.flow-chain .arrow{
+    color:var(--black);
+    font-size:16px;
+    font-weight:900;
+}
+
+.flow-chain .arrow.bypass{
+    color:var(--board-blue);
+}
+
+/* =====================================================
+   BOARD DIRECTIVE NOTE
+===================================================== */
+
+.board-directive{
+    margin-top:40px;
+    padding:28px 32px;
+    background:linear-gradient(135deg,#1a2436,#0f172a);
+    color:#e6eeff;
+    border:2px solid var(--board-blue);
+    border-radius:16px;
+    box-shadow:
+        0 0 0 2px var(--black),
+        7px 9px 0 var(--black);
+    position:relative;
+    overflow:hidden;
+}
+
+.board-directive::before{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    right:-80px;
+    top:-90px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(107,143,219,.35), transparent 67%);
+}
+
+.board-directive > *{
+    position:relative;
+    z-index:2;
+}
+
+.board-directive h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(20px,3vw,28px);
+    color:#e6eeff;
+    margin-bottom:12px;
+    letter-spacing:-.5px;
+}
+
+.board-directive p{
+    color:#c4d3f2;
+    font-size:14px;
+    line-height:1.75;
+    max-width:820px;
+}
+
+.board-directive p + p{
+    margin-top:10px;
+}
+
+.board-directive strong{
+    color:#ffd968;
+}
+
+/* =====================================================
+   STATEMENT
+===================================================== */
+
+.statement{
+    margin-top:50px;
+    padding:35px;
+    background:var(--yellow);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    text-align:center;
+}
+
+.statement h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(26px,4vw,42px);
+    color:var(--text);
+}
+
+.statement p{
+    max-width:760px;
+    margin:14px auto 0;
+    color:#3b321f;
+    font-size:14.5px;
+    line-height:1.75;
+}
+
+.statement-seal{
+    display:inline-flex;
+    margin-top:22px;
+    padding:9px 13px;
+    background:var(--black);
+    color:var(--yellow);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    animation:softPulse 4s ease-in-out infinite;
+}
+
+/* =====================================================
+   PAGE LOADING
+===================================================== */
+
+.page-loading{
+    min-height:50vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 20px;
+    text-align:center;
+    font-family:"Roboto Mono",monospace;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.5px;
+    animation:pageReveal .6s var(--ease-out);
+}
+
+.page-loading .spin{
+    display:inline-block;
+    width:26px;
+    height:26px;
+    border:4px solid var(--soft);
+    border-top-color:var(--black);
+    border-radius:50%;
+    animation:spinRotate .8s linear infinite;
+    vertical-align:middle;
+    margin-right:12px;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+    margin-top:105px;
+    padding:55px 0 30px;
+    background:var(--black);
+    color:var(--surface);
+    border-top:5px solid var(--yellow);
+}
+
+.footer-inner{
+    width:min(1200px, calc(100% - 30px));
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.footer-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.footer-logo{
+    width:49px;
+    height:49px;
+    border-radius:50%;
+    border:2px solid var(--surface);
+    object-fit:cover;
+    transition:transform .5s var(--ease-spring);
+}
+
+.footer-logo:hover{
+    transform:rotate(-8deg) scale(1.08);
+}
+
+.footer h3{ font-family:"Archivo Black",sans-serif; }
+
+.footer p{
+    margin-top:7px;
+    color:#cfc8b8;
+    font-size:11px;
+}
+
+.footer-code{
+    color:var(--yellow);
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    text-align:right;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:920px){
+    .nav-links{ display:none; }
+
+    .hero{ margin-top:55px; }
+    .hero h1{ letter-spacing:-3px; }
+
+    .legend-grid{ grid-template-columns:1fr; }
+
+    .person-card{ width:100%; max-width:380px; }
+
+    .parallel-channel{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .connector.split{
+        height:40px;
+    }
+
+    .connector.split::after{
+        left:50%;
+        right:auto;
+        transform:translateX(-50%);
+        width:4px;
+        height:16px;
+    }
+
+    .connector.split .drop{ display:none; }
+
+    .footer-inner{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .footer-code{ text-align:left; }
+}
+
+@media(max-width:600px){
+    .nav{
+        width:calc(100% - 18px);
+        top:7px;
+        margin-top:7px;
+    }
+
+    .brand-text{ font-size:12px; }
+    .brand-logo{ width:40px; height:40px; }
+
+    .hero h1{
+        font-size:clamp(44px,14vw,68px);
+        letter-spacing:-2px;
+    }
+
+    .section{ margin:65px auto; }
+
+    .person-card{ padding:20px 16px; }
+
+    .person-card .photo{ width:70px; height:70px; }
+
+    .person-card .name{ font-size:17px; }
+
+    .legend,
+    .flow-summary,
+    .statement,
+    .board-directive{ padding:22px; }
+
+    .level-title{ font-size:20px; }
+    .level-subtitle{ font-size:10.5px; }
+}
+
+@media(prefers-reduced-motion:reduce){
+    *, *::before, *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        scroll-behavior:auto !important;
+        transition-duration:.01ms !important;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+<nav class="nav">
+    <a href="index.html" class="brand">
+        <img class="brand-logo" src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo">
+        <span class="brand-text">EIAFSDO</span>
+    </a>
+
+    <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="about.html">ABOUT</a>
+        <a href="team.html">TEAM</a>
+        <a href="orgstructure.html">STRUCTURE</a>
+        <a href="chairman-desk.html">CHAIRMAN</a>
+        <a href="ceo.html">CEO</a>
+        <a href="notice.html">NOTICE</a>
+        <a href="contact.html">CONTACT</a>
+    </div>
+</nav>
+
+
+<!-- HERO -->
+
+<header class="hero">
+    <div class="status">
+        <span class="status-dot"></span>
+        OFFICIAL ORGANIZATIONAL STRUCTURE
+    </div>
+
+    <h1>
+        <span class="line">Organizational</span>
+        <span class="line"><span>Structure.</span></span>
+    </h1>
+
+    <p>
+        The official governance and hierarchy of EIAFSDO — from the
+        Founding Board at the top, through the Chairman and Chief
+        Executive Officer, down to administration and members.
+        The IT Department reports directly to the Board.
+    </p>
+
+    <div class="hero-meta">
+        <div class="meta">BOARD GOVERNANCE</div>
+        <div class="meta">EXECUTIVE LEADERSHIP</div>
+        <div class="meta">DIRECT BOARD IT CHANNEL</div>
+    </div>
+</header>
+
+
+<!-- PAGE MOUNT -->
+
+<div id="pageMount">
+    <div class="page-loading">
+        <span class="spin"></span>
+        LOADING ORGANIZATIONAL STRUCTURE…
+    </div>
+</div>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            <img class="footer-logo" src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo">
+            <div>
+                <h3>EIAFSDO</h3>
+                <p>Official Organizational Structure</p>
+            </div>
+        </div>
+
+        <div class="footer-code">
+            ORG STRUCTURE<br>
+            EIAFSDO · <span id="footerYear">2026</span>
+        </div>
+
+    </div>
+</footer>
+
+
+<!-- APPLICATION LOGIC -->
+
+<script>
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+const firebaseConfig = {
+    apiKey:"AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
+    authDomain:"eiafsdo-dashboard.firebaseapp.com",
+    projectId:"eiafsdo-dashboard",
+    storageBucket:"eiafsdo-dashboard.firebasestorage.app",
+    messagingSenderId:"171714190075",
+    appId:"1:171714190075:web:ee3dfe78f82896cc736e5e"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let allUsers = [];
+let usersUnsubscribe = null;
+let hasRendered = false;
+
+
+/* =====================================================
+   CONFIG — FOUNDING TEAM
+===================================================== */
+
+const FOUNDING_TEAM = [
+    { key: 'ayush',      matchNames: ['ayush chatterjee'],      hint: 'Ayush Chatterjee' },
+    { key: 'priyabrata', matchNames: ['priyabrata patra'],      hint: 'Priyabrata Patra' },
+    { key: 'abhradeep',  matchNames: ['abhradeep dhara','abhrdeep dhara','abhradip dhara'], hint: 'Abhradeep Dhara' }
+];
+
+
+/* =====================================================
+   UTILITIES
+===================================================== */
+
+function escapeHTML(str){
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+    }[tag] || tag));
+}
+
+function normalizeRole(role){
+    const r = String(role || '').toLowerCase().trim().replaceAll('_','-');
+    if (r === 'superadmin') return 'super-admin';
+    return r;
+}
+
+function getInitials(name){
+    if (!name) return 'U';
+    const parts = String(name).trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return 'U';
+    if (parts.length === 1) return parts[0].substring(0,2).toUpperCase();
+    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
+
+function nameMatches(candidate, target){
+    const a = String(candidate || '').toLowerCase().replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();
+    const b = String(target   || '').toLowerCase().replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();
+    return a === b;
+}
+
+function roleLabel(role){
+    switch (normalizeRole(role)) {
+        case 'super-admin':     return 'Super Admin';
+        case 'chairman':        return 'Chairman';
+        case 'ceo':             return 'Chief Executive Officer';
+        case 'executive':       return 'Executive';
+        case 'founding-member': return 'Founding Member';
+        case 'admin':           return 'Admin';
+        case 'it-admin':        return 'IT Admin';
+        case 'user':            return 'Member';
+        case 'member':          return 'Member';
+        default:                return 'Member';
+    }
+}
+
+
+/* =====================================================
+   ★ FOUNDER ROLE BUILDER
+   If a founder holds another post, show "Founder · [Post]"
+===================================================== */
+
+function founderRoleLabel(user){
+    const role = normalizeRole(user.role);
+
+    // Founder holding other posts — the founder identity always comes first
+    switch (role){
+        case 'chairman':
+            return 'Founder · Chairman';
+        case 'ceo':
+            return 'Founder · Chief Executive Officer';
+        case 'executive':
+            return 'Founder · Executive';
+        case 'admin':
+            return 'Founder · Admin';
+        case 'it-admin':
+            return 'Founder · IT Admin';
+        case 'super-admin':
+            return 'Founder · Super Admin';
+        case 'founding-member':
+        default:
+            return 'Founder · Board Member';
+    }
+}
+
+
+/* =====================================================
+   AVATAR HTML
+===================================================== */
+
+function avatarHTML(user){
+    if (!user) return `<div class="initials">—</div>`;
+    const name = user.name || 'User';
+    if (user.photoURL && String(user.photoURL).trim()){
+        return `
+            <img
+                src="${escapeHTML(user.photoURL)}"
+                alt="${escapeHTML(name)}"
+                loading="lazy"
+                onerror="this.outerHTML='<div class=\\'initials\\'>${escapeHTML(getInitials(name))}</div>';"
+            >
+        `;
+    }
+    return `<div class="initials">${escapeHTML(getInitials(name))}</div>`;
+}
+
+
+/* =====================================================
+   PERSON CARD
+===================================================== */
+
+function personCardHTML(user, opts = {}){
+    const {
+        tier = 'member',
+        roleOverride = null,
+        vacant = false
+    } = opts;
+
+    if (vacant){
+        const vacantName = opts.vacantName || 'Position Vacant';
+        const vacantBio = opts.vacantBio || 'This position is currently vacant and awaiting appointment.';
+        const vacantRole = opts.vacantRole || 'VACANT';
+        const vacantInitials = opts.vacantInitials || '—';
+
+        return `
+            <article class="person-card vacant tier-${escapeHTML(tier)}">
+                <div class="photo">
+                    <div class="initials">${escapeHTML(vacantInitials)}</div>
+                </div>
+                <div class="name">${escapeHTML(vacantName)}</div>
+                <span class="role-badge">${escapeHTML(vacantRole)}</span>
+                <p class="bio">${escapeHTML(vacantBio)}</p>
+            </article>
+        `;
+    }
+
+    if (!user){
+        return personCardHTML(null, { ...opts, vacant: true });
+    }
+
+    const name = user.name || 'User';
+    const role = roleOverride || roleLabel(user.role);
+    const bio = user.bio || user.stack || '';
+    const org = user.org || 'EIAFSDO';
+
+    return `
+        <article class="person-card tier-${escapeHTML(tier)}">
+            <div class="photo">
+                ${avatarHTML(user)}
+            </div>
+            <div class="name">${escapeHTML(name)}</div>
+            <span class="role-badge">${escapeHTML(role)}</span>
+            ${bio ? `<p class="bio">${escapeHTML(bio)}</p>` : `<p class="bio" style="opacity:.6;">No biography on file.</p>`}
+            <span class="meta-line">${escapeHTML(org.toUpperCase())}</span>
+        </article>
+    `;
+}
+
+
+/* =====================================================
+   CLASSIFY USERS
+===================================================== */
+
+function classifyUsers(users){
+    const out = {
+        chairman: null,
+        ceo: null,
+        executive: [],
+        admin: [],
+        it: [],
+        members: [],
+        founders: []
+    };
+
+    out.chairman = users.find(u => normalizeRole(u.role) === 'chairman') || null;
+    out.ceo = users.find(u => normalizeRole(u.role) === 'ceo') || null;
+
+    out.executive = users.filter(u => normalizeRole(u.role) === 'executive');
+
+    out.admin = users
+        .filter(u => normalizeRole(u.role) === 'admin')
+        .sort((a,b) => (a.name || '').localeCompare(b.name || ''));
+
+    out.it = users
+        .filter(u => normalizeRole(u.role) === 'it-admin')
+        .sort((a,b) => (a.name || '').localeCompare(b.name || ''));
+
+    out.members = users
+        .filter(u => {
+            const r = normalizeRole(u.role);
+            return r === 'user' || r === 'member';
+        })
+        .sort((a,b) => (a.name || '').localeCompare(b.name || ''));
+
+    const usedIds = new Set();
+    out.founders = FOUNDING_TEAM.map(slot => {
+        let match = null;
+        for (const alias of slot.matchNames){
+            match = users.find(u =>
+                !usedIds.has(u.id) && nameMatches(u.name, alias)
+            );
+            if (match) break;
+        }
+        if (!match){
+            match = users.find(u =>
+                !usedIds.has(u.id) &&
+                normalizeRole(u.role) === 'founding-member'
+            );
+        }
+        if (match) usedIds.add(match.id);
+        return { user: match || null, hint: slot.hint, key: slot.key };
+    });
+
+    return out;
+}
+
+
+/* =====================================================
+   RENDER HIERARCHY
+===================================================== */
+
+function renderHierarchy(users){
+    const c = classifyUsers(users);
+
+    /* ───── LEVEL 1: FOUNDING BOARD ───── */
+    const boardCards = c.founders.map(slot => {
+        if (slot.user){
+            return personCardHTML(slot.user, {
+                tier: 'board',
+                roleOverride: founderRoleLabel(slot.user)
+            });
+        }
+        return personCardHTML(null, {
+            tier: 'board',
+            vacant: true,
+            vacantName: slot.hint,
+            vacantRole: 'Founding Board',
+            vacantInitials: getInitials(slot.hint || 'F'),
+            vacantBio: 'Founding board member record awaiting database registration.'
+        });
+    }).join('');
+
+    /* ───── LEVEL 2: CHAIRMAN ───── */
+    const chairmanCard = c.chairman
+        ? personCardHTML(c.chairman, {
+            tier: 'chairman',
+            roleOverride: founderRoleLabel(c.chairman).includes('Founder')
+                ? 'Founder · Chairman of the Board'
+                : 'Chairman of the Board'
+        })
+        : personCardHTML(null, {
+            tier: 'chairman',
+            vacant: true,
+            vacantName: 'Chairman',
+            vacantRole: 'VACANT · BOARD CONTROLLED',
+            vacantInitials: '🏛️',
+            vacantBio: 'Chairman position is currently vacant. The Board is governing directly until a Chairman is appointed.'
+        });
+
+    /* ───── LEVEL 3 (Parallel): CEO + IT ───── */
+    const ceoCards = c.ceo
+        ? personCardHTML(c.ceo, {
+            tier: 'ceo',
+            roleOverride: founderRoleLabel(c.ceo).includes('Founder')
+                ? 'Founder · Chief Executive Officer'
+                : 'Chief Executive Officer'
+        })
+        : personCardHTML(null, {
+            tier: 'ceo',
+            vacant: true,
+            vacantName: 'Chief Executive Officer',
+            vacantRole: 'VACANT · BOARD CONTROL',
+            vacantInitials: '👔',
+            vacantBio: 'CEO post under Board Control. Soon to be appointed by the EIAFSDO Board.'
+        });
+
+    const itCards = c.it.length
+        ? c.it.map(u => personCardHTML(u, { tier: 'it' })).join('')
+        : personCardHTML(null, {
+            tier: 'it',
+            vacant: true,
+            vacantName: 'IT Department',
+            vacantRole: 'NO IT ADMINS',
+            vacantInitials: '💻',
+            vacantBio: 'IT administration accounts will appear here once assigned.'
+        });
+
+    /* ───── LEVEL 4: EXECUTIVE ───── */
+    const executiveCards = c.executive.length
+        ? c.executive.map(u => personCardHTML(u, { tier: 'executive' })).join('')
+        : personCardHTML(null, {
+            tier: 'executive',
+            vacant: true,
+            vacantName: 'Executive Team',
+            vacantRole: 'NO EXECUTIVES',
+            vacantInitials: '⚙️',
+            vacantBio: 'Executive positions will appear here once assigned.'
+        });
+
+    /* ───── LEVEL 5: ADMIN ───── */
+    const adminCards = c.admin.length
+        ? c.admin.map(u => personCardHTML(u, { tier: 'admin' })).join('')
+        : personCardHTML(null, {
+            tier: 'admin',
+            vacant: true,
+            vacantName: 'Administration',
+            vacantRole: 'NO ADMINS',
+            vacantInitials: '👥',
+            vacantBio: 'Admin accounts will appear here once registered.'
+        });
+
+    /* ───── LEVEL 6: MEMBERS ───── */
+    const memberCards = c.members.length
+        ? c.members.slice(0, 12).map(u => personCardHTML(u, { tier: 'member' })).join('')
+        : personCardHTML(null, {
+            tier: 'member',
+            vacant: true,
+            vacantName: 'Members',
+            vacantRole: 'NO MEMBERS YET',
+            vacantInitials: '🌱',
+            vacantBio: 'Registered members will appear here.'
+        });
+
+    const memberCount = c.members.length;
+
+    return `
+        <section class="section">
+            <div class="container">
+
+                <span class="section-label">ORGANIZATIONAL HIERARCHY</span>
+
+                <h2 class="section-title">The EIAFSDO Chain of Governance</h2>
+
+                <p class="section-intro">
+                    The official organizational hierarchy of EIAFSDO — the Founding
+                    Board at the top, then the Chairman, then the CEO and the IT
+                    Department (which reports directly to the Board, not to the CEO),
+                    and finally administration and members.
+                </p>
+
+                <div class="hierarchy">
+
+                    <!-- ═══════════ LEVEL 1 — BOARD ═══════════ -->
+                    <div class="level" data-level="1">
+                        <span class="level-tag">
+                            <span class="lvl-num">1</span>
+                            Top Governance
+                        </span>
+                        <h3 class="level-title">Founding Board</h3>
+                        <p class="level-subtitle">
+                            The Founding Board sits at the top of the organizational
+                            structure. It provides ultimate governance, appoints
+                            leadership and holds authority over all levels below.
+                        </p>
+                        <div class="level-cards">
+                            ${boardCards}
+                        </div>
+                    </div>
+
+                    <div class="connector"></div>
+
+                    <!-- ═══════════ LEVEL 2 — CHAIRMAN ═══════════ -->
+                    <div class="level" data-level="2">
+                        <span class="level-tag">
+                            <span class="lvl-num">2</span>
+                            Board Leadership
+                        </span>
+                        <h3 class="level-title">Chairman</h3>
+                        <p class="level-subtitle">
+                            The Chairman leads the Board, represents EIAFSDO at the
+                            highest level and provides leadership direction on
+                            behalf of the Board.
+                        </p>
+                        <div class="level-cards">
+                            ${chairmanCard}
+                        </div>
+                    </div>
+
+                    <!-- ═══ SPLIT CONNECTOR: Board → CEO + IT ═══ -->
+                    <div class="connector split">
+                        <span class="drop left"></span>
+                        <span class="drop right"></span>
+                    </div>
+
+                    <!-- ═══════════ LEVEL 3 — CEO + IT (PARALLEL) ═══════════ -->
+                    <div class="level" data-level="3" style="width:100%;">
+                        <span class="level-tag">
+                            <span class="lvl-num">3</span>
+                            Parallel Executive & Technical Channels
+                        </span>
+                        <h3 class="level-title">CEO & IT Department</h3>
+                        <p class="level-subtitle">
+                            Two parallel channels report directly to the Board — the CEO leads
+                            organizational execution, while the IT Department takes instructions
+                            directly from the Board.
+                        </p>
+
+                        <div class="parallel-channel">
+
+                            <!-- CEO CHANNEL -->
+                            <div class="channel channel-ceo">
+                                <span class="channel-label">◆ CEO · Under Board</span>
+                                <p class="channel-desc">
+                                    The CEO executes the <strong>Board's direction</strong>
+                                    across organizational operations, projects and teams.
+                                </p>
+                                <div class="level-cards" style="justify-content:center;">
+                                    ${ceoCards}
+                                </div>
+                            </div>
+
+                            <!-- IT CHANNEL — DIRECT TO BOARD -->
+                            <div class="channel channel-it">
+                                <span class="channel-label">◆ IT · Direct to Board</span>
+                                <p class="channel-desc">
+                                    The IT Department operates <strong>directly under the Board</strong>
+                                    and is not under CEO authority. It takes instructions
+                                    from the Board and reports to the Board alone.
+                                </p>
+                                <div class="level-cards" style="justify-content:center;">
+                                    ${itCards}
+                                </div>
+                                <span class="direct-report-badge">
+                                    ★ Direct Board Report — Bypasses CEO
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="connector"></div>
+
+                    <!-- ═══════════ LEVEL 4 — EXECUTIVE ═══════════ -->
+                    <div class="level" data-level="4">
+                        <span class="level-tag">
+                            <span class="lvl-num">4</span>
+                            Executive Team
+                        </span>
+                        <h3 class="level-title">Executives</h3>
+                        <p class="level-subtitle">
+                            Executive roles coordinate specific organizational functions
+                            under the direction of the CEO and Board.
+                        </p>
+                        <div class="level-cards">
+                            ${executiveCards}
+                        </div>
+                    </div>
+
+                    <div class="connector"></div>
+
+                    <!-- ═══════════ LEVEL 5 — ADMIN ═══════════ -->
+                    <div class="level" data-level="5">
+                        <span class="level-tag">
+                            <span class="lvl-num">5</span>
+                            Administration
+                        </span>
+                        <h3 class="level-title">Administrators</h3>
+                        <p class="level-subtitle">
+                            Admins manage platform operations, member records, project
+                            reviews and day-to-day administration of EIAFSDO systems.
+                        </p>
+                        <div class="level-cards">
+                            ${adminCards}
+                        </div>
+                    </div>
+
+                    <div class="connector"></div>
+
+                    <!-- ═══════════ LEVEL 6 — MEMBERS ═══════════ -->
+                    <div class="level" data-level="6">
+                        <span class="level-tag">
+                            <span class="lvl-num">6</span>
+                            Community
+                        </span>
+                        <h3 class="level-title">Members</h3>
+                        <p class="level-subtitle">
+                            The general membership of EIAFSDO — the community of
+                            developers, builders and learners that form the
+                            organization's foundation.
+                            ${memberCount ? `Currently ${memberCount} registered member${memberCount === 1 ? '' : 's'}.` : ''}
+                        </p>
+                        <div class="level-cards">
+                            ${memberCards}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    `;
+}
+
+
+/* =====================================================
+   BOARD DIRECTIVE NOTE
+===================================================== */
+
+function renderBoardDirective(){
+    return `
+        <section class="section">
+            <div class="container">
+                <div class="board-directive">
+                    <h3>◆ The IT Department Reports Directly to the Board</h3>
+                    <p>
+                        The EIAFSDO IT Department operates as an
+                        <strong>independent technical channel</strong> under the
+                        authority of the Founding Board. The IT Department
+                        <strong>does not follow the CEO</strong>. Its instructions
+                        are issued by the Board, and its reports are submitted
+                        directly to the Board.
+                    </p>
+                    <p>
+                        The CEO coordinates organizational execution, projects and
+                        teams, but technical administration of EIAFSDO platforms,
+                        systems and infrastructure remains under the Board's direct
+                        authority — never routed through the CEO.
+                    </p>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+
+/* =====================================================
+   LEGEND + FLOW SUMMARY
+===================================================== */
+
+function renderLegendAndSummary(){
+    return `
+        <section class="section">
+            <div class="container">
+
+                <div class="legend">
+                    <h3>Structure Legend</h3>
+
+                    <div class="legend-grid">
+                        <div class="legend-item">
+                            <span class="legend-dot board"></span>
+                            <div>
+                                <strong>Founding Board</strong>
+                                <span>TOP GOVERNANCE · APPOINTS LEADERSHIP</span>
+                            </div>
+                        </div>
+
+                        <div class="legend-item">
+                            <span class="legend-dot chairman"></span>
+                            <div>
+                                <strong>Chairman</strong>
+                                <span>BOARD LEADERSHIP · HEAD OF BOARD</span>
+                            </div>
+                        </div>
+
+                        <div class="legend-item">
+                            <span class="legend-dot ceo"></span>
+                            <div>
+                                <strong>Chief Executive Officer</strong>
+                                <span>EXECUTIVE LEADERSHIP · UNDER BOARD</span>
+                            </div>
+                        </div>
+
+                        <div class="legend-item">
+                            <span class="legend-dot it"></span>
+                            <div>
+                                <strong>IT Department</strong>
+                                <span>DIRECT BOARD REPORT · BYPASSES CEO</span>
+                            </div>
+                        </div>
+
+                        <div class="legend-item">
+                            <span class="legend-dot executive"></span>
+                            <div>
+                                <strong>Executives</strong>
+                                <span>FUNCTIONAL LEADERSHIP LAYER</span>
+                            </div>
+                        </div>
+
+                        <div class="legend-item">
+                            <span class="legend-dot admin"></span>
+                            <div>
+                                <strong>Administrators</strong>
+                                <span>PLATFORM & ORGANIZATIONAL ADMIN</span>
+                            </div>
+                        </div>
+
+                        <div class="legend-item">
+                            <span class="legend-dot member"></span>
+                            <div>
+                                <strong>Members</strong>
+                                <span>COMMUNITY · DEVELOPERS · BUILDERS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-summary">
+                    <h3>Chain of Command</h3>
+                    <p style="margin-top:12px;color:var(--body);font-size:14px;line-height:1.7;">
+                        Two parallel channels run under the Founding Board — the CEO
+                        coordinates organizational execution, while the IT Department
+                        reports directly to the Board and does not route through the CEO.
+                    </p>
+
+                    <div class="flow-chain">
+                        <span class="step">FOUNDING BOARD</span>
+                        <span class="arrow">→</span>
+                        <span class="step">CHAIRMAN</span>
+                    </div>
+
+                    <div class="flow-chain" style="margin-top:14px;">
+                        <span class="step">CEO</span>
+                        <span class="arrow">→</span>
+                        <span class="step">EXECUTIVES</span>
+                        <span class="arrow">→</span>
+                        <span class="step">ADMINISTRATORS</span>
+                        <span class="arrow">→</span>
+                        <span class="step muted">MEMBERS</span>
+                    </div>
+
+                    <div class="flow-chain" style="margin-top:14px;">
+                        <span class="step it-step">IT DEPARTMENT</span>
+                        <span class="arrow bypass">⇢</span>
+                        <span class="step" style="background:var(--black);color:var(--yellow);border-color:var(--yellow);">DIRECT TO BOARD</span>
+                    </div>
+
+                    <p style="margin-top:20px;font-family:'Roboto Mono',monospace;font-size:11px;font-weight:700;color:#6b6254;letter-spacing:.3px;text-transform:uppercase;">
+                        IT Department takes instructions from the Board — not from the CEO
+                    </p>
+                </div>
+
+            </div>
+        </section>
+    `;
+}
+
+
+/* =====================================================
+   STATEMENT
+===================================================== */
+
+function renderStatement(){
+    return `
+        <section class="section">
+            <div class="container">
+                <div class="statement">
+                    <h3>Governance. Execution. Independence.</h3>
+                    <p>
+                        EIAFSDO's organizational structure maintains a clear separation
+                        between executive leadership and technical administration.
+                        The Founding Board sets direction, the Chairman leads the Board,
+                        the CEO executes strategy, and the IT Department operates
+                        independently under the Board's direct authority.
+                    </p>
+                    <div class="statement-seal">✓ EIAFSDO ORGANIZATIONAL RECORD</div>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+
+/* =====================================================
+   MOUNT PAGE
+===================================================== */
+
+function renderPage(users){
+    document.getElementById('pageMount').innerHTML =
+        renderHierarchy(users) +
+        renderBoardDirective() +
+        renderLegendAndSummary() +
+        renderStatement();
+
+    hasRendered = true;
+}
+
+
+/* =====================================================
+   FETCH / SUBSCRIBE
+===================================================== */
+
+async function fetchUsersOnce(){
+    try{
+        const snap = await db.collection('users').get();
+        allUsers = [];
+        snap.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
+        renderPage(allUsers);
+    } catch(err){
+        console.error('Users fetch error:', err);
+        renderPage([]);
+    }
+}
+
+
+function subscribeUsers(){
+    if (usersUnsubscribe) usersUnsubscribe();
+
+    usersUnsubscribe = db.collection('users').onSnapshot(
+        snap => {
+            allUsers = [];
+            snap.forEach(doc => allUsers.push({ id: doc.id, ...doc.data() }));
+            renderPage(allUsers);
+        },
+        err => {
+            console.error('Users subscription error:', err);
+            fetchUsersOnce();
+        }
+    );
+}
+
+
+/* =====================================================
+   NAV SHADOW
+===================================================== */
+
+const nav = document.querySelector(".nav");
+
+window.addEventListener(
+    "scroll",
+    () => {
+        if (window.scrollY > 40){
+            nav.style.boxShadow = "5px 7px 0 rgba(23,21,15,.9)";
+        } else {
+            nav.style.boxShadow = "3px 4px 0 rgba(23,21,15,1)";
+        }
+    },
+    { passive:true }
+);
+
+
+/* =====================================================
+   BOOTSTRAP
+===================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+    const yEl = document.getElementById('footerYear');
+    if (yEl) yEl.textContent = new Date().getFullYear();
+
+    subscribeUsers();
+});
+
+</script>
+
+</body>
+</html>
