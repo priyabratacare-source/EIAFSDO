@@ -172,29 +172,6 @@ body::after{
     transform:translateY(-2px);
 }
 
-.nav-live-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    padding:6px 11px;
-    background:var(--green);
-    border:2px solid var(--black);
-    border-radius:999px;
-    font-family:"Roboto Mono",monospace;
-    font-size:9px;
-    font-weight:900;
-    box-shadow:2px 3px 0 var(--black);
-}
-
-.nav-live-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#35a853;
-    border:1px solid var(--black);
-    animation:pulse 1.6s ease-in-out infinite;
-}
-
 /* =====================================================
    GLOBAL
 ===================================================== */
@@ -470,7 +447,6 @@ body::after{
     box-shadow:8px 11px 0 var(--black);
 }
 
-/* ---------- CORPORATE NOTICE HEADER ---------- */
 .notice-head{
     display:flex;
     align-items:center;
@@ -514,6 +490,8 @@ body::after{
     letter-spacing:.3px;
     white-space:nowrap;
     color:#4a4234;
+    margin-bottom:16px;
+    align-self:flex-start;
 }
 
 .notice-type-chip{
@@ -534,7 +512,6 @@ body::after{
 .notice-type-chip.announcement{ background:#d4f5d4; border-color:#1b5e20; color:#1b5e20; }
 .notice-type-chip.general{ background:var(--soft); }
 
-/* ---------- CORPORATE DATE + TIME BLOCK ---------- */
 .notice-datetime{
     display:flex;
     align-items:center;
@@ -1244,8 +1221,7 @@ body::after{
 }
 
 /* =====================================================
-   SIGNATURES
-===================================================== */
+   SIGNATURES===================================================== */
 
 .signature-grid{
     display:grid;
@@ -1519,7 +1495,6 @@ body::after{
 
 @media(max-width:920px){
     .nav-links{ display:none; }
-    .nav-live-badge{ display:none; }
     .notice-grid{ grid-template-columns:1fr; }
     .people-grid{ grid-template-columns:1fr; }
     .signature-grid{ grid-template-columns:1fr; }
@@ -1579,11 +1554,6 @@ body::after{
         >
         <span class="brand-text">EIAFSDO</span>
     </a>
-
-    <div class="nav-live-badge">
-        <span class="nav-live-dot"></span>
-        LIVE · FIREBASE
-    </div>
 
     <div class="nav-links">
         <a href="#notices">Notices</a>
@@ -1899,8 +1869,8 @@ const PUBLIC_TYPES = ['general', 'announcement', 'appointment', 'board'];
 /* ==========================================================
    STATE
 ========================================================== */
-let allNotices = [];         // after hidden-type filter applied
-let filteredNotices = [];    // after search + type filter
+let allNotices = [];
+let filteredNotices = [];
 let noticesUnsubscribe = null;
 let usersUnsubscribe = null;
 
@@ -1944,9 +1914,6 @@ function showToast(message, type = 'info', duration = 3500) {
     }, duration);
 }
 
-/**
- * Parse a Firestore Timestamp / Date / string → Date object.
- */
 function toDate(value) {
     try {
         if (!value) return null;
@@ -1959,9 +1926,6 @@ function toDate(value) {
     }
 }
 
-/**
- * Long corporate date: "04 OCTOBER 2026"
- */
 function formatNoticeDate(value) {
     const d = toDate(value);
     if (!d) return '—';
@@ -1972,9 +1936,6 @@ function formatNoticeDate(value) {
     }).toUpperCase();
 }
 
-/**
- * Time: "14:35 IST"
- */
 function formatNoticeTime(value) {
     const d = toDate(value);
     if (!d) return '—';
@@ -1986,19 +1947,6 @@ function formatNoticeTime(value) {
     }) + ' IST';
 }
 
-/**
- * Full: "04 OCTOBER 2026 · 14:35 IST"
- */
-function formatNoticeDateTime(value) {
-    const date = formatNoticeDate(value);
-    const time = formatNoticeTime(value);
-    if (date === '—' && time === '—') return '—';
-    return `${date} · ${time}`;
-}
-
-/**
- * Corporate short date for modal footer: "04 Oct 2026, 14:35"
- */
 function formatNoticeShort(value) {
     const d = toDate(value);
     if (!d) return '—';
@@ -2046,11 +1994,6 @@ function buildAvatarHTML(user) {
     `;
 }
 
-/**
- * Corporate-style notice number + reference code.
- *   Notice #: 01, 02, 03 (based on publish order, newest first)
- *   REF:      EIAFSDO/NTC/<TYPE>/2026/<id-prefix>
- */
 function buildNoticeRef(notice, index) {
     const type = String(notice.type || 'general').toLowerCase().trim();
     const typeCode = ({
@@ -2179,8 +2122,6 @@ function renderNotices() {
         const timeStr = formatNoticeTime(n.createdAt || n.updatedAt);
         const issuer = n.issuedByName || 'EIAFSDO System';
         const issuerRole = n.issuedByRole || 'Official Record';
-
-        // Short preview (5 lines max via CSS clamp)
         const preview = n.content || '';
 
         html += `
@@ -2222,7 +2163,6 @@ function renderNotices() {
 
     grid.innerHTML = html;
 
-    // Wire up "Read More" buttons
     grid.querySelectorAll('.read-more-btn').forEach(btn => {
         btn.addEventListener('click', e => {
             e.stopPropagation();
@@ -2239,7 +2179,6 @@ function renderNotices() {
 function openNoticeModal(notice) {
     if (!notice) return;
 
-    // Re-find its position in the public list for numbering
     const idx = filteredNotices.findIndex(x => x.id === notice.id);
     const displayIndex = idx >= 0 ? idx : 0;
 
@@ -2271,7 +2210,6 @@ function openNoticeModal(notice) {
     activeModalNotice = notice;
     overlay.classList.add('active');
 
-    // Lock body scroll while modal open
     document.body.style.overflow = 'hidden';
 }
 
@@ -2303,7 +2241,6 @@ async function fetchNoticesOnce() {
         const raw = [];
         snap.forEach(doc => raw.push({ id: doc.id, ...doc.data() }));
 
-        // STRIP IMPORTANT + other hidden types
         allNotices = filterHiddenTypes(raw);
 
         renderNotices();
@@ -2330,10 +2267,7 @@ function subscribeNotices() {
             snap => {
                 const raw = [];
                 snap.forEach(doc => raw.push({ id: doc.id, ...doc.data() }));
-
-                // STRIP IMPORTANT + hidden types — public site never sees them
                 allNotices = filterHiddenTypes(raw);
-
                 renderNotices();
             },
             err => {
@@ -2641,7 +2575,6 @@ document.addEventListener('DOMContentLoaded', () => {
         typeFilter.addEventListener('change', renderNotices);
     }
 
-    // Modal close handlers
     const modalClose = document.getElementById('noticeModalClose');
     const modalOverlay = document.getElementById('noticeModalOverlay');
 
@@ -2657,11 +2590,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape' && activeModalNotice) closeNoticeModal();
     });
 
-    // Start live subscriptions
     subscribeNotices();
     subscribeUsers();
 
-    // Reveal animations
     const revealItems = document.querySelectorAll(
         ".notice, .person, .current-project, .signature, .verify-box, .declaration"
     );
@@ -2693,7 +2624,6 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(item);
     });
 
-    // Nav shadow
     const nav = document.querySelector(".nav");
     window.addEventListener(
         "scroll",
@@ -2707,7 +2637,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { passive: true }
     );
 
-    // Footer year
     const yEl = document.getElementById('footerYear');
     if (yEl) yEl.textContent = new Date().getFullYear();
 });
