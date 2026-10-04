@@ -461,7 +461,6 @@ body::after{
     background:var(--yellow);
 }
 
-.notice.notice-important::before{ background:#c9312e; }
 .notice.notice-appointment::before{ background:#1687ff; }
 .notice.notice-board::before{ background:#6a3fb5; }
 .notice.notice-announcement::before{ background:#35a853; }
@@ -471,21 +470,53 @@ body::after{
     box-shadow:8px 11px 0 var(--black);
 }
 
+/* ---------- CORPORATE NOTICE HEADER ---------- */
+.notice-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+}
+
 .notice-number{
-    display:inline-block;
-    padding:6px 10px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 11px;
     background:var(--yellow);
     border:2px solid var(--black);
     border-radius:999px;
     font-family:"Roboto Mono",monospace;
     font-size:10px;
     font-weight:900;
-    align-self:flex-start;
+    letter-spacing:.3px;
+    white-space:nowrap;
+}
+
+.notice-number::before{
+    content:"№";
+    font-size:11px;
+}
+
+.notice-ref{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:5px 9px;
+    background:var(--soft);
+    border:2px solid var(--black);
+    border-radius:6px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.3px;
+    white-space:nowrap;
+    color:#4a4234;
 }
 
 .notice-type-chip{
-    position:absolute;
-    top:20px; right:20px;
     padding:5px 10px;
     background:var(--soft);
     border:2px solid var(--black);
@@ -495,51 +526,289 @@ body::after{
     font-weight:900;
     text-transform:uppercase;
     letter-spacing:.5px;
+    white-space:nowrap;
 }
 
-.notice-type-chip.important{ background:#ffd9d4; border-color:#c9312e; color:#5c0d08; }
 .notice-type-chip.appointment{ background:#d6e9ff; border-color:#0d3d72; color:#0d3d72; }
 .notice-type-chip.board{ background:#e8dcff; border-color:#4a2482; color:#4a2482; }
 .notice-type-chip.announcement{ background:#d4f5d4; border-color:#1b5e20; color:#1b5e20; }
+.notice-type-chip.general{ background:var(--soft); }
 
-.notice-date{
-    margin-top:14px;
-    color:#665d50;
+/* ---------- CORPORATE DATE + TIME BLOCK ---------- */
+.notice-datetime{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    background:linear-gradient(135deg,#fbf5e2,#f6eed8);
+    border:2px solid var(--black);
+    border-radius:8px;
+    box-shadow:2px 2px 0 var(--black);
+    margin-bottom:16px;
+    flex-wrap:wrap;
+}
+
+.notice-datetime .dt-block{
+    display:flex;
+    align-items:center;
+    gap:6px;
     font-family:"Roboto Mono",monospace;
     font-size:10px;
     font-weight:800;
+    color:#3d3830;
+    letter-spacing:.3px;
+}
+
+.notice-datetime .dt-block .dt-icon{
+    font-size:12px;
+}
+
+.notice-datetime .dt-divider{
+    width:1px;
+    height:14px;
+    background:rgba(29,26,20,.25);
 }
 
 .notice h2{
-    margin-top:15px;
     font-family:"Archivo Black",sans-serif;
-    font-size:clamp(24px,3vw,34px);
-    line-height:1.05;
+    font-size:clamp(22px,3vw,30px);
+    line-height:1.1;
+    letter-spacing:-.5px;
+    margin-bottom:14px;
+    word-break:break-word;
 }
 
-.notice-body{
-    margin-top:17px;
+.notice-body-preview{
     color:var(--body);
     font-size:14.5px;
     line-height:1.75;
     white-space:pre-wrap;
     word-break:break-word;
+    display:-webkit-box;
+    -webkit-line-clamp:5;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    margin-bottom:18px;
 }
 
-.notice-footer{
+.notice-actions{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:10px;
+    gap:12px;
     margin-top:auto;
-    padding-top:20px;
+    padding-top:18px;
     border-top:2px dashed rgba(29,26,20,.22);
+    flex-wrap:wrap;
+}
+
+.notice-issuer{
     font-family:"Roboto Mono",monospace;
     font-size:9px;
     font-weight:900;
+    color:#665d50;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    word-break:break-word;
 }
 
-.notice-footer .issuer{ color:#665d50; }
+.read-more-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 16px;
+    background:var(--black);
+    color:var(--surface);
+    border:2px solid var(--black);
+    border-radius:9px;
+    box-shadow:3px 3px 0 var(--yellow);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.5px;
+    cursor:pointer;
+    transition:.2s ease;
+    text-transform:uppercase;
+}
+
+.read-more-btn:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:5px 5px 0 var(--yellow);
+    background:#0a0a06;
+}
+
+.read-more-btn::after{
+    content:"→";
+    font-size:12px;
+    transition:transform .2s ease;
+}
+
+.read-more-btn:hover::after{
+    transform:translateX(3px);
+}
+
+/* =====================================================
+   READ MORE MODAL
+===================================================== */
+
+.notice-modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(23,21,15,.65);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease;
+}
+
+.notice-modal-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.notice-modal{
+    position:relative;
+    background:var(--surface);
+    border:2px solid var(--black);
+    border-radius:16px;
+    box-shadow:
+        0 0 0 2px var(--black),
+        9px 11px 0 var(--black);
+    max-width:760px;
+    width:100%;
+    max-height:90vh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    transform:scale(.96) translateY(12px);
+    transition:transform .3s cubic-bezier(.2,.75,.2,1);
+}
+
+.notice-modal-overlay.active .notice-modal{
+    transform:scale(1) translateY(0);
+}
+
+.notice-modal-header{
+    padding:24px 28px 18px;
+    border-bottom:2px solid var(--black);
+    background:linear-gradient(135deg,#fffbe9,#f6eed8);
+    position:relative;
+}
+
+.notice-modal-header .modal-ref-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:12px;
+}
+
+.notice-modal-header h2{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(22px,3.5vw,32px);
+    line-height:1.1;
+    letter-spacing:-.8px;
+    padding-right:44px;
+    word-break:break-word;
+}
+
+.notice-modal-close{
+    position:absolute;
+    top:18px;
+    right:18px;
+    width:36px;
+    height:36px;
+    background:var(--surface);
+    border:2px solid var(--black);
+    border-radius:50%;
+    box-shadow:3px 3px 0 var(--black);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:900;
+    cursor:pointer;
+    color:var(--black);
+    transition:.2s ease;
+    line-height:1;
+}
+
+.notice-modal-close:hover{
+    background:var(--yellow);
+    transform:translate(-2px,-2px);
+    box-shadow:5px 5px 0 var(--black);
+}
+
+.notice-modal-body{
+    padding:24px 28px 28px;
+    overflow-y:auto;
+    color:var(--text);
+    font-size:15.5px;
+    line-height:1.85;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.notice-modal-footer{
+    padding:16px 28px;
+    border-top:2px dashed rgba(29,26,20,.22);
+    background:var(--soft);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.notice-modal-footer .sig-block{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.notice-modal-footer .sig-label{
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    color:#665d50;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+}
+
+.notice-modal-footer .sig-name{
+    font-family:"Archivo Black",sans-serif;
+    font-size:15px;
+    letter-spacing:-.3px;
+}
+
+.notice-modal-footer .sig-role{
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    color:#8a8275;
+    font-weight:700;
+}
+
+.notice-modal-footer .verified-seal{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:7px 12px;
+    background:#e9f8e8;
+    border:2px solid #1b5e20;
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    color:#1b5e20;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
 
 /* =====================================================
    SKELETONS
@@ -572,8 +841,9 @@ body::after{
     margin-bottom:12px;
 }
 
-.sk-line.sk-chip{ width:90px; height:22px; border-radius:999px; margin-bottom:18px; }
-.sk-line.sk-title{ width:70%; height:28px; margin-bottom:16px; }
+.sk-line.sk-chip{ width:120px; height:22px; border-radius:999px; margin-bottom:18px; }
+.sk-line.sk-datetime{ width:70%; height:34px; border-radius:8px; margin-bottom:18px; }
+.sk-line.sk-title{ width:75%; height:26px; margin-bottom:16px; }
 .sk-line.sk-text{ width:100%; }
 .sk-line.sk-text.short{ width:60%; }
 
@@ -620,7 +890,7 @@ body::after{
 .notice-empty-state .btn{ margin-top:20px; }
 
 /* =====================================================
-   LEADERSHIP GRID (dynamic — Chairman + Admins only)
+   LEADERSHIP GRID
 ===================================================== */
 
 .people-grid{
@@ -731,17 +1001,13 @@ body::after{
     color:#fffdf4;
     border:2px solid var(--gold);
     border-radius:16px;
-    box-shadow:
-        0 0 0 2px var(--black),
-        7px 9px 0 var(--black);
+    box-shadow: 0 0 0 2px var(--black), 7px 9px 0 var(--black);
     overflow:hidden;
 }
 
 .premium-card:hover{
     transform:translateY(-8px);
-    box-shadow:
-        0 0 0 2px var(--black),
-        9px 12px 0 var(--black);
+    box-shadow: 0 0 0 2px var(--black), 9px 12px 0 var(--black);
 }
 
 .premium-card::before{
@@ -768,10 +1034,7 @@ body::after{
     35%,100%{ left:150%; }
 }
 
-.premium-card > *{
-    position:relative;
-    z-index:2;
-}
+.premium-card > *{ position:relative; z-index:2; }
 
 .premium-card .person-avatar-wrap{
     background: linear-gradient(135deg, #fff0a4, #d1a235, #8a6500);
@@ -808,7 +1071,7 @@ body::after{
 .premium-card .person-meta{ color:#c9bda0; }
 
 /* =====================================================
-   BOARD-CONTROLLED CARD (no chairman state)
+   BOARD-CONTROLLED CARD
 ===================================================== */
 
 .board-controlled-card{
@@ -817,17 +1080,13 @@ body::after{
     color:#e6eeff;
     border:2px solid #6b8fdb;
     border-radius:16px;
-    box-shadow:
-        0 0 0 2px var(--black),
-        7px 9px 0 var(--black);
+    box-shadow: 0 0 0 2px var(--black), 7px 9px 0 var(--black);
     overflow:hidden;
 }
 
 .board-controlled-card:hover{
     transform:translateY(-8px);
-    box-shadow:
-        0 0 0 2px var(--black),
-        9px 12px 0 var(--black);
+    box-shadow: 0 0 0 2px var(--black), 9px 12px 0 var(--black);
 }
 
 .board-controlled-card::before{
@@ -849,10 +1108,7 @@ body::after{
     animation:premiumShine 6.5s ease-in-out infinite;
 }
 
-.board-controlled-card > *{
-    position:relative;
-    z-index:2;
-}
+.board-controlled-card > *{ position:relative; z-index:2; }
 
 .board-controlled-card .person-avatar-wrap{
     background: linear-gradient(135deg, #b8d0ff, #3d64b8, #1e3a72);
@@ -1284,9 +1540,15 @@ body::after{
     .hero-sub{ font-size:15px; }
     .section{ padding-top:75px; }
     .notice, .person, .current-project, .signature, .verify-box, .declaration{ padding:23px; }
-    .notice h2{ font-size:24px; }
+    .notice h2{ font-size:22px; }
     .current-project h3{ font-size:34px; }
     .notice-count{ margin-left:0; width:100%; text-align:center; }
+    .notice-head{ gap:6px; }
+    .notice-datetime{ gap:6px; padding:8px 10px; }
+    .notice-datetime .dt-block{ font-size:9px; }
+    .notice-modal-header{ padding:20px 20px 16px; }
+    .notice-modal-body{ padding:20px; font-size:14.5px; }
+    .notice-modal-footer{ padding:14px 20px; }
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -1309,7 +1571,6 @@ body::after{
 ===================================================== -->
 
 <nav class="nav">
-
     <a href="#" class="brand">
         <img
             class="brand-logo"
@@ -1330,7 +1591,6 @@ body::after{
         <a href="#chairman">Chairman</a>
         <a href="#verification">Verify</a>
     </div>
-
 </nav>
 
 
@@ -1339,9 +1599,7 @@ body::after{
 ===================================================== -->
 
 <header class="hero">
-
     <div class="hero-inner">
-
         <div class="status">
             <span class="status-dot"></span>
             OFFICIAL DIGITAL NOTICE BOARD
@@ -1362,9 +1620,7 @@ body::after{
             <a href="#notices" class="btn btn-yellow">VIEW NOTICES</a>
             <a href="#leadership" class="btn btn-white">MEET LEADERSHIP</a>
         </div>
-
     </div>
-
 </header>
 
 
@@ -1375,52 +1631,48 @@ body::after{
 ===================================================== -->
 
 <section class="section" id="notices">
-
     <div class="label">OFFICIAL RECORDS</div>
 
     <h2 class="section-title">Digital Notice Board</h2>
 
     <p class="section-description">
-        The following notices are live-published records from the
-        EIAFSDO digital system. Updates appear in real time.
+        Official records from the EIAFSDO digital system.
+        Only general, appointment, board, and announcement notices
+        are published publicly. Internal "Important" notices are
+        reserved for authorized personnel.
     </p>
 
     <div class="notice-toolbar">
-
         <div class="search-wrap">
             <span class="glyph">🔍</span>
             <input
                 type="text"
                 id="noticeSearchInput"
-                placeholder="Search notices by title or content..."
+                placeholder="Search notices by title, content or reference..."
                 autocomplete="off"
             >
         </div>
 
         <select id="noticeTypeFilter">
-            <option value="all">All Types</option>
+            <option value="all">All Public Types</option>
             <option value="general">General</option>
             <option value="announcement">Announcement</option>
             <option value="appointment">Appointment</option>
             <option value="board">Board</option>
-            <option value="important">Important</option>
         </select>
 
         <span class="notice-count" id="noticeCount">—</span>
-
     </div>
 
     <div class="notice-grid" id="noticeGrid"></div>
-
 </section>
 
 
 <!-- =====================================================
-     LEADERSHIP — CHAIRMAN + ADMINS ONLY (DB DRIVEN)
+     LEADERSHIP — CHAIRMAN + ADMINS ONLY
 ===================================================== -->
 
 <section class="section" id="leadership">
-
     <div class="label">LEADERSHIP RECORD</div>
 
     <h2 class="section-title">Chairman & Admins</h2>
@@ -1430,20 +1682,17 @@ body::after{
         and Admin accounts are displayed here.
     </p>
 
-    <!-- Chairman status banner -->
     <div class="chairman-status-banner" id="chairmanStatusBanner">
         <span class="csb-dot"></span>
         <span>CHECKING CHAIRMAN STATUS…</span>
     </div>
 
-    <!-- Chairman card mount -->
     <div id="chairmanCardMount">
         <div class="leadership-loading" style="margin-top:38px;">
             <span class="spin"></span> LOADING CHAIRMAN…
         </div>
     </div>
 
-    <!-- Admins header -->
     <h3 style="font-family:'Archivo Black',sans-serif; font-size:clamp(24px,4vw,38px); margin-top:48px; letter-spacing:-1px;">
         Administrators
     </h3>
@@ -1453,7 +1702,6 @@ body::after{
             <span class="spin"></span> LOADING ADMINS…
         </div>
     </div>
-
 </section>
 
 
@@ -1462,13 +1710,10 @@ body::after{
 ===================================================== -->
 
 <section class="section">
-
     <div class="label">CURRENT STATUS</div>
-
     <h2 class="section-title">Building What Comes Next</h2>
 
     <div class="current-project">
-
         <div class="project-top">
             <div class="project-status">CURRENTLY ACTIVE</div>
             <span style="font-family:'Roboto Mono',monospace; font-size:10px; font-weight:900;">
@@ -1483,18 +1728,15 @@ body::after{
             developing and documenting new technology
             projects and organizational initiatives.
         </p>
-
     </div>
-
 </section>
 
 
 <!-- =====================================================
-     CHAIRMAN / APPOINTMENT — DATABASE DRIVEN
+     CHAIRMAN RECORD
 ===================================================== -->
 
 <section class="section" id="chairman">
-
     <div class="label">CHAIRMAN RECORD</div>
 
     <h2 class="section-title" id="appointmentTitle">Chairman</h2>
@@ -1508,7 +1750,6 @@ body::after{
             <span class="spin"></span> LOADING CHAIRMAN STATUS…
         </div>
     </div>
-
 </section>
 
 
@@ -1517,7 +1758,6 @@ body::after{
 ===================================================== -->
 
 <section class="section" id="verification">
-
     <div class="label">DIGITAL VERIFICATION</div>
 
     <h2 class="section-title">Official Record</h2>
@@ -1528,7 +1768,6 @@ body::after{
     </p>
 
     <div class="verify">
-
         <div class="verify-box">
             <div class="verify-label">RECORD ID</div>
             <div class="verify-value" id="verifyRecordId">
@@ -1550,7 +1789,6 @@ body::after{
             <div class="verify-label">DIGITAL AUTHORITY</div>
             <div class="verify-value">EIAFSDO OFFICIAL DIGITAL SYSTEM</div>
         </div>
-
     </div>
 
     <div class="declaration">
@@ -1565,7 +1803,6 @@ body::after{
             ✓ EIAFSDO DIGITAL RECORD
         </div>
     </div>
-
 </section>
 
 </main>
@@ -1576,9 +1813,7 @@ body::after{
 ===================================================== -->
 
 <footer class="footer">
-
     <div class="footer-inner">
-
         <div class="footer-brand">
             <img
                 class="footer-logo"
@@ -1595,10 +1830,41 @@ body::after{
             NOTICE SYSTEM<br>
             EIAFSDO · <span id="footerYear">2026</span>
         </div>
-
     </div>
-
 </footer>
+
+
+<!-- =====================================================
+     READ-MORE MODAL
+===================================================== -->
+
+<div class="notice-modal-overlay" id="noticeModalOverlay">
+    <div class="notice-modal" role="dialog" aria-modal="true">
+        <div class="notice-modal-header">
+            <button class="notice-modal-close" id="noticeModalClose" aria-label="Close">×</button>
+
+            <div class="modal-ref-row">
+                <span class="notice-number" id="modalNoticeNumber">NOTICE 01</span>
+                <span class="notice-ref" id="modalNoticeRef">REF: EIAFSDO-…</span>
+                <span class="notice-type-chip" id="modalNoticeType">GENERAL</span>
+            </div>
+
+            <h2 id="modalNoticeTitle">—</h2>
+        </div>
+
+        <div class="notice-modal-body" id="modalNoticeBody">—</div>
+
+        <div class="notice-modal-footer">
+            <div class="sig-block">
+                <span class="sig-label">Issued By</span>
+                <span class="sig-name" id="modalIssuedByName">EIAFSDO System</span>
+                <span class="sig-role" id="modalIssuedByRole">Official Record</span>
+            </div>
+
+            <span class="verified-seal">✓ Verified · <span id="modalNoticeDate">—</span></span>
+        </div>
+    </div>
+</div>
 
 
 <!-- =====================================================
@@ -1622,15 +1888,26 @@ if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 /* ==========================================================
+   CONFIG
+========================================================== */
+// Types that are NEVER shown on the public site.
+const HIDDEN_TYPES = ['important'];
+
+// Types allowed in the public type filter dropdown.
+const PUBLIC_TYPES = ['general', 'announcement', 'appointment', 'board'];
+
+/* ==========================================================
    STATE
 ========================================================== */
-let allNotices = [];
-let filteredNotices = [];
+let allNotices = [];         // after hidden-type filter applied
+let filteredNotices = [];    // after search + type filter
 let noticesUnsubscribe = null;
 let usersUnsubscribe = null;
 
-let chairmanUser = null;   // users where role == 'chairman'
-let adminUsers = [];       // users where role == 'admin'
+let chairmanUser = null;
+let adminUsers = [];
+
+let activeModalNotice = null;
 
 /* ==========================================================
    UTILITIES
@@ -1667,18 +1944,73 @@ function showToast(message, type = 'info', duration = 3500) {
     }, duration);
 }
 
-function formatNoticeDate(value) {
+/**
+ * Parse a Firestore Timestamp / Date / string → Date object.
+ */
+function toDate(value) {
     try {
-        const d = value?.toDate
-            ? value.toDate()
-            : (value ? new Date(value) : null);
-        if (!d || Number.isNaN(d.getTime())) return '—';
-        return d.toLocaleDateString('en-IN', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        }).toUpperCase();
-    } catch (_) { return '—'; }
+        if (!value) return null;
+        if (typeof value.toDate === 'function') return value.toDate();
+        if (value instanceof Date) return value;
+        const d = new Date(value);
+        return Number.isNaN(d.getTime()) ? null : d;
+    } catch (_) {
+        return null;
+    }
+}
+
+/**
+ * Long corporate date: "04 OCTOBER 2026"
+ */
+function formatNoticeDate(value) {
+    const d = toDate(value);
+    if (!d) return '—';
+    return d.toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+    }).toUpperCase();
+}
+
+/**
+ * Time: "14:35 IST"
+ */
+function formatNoticeTime(value) {
+    const d = toDate(value);
+    if (!d) return '—';
+    return d.toLocaleTimeString('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Kolkata'
+    }) + ' IST';
+}
+
+/**
+ * Full: "04 OCTOBER 2026 · 14:35 IST"
+ */
+function formatNoticeDateTime(value) {
+    const date = formatNoticeDate(value);
+    const time = formatNoticeTime(value);
+    if (date === '—' && time === '—') return '—';
+    return `${date} · ${time}`;
+}
+
+/**
+ * Corporate short date for modal footer: "04 Oct 2026, 14:35"
+ */
+function formatNoticeShort(value) {
+    const d = toDate(value);
+    if (!d) return '—';
+    return d.toLocaleString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Kolkata'
+    });
 }
 
 function formatTypeLabel(type) {
@@ -1694,9 +2026,6 @@ function getInitials(name) {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-/**
- * Build avatar HTML — uses photoURL if present, else initials.
- */
 function buildAvatarHTML(user) {
     if (user && user.photoURL && String(user.photoURL).trim()) {
         return `
@@ -1717,8 +2046,35 @@ function buildAvatarHTML(user) {
     `;
 }
 
+/**
+ * Corporate-style notice number + reference code.
+ *   Notice #: 01, 02, 03 (based on publish order, newest first)
+ *   REF:      EIAFSDO/NTC/<TYPE>/2026/<id-prefix>
+ */
+function buildNoticeRef(notice, index) {
+    const type = String(notice.type || 'general').toLowerCase().trim();
+    const typeCode = ({
+        general: 'GEN',
+        announcement: 'ANN',
+        appointment: 'APT',
+        board: 'BRD',
+        important: 'IMP'
+    })[type] || 'GEN';
+
+    const date = toDate(notice.createdAt || notice.updatedAt);
+    const year = date ? date.getFullYear() : new Date().getFullYear();
+    const idPrefix = String(notice.id || '').substring(0, 6).toUpperCase() || 'XXXXXX';
+
+    return `EIAFSDO/NTC/${typeCode}/${year}/${idPrefix}`;
+}
+
+function buildNoticeNumber(index) {
+    const n = String(index + 1).padStart(2, '0');
+    return `NOTICE ${n}`;
+}
+
 /* ==========================================================
-   NOTICE BOARD — SKELETON / EMPTY / RENDER
+   NOTICE SKELETONS / EMPTY
 ========================================================== */
 function renderSkeletons(count = 4) {
     const grid = document.getElementById('noticeGrid');
@@ -1729,6 +2085,7 @@ function renderSkeletons(count = 4) {
         html += `
             <div class="notice-skeleton">
                 <div class="sk-line sk-chip"></div>
+                <div class="sk-line sk-datetime"></div>
                 <div class="sk-line sk-title"></div>
                 <div class="sk-line sk-text"></div>
                 <div class="sk-line sk-text"></div>
@@ -1768,6 +2125,9 @@ function renderEmptyNoticeState(opts = {}) {
     }
 }
 
+/* ==========================================================
+   RENDER NOTICES
+========================================================== */
 function renderNotices() {
     const grid = document.getElementById('noticeGrid');
     const countEl = document.getElementById('noticeCount');
@@ -1781,8 +2141,12 @@ function renderNotices() {
     filteredNotices = allNotices.filter(n => {
         const t = (n.type || 'general').toLowerCase();
         const matchesType = filterType === 'all' || t === filterType;
-        const haystack = `${n.title || ''} ${n.content || ''} ${n.issuedByName || ''}`.toLowerCase();
+
+        const ref = buildNoticeRef(n, 0).toLowerCase();
+        const haystack = `${n.title || ''} ${n.content || ''} ${n.issuedByName || ''} ${ref}`
+            .toLowerCase();
         const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+
         return matchesType && matchesSearch;
     });
 
@@ -1809,40 +2173,139 @@ function renderNotices() {
     filteredNotices.forEach((n, idx) => {
         const type = (n.type || 'general').toLowerCase();
         const typeLabel = formatTypeLabel(type);
-        const number = String(idx + 1).padStart(2, '0');
+        const number = buildNoticeNumber(idx);
+        const ref = buildNoticeRef(n, idx);
         const dateStr = formatNoticeDate(n.createdAt || n.updatedAt);
+        const timeStr = formatNoticeTime(n.createdAt || n.updatedAt);
         const issuer = n.issuedByName || 'EIAFSDO System';
         const issuerRole = n.issuedByRole || 'Official Record';
 
+        // Short preview (5 lines max via CSS clamp)
+        const preview = n.content || '';
+
         html += `
             <article class="notice notice-${escapeHTML(type)}" data-id="${escapeHTML(n.id)}">
-                <span class="notice-number">NOTICE ${escapeHTML(number)}</span>
-                <span class="notice-type-chip ${escapeHTML(type)}">
-                    ${escapeHTML(typeLabel)}
-                </span>
-                <div class="notice-date">${escapeHTML(dateStr)}</div>
-                <h2>${escapeHTML(n.title || 'Untitled Notice')}</h2>
-                <div class="notice-body">${escapeHTML(n.content || '')}</div>
-                <div class="notice-footer">
-                    <span class="issuer">ISSUED BY ${escapeHTML(issuer.toUpperCase())}</span>
-                    <span>${escapeHTML(issuerRole.toUpperCase())}</span>
+
+                <div class="notice-head">
+                    <span class="notice-number">${escapeHTML(number)}</span>
+                    <span class="notice-type-chip ${escapeHTML(type)}">${escapeHTML(typeLabel)}</span>
                 </div>
+
+                <div class="notice-ref">REF: ${escapeHTML(ref)}</div>
+
+                <div class="notice-datetime">
+                    <span class="dt-block">
+                        <span class="dt-icon">📅</span>
+                        ${escapeHTML(dateStr)}
+                    </span>
+                    <span class="dt-divider"></span>
+                    <span class="dt-block">
+                        <span class="dt-icon">🕒</span>
+                        ${escapeHTML(timeStr)}
+                    </span>
+                </div>
+
+                <h2>${escapeHTML(n.title || 'Untitled Notice')}</h2>
+
+                <div class="notice-body-preview">${escapeHTML(preview)}</div>
+
+                <div class="notice-actions">
+                    <span class="notice-issuer">ISSUED BY ${escapeHTML(issuer.toUpperCase())} · ${escapeHTML(issuerRole.toUpperCase())}</span>
+                    <button class="read-more-btn" data-id="${escapeHTML(n.id)}">
+                        Read More
+                    </button>
+                </div>
+
             </article>
         `;
     });
 
     grid.innerHTML = html;
+
+    // Wire up "Read More" buttons
+    grid.querySelectorAll('.read-more-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const notice = filteredNotices.find(x => x.id === id);
+            if (notice) openNoticeModal(notice);
+        });
+    });
+}
+
+/* ==========================================================
+   MODAL — OPEN / CLOSE
+========================================================== */
+function openNoticeModal(notice) {
+    if (!notice) return;
+
+    // Re-find its position in the public list for numbering
+    const idx = filteredNotices.findIndex(x => x.id === notice.id);
+    const displayIndex = idx >= 0 ? idx : 0;
+
+    const overlay = document.getElementById('noticeModalOverlay');
+    const numEl = document.getElementById('modalNoticeNumber');
+    const refEl = document.getElementById('modalNoticeRef');
+    const typeEl = document.getElementById('modalNoticeType');
+    const titleEl = document.getElementById('modalNoticeTitle');
+    const bodyEl = document.getElementById('modalNoticeBody');
+    const dateEl = document.getElementById('modalNoticeDate');
+    const issuerNameEl = document.getElementById('modalIssuedByName');
+    const issuerRoleEl = document.getElementById('modalIssuedByRole');
+
+    const type = (notice.type || 'general').toLowerCase();
+    const typeLabel = formatTypeLabel(type);
+
+    numEl.textContent = buildNoticeNumber(displayIndex);
+    refEl.textContent = 'REF: ' + buildNoticeRef(notice, displayIndex);
+    typeEl.textContent = typeLabel;
+    typeEl.className = 'notice-type-chip ' + type;
+
+    titleEl.textContent = notice.title || 'Untitled Notice';
+    bodyEl.textContent = notice.content || '(No content available)';
+
+    dateEl.textContent = formatNoticeShort(notice.createdAt || notice.updatedAt);
+    issuerNameEl.textContent = notice.issuedByName || 'EIAFSDO System';
+    issuerRoleEl.textContent = (notice.issuedByRole || 'Official Record').toUpperCase();
+
+    activeModalNotice = notice;
+    overlay.classList.add('active');
+
+    // Lock body scroll while modal open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeNoticeModal() {
+    const overlay = document.getElementById('noticeModalOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('active');
+    activeModalNotice = null;
+    document.body.style.overflow = '';
+}
+
+/* ==========================================================
+   FETCH / SUBSCRIBE NOTICES
+========================================================== */
+function filterHiddenTypes(list) {
+    return list.filter(n => {
+        const t = String(n.type || 'general').toLowerCase().trim();
+        return !HIDDEN_TYPES.includes(t);
+    });
 }
 
 async function fetchNoticesOnce() {
     try {
         const snap = await db.collection('notices')
             .orderBy('createdAt', 'desc')
-            .limit(100)
+            .limit(150)
             .get();
 
-        allNotices = [];
-        snap.forEach(doc => allNotices.push({ id: doc.id, ...doc.data() }));
+        const raw = [];
+        snap.forEach(doc => raw.push({ id: doc.id, ...doc.data() }));
+
+        // STRIP IMPORTANT + other hidden types
+        allNotices = filterHiddenTypes(raw);
+
         renderNotices();
     } catch (err) {
         console.error('Notice fetch error:', err);
@@ -1862,11 +2325,15 @@ function subscribeNotices() {
 
     noticesUnsubscribe = db.collection('notices')
         .orderBy('createdAt', 'desc')
-        .limit(100)
+        .limit(150)
         .onSnapshot(
             snap => {
-                allNotices = [];
-                snap.forEach(doc => allNotices.push({ id: doc.id, ...doc.data() }));
+                const raw = [];
+                snap.forEach(doc => raw.push({ id: doc.id, ...doc.data() }));
+
+                // STRIP IMPORTANT + hidden types — public site never sees them
+                allNotices = filterHiddenTypes(raw);
+
                 renderNotices();
             },
             err => {
@@ -1877,9 +2344,8 @@ function subscribeNotices() {
 }
 
 /* ==========================================================
-   LEADERSHIP — CHAIRMAN + ADMINS (DB DRIVEN)
+   LEADERSHIP — CHAIRMAN + ADMINS
 ========================================================== */
-
 function normalizeRole(role) {
     const r = String(role || '').toLowerCase().trim().replaceAll('_', '-');
     if (r === 'superadmin') return 'super-admin';
@@ -1913,9 +2379,6 @@ function renderLeadershipLoading() {
     `;
 }
 
-/**
- * Render the top chairman card (or board-controlled card if no chairman).
- */
 function renderChairmanCard() {
     const mount = document.getElementById('chairmanCardMount');
     const banner = document.getElementById('chairmanStatusBanner');
@@ -1925,7 +2388,6 @@ function renderChairmanCard() {
 
     if (!mount) return;
 
-    /* ---------- CHAIRMAN EXISTS ---------- */
     if (chairmanUser) {
         const photoHtml = buildAvatarHTML(chairmanUser);
         const name = chairmanUser.name || 'Chairman';
@@ -1995,7 +2457,6 @@ function renderChairmanCard() {
             `;
         }
 
-        // Verify section
         const vid = document.getElementById('verifyRecordId');
         const vdate = document.getElementById('verifyRecordDate');
         const vtype = document.getElementById('verifyRecordType');
@@ -2006,7 +2467,6 @@ function renderChairmanCard() {
         return;
     }
 
-    /* ---------- NO CHAIRMAN — BOARD CONTROLLED ---------- */
     const adminCount = adminUsers.length;
 
     mount.innerHTML = `
@@ -2070,9 +2530,6 @@ function renderChairmanCard() {
     if (vtype) vtype.textContent = 'BOARD-CONTROLLED STATUS';
 }
 
-/**
- * Render the Admins grid.
- */
 function renderAdminsGrid() {
     const grid = document.getElementById('adminsGrid');
     if (!grid) return;
@@ -2111,9 +2568,6 @@ function renderAdminsGrid() {
     grid.innerHTML = html;
 }
 
-/**
- * Extract chairman and admins from the users array.
- */
 function processUsers(users) {
     chairmanUser = users.find(u => normalizeRole(u.role) === 'chairman') || null;
     adminUsers = users
@@ -2186,6 +2640,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeFilter) {
         typeFilter.addEventListener('change', renderNotices);
     }
+
+    // Modal close handlers
+    const modalClose = document.getElementById('noticeModalClose');
+    const modalOverlay = document.getElementById('noticeModalOverlay');
+
+    if (modalClose) modalClose.addEventListener('click', closeNoticeModal);
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', e => {
+            if (e.target === modalOverlay) closeNoticeModal();
+        });
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && activeModalNotice) closeNoticeModal();
+    });
 
     // Start live subscriptions
     subscribeNotices();
