@@ -49,6 +49,7 @@
     --blue:#1687ff;
     --red:#d94a3a;
     --board-blue:#3d64b8;
+    --board-blue-light:#c7d9ff;
 
     --black:#17150f;
     --white:#fffef8;
@@ -84,7 +85,9 @@ body{
     isolation:isolate;
 }
 
-/* BACKGROUND */
+/* ============================================================
+   BACKGROUND
+============================================================ */
 body::before{
     content:"";
     position:fixed;
@@ -114,19 +117,65 @@ body::after{
 @keyframes bgBreath{from{transform:scale(1);}to{transform:scale(1.08);}}
 @keyframes gridMove{from{background-position:0 0;}to{background-position:48px 48px;}}
 
-/* REVEAL */
-.reveal{
+/* ============================================================
+   REVEAL ANIMATIONS
+============================================================ */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale{
     opacity:0;
-    transform:translateY(45px);
-    transition:opacity .85s var(--ease-out), transform .85s var(--ease-out);
+    transition:
+        opacity .9s var(--ease-out),
+        transform .9s var(--ease-out);
     will-change:opacity,transform;
 }
-.reveal.visible{
+.reveal{transform:translateY(50px);}
+.reveal-left{transform:translateX(-50px);}
+.reveal-right{transform:translateX(50px);}
+.reveal-scale{transform:scale(.94) rotate(-1deg);}
+.reveal.visible,
+.reveal-left.visible,
+.reveal-right.visible,
+.reveal-scale.visible{
     opacity:1;
-    transform:translateY(0);
+    transform:translate(0,0) scale(1) rotate(0);
 }
 
-/* NAVBAR */
+@keyframes fadeSlideUp{
+    from{opacity:0;transform:translateY(28px);}
+    to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeSlideDown{
+    from{opacity:0;transform:translateY(-22px);}
+    to{opacity:1;transform:translateY(0);}
+}
+@keyframes pulseDot{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.4);}
+}
+@keyframes underlineGrow{
+    to{transform:skew(-8deg) scaleX(1);}
+}
+@keyframes shimmer{
+    0%{left:-120%;}
+    40%,100%{left:160%;}
+}
+@keyframes softFloat{
+    0%,100%{transform:translateY(0) rotate(-2deg);}
+    50%{transform:translateY(-6px) rotate(2deg);}
+}
+@keyframes iconBob{
+    0%,100%{transform:translateY(0) rotate(-4deg);}
+    50%{transform:translateY(-4px) rotate(4deg);}
+}
+@keyframes spinSlow{
+    to{transform:rotate(360deg);}
+}
+
+/* ============================================================
+   NAVBAR
+============================================================ */
 .navbar{
     position:sticky;
     top:12px;
@@ -147,10 +196,6 @@ body::after{
     box-shadow:var(--shadow-soft);
     animation:fadeSlideDown .8s var(--ease-out) both;
     transition:box-shadow .3s ease;
-}
-@keyframes fadeSlideDown{
-    from{opacity:0;transform:translateY(-22px);}
-    to{opacity:1;transform:translateY(0);}
 }
 .navbar.scrolled{box-shadow:5px 7px 0 var(--black);}
 
@@ -245,15 +290,21 @@ body::after{
 .hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0);}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
 
-/* HERO */
+/* ============================================================
+   HERO
+============================================================ */
 .legal-hero{
     max-width:1100px;
     margin:auto;
     padding:110px 25px 40px;
     text-align:center;
+    position:relative;
 }
-.legal-hero .small-title{
-    display:inline-block;
+
+.legal-hero .hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
     padding:7px 14px;
     background:var(--green);
     border:var(--border);
@@ -269,10 +320,15 @@ body::after{
     opacity:0;
     animation:fadeSlideUp .8s var(--ease-out) .2s forwards;
 }
-@keyframes fadeSlideUp{
-    from{opacity:0;transform:translateY(28px);}
-    to{opacity:1;transform:translateY(0);}
+.legal-hero .hero-badge .bd{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#35a853;
+    border:1.5px solid var(--black);
+    animation:pulseDot 2.2s ease-in-out infinite;
 }
+
 .legal-hero h1{
     font-family:"Archivo Black",sans-serif;
     font-size:clamp(38px,6vw,72px);
@@ -299,7 +355,6 @@ body::after{
     transform-origin:left center;
     animation:underlineGrow 1s var(--ease-spring) 1s forwards;
 }
-@keyframes underlineGrow{to{transform:skew(-8deg) scaleX(1);}}
 
 .legal-hero p{
     max-width:720px;
@@ -311,7 +366,7 @@ body::after{
     animation:fadeSlideUp .9s var(--ease-out) .7s forwards;
 }
 
-.legal-meta-banner{
+.legal-hero .hero-meta{
     display:inline-flex;
     align-items:center;
     gap:12px;
@@ -332,24 +387,35 @@ body::after{
     opacity:0;
     animation:fadeSlideUp .9s var(--ease-out) .95s forwards;
 }
-.legal-meta-banner .lmb-dot{
+.legal-hero .hero-meta .hm-dot{
     width:8px;height:8px;
     border-radius:50%;
     background:#35a853;
     border:1.5px solid var(--black);
     animation:pulseDot 2.2s ease-in-out infinite;
 }
-@keyframes pulseDot{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.4);}
-}
-.legal-meta-banner .lmb-sep{
+.legal-hero .hero-meta .hm-sep{
     color:#a89b7c;
 }
 
-/* UNREGISTERED NOTICE BANNER */
+/* Floating icon decor around hero */
+.hero-float{
+    position:absolute;
+    font-size:34px;
+    opacity:.15;
+    pointer-events:none;
+    animation:softFloat 6s ease-in-out infinite;
+}
+.hero-float.f1{left:6%;top:30%;animation-delay:0s;}
+.hero-float.f2{right:8%;top:55%;animation-delay:1.5s;}
+.hero-float.f3{left:10%;bottom:12%;animation-delay:3s;}
+.hero-float.f4{right:12%;top:22%;animation-delay:2.2s;}
+
+/* ============================================================
+   UNREGISTERED NOTICE
+============================================================ */
 .unreg-notice{
-    max-width:1100px;
+    max-width:980px;
     margin:32px auto 0;
     padding:22px 26px;
     border-radius:var(--radius);
@@ -384,6 +450,7 @@ body::after{
     font-size:22px;
     border:2px solid var(--black);
     box-shadow:3px 3px 0 var(--black);
+    animation:iconBob 3s ease-in-out infinite;
 }
 .unreg-notice .un-text{flex:1;min-width:0;}
 .unreg-notice h3{
@@ -400,14 +467,18 @@ body::after{
     font-weight:600;
 }
 
-/* CONTENT WRAPPER */
+/* ============================================================
+   CONTENT WRAPPER
+============================================================ */
 .legal-wrap{
     max-width:980px;
     margin:auto;
     padding:40px 25px 80px;
 }
 
-/* TOC */
+/* ============================================================
+   TOC
+============================================================ */
 .toc{
     padding:26px 28px;
     border-radius:var(--radius);
@@ -435,6 +506,7 @@ body::after{
     justify-content:center;
     font-size:16px;
     box-shadow:2px 3px 0 var(--black);
+    animation:iconBob 3s ease-in-out infinite;
 }
 .toc ol{
     list-style:none;
@@ -452,11 +524,13 @@ body::after{
     border-radius:8px;
     background:var(--soft);
     border:1.5px solid var(--black);
-    transition:.25s ease;
+    transition:transform .25s var(--ease-out),
+               box-shadow .25s var(--ease-out),
+               background .25s ease;
 }
 .toc ol li:hover{
-    transform:translate(-2px,-2px);
-    box-shadow:3px 3px 0 var(--black);
+    transform:translate(-3px,-3px);
+    box-shadow:4px 4px 0 var(--black);
     background:var(--yellow);
 }
 .toc ol li::before{
@@ -480,11 +554,14 @@ body::after{
     line-height:1.4;
 }
 
-/* SECTION TITLE */
+/* ============================================================
+   LEGAL SECTION
+============================================================ */
 .legal-section{
     margin-bottom:70px;
     scroll-margin-top:110px;
 }
+
 .legal-section-header{
     display:flex;
     align-items:center;
@@ -506,7 +583,7 @@ body::after{
     transition:transform .5s var(--ease-spring);
 }
 .legal-section-header:hover .sec-icon{
-    transform:rotate(-8deg) scale(1.08);
+    transform:rotate(-8deg) scale(1.1);
 }
 .legal-section-header .sec-title{
     flex:1;
@@ -540,6 +617,11 @@ h3.legal-h3{
     padding-left:14px;
     border-left:5px solid var(--yellow);
     line-height:1.25;
+    position:relative;
+    transition:transform .3s var(--ease-out);
+}
+h3.legal-h3:hover{
+    transform:translateX(4px);
 }
 h4.legal-h4{
     font-family:"Archivo Black",sans-serif;
@@ -571,12 +653,19 @@ ol.legal-ol{
 ul.legal-ul li,
 ol.legal-ol li{
     position:relative;
-    padding:8px 0 8px 30px;
+    padding:10px 0 10px 32px;
     color:var(--body);
     font-size:14.5px;
     line-height:1.7;
     font-weight:500;
     border-bottom:1px dashed rgba(29,26,20,.12);
+    transition:padding-left .3s var(--ease-out),
+               color .25s ease;
+}
+ul.legal-ul li:hover,
+ol.legal-ol li:hover{
+    padding-left:38px;
+    color:var(--text);
 }
 ul.legal-ul li:last-child,
 ol.legal-ol li:last-child{border-bottom:none;}
@@ -584,24 +673,26 @@ ul.legal-ul li::before{
     content:"";
     position:absolute;
     left:6px;
-    top:16px;
+    top:18px;
     width:9px;height:9px;
     background:var(--yellow);
     border:1.5px solid var(--black);
     border-radius:3px;
     transform:rotate(45deg);
+    transition:transform .3s var(--ease-spring),
+               background .25s ease;
 }
-ol.legal-ol{
-    counter-reset:legal-counter;
+ul.legal-ul li:hover::before{
+    transform:rotate(45deg) scale(1.3);
+    background:var(--gold);
 }
-ol.legal-ol li{
-    counter-increment:legal-counter;
-}
+ol.legal-ol{counter-reset:legal-counter;}
+ol.legal-ol li{counter-increment:legal-counter;}
 ol.legal-ol li::before{
     content:counter(legal-counter, decimal-leading-zero);
     position:absolute;
     left:0;
-    top:10px;
+    top:12px;
     font-family:"Roboto Mono",monospace;
     font-size:10px;
     font-weight:900;
@@ -609,6 +700,10 @@ ol.legal-ol li::before{
     color:var(--yellow);
     padding:2px 6px;
     border-radius:4px;
+    transition:transform .3s var(--ease-spring);
+}
+ol.legal-ol li:hover::before{
+    transform:scale(1.15) rotate(-4deg);
 }
 ul.legal-ul li strong,
 ol.legal-ol li strong{color:var(--text);font-weight:800;}
@@ -621,6 +716,10 @@ ol.legal-ol li strong{color:var(--text);font-weight:800;}
     border-radius:var(--radius);
     box-shadow:var(--shadow-soft);
     background:var(--surface);
+    transition:box-shadow .3s var(--ease-out);
+}
+.legal-table-wrap:hover{
+    box-shadow:5px 6px 0 var(--black);
 }
 table.legal-table{
     width:100%;
@@ -647,12 +746,16 @@ table.legal-table td{
     border-bottom:1px solid rgba(29,26,20,.12);
     vertical-align:top;
     line-height:1.6;
+    transition:background .25s ease;
 }
 table.legal-table tbody tr:last-child td{border-bottom:none;}
 table.legal-table tbody tr:nth-child(even) td{background:rgba(246,238,216,.4);}
+table.legal-table tbody tr:hover td{
+    background:rgba(242,201,76,.18);
+}
 table.legal-table td strong{color:var(--text);font-weight:800;}
 
-/* CALLOUT BOX */
+/* CALLOUT */
 .legal-callout{
     margin:22px 0;
     padding:20px 24px;
@@ -664,6 +767,13 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     align-items:flex-start;
     gap:14px;
     position:relative;
+    overflow:hidden;
+    transition:transform .35s var(--ease-out),
+               box-shadow .35s var(--ease-out);
+}
+.legal-callout:hover{
+    transform:translate(-3px,-3px);
+    box-shadow:8px 9px 0 var(--black);
 }
 .legal-callout::before{
     content:"";
@@ -680,6 +790,7 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     flex-shrink:0;
     line-height:1;
     filter:drop-shadow(0 2px 0 rgba(0,0,0,.15));
+    animation:iconBob 3.4s ease-in-out infinite;
 }
 .legal-callout .lc-body{flex:1;min-width:0;}
 .legal-callout .lc-body strong{
@@ -698,6 +809,18 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     font-weight:600;
 }
 
+/* SECURITY CALLOUT — blue variant */
+.legal-callout.callout-secure{
+    border-color:var(--board-blue);
+    background:linear-gradient(135deg,#f4f7ff,#e0ecff);
+    box-shadow:5px 6px 0 var(--board-blue), 5px 6px 0 3px var(--black);
+}
+.legal-callout.callout-secure::before{
+    background:radial-gradient(circle, rgba(61,100,184,.22), transparent 70%);
+}
+.legal-callout.callout-secure .lc-body strong{color:#0d3d72;}
+.legal-callout.callout-secure .lc-body p{color:#1a3a72;}
+
 /* INFO CARD */
 .legal-info-card{
     margin:22px 0;
@@ -708,6 +831,12 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     box-shadow:var(--shadow);
     position:relative;
     overflow:hidden;
+    transition:transform .35s var(--ease-out),
+               box-shadow .35s var(--ease-out);
+}
+.legal-info-card:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:8px 9px 0 var(--black);
 }
 .legal-info-card::before{
     content:"";
@@ -736,17 +865,77 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
 .legal-info-card p:last-child{margin-bottom:0;}
 .legal-info-card p strong{color:var(--text);font-weight:800;}
 
+/* SECURITY GRID */
+.security-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;
+    margin:20px 0;
+}
+.security-card{
+    padding:18px 20px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-soft);
+    transition:transform .3s var(--ease-out),
+               box-shadow .3s var(--ease-out);
+    position:relative;
+    overflow:hidden;
+}
+.security-card:hover{
+    transform:translate(-3px,-4px);
+    box-shadow:6px 8px 0 var(--black);
+}
+.security-card .sc-icon{
+    width:44px;height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--board-blue-light);
+    border:2px solid var(--board-blue);
+    border-radius:10px;
+    box-shadow:2px 3px 0 var(--board-blue);
+    font-size:20px;
+    margin-bottom:12px;
+    transition:transform .5s var(--ease-spring);
+}
+.security-card:hover .sc-icon{
+    transform:rotate(-8deg) scale(1.1);
+}
+.security-card h4{
+    font-family:"Archivo Black",sans-serif;
+    font-size:14.5px;
+    letter-spacing:-.2px;
+    color:var(--text);
+    margin-bottom:6px;
+    line-height:1.3;
+}
+.security-card p{
+    font-size:12.5px;
+    color:var(--body);
+    line-height:1.6;
+    font-weight:500;
+    margin:0;
+}
+
 /* ISSUER CARD */
 .issuer-card{
     margin-top:60px;
-    padding:30px 32px;
+    padding:32px 34px;
     border-radius:var(--radius);
     background:linear-gradient(135deg,#1a1a15,#2b261b,#1a1a15);
     color:#f3ead2;
     border:2px solid var(--yellow);
-    box-shadow:6px 7px 0 var(--yellow), 6px 7px 0 3px var(--black);
+    box-shadow:7px 8px 0 var(--yellow), 7px 8px 0 3px var(--black);
     position:relative;
     overflow:hidden;
+    transition:transform .5s var(--ease-out),
+               box-shadow .5s var(--ease-out);
+}
+.issuer-card:hover{
+    transform:translateY(-4px);
+    box-shadow:10px 12px 0 var(--yellow), 10px 12px 0 3px var(--black);
 }
 .issuer-card::before{
     content:"";
@@ -760,19 +949,15 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     animation:shimmer 5s ease-in-out infinite;
     pointer-events:none;
 }
-@keyframes shimmer{
-    0%{left:-120%;}
-    40%,100%{left:160%;}
-}
 .issuer-card > *{position:relative;z-index:1;}
 .issuer-card .ic-row{
     display:flex;
     align-items:flex-start;
-    gap:18px;
+    gap:20px;
     flex-wrap:wrap;
 }
 .issuer-card .ic-logo{
-    width:64px;height:64px;
+    width:70px;height:70px;
     border-radius:50%;
     border:2px solid var(--yellow);
     background:var(--yellow);
@@ -781,7 +966,7 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     transition:transform .5s var(--ease-spring);
 }
 .issuer-card:hover .ic-logo{
-    transform:rotate(-8deg) scale(1.06);
+    transform:rotate(-8deg) scale(1.08);
 }
 .issuer-card .ic-body{flex:1;min-width:220px;}
 .issuer-card .ic-kicker{
@@ -792,15 +977,15 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     text-transform:uppercase;
     color:var(--yellow);
     display:block;
-    margin-bottom:6px;
+    margin-bottom:8px;
 }
 .issuer-card h3{
     font-family:"Archivo Black",sans-serif;
-    font-size:20px;
-    letter-spacing:-.5px;
+    font-size:clamp(20px,3vw,26px);
+    letter-spacing:-.6px;
     color:#fffdf4;
-    margin-bottom:8px;
-    line-height:1.2;
+    margin-bottom:10px;
+    line-height:1.15;
 }
 .issuer-card p{
     color:#cfc8b8;
@@ -812,8 +997,8 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     display:flex;
     flex-wrap:wrap;
     gap:8px;
-    margin-top:16px;
-    padding-top:16px;
+    margin-top:20px;
+    padding-top:18px;
     border-top:1px solid #403b2c;
 }
 .issuer-card .ic-meta span{
@@ -830,13 +1015,21 @@ table.legal-table td strong{color:var(--text);font-weight:800;}
     letter-spacing:.5px;
     text-transform:uppercase;
     color:var(--yellow);
+    transition:transform .25s var(--ease-out),
+               background .25s ease;
+}
+.issuer-card .ic-meta span:hover{
+    transform:translateY(-2px);
+    background:rgba(242,201,76,.2);
 }
 .issuer-card .ic-meta span strong{
     color:#fffdf4;
     font-weight:900;
 }
 
-/* FOOTER */
+/* ============================================================
+   FOOTER
+============================================================ */
 footer{
     margin-top:0;
     padding:55px 25px 30px;
@@ -849,12 +1042,12 @@ footer .footer-brand{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:12px;
+    gap:14px;
     margin-bottom:18px;
     flex-wrap:wrap;
 }
 footer .footer-brand img{
-    width:52px;height:52px;
+    width:54px;height:54px;
     border-radius:50%;
     border:2px solid var(--yellow);
     background:var(--yellow);
@@ -866,7 +1059,7 @@ footer .footer-brand img:hover{
 }
 footer .footer-brand h3{
     font-family:"Archivo Black",sans-serif;
-    font-size:18px;
+    font-size:20px;
     color:var(--surface);
     letter-spacing:-.4px;
 }
@@ -877,7 +1070,8 @@ footer .footer-brand p{
     font-weight:900;
     letter-spacing:1px;
     text-transform:uppercase;
-    margin-top:2px;
+    margin-top:3px;
+    text-align:left;
 }
 footer .footer-links{
     display:flex;
@@ -918,7 +1112,9 @@ footer .footer-handle{
 }
 footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight:900;}
 
-/* SCROLL TOP */
+/* ============================================================
+   SCROLL TOP
+============================================================ */
 .scroll-top{
     position:fixed;
     bottom:30px;
@@ -945,7 +1141,9 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
     background:var(--surface);
 }
 
-/* RESPONSIVE */
+/* ============================================================
+   RESPONSIVE
+============================================================ */
 @media(max-width:920px){
     .nav-links{
         display:none;
@@ -964,15 +1162,13 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
     .navbar{top:7px;margin-top:7px;width:calc(100% - 18px);border-radius:22px;}
 
     .toc ol{grid-template-columns:1fr;}
-
     .legal-hero{padding-top:90px;}
     .legal-wrap{padding:30px 18px 60px;}
-
     .issuer-card{padding:24px 22px;}
-    .issuer-card .ic-logo{width:54px;height:54px;}
-    .issuer-card h3{font-size:17px;}
-
+    .issuer-card .ic-logo{width:58px;height:58px;}
     .unreg-notice{flex-direction:column;}
+    .hero-float{display:none;}
+    .security-grid{grid-template-columns:1fr;}
 }
 
 @media(max-width:600px){
@@ -981,17 +1177,21 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
     .legal-section-header .sec-icon{width:46px;height:46px;font-size:20px;}
     .legal-section-header h2{font-size:22px;}
 
-    .legal-meta-banner{font-size:9px;padding:10px 14px;gap:8px;}
-    .legal-meta-banner .lmb-sep{display:none;}
+    .legal-hero .hero-meta{font-size:9px;padding:10px 14px;gap:8px;}
+    .legal-hero .hero-meta .hm-sep{display:none;}
 
     .legal-table-wrap{border-radius:8px;}
     table.legal-table th,
     table.legal-table td{padding:9px 11px;font-size:12.5px;}
 
-    .legal-callout{padding:16px 18px;}
-    .legal-callout .lc-icon{font-size:20px;}
+    .legal-callout{padding:16px 18px;flex-direction:column;}
+    .legal-callout .lc-icon{font-size:22px;}
 
     .scroll-top{width:46px;height:46px;bottom:20px;right:20px;}
+
+    .issuer-card{padding:22px 20px;}
+    .issuer-card .ic-logo{width:52px;height:52px;}
+    .issuer-card h3{font-size:18px;}
 }
 
 /* REDUCED MOTION */
@@ -1002,7 +1202,11 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
         scroll-behavior:auto !important;
         transition-duration:.01ms !important;
     }
-    .reveal{opacity:1 !important;transform:none !important;}
+    .reveal,.reveal-left,.reveal-right,.reveal-scale{
+        opacity:1 !important;
+        transform:none !important;
+    }
+    .hero-float{display:none;}
 }
 
 </style>
@@ -1044,18 +1248,26 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
      HERO
 ============================================================ -->
 <header class="legal-hero">
-    <div class="small-title">Official Legal Documentation</div>
+    <span class="hero-float f1">📜</span>
+    <span class="hero-float f2">⚖️</span>
+    <span class="hero-float f3">🛡️</span>
+    <span class="hero-float f4">📑</span>
+
+    <div class="hero-badge">
+        <span class="bd"></span>
+        Official Legal Documentation
+    </div>
     <h1>Privacy Policy & <span>Terms.</span></h1>
     <p>
         The complete legal framework of the East Indian Amateur Full-Stack Developers Organization (EIAFSDO) — covering organizational privacy, website privacy, member terms, and website terms of use.
     </p>
 
-    <div class="legal-meta-banner">
-        <span class="lmb-dot"></span>
+    <div class="hero-meta">
+        <span class="hm-dot"></span>
         <span>Issued by EIAFSDO Board</span>
-        <span class="lmb-sep">·</span>
+        <span class="hm-sep">·</span>
         <span>Version 1.0</span>
-        <span class="lmb-sep">·</span>
+        <span class="hm-sep">·</span>
         <span>Effective 04 October 2026</span>
     </div>
 </header>
@@ -1089,7 +1301,7 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
             <li><a href="#part-3">Terms of Service (Members)</a></li>
             <li><a href="#part-4">Terms of Use (Website)</a></li>
             <li><a href="#part-5">Legal Disclaimers & Compliance</a></li>
-            <li><a href="#part-6">Issuing Authority</a></li>
+            <li><a href="#part-6">Issuing Authority — EIAFSDO Board</a></li>
         </ol>
     </div>
 
@@ -1141,41 +1353,13 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Identity Data</strong></td>
-                        <td>Full name, photograph, role/title</td>
-                        <td>Member registration, profile update</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Contact Data</strong></td>
-                        <td>Email address, phone number</td>
-                        <td>Registration, event sign-up</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Professional Data</strong></td>
-                        <td>Bio, tech stack/skills, organization/affiliation</td>
-                        <td>Member profile</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Account Data</strong></td>
-                        <td>Login credentials (encrypted), account activity</td>
-                        <td>Dashboard registration</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Developer Links</strong></td>
-                        <td>LinkedIn, GitHub, portfolio URLs</td>
-                        <td>Member profile</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Communications</strong></td>
-                        <td>Messages sent through internal systems, talks posted</td>
-                        <td>Platform activity</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Event Data</strong></td>
-                        <td>Attendance records, participation history</td>
-                        <td>Event registration</td>
-                    </tr>
+                    <tr><td><strong>Identity Data</strong></td><td>Full name, photograph, role/title</td><td>Member registration, profile update</td></tr>
+                    <tr><td><strong>Contact Data</strong></td><td>Email address, phone number</td><td>Registration, event sign-up</td></tr>
+                    <tr><td><strong>Professional Data</strong></td><td>Bio, tech stack/skills, organization/affiliation</td><td>Member profile</td></tr>
+                    <tr><td><strong>Account Data</strong></td><td>Login credentials (encrypted), account activity</td><td>Dashboard registration</td></tr>
+                    <tr><td><strong>Developer Links</strong></td><td>LinkedIn, GitHub, portfolio URLs</td><td>Member profile</td></tr>
+                    <tr><td><strong>Communications</strong></td><td>Messages sent through internal systems, talks posted</td><td>Platform activity</td></tr>
+                    <tr><td><strong>Event Data</strong></td><td>Attendance records, participation history</td><td>Event registration</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1284,8 +1468,8 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
             <li><strong>Project Showcase</strong> — projects.html</li>
             <li><strong>Community Talks</strong> — talks.html</li>
             <li><strong>Notice Board</strong> — notice.html</li>
-            <li><strong>Chairman's Desk</strong> — chairman-desk.html</li>
-            <li><strong>CEO's Desk</strong> — ceo.html</li>
+            <li><strong>Chairman’s Desk</strong> — chairman-desk.html</li>
+            <li><strong>CEO’s Desk</strong> — ceo.html</li>
             <li><strong>Organizational Structure</strong> — orgstructure.html</li>
             <li><strong>Member Dashboard</strong> — login.html</li>
         </ul>
@@ -1305,41 +1489,13 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>IP Address</strong></td>
-                        <td>Automatically by hosting provider</td>
-                        <td>Basic site analytics, security</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Browser / Device Info</strong></td>
-                        <td>Automatically</td>
-                        <td>Site functionality</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pages Visited</strong></td>
-                        <td>Basic server logs</td>
-                        <td>Understanding site usage</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Form Data</strong></td>
-                        <td>Contact form submissions</td>
-                        <td>Responding to inquiries</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Login Credentials</strong></td>
-                        <td>Dashboard login</td>
-                        <td>Member authentication</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Profile Data</strong></td>
-                        <td>Member profile updates</td>
-                        <td>Displaying member info</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Firebase Auth Data</strong></td>
-                        <td>Google Firebase</td>
-                        <td>Authentication, account management</td>
-                    </tr>
+                    <tr><td><strong>IP Address</strong></td><td>Automatically by hosting provider</td><td>Basic site analytics, security</td></tr>
+                    <tr><td><strong>Browser / Device Info</strong></td><td>Automatically</td><td>Site functionality</td></tr>
+                    <tr><td><strong>Pages Visited</strong></td><td>Basic server logs</td><td>Understanding site usage</td></tr>
+                    <tr><td><strong>Form Data</strong></td><td>Contact form submissions</td><td>Responding to inquiries</td></tr>
+                    <tr><td><strong>Login Credentials</strong></td><td>Dashboard login</td><td>Member authentication</td></tr>
+                    <tr><td><strong>Profile Data</strong></td><td>Member profile updates</td><td>Displaying member info</td></tr>
+                    <tr><td><strong>Firebase Auth Data</strong></td><td>Google Firebase</td><td>Authentication, account management</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1393,42 +1549,12 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Firebase Authentication</strong></td>
-                        <td>Google</td>
-                        <td>User login, registration</td>
-                        <td>Email, password (hashed), UID</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cloud Firestore</strong></td>
-                        <td>Google</td>
-                        <td>Data storage</td>
-                        <td>Member profiles, projects, talks</td>
-                    </tr>
-                    <tr>
-                        <td><strong>EmailJS</strong></td>
-                        <td>EmailJS</td>
-                        <td>Email notifications</td>
-                        <td>Email address, name</td>
-                    </tr>
-                    <tr>
-                        <td><strong>html2canvas</strong></td>
-                        <td>Client-side library</td>
-                        <td>ID card download</td>
-                        <td>None (runs in browser)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>QR Server API</strong></td>
-                        <td>qrserver.com</td>
-                        <td>QR code generation</td>
-                        <td>UID, name, role, email</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Google Fonts</strong></td>
-                        <td>Google</td>
-                        <td>Typography</td>
-                        <td>None</td>
-                    </tr>
+                    <tr><td><strong>Firebase Authentication</strong></td><td>Google</td><td>User login, registration</td><td>Email, password (hashed), UID</td></tr>
+                    <tr><td><strong>Cloud Firestore</strong></td><td>Google</td><td>Data storage</td><td>Member profiles, projects, talks</td></tr>
+                    <tr><td><strong>EmailJS</strong></td><td>EmailJS</td><td>Email notifications</td><td>Email address, name</td></tr>
+                    <tr><td><strong>html2canvas</strong></td><td>Client-side library</td><td>ID card download</td><td>None (runs in browser)</td></tr>
+                    <tr><td><strong>QR Server API</strong></td><td>qrserver.com</td><td>QR code generation</td><td>UID, name, role, email</td></tr>
+                    <tr><td><strong>Google Fonts</strong></td><td>Google</td><td>Typography</td><td>None</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1455,10 +1581,56 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
             The EIAFSDO website is not directed at children under 13. We do not knowingly collect personal data from children under 13. If we become aware of such collection, we will delete the data promptly.
         </p>
 
-        <h3 class="legal-h3">2.9 International Visitors</h3>
+        <h3 class="legal-h3">2.9 Data Protection — End-to-End Security</h3>
         <p class="legal-p">
-            The EIAFSDO website is hosted on GitHub Pages and uses Firebase services. Data may be transferred to and processed in countries outside India. By using the website, you consent to such transfer.
+            The EIAFSDO website and all associated organizational platforms operate with <strong>end-to-end security</strong> at every layer. All data stored within the EIAFSDO database — including member profiles, project submissions, organizational notices, talks, and system records — is <strong>fully protected, encrypted, and secured</strong> on our infrastructure.
         </p>
+        <p class="legal-p">
+            We maintain rigorous, multi-layered protection across the entire platform. Every record, every transmission, and every interaction is safeguarded by EIAFSDO’s secure architecture from the moment it is created to the moment it is accessed. There is no unauthorized exposure, no unverified transfer, and no unprotected storage at any point in the data lifecycle.
+        </p>
+
+        <div class="security-grid">
+            <div class="security-card">
+                <div class="sc-icon">🔐</div>
+                <h4>Encrypted at Rest</h4>
+                <p>All data stored in the EIAFSDO database is protected with industry-standard encryption.</p>
+            </div>
+            <div class="security-card">
+                <div class="sc-icon">🌐</div>
+                <h4>Encrypted in Transit</h4>
+                <p>Every request and response between your browser and EIAFSDO servers is secured with HTTPS / TLS encryption.</p>
+            </div>
+            <div class="security-card">
+                <div class="sc-icon">🔗</div>
+                <h4>End-to-End Protected</h4>
+                <p>Data is protected throughout its entire lifecycle — from submission, through storage, to retrieval and display.</p>
+            </div>
+            <div class="security-card">
+                <div class="sc-icon">🛡️</div>
+                <h4>Database-Level Security</h4>
+                <p>Firestore Security Rules enforce strict, role-based access control. Only authorized accounts can read, write, or modify records.</p>
+            </div>
+            <div class="security-card">
+                <div class="sc-icon">🚫</div>
+                <h4>Zero Unauthorized Access</h4>
+                <p>No third party can access, extract, or manipulate EIAFSDO data without explicit system-level authorization.</p>
+            </div>
+            <div class="security-card">
+                <div class="sc-icon">📋</div>
+                <h4>Audited Access</h4>
+                <p>All member and administrative actions are governed by permissions, with organizational logs maintaining accountability.</p>
+            </div>
+        </div>
+
+        <div class="legal-callout callout-secure">
+            <span class="lc-icon">🔒</span>
+            <div class="lc-body">
+                <strong>Absolute Data Security Commitment</strong>
+                <p>
+                    EIAFSDO is committed to protecting every record on our platform with end-to-end security. All data on the EIAFSDO database remains fully secured, fully protected, and fully under organizational control at all times.
+                </p>
+            </div>
+        </div>
     </section>
 
     <!-- ============================================================
@@ -1558,10 +1730,6 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
             <li>Your violation of any third-party rights</li>
         </ul>
 
-        <h3 class="legal-h3">3.11 Governing Law and Dispute Resolution</h3>
-        <p class="legal-p">
-            These Terms are governed by the laws of <strong>India</strong>. Any disputes shall be subject to the exclusive jurisdiction of the courts in <strong>Hooghly, West Bengal, India</strong>.
-        </p>
 
         <h3 class="legal-h3">3.12 Changes to Terms</h3>
         <p class="legal-p">
@@ -1810,15 +1978,18 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
-/* ---------- REVEAL ---------- */
+/* ---------- REVEAL ON SCROLL ---------- */
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+        }
     });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObserver.observe(el));
 
-/* ---------- SMOOTH ANCHOR ---------- */
+/* ---------- SMOOTH ANCHOR SCROLL ---------- */
 document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
         const targetId = this.getAttribute('href');
@@ -1832,6 +2003,26 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
             }
         }
     });
+});
+
+/* ---------- FADE-IN ON INTERSECTION FOR SECURITY CARDS ---------- */
+const securityCards = document.querySelectorAll('.security-card');
+const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translate(0,0)';
+            }, index * 60);
+            cardObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+securityCards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity .6s cubic-bezier(.22,.75,.2,1), transform .6s cubic-bezier(.22,.75,.2,1)';
+    cardObserver.observe(card);
 });
 </script>
 
