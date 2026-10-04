@@ -6,7 +6,22 @@
 <meta name="theme-color" content="#fffaf0" />
 
 <title>EIAFSDO — East Indian Amateur Full-Stack Developers Organization</title>
-<meta name="description" content="EIAFSDO — East Indian Amateur Full-Stack Developers Organization. A student-operated collective building, learning and growing together through full-stack development." />
+<meta name="description" content="EIAFSDO — East Indian Amateur Full-Stack Developers Organization. A student-operated collective from Tarakeswar, Hooghly — building, learning and growing together through full-stack development.">
+<meta name="keywords" content="EIAFSDO, East Indian Amateur Full-Stack Developers Organization, Tarakeswar, Hooghly, full-stack, developers, students, coding, projects">
+<meta name="author" content="EIAFSDO">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://priyabratacare-source.github.io/EIAFSDO/index.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="EIAFSDO — Build. Learn. Grow.">
+<meta property="og:description" content="A student-operated collective building, learning and growing together through full-stack development.">
+<meta property="og:url" content="https://priyabratacare-source.github.io/EIAFSDO/index.html">
+<meta property="og:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EIAFSDO — Build. Learn. Grow.">
+<meta name="twitter:description" content="A student-operated collective building, learning and growing together through full-stack development.">
+<meta name="twitter:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +44,6 @@
     --body:#3d3830;
 
     --yellow:#f2c94c;
-
     --gold:#c9972e;
     --gold-light:#ffe68a;
     --gold-dark:#765300;
@@ -37,6 +51,7 @@
     --green:#e8ddb4;
     --blue:#1687ff;
     --red:#d94a3a;
+    --board-blue:#3d64b8;
 
     --black:#17150f;
     --white:#fffef8;
@@ -46,7 +61,8 @@
     --shadow-soft:3px 4px 0 var(--black);
     --radius:12px;
 
-    --smooth-ease:cubic-bezier(.2,.75,.2,1);
+    --ease-out:cubic-bezier(.22,.75,.2,1);
+    --ease-spring:cubic-bezier(.34,1.56,.64,1);
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -54,6 +70,7 @@
 html{
     scroll-behavior:smooth;
     scroll-padding-top:100px;
+    -webkit-text-size-adjust:100%;
 }
 
 body{
@@ -64,6 +81,8 @@ body{
     overflow-x:hidden;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
     position:relative;
     isolation:isolate;
 }
@@ -103,18 +122,20 @@ body::after{
 @keyframes gridMove{from{background-position:0 0;}to{background-position:48px 48px;}}
 
 /* ============================================================
-   REVEAL
+   SMOOTH REVEAL
 ============================================================ */
-.reveal,.reveal-left,.reveal-right{
+.reveal,.reveal-left,.reveal-right,.reveal-scale{
     opacity:0;
-    transition:opacity .85s var(--smooth-ease), transform .85s var(--smooth-ease);
+    transition:opacity .9s var(--ease-out), transform .9s var(--ease-out);
+    will-change:opacity,transform;
 }
 .reveal{transform:translateY(45px);}
 .reveal-left{transform:translateX(-45px);}
 .reveal-right{transform:translateX(45px);}
-.reveal.visible,.reveal-left.visible,.reveal-right.visible{
+.reveal-scale{transform:scale(.94) rotate(-1deg);}
+.reveal.visible,.reveal-left.visible,.reveal-right.visible,.reveal-scale.visible{
     opacity:1;
-    transform:translate(0,0);
+    transform:translate(0,0) scale(1) rotate(0);
 }
 
 /* ============================================================
@@ -138,15 +159,17 @@ body::after{
     border:var(--border);
     border-radius:999px;
     box-shadow:var(--shadow-soft);
+    animation:fadeSlideDown .8s var(--ease-out) both;
     transition:box-shadow .3s ease;
+}
+@keyframes fadeSlideDown{
+    from{opacity:0;transform:translateY(-22px);}
+    to{opacity:1;transform:translateY(0);}
 }
 .navbar.scrolled{box-shadow:5px 7px 0 var(--black);}
 
 .nav-inner{
     width:100%;
-    max-width:100%;
-    padding:0;
-    margin:0;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -206,11 +229,6 @@ body::after{
     color:var(--yellow);
     border:2px solid var(--black);
     padding:9px 14px;
-    font-family:"Roboto Mono",monospace;
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:.4px;
-    border-radius:999px;
     box-shadow:3px 4px 0 var(--gold-dark);
     transition:.25s ease;
 }
@@ -274,6 +292,11 @@ section{
     height:7px;
     border-radius:50%;
     background:var(--black);
+    animation:pulseDot 2.2s ease-in-out infinite;
+}
+@keyframes pulseDot{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.4);}
 }
 
 .section-title{
@@ -310,14 +333,14 @@ section{
 }
 
 /* ============================================================
-   HERO
+   HERO — cinematic entrance
 ============================================================ */
 .hero{
     max-width:1100px;
     margin:auto;
     padding:120px 25px 70px;
     text-align:center;
-    min-height:80vh;
+    min-height:85vh;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -338,6 +361,12 @@ section{
     letter-spacing:.6px;
     text-transform:uppercase;
     margin-bottom:24px;
+    opacity:0;
+    animation:fadeSlideUp .8s var(--ease-out) .2s forwards;
+}
+@keyframes fadeSlideUp{
+    from{opacity:0;transform:translateY(28px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
 .hero h1{
@@ -347,6 +376,8 @@ section{
     letter-spacing:-4px;
     margin-bottom:22px;
     color:var(--text);
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .35s forwards;
 }
 .hero h1 span{
     display:inline-block;
@@ -363,7 +394,12 @@ section{
     height:16px;
     background:var(--yellow);
     z-index:-1;
-    transform:skew(-8deg);
+    transform:skew(-8deg) scaleX(0);
+    transform-origin:left center;
+    animation:underlineGrow 1s var(--ease-spring) 1s forwards;
+}
+@keyframes underlineGrow{
+    to{transform:skew(-8deg) scaleX(1);}
 }
 
 .hero .motto{
@@ -373,6 +409,8 @@ section{
     letter-spacing:.5px;
     margin-bottom:22px;
     font-weight:600;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .7s forwards;
 }
 .hero .motto strong{color:var(--black);font-weight:700;}
 
@@ -382,6 +420,8 @@ section{
     color:var(--body);
     font-size:17px;
     line-height:1.75;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .9s forwards;
 }
 
 .hero .cta-group{
@@ -390,6 +430,8 @@ section{
     gap:14px;
     flex-wrap:wrap;
     justify-content:center;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) 1.1s forwards;
 }
 .hero .cta-group a{
     display:inline-flex;
@@ -415,6 +457,117 @@ section{
 }
 .hero .cta-primary{background:var(--yellow);color:var(--text);}
 .hero .cta-secondary{background:var(--surface);}
+
+/* Hero scroll indicator */
+.hero-scroll{
+    margin-top:44px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:#6b6254;
+    opacity:0;
+    animation:fadeSlideUp .8s var(--ease-out) 1.5s forwards;
+}
+.hero-scroll .arrow{
+    display:inline-block;
+    font-size:16px;
+    animation:scrollBounce 1.8s ease-in-out infinite;
+}
+@keyframes scrollBounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(8px);}
+}
+
+/* ============================================================
+   QUICK NAV — Real page cards (new smooth section)
+============================================================ */
+.quicknav{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-top:36px;
+}
+.quicknav-card{
+    padding:22px 20px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-soft);
+    text-decoration:none;
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    transition:transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+    position:relative;
+    overflow:hidden;
+}
+.quicknav-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,rgba(242,201,76,.15),transparent 60%);
+    opacity:0;
+    transition:opacity .35s ease;
+    pointer-events:none;
+}
+.quicknav-card:hover{
+    transform:translate(-3px,-4px);
+    box-shadow:8px 10px 0 var(--black);
+}
+.quicknav-card:hover::before{opacity:1;}
+.quicknav-card .qn-icon{
+    font-size:28px;
+    line-height:1;
+    display:inline-block;
+    width:52px;
+    height:52px;
+    border:var(--border);
+    border-radius:12px;
+    background:var(--yellow);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:3px 3px 0 var(--black);
+    transition:transform .5s var(--ease-spring);
+}
+.quicknav-card:hover .qn-icon{
+    transform:rotate(-8deg) scale(1.08);
+}
+.quicknav-card h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:18px;
+    letter-spacing:-.4px;
+    margin-top:6px;
+}
+.quicknav-card p{
+    font-size:12.5px;
+    color:var(--body);
+    line-height:1.55;
+    font-weight:600;
+}
+.quicknav-card .qn-arrow{
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--gold-dark);
+    margin-top:6px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    transition:transform .3s ease;
+}
+.quicknav-card:hover .qn-arrow{
+    transform:translateX(4px);
+}
 
 /* ============================================================
    ABOUT + STATS
@@ -464,6 +617,30 @@ section{
     text-transform:uppercase;
     font-weight:900;
 }
+.about-text .read-more{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Roboto Mono',monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--text);
+    background:var(--yellow);
+    border:2px solid var(--black);
+    padding:9px 16px;
+    border-radius:999px;
+    box-shadow:3px 4px 0 var(--black);
+    margin-top:8px;
+    transition:.25s ease;
+}
+.about-text .read-more:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:5px 6px 0 var(--black);
+}
+
 .about-stats{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -535,6 +712,10 @@ section{
     box-shadow:3px 4px 0 var(--black);
     font-size:26px;
     margin-bottom:18px;
+    transition:transform .5s var(--ease-spring);
+}
+.service-card:hover .icon{
+    transform:rotate(-8deg) scale(1.1);
 }
 .service-card h3{
     font-family:"Archivo Black",sans-serif;
@@ -546,6 +727,219 @@ section{
     color:var(--body);
     font-size:13.5px;
     line-height:1.7;
+}
+
+/* ============================================================
+   BOARD & LEADERSHIP — new smooth section
+============================================================ */
+.leadership-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+    margin-top:34px;
+}
+
+.leadership-card{
+    padding:26px 22px;
+    border-radius:var(--radius);
+    border:var(--border);
+    box-shadow:var(--shadow);
+    text-decoration:none;
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    position:relative;
+    overflow:hidden;
+    transition:transform .35s var(--ease-out), box-shadow .35s var(--ease-out);
+}
+.leadership-card:hover{
+    transform:translate(-3px,-4px);
+    box-shadow:10px 12px 0 var(--black);
+}
+.leadership-card::after{
+    content:"";
+    position:absolute;
+    top:-40%;
+    right:-20%;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(242,201,76,.35), transparent 70%);
+    pointer-events:none;
+}
+
+.leadership-card.chairman{
+    background:linear-gradient(135deg,#17150f,#2b261b);
+    color:#f3ead2;
+    border-color:var(--yellow);
+}
+.leadership-card.chairman h3,
+.leadership-card.chairman .lc-title{color:#fffdf4;}
+.leadership-card.chairman p{color:#cfc8b8;}
+.leadership-card.chairman .lc-chip{
+    background:var(--yellow);
+    color:var(--black);
+    border-color:var(--yellow);
+}
+
+.leadership-card.ceo{
+    background:linear-gradient(135deg,#eef4ff,#d6e9ff);
+    border-color:var(--board-blue);
+}
+.leadership-card.ceo .lc-chip{
+    background:var(--board-blue);
+    color:#fff;
+    border-color:var(--board-blue);
+}
+
+.leadership-card.board{
+    background:linear-gradient(145deg,#fffef8,#f7e7a9);
+}
+.leadership-card.board .lc-chip{
+    background:var(--black);
+    color:var(--yellow);
+    border-color:var(--black);
+}
+
+.leadership-card.it{
+    background:linear-gradient(135deg,#f4f7ff,#e0ecff);
+    border-color:var(--board-blue);
+}
+.leadership-card.it .lc-chip{
+    background:var(--board-blue);
+    color:#fff;
+    border-color:var(--board-blue);
+}
+
+.leadership-card .lc-icon{
+    width:52px;
+    height:52px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--yellow);
+    border:var(--border);
+    border-radius:12px;
+    box-shadow:3px 3px 0 var(--black);
+    font-size:24px;
+    transition:transform .5s var(--ease-spring);
+    position:relative;
+    z-index:1;
+}
+.leadership-card:hover .lc-icon{
+    transform:rotate(-8deg) scale(1.1);
+}
+.leadership-card.chairman .lc-icon{
+    background:linear-gradient(135deg,#fff0a4,#d1a235,#8a6500);
+    border-color:var(--yellow);
+    box-shadow:3px 3px 0 var(--yellow);
+}
+.leadership-card.ceo .lc-icon{
+    background:linear-gradient(135deg,#c7d9ff,#6b8fdb);
+    border-color:var(--board-blue);
+    box-shadow:3px 3px 0 var(--board-blue);
+}
+.leadership-card.it .lc-icon{
+    background:linear-gradient(135deg,#c7d9ff,#6b8fdb);
+    border-color:var(--board-blue);
+    box-shadow:3px 3px 0 var(--board-blue);
+}
+
+.leadership-card h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:20px;
+    letter-spacing:-.5px;
+    margin-top:4px;
+    position:relative;
+    z-index:1;
+    line-height:1.15;
+}
+.leadership-card p{
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--body);
+    position:relative;
+    z-index:1;
+}
+.leadership-card .lc-chip{
+    display:inline-block;
+    align-self:flex-start;
+    padding:5px 12px;
+    border-radius:999px;
+    border:2px solid var(--black);
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    margin-top:8px;
+    position:relative;
+    z-index:1;
+}
+
+.leadership-cta{
+    margin-top:34px;
+    padding:24px 28px;
+    border-radius:var(--radius);
+    border:var(--border);
+    background:linear-gradient(135deg,#1a2436,#0f172a);
+    color:#e6eeff;
+    box-shadow:7px 9px 0 var(--black);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    position:relative;
+    overflow:hidden;
+}
+.leadership-cta::before{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    right:-80px;
+    top:-90px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(107,143,219,.35), transparent 67%);
+    pointer-events:none;
+}
+.leadership-cta > *{position:relative;z-index:1;}
+.leadership-cta h4{
+    font-family:"Archivo Black",sans-serif;
+    font-size:18px;
+    letter-spacing:-.3px;
+    color:#e6eeff;
+}
+.leadership-cta p{
+    color:#c4d3f2;
+    font-size:12.5px;
+    margin-top:4px;
+    max-width:none;
+    font-weight:600;
+}
+.leadership-cta .lc-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 22px;
+    border-radius:9px;
+    border:2px solid var(--yellow);
+    background:var(--yellow);
+    color:var(--black);
+    text-decoration:none;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    box-shadow:3px 4px 0 var(--black);
+    transition:.25s ease;
+}
+.leadership-cta .lc-btn:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:5px 6px 0 var(--black);
 }
 
 /* ============================================================
@@ -736,10 +1130,6 @@ section{
 }
 .status-dot.active{background:#35a853;}
 .status-dot.inactive{background:var(--red);}
-@keyframes pulseDot{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.25);}
-}
 
 .profile{
     width:132px;
@@ -888,7 +1278,6 @@ section{
     box-shadow:4px 5px 0 var(--black);
     border-color:var(--black);
 }
-.socials-row a.codebihin-link{font-size:8px;}
 
 .verified-badge{
     display:inline-flex;
@@ -954,14 +1343,6 @@ section{
     max-width:92%;
     padding:0 8px;
     font-weight:600;
-}
-.team-card-back .back-label{
-    font-family:"Roboto Mono",monospace;
-    font-size:9px;
-    letter-spacing:2px;
-    color:var(--yellow);
-    font-weight:900;
-    text-transform:uppercase;
 }
 .team-card-back .back-stats{
     display:flex;
@@ -1031,6 +1412,10 @@ section{
     box-shadow:3px 4px 0 var(--black);
     font-size:24px;
     margin-bottom:14px;
+    transition:transform .5s var(--ease-spring);
+}
+.project-card:hover .p-icon{
+    transform:rotate(-8deg) scale(1.1);
 }
 .project-card h3{
     font-family:"Archivo Black",sans-serif;
@@ -1668,6 +2053,8 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
     .social-links-section .social-icons{flex-direction:column;align-items:center;}
     .social-links-section .social-icon-link{width:100%;max-width:320px;justify-content:center;}
     .team-card-flip{height:470px;}
+
+    .leadership-cta{flex-direction:column;text-align:center;}
 }
 
 @media(max-width:600px){
@@ -1676,6 +2063,9 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
     .team-card-flip{height:460px;}
     .modal-content{padding:28px 20px 22px;}
     .scroll-top{width:46px;height:46px;bottom:20px;right:20px;}
+
+    .quicknav{grid-template-columns:1fr;}
+    .leadership-grid{grid-template-columns:1fr;}
 }
 
 /* ============================================================
@@ -1688,6 +2078,10 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
         scroll-behavior:auto !important;
         transition-duration:.01ms !important;
     }
+    .reveal,.reveal-left,.reveal-right,.reveal-scale{
+        opacity:1 !important;
+        transform:none !important;
+    }
 }
 
 </style>
@@ -1696,7 +2090,7 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
 <body>
 
 <!-- ============================================================
-     NAVBAR — every link points to a real file (matches sitemap)
+     NAVBAR — every link points to a real file
 ============================================================ -->
 <nav class="navbar" id="navbar">
     <div class="nav-inner">
@@ -1713,10 +2107,12 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
             <a href="about.html">About</a>
             <a href="what-is-eiafsdo.html">What We Do</a>
             <a href="team.html">Team</a>
-            <a href="projects.html" title="Projects Showcase — EIAFSDO">Projects</a>
+            <a href="projects.html">Projects</a>
             <a href="talks.html">Talks</a>
             <a href="notice.html">Notice</a>
-            <a href="chairman-desk.html">Chairman's Desk</a>
+            <a href="chairman-desk.html">Chairman</a>
+            <a href="ceo.html">CEO</a>
+            <a href="orgstructure.html">Structure</a>
             <a href="contact.html">Contact</a>
             <a href="login.html" class="btn-login">🔑 Login</a>
         </div>
@@ -1724,7 +2120,7 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
 </nav>
 
 <!-- ============================================================
-     HERO — CTAs point to real pages
+     HERO — cinematic entrance
 ============================================================ -->
 <section class="hero" id="hero">
     <div class="small-title">East Indian Amateur Full-Stack Developers Organization</div>
@@ -1740,10 +2136,91 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
         <a href="about.html" class="cta-primary">Who We Are</a>
         <a href="projects.html" class="cta-secondary">Projects Showcase →</a>
     </div>
+
+    <div class="hero-scroll">
+        <span>Scroll to explore</span>
+        <span class="arrow">↓</span>
+    </div>
 </section>
 
 <!-- ============================================================
-     ABOUT (homepage preview)
+     QUICK NAV — smooth entry cards to every page
+============================================================ -->
+<section id="explore" style="padding-top:40px;">
+    <div class="section-label reveal">Explore EIAFSDO</div>
+    <h2 class="section-title reveal">Every part of our <span>organization.</span></h2>
+    <p class="section-sub reveal">
+        From team and projects to the Chairman's Desk, CEO's Desk and the official organizational structure — everything lives in one place.
+    </p>
+
+    <div class="quicknav">
+        <a href="about.html" class="quicknav-card reveal">
+            <span class="qn-icon">📖</span>
+            <h3>About</h3>
+            <p>The story, mission and philosophy behind EIAFSDO.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="what-is-eiafsdo.html" class="quicknav-card reveal">
+            <span class="qn-icon">🎯</span>
+            <h3>What We Do</h3>
+            <p>Focus areas, methodology and the work we ship together.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="team.html" class="quicknav-card reveal">
+            <span class="qn-icon">👥</span>
+            <h3>Team</h3>
+            <p>Meet the founders, board members and developers of EIAFSDO.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="projects.html" class="quicknav-card reveal">
+            <span class="qn-icon">🚀</span>
+            <h3>Projects</h3>
+            <p>Live, verified projects deployed by our members and peers.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="chairman-desk.html" class="quicknav-card reveal">
+            <span class="qn-icon">👑</span>
+            <h3>Chairman's Desk</h3>
+            <p>Official leadership message from the Chairman of the Board.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="ceo.html" class="quicknav-card reveal">
+            <span class="qn-icon">👔</span>
+            <h3>CEO's Desk</h3>
+            <p>Executive leadership and organizational direction under the Board.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="orgstructure.html" class="quicknav-card reveal">
+            <span class="qn-icon">🏛️</span>
+            <h3>Structure</h3>
+            <p>The official governance hierarchy of EIAFSDO.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="notice.html" class="quicknav-card reveal">
+            <span class="qn-icon">📢</span>
+            <h3>Notices</h3>
+            <p>Official notices, appointments and announcements.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+
+        <a href="talks.html" class="quicknav-card reveal">
+            <span class="qn-icon">💬</span>
+            <h3>Talks</h3>
+            <p>Voices and insights from members across our community.</p>
+            <span class="qn-arrow">Visit Page →</span>
+        </a>
+    </div>
+</section>
+
+<!-- ============================================================
+     ABOUT
 ============================================================ -->
 <section id="about">
     <div class="section-label reveal">Who We Are</div>
@@ -1765,13 +2242,13 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
                 <span>Build · Discuss · Grow</span>
             </div>
             <p>
-                <a href="what-is-eiafsdo.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;color:var(--text);background:var(--yellow);border:2px solid var(--black);padding:9px 16px;border-radius:999px;box-shadow:3px 4px 0 var(--black);margin-top:8px;">Read the full story →</a>
+                <a href="what-is-eiafsdo.html" class="read-more">Read the full story →</a>
             </p>
         </div>
         <div class="about-stats reveal-right">
             <div class="stat">
                 <span class="number" id="founderCount">—</span>
-                <span class="label">Founders</span>
+                <span class="label">Registered Members</span>
             </div>
             <div class="stat">
                 <span class="number" id="projectCount">—</span>
@@ -1824,11 +2301,62 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
 </section>
 
 <!-- ============================================================
+     LEADERSHIP — Board · Chairman · CEO · IT
+============================================================ -->
+<section id="leadership">
+    <div class="section-label reveal">Governance & Leadership</div>
+    <h2 class="section-title reveal">EIAFSDO <span>Leadership</span></h2>
+    <p class="section-sub reveal">
+        The Founding Board holds ultimate governance authority. The Chairman leads the Board. The CEO executes the Board's direction — while the IT Department reports directly to the Board.
+    </p>
+
+    <div class="leadership-grid">
+
+        <a href="team.html" class="leadership-card board reveal">
+            <div class="lc-icon">🏛️</div>
+            <h3>Founding Board</h3>
+            <p>The Founding Board sits at the top of the EIAFSDO organizational structure and holds ultimate governance authority.</p>
+            <span class="lc-chip">Top Governance</span>
+        </a>
+
+        <a href="chairman-desk.html" class="leadership-card chairman reveal">
+            <div class="lc-icon">👑</div>
+            <h3>Chairman's Desk</h3>
+            <p>The Chairman of the Board provides leadership direction and represents EIAFSDO at the highest level.</p>
+            <span class="lc-chip">Board Leadership</span>
+        </a>
+
+        <a href="ceo.html" class="leadership-card ceo reveal">
+            <div class="lc-icon">👔</div>
+            <h3>CEO's Desk</h3>
+            <p>The Chief Executive Officer executes the Board's direction across organizational operations, projects and teams.</p>
+            <span class="lc-chip">Executive Leadership</span>
+        </a>
+
+        <a href="orgstructure.html" class="leadership-card it reveal">
+            <div class="lc-icon">💻</div>
+            <h3>IT Department</h3>
+            <p>The IT Department reports directly to the Founding Board and maintains EIAFSDO's digital infrastructure.</p>
+            <span class="lc-chip">Direct Board Report</span>
+        </a>
+
+    </div>
+
+    <div class="leadership-cta reveal">
+        <div>
+            <h4>See the Complete Organizational Structure</h4>
+            <p>Governance flow · Board → Chairman → CEO → Executives → Admins → IT → Members</p>
+        </div>
+        <a href="orgstructure.html" class="lc-btn">View Full Structure →</a>
+    </div>
+</section>
+
+<!-- ============================================================
      TEAM (loaded from Firebase)
 ============================================================ -->
 <div id="team-section">
     <div>
-        <div class="section-label reveal">Our Leadership</div>
+        <div class="section-label reveal">Our People</div>
         <h2 class="section-title reveal">Meet the <span>Team</span></h2>
         <p class="section-sub reveal">
             The builders, architects, and founders driving the development and vision of EIAFSDO.
@@ -1838,11 +2366,11 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
     <div class="team-controls">
         <div class="team-search">
             <span class="search-icon">⌕</span>
-            <input type="text" id="teamSearch" placeholder="Search founder by name, role, tech stack, or bio…" />
+            <input type="text" id="teamSearch" placeholder="Search member by name, role, tech stack, or bio…" />
         </div>
         <div class="team-filters">
             <button class="filter active" data-role="all">All</button>
-            <button class="filter" data-role="founder">Founders (Order 1-3)</button>
+            <button class="filter" data-role="founder">Founders</button>
             <button class="filter" data-role="member">Members</button>
         </div>
     </div>
@@ -1958,7 +2486,7 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
 </div>
 
 <!-- ============================================================
-     JOIN — CTA to contact page
+     JOIN
 ============================================================ -->
 <section id="join">
     <div class="section-label reveal">Get Involved</div>
@@ -1970,7 +2498,7 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
 </section>
 
 <!-- ============================================================
-     CONTACT (homepage preview form)
+     CONTACT
 ============================================================ -->
 <section id="contact">
     <div class="section-label reveal">Connect</div>
@@ -1995,7 +2523,7 @@ footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight
                 <a href="https://x.com/EIAFSDO" target="_blank" rel="noopener">X (Twitter)</a>
             </p>
             <p style="margin-top:20px;">
-                <a href="contact.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Roboto Mono',monospace;font-size:10px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;color:var(--text);background:var(--yellow);border:2px solid var(--black);padding:9px 16px;border-radius:999px;box-shadow:3px 4px 0 var(--black);">Full contact page →</a>
+                <a href="contact.html" class="read-more">Full contact page →</a>
             </p>
         </div>
 
@@ -2163,7 +2691,7 @@ async function loadTeamMembers() {
         if (snapshot.empty) {
             teamGrid.innerHTML = '';
             teamEmpty.style.display = 'block';
-            teamEmpty.textContent = 'No founders found in database.';
+            teamEmpty.textContent = 'No members found in database.';
             return;
         }
         allMembers = [];
@@ -2172,7 +2700,7 @@ async function loadTeamMembers() {
         renderTeamCards(allMembers);
     } catch (err) {
         teamEmpty.style.display = 'block';
-        teamEmpty.textContent = '⚠️ Unable to load founders from database. Please refresh.';
+        teamEmpty.textContent = '⚠️ Unable to load members from database. Please refresh.';
     }
 }
 
@@ -2508,7 +3036,7 @@ const revealObserver = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
     });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => revealObserver.observe(el));
 
 /* ---------- CONTACT FORM ---------- */
 document.getElementById('contactForm').addEventListener('submit', function(e) {
