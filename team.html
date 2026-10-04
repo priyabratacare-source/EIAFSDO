@@ -599,7 +599,7 @@ section{
     word-break:break-word;
 }
 
-/* FOUNDERS */
+/* FOUNDERS / BOARD */
 
 .founder-grid{
     margin-top:35px;
@@ -627,10 +627,10 @@ section{
 }
 
 .founder-card::after{
-    content:"FOUNDER";
+    content:"FOUNDER · BOARD";
     position:absolute;
     top:18px;
-    right:-36px;
+    right:-58px;
     padding:7px 45px;
     background:var(--black);
     color:var(--yellow);
@@ -638,6 +638,42 @@ section{
     font-size:10px;
     font-weight:900;
     transform:rotate(45deg);
+    white-space:nowrap;
+}
+
+/* ─── PENDING SLOT ─── */
+.founder-card.pending-slot{
+    background:linear-gradient(145deg,#fffef8,#f3f0e5);
+    border-style:dashed;
+    border-color:#8a8275;
+    box-shadow:8px 9px 0 #8a8275;
+    opacity:.92;
+}
+
+.founder-card.pending-slot::after{
+    background:#8a8275;
+    color:var(--surface);
+    content:"PENDING";
+}
+
+.founder-card.pending-slot .founder-photo{
+    background:linear-gradient(135deg,#f3ead2,#e8ddb4);
+    box-shadow:5px 5px 0 #8a8275;
+}
+
+.founder-card.pending-slot .founder-photo .initials{
+    background:linear-gradient(135deg,#f3ead2,#e8ddb4);
+    color:#8a8275;
+    font-size:40px;
+}
+
+.founder-card.pending-slot .verified span{
+    background:#8a8275;
+    color:#fffef8;
+}
+
+.founder-card.pending-slot .founder-role{
+    color:#8a8275;
 }
 
 .founder-photo{
@@ -760,6 +796,13 @@ section{
     font-weight:800;
 }
 
+/* Board-only tag variant */
+.role-tags span.board-tag{
+    background:var(--black);
+    color:var(--yellow);
+    border-color:var(--black);
+}
+
 .founder-note{
     margin-top:30px;
     padding:25px;
@@ -870,6 +913,23 @@ section{
     background:var(--surface);
     border:2px solid var(--black);
     border-radius:10px;
+}
+
+.batch-item.pending{
+    border-style:dashed;
+    border-color:#8a8275;
+    background:#f3f0e5;
+}
+
+.batch-item.pending strong{
+    color:#8a8275;
+}
+
+.batch-item.pending span{
+    color:#8a8275;
+    font-style:italic;
+    font-family:"Roboto Mono",monospace;
+    font-size:12px;
 }
 
 .batch-item strong{
@@ -1180,7 +1240,7 @@ footer{
 
     <div class="hero-meta">
         <div class="meta">BUILD. LEARN. GROW.</div>
-        <div class="meta">FOUNDING TEAM</div>
+        <div class="meta">FOUNDING TEAM · BOARD</div>
         <div class="meta">BOARD & ADMINISTRATION</div>
     </div>
 </header>
@@ -1269,7 +1329,8 @@ const db = firebase.firestore();
 
 let allUsers = [];
 let chairmanUser = null;
-let founderUsers = [];   // founding-member + admin + anyone tagged as founder
+let founderUsers = [];
+let founderSlots = [];
 let usersUnsubscribe = null;
 let revealObserver = null;
 let firstRender = true;
@@ -1277,14 +1338,16 @@ let hasRendered = false;
 
 
 /* ==========================================================
-   CONFIG
+   CONFIG — FOUNDING TEAM (CANONICAL ORDER)
 ========================================================== */
+// The three founding members of EIAFSDO.
+// ★ Founding members are automatically members of the Founding Board.
+// Every profile is resolved from Firestore — no hardcoded profiles.
 
-// Founding team — the three official founders of EIAFSDO.
-const FOUNDING_NAMES = [
-    'ayush chatterjee',
-    'priyabrata patra',
-    'abhradeep dhara'
+const FOUNDING_TEAM = [
+    { key: 'ayush',      matchNames: ['ayush chatterjee'],      hint: 'Ayush Chatterjee' },
+    { key: 'priyabrata', matchNames: ['priyabrata patra'],      hint: 'Priyabrata Patra' },
+    { key: 'abhradeep',  matchNames: ['abhradeep dhara','abhrdeep dhara','abhradip dhara'], hint: 'Abhradeep Dhara' }
 ];
 
 
@@ -1329,6 +1392,12 @@ function formatLongDate(value){
     return d.toLocaleDateString('en-IN', {
         day:'2-digit', month:'long', year:'numeric'
     }).toUpperCase();
+}
+
+function nameMatches(candidate, target){
+    const a = String(candidate || '').toLowerCase().replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();
+    const b = String(target   || '').toLowerCase().replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();
+    return a === b;
 }
 
 
@@ -1414,33 +1483,48 @@ function buildChairmanPhotoHTML(user){
 ========================================================== */
 
 function processUsers(users){
-    // Chairman — first user with role 'chairman'
     chairmanUser = users.find(u => normalizeRole(u.role) === 'chairman') || null;
 
-    // Founders — match the three known founding names, OR any user with
-    // role 'founding-member'. Keep in the fixed canonical order:
-    // Ayush, Priyabrata, Abhradeep.
-    const byName = new Map();
-    users.forEach(u => {
-        const key = String(u.name || '').trim().toLowerCase();
-        if (key) byName.set(key, u);
-    });
+    const usedIds = new Set();
 
-    const ordered = [];
-    FOUNDING_NAMES.forEach(name => {
-        const u = byName.get(name);
-        if (u) ordered.push(u);
-    });
-
-    // Add any remaining users with role 'founding-member'
-    users.forEach(u => {
-        if (normalizeRole(u.role) === 'founding-member' &&
-            !ordered.find(x => x.id === u.id)){
-            ordered.push(u);
+    founderSlots = FOUNDING_TEAM.map(slot => {
+        // 1. Match by known aliases
+        let match = null;
+        for (const alias of slot.matchNames){
+            match = users.find(u =>
+                !usedIds.has(u.id) && nameMatches(u.name, alias)
+            );
+            if (match) break;
         }
+
+        // 2. Fallback — any user with role 'founding-member'
+        if (!match){
+            match = users.find(u =>
+                !usedIds.has(u.id) &&
+                normalizeRole(u.role) === 'founding-member'
+            );
+        }
+
+        // 3. Fallback — email prefix match
+        if (!match){
+            const firstName = slot.hint.split(' ')[0].toLowerCase();
+            match = users.find(u =>
+                !usedIds.has(u.id) &&
+                String(u.email || '').toLowerCase().startsWith(firstName)
+            );
+        }
+
+        if (match){
+            usedIds.add(match.id);
+            return { user: match, pending: false, hint: slot.hint, key: slot.key };
+        }
+
+        return { user: null, pending: true, hint: slot.hint, key: slot.key };
     });
 
-    founderUsers = ordered;
+    founderUsers = founderSlots
+        .filter(s => !s.pending && s.user)
+        .map(s => s.user);
 }
 
 
@@ -1450,7 +1534,6 @@ function processUsers(users){
 
 function renderChairmanSection(){
     if (!chairmanUser){
-        // Fallback board-controlled card
         return `
             <section class="reveal">
                 <span class="section-label">01 / CHAIRMAN</span>
@@ -1530,7 +1613,7 @@ function renderChairmanSection(){
                         ${escapeHTML(lastName)}
                     </h2>
 
-                    <div class="chairman-role">CHAIRMAN</div>
+                    <div class="chairman-role">CHAIRMAN · BOARD MEMBER</div>
 
                     <p>
                         ${bio
@@ -1546,6 +1629,11 @@ function renderChairmanSection(){
                         </div>
 
                         <div class="detail">
+                            <strong>BOARD ROLE</strong>
+                            <span>Chairman of the Board</span>
+                        </div>
+
+                        <div class="detail">
                             <strong>ORGANIZATION</strong>
                             <span>${escapeHTML(org)}</span>
                         </div>
@@ -1555,7 +1643,7 @@ function renderChairmanSection(){
                             <span>Founding Team</span>
                         </div>
 
-                        <div class="detail">
+                        <div class="detail" style="grid-column:1 / -1;">
                             <strong>DESK</strong>
                             <span>Chairman's Office</span>
                         </div>
@@ -1578,106 +1666,160 @@ function renderChairmanSection(){
 
 
 /* ==========================================================
-   RENDER — FOUNDERS SECTION
+   RENDER — FOUNDER · BOARD MEMBER CARD
+========================================================== */
+
+function buildFounderCardHTML(user){
+    const name = user.name || 'Founder';
+    const bio = user.bio || user.stack || '';
+    const photoHTML = buildFounderPhotoHTML(user);
+
+    const role = normalizeRole(user.role);
+    const isChairman = role === 'chairman';
+    const isAdmin = role === 'admin';
+    const isIT = role === 'it-admin';
+
+    // Role subtitle — always includes BOARD MEMBER
+    const subtitleBits = ['FOUNDING TEAM'];
+    if (isChairman) subtitleBits.push('CHAIRMAN');
+    if (isIT || /it|web/i.test(user.stack || '')) subtitleBits.push('IT & WEB');
+    const roleSubtitle = subtitleBits.join(' · ');
+
+    // ★ Role tag pills — Board Member always included
+    const pills = ['FOUNDER', 'BOARD MEMBER'];
+    if (isChairman) pills.push('CHAIRMAN');
+    if (isAdmin) pills.push('ADMIN');
+    if (isIT) pills.push('IT ADMIN');
+    if (/web/i.test(user.stack || '')) pills.push('WEB ADMIN');
+
+    const description = bio
+        ? bio
+        : `${name} is one of the founding members of EIAFSDO and serves as a member of the Founding Board.`;
+
+    return `
+        <article class="founder-card">
+            <div class="founder-photo">
+                ${photoHTML}
+            </div>
+
+            <h3 class="founder-name">${escapeHTML(name)}</h3>
+
+            <div class="verified">
+                <span>✓ VERIFIED FOUNDER & BOARD MEMBER</span>
+            </div>
+
+            <div class="founder-role">${escapeHTML(roleSubtitle)}</div>
+
+            <div class="batch">
+                <span class="batch-label">BATCH</span>
+                <span class="batch-value">FOUNDING BATCH</span>
+            </div>
+
+            <div class="role-tags">
+                ${pills.map(p => {
+                    const isBoard = p === 'BOARD MEMBER';
+                    return `<span class="${isBoard ? 'board-tag' : ''}">${escapeHTML(p)}</span>`;
+                }).join('')}
+            </div>
+
+            <p class="founder-description">${escapeHTML(description)}</p>
+        </article>
+    `;
+}
+
+
+/* ==========================================================
+   RENDER — PENDING FOUNDER SLOT
+========================================================== */
+
+function buildPendingFounderCardHTML(slot){
+    const firstName = String(slot.hint || '').split(' ')[0] || 'Founder';
+    const initials = getInitials(slot.hint || 'F');
+
+    return `
+        <article class="founder-card pending-slot">
+            <div class="founder-photo">
+                <div class="initials">${escapeHTML(initials)}</div>
+            </div>
+
+            <h3 class="founder-name">${escapeHTML(slot.hint)}</h3>
+
+            <div class="verified">
+                <span>⏳ PENDING DATABASE SYNC</span>
+            </div>
+
+            <div class="founder-role">FOUNDING TEAM · BOARD · PENDING</div>
+
+            <div class="batch">
+                <span class="batch-label">BATCH</span>
+                <span class="batch-value">FOUNDING BATCH</span>
+            </div>
+
+            <div class="role-tags">
+                <span>FOUNDER</span>
+                <span>BOARD MEMBER</span>
+                <span>PENDING</span>
+            </div>
+
+            <p class="founder-description">
+                ${escapeHTML(firstName)}'s profile will appear here once the
+                founding member record is registered in the EIAFSDO database.
+            </p>
+        </article>
+    `;
+}
+
+
+/* ==========================================================
+   RENDER — FOUNDERS & FOUNDING BOARD SECTION
 ========================================================== */
 
 function renderFoundersSection(){
 
-    if (!founderUsers.length){
+    if (!founderSlots.length){
         return `
             <section class="reveal">
-                <span class="section-label">02 / FOUNDERS</span>
-
-                <h2 class="section-title">Founding Team</h2>
-
+                <span class="section-label">02 / FOUNDING BOARD</span>
+                <h2 class="section-title">Founders & Board</h2>
                 <p class="section-intro">
                     Founding member profiles will appear here once they are
                     registered in the EIAFSDO database.
                 </p>
-
-                <div class="founder-note">
-                    <strong>FOUNDING TEAM RECORD</strong>
-                    <p>
-                        The EIAFSDO founding team consists of
-                        <strong>Ayush Chatterjee</strong>,
-                        <strong>Priyabrata Patra</strong> and
-                        <strong>Abhradeep Dhara</strong>.
-                    </p>
-                </div>
             </section>
         `;
     }
 
-    const cardsHTML = founderUsers.map(u => {
-        const name = u.name || 'Founder';
-        const bio = u.bio || u.stack || '';
-        const org = u.org || 'EIAFSDO';
-        const photoHTML = buildFounderPhotoHTML(u);
-
-        // Detect roles from data
-        const role = normalizeRole(u.role);
-        const isChairman = role === 'chairman';
-        const isAdmin = role === 'admin';
-        const isIT = role === 'it-admin';
-        const isFounding = role === 'founding-member' || FOUNDING_NAMES.includes(name.toLowerCase());
-
-        // Role subtitle
-        const subtitleBits = ['FOUNDING TEAM'];
-        if (isIT || /it|web/i.test(u.stack || '')) subtitleBits.push('IT & WEB');
-        const roleSubtitle = subtitleBits.join(' · ');
-
-        // Role tag pills
-        const pills = ['FOUNDER'];
-        if (isChairman) pills.push('CHAIRMAN');
-        if (isAdmin) pills.push('BOARD MEMBER');
-        if (isIT) pills.push('IT ADMIN');
-        if (/web/i.test(u.stack || '')) pills.push('WEB ADMIN');
-        else if (!isChairman && !isAdmin && !isIT) pills.push('BOARD');
-
-        const description = bio
-            ? bio
-            : `${name} is one of the founding members of EIAFSDO and forms part of the organization's founding structure.`;
-
-        return `
-            <article class="founder-card">
-                <div class="founder-photo">
-                    ${photoHTML}
-                </div>
-
-                <h3 class="founder-name">${escapeHTML(name)}</h3>
-
-                <div class="verified">
-                    <span>✓ VERIFIED FOUNDING MEMBER</span>
-                </div>
-
-                <div class="founder-role">${escapeHTML(roleSubtitle)}</div>
-
-                <div class="batch">
-                    <span class="batch-label">BATCH</span>
-                    <span class="batch-value">FOUNDING BATCH</span>
-                </div>
-
-                <div class="role-tags">
-                    ${pills.map(p => `<span>${escapeHTML(p)}</span>`).join('')}
-                </div>
-
-                <p class="founder-description">${escapeHTML(description)}</p>
-            </article>
-        `;
+    const cardsHTML = founderSlots.map(slot => {
+        return slot.pending
+            ? buildPendingFounderCardHTML(slot)
+            : buildFounderCardHTML(slot.user);
     }).join('');
 
-    const founderNames = founderUsers.map(u => `<strong>${escapeHTML(u.name)}</strong>`).join(', ');
+    const realFounderNames = founderSlots
+        .filter(s => !s.pending && s.user)
+        .map(s => `<strong>${escapeHTML(s.user.name)}</strong>`);
+
+    const pendingCount = founderSlots.filter(s => s.pending).length;
+
+    const recordLine = realFounderNames.length
+        ? `The EIAFSDO Founding Board consists of ${realFounderNames.join(', ')}.`
+        : `The EIAFSDO founding records are being registered.`;
+
+    const pendingLine = pendingCount
+        ? ` ${pendingCount} founding member profile${pendingCount > 1 ? 's are' : ' is'} still awaiting database registration.`
+        : '';
 
     return `
         <section class="reveal">
-            <span class="section-label">02 / FOUNDERS</span>
+            <span class="section-label">02 / FOUNDING BOARD</span>
 
-            <h2 class="section-title">Founding Team</h2>
+            <h2 class="section-title">Founders & Founding Board</h2>
 
             <p class="section-intro">
-                EIAFSDO was established around its founding team. The founding
-                members form the foundation of the organization's identity,
-                development and collaborative direction.
+                EIAFSDO was established around its founding team. Every
+                founding member is also a member of the EIAFSDO Founding
+                Board, and their board status is represented alongside their
+                founding role.
             </p>
 
             <div class="founder-grid">
@@ -1685,12 +1827,12 @@ function renderFoundersSection(){
             </div>
 
             <div class="founder-note">
-                <strong>FOUNDING TEAM RECORD</strong>
+                <strong>FOUNDING BOARD RECORD</strong>
                 <p>
-                    The EIAFSDO founding team consists of
-                    ${founderNames}.
-                    Their founding status is represented separately from
-                    subsequent organizational roles and departments.
+                    ${recordLine}${pendingLine}
+                    All founding members serve as members of the Founding Board.
+                    Their founding and board status are represented together and
+                    are separate from subsequent organizational roles and departments.
                 </p>
             </div>
         </section>
@@ -1710,8 +1852,8 @@ function renderStructureSection(){
             <h2 class="section-title">Team Structure</h2>
 
             <p class="section-intro">
-                EIAFSDO can organize its activities through leadership,
-                board participation, IT administration and web administration.
+                EIAFSDO organizes its activities through the Founding Board,
+                leadership, IT administration and web administration.
             </p>
 
             <div class="structure">
@@ -1719,13 +1861,13 @@ function renderStructureSection(){
                 <div class="structure-card">
                     <div class="structure-icon">👑</div>
                     <h3>Chairman's Office</h3>
-                    <p>The Chairman's Desk is the organizational leadership desk associated with the Chairman of EIAFSDO.</p>
+                    <p>The Chairman's Desk is the organizational leadership desk associated with the Chairman of the Board of EIAFSDO.</p>
                 </div>
 
                 <div class="structure-card">
                     <div class="structure-icon">🏛️</div>
                     <h3>Founding Board</h3>
-                    <p>The founding members form the core founding structure of EIAFSDO and participate in organizational development.</p>
+                    <p>All founding members serve as members of the Founding Board of EIAFSDO and participate in organizational board-level decisions and development.</p>
                 </div>
 
                 <div class="structure-card">
@@ -1759,25 +1901,36 @@ function renderStructureSection(){
 
 
 function renderBatchSection(){
-    const items = founderUsers.length
-        ? founderUsers.map((u, i) => `
-            <div class="batch-item">
-                <strong>FOUNDER ${String(i + 1).padStart(2, '0')}</strong>
-                <span>${escapeHTML(u.name)}</span>
-            </div>
-        `).join('')
+    const items = founderSlots.length
+        ? founderSlots.map((slot, i) => {
+            const numberLabel = `FOUNDER ${String(i + 1).padStart(2, '0')}`;
+            if (slot.pending){
+                return `
+                    <div class="batch-item pending">
+                        <strong>${numberLabel}</strong>
+                        <span>⏳ Awaiting database entry</span>
+                    </div>
+                `;
+            }
+            return `
+                <div class="batch-item">
+                    <strong>${numberLabel}</strong>
+                    <span>${escapeHTML(slot.user.name)}</span>
+                </div>
+            `;
+        }).join('')
         : `
-            <div class="batch-item">
+            <div class="batch-item pending">
                 <strong>FOUNDER 01</strong>
-                <span>Ayush Chatterjee</span>
+                <span>⏳ Awaiting database entry</span>
             </div>
-            <div class="batch-item">
+            <div class="batch-item pending">
                 <strong>FOUNDER 02</strong>
-                <span>Priyabrata Patra</span>
+                <span>⏳ Awaiting database entry</span>
             </div>
-            <div class="batch-item">
+            <div class="batch-item pending">
                 <strong>FOUNDER 03</strong>
-                <span>Abhradeep Dhara</span>
+                <span>⏳ Awaiting database entry</span>
             </div>
         `;
 
@@ -1791,8 +1944,9 @@ function renderBatchSection(){
                 <h3>The Founding Batch</h3>
                 <p>
                     The founding members are identified as the founding batch of
-                    EIAFSDO. This designation refers to their founding association
-                    with the organization rather than a college or academic batch.
+                    EIAFSDO and also serve as members of the Founding Board.
+                    This designation refers to their founding association with
+                    the organization rather than a college or academic batch.
                 </p>
 
                 <div class="batch-list">
@@ -1806,13 +1960,17 @@ function renderBatchSection(){
 
 function renderRolesSection(){
     const chairmanName = chairmanUser ? chairmanUser.name : 'the Chairman';
-    const founderNamesList = founderUsers.length
-        ? founderUsers.map(u => u.name).join(', ')
-        : 'Ayush Chatterjee, Priyabrata Patra and Abhradeep Dhara';
 
-    // Find the IT / Web admin among founders (Priyabrata usually)
-    const itFounder = founderUsers.find(u => /it|web/i.test(u.stack || '') || normalizeRole(u.role) === 'it-admin') || founderUsers[1] || null;
-    const itFounderName = itFounder ? itFounder.name : 'Priyabrata Patra';
+    const realFounderNames = founderUsers.map(u => u.name);
+    const founderNamesList = realFounderNames.length
+        ? realFounderNames.join(', ')
+        : 'the founding team';
+
+    // Find the IT / Web admin among founders
+    const itFounder = founderUsers.find(u =>
+        /it|web/i.test(u.stack || '') || normalizeRole(u.role) === 'it-admin'
+    ) || null;
+    const itFounderName = itFounder ? itFounder.name : (founderUsers[1]?.name || 'the IT team lead');
 
     return `
         <section class="reveal">
@@ -1825,13 +1983,19 @@ function renderRolesSection(){
                 <div class="structure-card">
                     <div class="structure-icon">👑</div>
                     <h3>Chairman</h3>
-                    <p>${escapeHTML(chairmanName)} — Chairman of EIAFSDO and member of the founding team.</p>
+                    <p>${escapeHTML(chairmanName)} — Chairman of EIAFSDO, Chairman of the Board and member of the founding team.</p>
+                </div>
+
+                <div class="structure-card">
+                    <div class="structure-icon">🏛️</div>
+                    <h3>Founding Board</h3>
+                    <p>${escapeHTML(founderNamesList)} — founding members and board members of the EIAFSDO Founding Board.</p>
                 </div>
 
                 <div class="structure-card">
                     <div class="structure-icon">⭐</div>
                     <h3>Founder</h3>
-                    <p>${escapeHTML(founderNamesList)} — founding members of EIAFSDO.</p>
+                    <p>${escapeHTML(founderNamesList)} — founding members of EIAFSDO serving on the Founding Board.</p>
                 </div>
 
                 <div class="structure-card">
@@ -1844,12 +2008,6 @@ function renderRolesSection(){
                     <div class="structure-icon">🌐</div>
                     <h3>Web Administration</h3>
                     <p>${escapeHTML(itFounderName)} — associated with EIAFSDO web administration and website development.</p>
-                </div>
-
-                <div class="structure-card">
-                    <div class="structure-icon">🏛️</div>
-                    <h3>Board Member</h3>
-                    <p>Founding team members may participate in organizational board-level activities according to the organization's internal structure.</p>
                 </div>
 
                 <div class="structure-card">
@@ -1936,7 +2094,6 @@ function subscribeUsers(){
             const newChairmanId = chairmanUser ? chairmanUser.id : null;
             const newFounderIds = founderUsers.map(u => u.id).join('|');
 
-            // Re-render only when leadership identities change or on first render
             if (firstRender ||
                 prevChairmanId !== newChairmanId ||
                 prevFounderIds !== newFounderIds ||
