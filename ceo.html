@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EIAFSDO — Chief Executive Officer's Desk</title>
+
+<meta name="description" content="Official CEO Desk of EIAFSDO — Chief Executive Officer leadership, executive communication and organizational direction under the Board.">
+<meta name="keywords" content="EIAFSDO CEO, EIAFSDO Chief Executive Officer, EIAFSDO CEO Desk, EIAFSDO Executive, EIAFSDO leadership, EIAFSDO Board, East Indian Amateur Full-Stack Developers Organization">
+<meta name="author" content="EIAFSDO">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#f2c94c">
+<link rel="canonical" href="https://priyabratacare-source.github.io/EIAFSDO/ceo.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="EIAFSDO — CEO's Desk">
+<meta property="og:description" content="Official CEO Desk of EIAFSDO — executive leadership and organizational direction under the Board.">
+<meta property="og:url" content="https://priyabratacare-source.github.io/EIAFSDO/ceo.html">
+<meta property="og:site_name" content="EIAFSDO">
+<meta property="og:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EIAFSDO — CEO's Desk">
+<meta name="twitter:description" content="Official CEO Desk of EIAFSDO.">
+<meta name="twitter:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800;900&family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Firebase SDKs (v10 Compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<style>
+
+/* =====================================================
+   ROOT
+===================================================== */
+
+:root{
+    --bg:#fffaf0;
+    --surface:#fffef8;
+    --soft:#f6eed8;
+    --text:#1d1a14;
+    --body:#3d3830;
+
+    --yellow:#f2c94c;
+    --gold:#a87c00;
+    --gold-light:#ffe68a;
+    --green:#e8ddb4;
+    --blue:#1687ff;
+    --board-blue:#3d64b8;
+    --board-blue-light:#c7d9ff;
+
+    --black:#17150f;
+    --white:#ffffff;
+
+    --border:2px solid var(--black);
+    --shadow:6px 7px 0 var(--black);
+    --shadow-small:3px 4px 0 var(--black);
+    --radius:12px;
+
+    --ease-out:cubic-bezier(.22,.75,.2,1);
+    --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+    -webkit-text-size-adjust:100%;
+}
+
+body{
+    font-family:"Nunito Sans",sans-serif;
+    background:var(--bg);
+    color:var(--body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+}
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    z-index:-5;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(242,201,76,.24), transparent 25%),
+        radial-gradient(circle at 90% 15%, rgba(232,221,180,.38), transparent 27%),
+        radial-gradient(circle at 50% 100%, rgba(242,201,76,.15), transparent 32%);
+    filter:blur(22px);
+    animation:bgBreath 9s ease-in-out infinite alternate;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-4;
+    pointer-events:none;
+    opacity:.22;
+    background-image:
+        linear-gradient(rgba(29,26,20,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29,26,20,.08) 1px, transparent 1px);
+    background-size:48px 48px;
+    animation:gridMove 20s linear infinite;
+}
+
+@keyframes bgBreath{
+    from{ transform:scale(1); }
+    to{ transform:scale(1.08); }
+}
+
+@keyframes gridMove{
+    from{ background-position:0 0; }
+    to{ background-position:48px 48px; }
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes pageReveal{
+    from{ opacity:0; transform:translateY(18px); filter:blur(5px); }
+    to{ opacity:1; transform:translateY(0); filter:blur(0); }
+}
+
+@keyframes fadeSlideUp{
+    from{ opacity:0; transform:translateY(28px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+@keyframes fadeSlideLeft{
+    from{ opacity:0; transform:translateX(-28px); }
+    to{ opacity:1; transform:translateX(0); }
+}
+
+@keyframes fadeSlideRight{
+    from{ opacity:0; transform:translateX(28px); }
+    to{ opacity:1; transform:translateX(0); }
+}
+
+@keyframes fadeScaleIn{
+    from{ opacity:0; transform:scale(.92) rotate(-4deg); }
+    to{ opacity:1; transform:scale(1) rotate(-1deg); }
+}
+
+@keyframes softPulse{
+    0%,100%{ transform:scale(1); box-shadow:3px 4px 0 var(--black); }
+    50%{ transform:scale(1.04); box-shadow:5px 6px 0 var(--black); }
+}
+
+@keyframes pulse{
+    50%{ transform:scale(.65); opacity:.5; }
+}
+
+@keyframes spinRotate{
+    to{ transform:rotate(360deg); }
+}
+
+@keyframes underlineGrow{
+    to{ transform:skew(-8deg) scaleX(1); }
+}
+
+@keyframes premiumShine{
+    0%{ left:-120%; }
+    35%,100%{ left:150%; }
+}
+
+@keyframes vacantFloat{
+    0%,100%{ transform:translateY(0) rotate(-3deg); }
+    50%{ transform:translateY(-10px) rotate(3deg); }
+}
+
+@keyframes vacantPulse{
+    0%,100%{ transform:scale(1); opacity:1; }
+    50%{ transform:scale(1.08); opacity:.7; }
+}
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+.nav{
+    position:sticky;
+    top:12px;
+    z-index:1000;
+    width:min(1180px, calc(100% - 28px));
+    margin:12px auto 0;
+    min-height:66px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:9px 13px;
+    background:rgba(255,254,248,.88);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-small);
+    animation:fadeSlideUp .8s var(--ease-out) both;
+    transition:box-shadow .4s var(--ease-out);
+}
+
+.nav:hover{ box-shadow:5px 7px 0 var(--black); }
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--text);
+    text-decoration:none;
+    min-width:0;
+}
+
+.brand-logo{
+    width:44px;
+    height:44px;
+    flex:none;
+    border-radius:50%;
+    border:2px solid var(--black);
+    object-fit:cover;
+    background:var(--yellow);
+    transition:transform .5s var(--ease-spring);
+}
+
+.brand:hover .brand-logo{
+    transform:rotate(-8deg) scale(1.08);
+}
+
+.brand-text{
+    font-family:"Archivo Black",sans-serif;
+    font-size:15px;
+    white-space:nowrap;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+
+.nav-links a{
+    color:var(--text);
+    text-decoration:none;
+    padding:9px 12px;
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:11px;
+    font-weight:800;
+    transition:background .25s var(--ease-out), transform .25s var(--ease-out);
+}
+
+.nav-links a:hover{
+    background:var(--yellow);
+    transform:translateY(-2px);
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+    width:min(1120px, calc(100% - 30px));
+    margin:auto;
+}
+
+.section{
+    padding:95px 0 15px;
+}
+
+.label{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 12px;
+    background:var(--yellow);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-small);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+}
+
+.label::before{
+    content:"";
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--black);
+    animation:pulse 2.4s ease-in-out infinite;
+}
+
+.section-title{
+    margin-top:21px;
+    max-width:900px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(38px,6vw,72px);
+    line-height:.98;
+    letter-spacing:-2px;
+    color:var(--text);
+}
+
+.section-description{
+    max-width:790px;
+    margin-top:18px;
+    color:var(--body);
+    font-size:17px;
+    line-height:1.75;
+}
+
+/* =====================================================
+   PAGE LOADING
+===================================================== */
+
+.page-loading{
+    min-height:60vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 20px;
+    text-align:center;
+    font-family:"Roboto Mono",monospace;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.5px;
+    animation:pageReveal .6s var(--ease-out);
+}
+
+.page-loading .spin{
+    display:inline-block;
+    width:26px;
+    height:26px;
+    border:4px solid var(--soft);
+    border-top-color:var(--black);
+    border-radius:50%;
+    animation:spinRotate .8s linear infinite;
+    vertical-align:middle;
+    margin-right:12px;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+    min-height:680px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:110px 0 70px;
+}
+
+.hero-inner{
+    width:100%;
+    display:grid;
+    grid-template-columns:.95fr 1.05fr;
+    gap:60px;
+    align-items:center;
+}
+
+/* =====================================================
+   CEO VISUAL
+===================================================== */
+
+.ceo-visual{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    animation:fadeScaleIn 1.2s var(--ease-spring) both;
+    animation-delay:.15s;
+}
+
+.ceo-frame{
+    position:relative;
+    width:min(420px, 100%);
+    aspect-ratio:1/1;
+    background:linear-gradient(135deg, #ffe9a8, #f2c94c);
+    border:var(--border);
+    border-radius:22px;
+    box-shadow:10px 12px 0 var(--black);
+    padding:15px;
+    transform:rotate(-2deg);
+    transition:transform .8s var(--ease-spring), box-shadow .8s var(--ease-spring);
+}
+
+.ceo-frame:hover{
+    transform:rotate(0deg) scale(1.02);
+    box-shadow:14px 16px 0 var(--black);
+}
+
+.ceo-frame::before{
+    content:"";
+    position:absolute;
+    width:100px;
+    height:100px;
+    right:-40px;
+    top:-40px;
+    border-radius:50%;
+    background:var(--yellow);
+    border:var(--border);
+    z-index:-1;
+    animation:softPulse 4s ease-in-out infinite;
+}
+
+.ceo-frame::after{
+    content:"CEO";
+    position:absolute;
+    left:-35px;
+    bottom:35px;
+    padding:10px 14px;
+    background:var(--black);
+    color:var(--yellow);
+    border:2px solid var(--yellow);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    transform:rotate(-5deg);
+    opacity:0;
+    animation:fadeSlideUp .8s var(--ease-out) .9s forwards;
+}
+
+.ceo-photo{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    display:block;
+    border:2px solid var(--black);
+    border-radius:13px;
+    background:var(--soft);
+    animation:pageReveal 1.4s var(--ease-out) both;
+    animation-delay:.4s;
+}
+
+.ceo-initials-fallback{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg, #fff0a4, #d1a235, #8a6500);
+    color:#17150f;
+    border:2px solid var(--black);
+    border-radius:13px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:120px;
+    letter-spacing:-4px;
+    line-height:1;
+}
+
+.image-orbit{
+    position:absolute;
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background:var(--blue);
+    border:2px solid var(--black);
+    top:35px;
+    left:20px;
+    animation:fadeSlideUp .6s var(--ease-out) .9s forwards, floatDot 3s ease-in-out 1.5s infinite;
+    opacity:0;
+}
+
+.image-orbit.two{
+    width:17px;
+    height:17px;
+    background:#35a853;
+    top:auto;
+    left:auto;
+    right:30px;
+    bottom:30px;
+    animation:fadeSlideUp .6s var(--ease-out) 1.1s forwards, floatDot 3s ease-in-out 1.7s infinite;
+    opacity:0;
+}
+
+@keyframes floatDot{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-13px); }
+}
+
+/* ─── Vacant visual ─── */
+.ceo-visual.vacant .ceo-frame{
+    background:linear-gradient(135deg, #c7d9ff, #6b8fdb);
+    border-color:#0f172a;
+    box-shadow:10px 12px 0 #0f172a;
+}
+
+.ceo-visual.vacant .ceo-frame::before{
+    background:var(--board-blue-light);
+    border-color:#0f172a;
+}
+
+.ceo-visual.vacant .ceo-frame::after{
+    content:"VACANT";
+    background:#0f172a;
+    color:var(--board-blue-light);
+    border-color:var(--board-blue-light);
+}
+
+.ceo-visual.vacant .ceo-initials-fallback{
+    background:linear-gradient(135deg, #e6eeff, #c7d9ff, #3d64b8);
+    color:#0f172a;
+    animation:vacantFloat 3.5s ease-in-out infinite;
+}
+
+/* =====================================================
+   HERO CONTENT
+===================================================== */
+
+.hero-content{
+    text-align:left;
+}
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    padding:8px 14px;
+    background:var(--green);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-small);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    opacity:0;
+    animation:fadeSlideRight .8s var(--ease-out) .3s forwards;
+}
+
+.status.state-active{
+    background:#fffbe9;
+    border-color:#b88600;
+}
+
+.status.state-board{
+    background:var(--board-blue-light);
+    border-color:var(--board-blue);
+}
+
+.status-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#35a853;
+    border:1px solid var(--black);
+    animation:pulse 1.6s ease-in-out infinite;
+}
+
+.status.state-board .status-dot{
+    background:var(--board-blue);
+}
+
+.hero h1{
+    margin-top:25px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(48px,7vw,92px);
+    line-height:.9;
+    letter-spacing:-4px;
+    color:var(--text);
+}
+
+.hero h1 span{
+    display:block;
+    position:relative;
+    width:max-content;
+}
+
+.hero h1 span::after{
+    content:"";
+    position:absolute;
+    left:2%;
+    right:-4%;
+    bottom:2px;
+    height:14px;
+    background:var(--yellow);
+    z-index:-1;
+    transform:skew(-8deg) scaleX(0);
+    transform-origin:left center;
+    animation:underlineGrow 1s var(--ease-spring) .9s forwards;
+}
+
+.hero-sub{
+    max-width:650px;
+    margin-top:25px;
+    color:var(--body);
+    font-size:17px;
+    line-height:1.75;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .7s forwards;
+}
+
+.role-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:24px;
+}
+
+.role-pill{
+    padding:8px 11px;
+    background:var(--surface);
+    border:2px solid var(--black);
+    border-radius:999px;
+    box-shadow:2px 3px 0 var(--black);
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    opacity:0;
+    animation:fadeSlideUp .7s var(--ease-out) .9s forwards;
+}
+
+.role-pill:nth-child(2){ animation-delay:1s; }
+.role-pill:nth-child(3){ animation-delay:1.1s; }
+.role-pill:nth-child(4){ animation-delay:1.2s; }
+
+.hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-top:28px;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) 1.2s forwards;
+}
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:48px;
+    padding:12px 19px;
+    border:var(--border);
+    border-radius:9px;
+    box-shadow:var(--shadow-small);
+    text-decoration:none;
+    color:var(--text);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    transition:transform .35s var(--ease-spring), box-shadow .35s var(--ease-out), background .3s ease;
+    cursor:pointer;
+}
+
+.btn:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:6px 7px 0 var(--black);
+}
+
+.btn:active{
+    transform:translate(1px,2px);
+    box-shadow:1px 1px 0 var(--black);
+}
+
+.btn-yellow{ background:var(--yellow); }
+.btn-white{ background:var(--surface); }
+.btn-board{ background:var(--board-blue-light); border-color:var(--board-blue); }
+
+/* =====================================================
+   SCROLL REVEAL
+===================================================== */
+
+.reveal{
+    opacity:0;
+    transform:translateY(36px);
+    filter:blur(4px);
+    transition:
+        opacity .9s var(--ease-out),
+        transform .9s var(--ease-out),
+        filter .9s var(--ease-out);
+    will-change:opacity,transform;
+}
+
+.reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0);
+}
+
+/* =====================================================
+   VACANT STATE PANEL
+===================================================== */
+
+.vacant-panel{
+    margin-top:40px;
+    padding:55px 35px;
+    background:linear-gradient(135deg, #1a2436 0%, #2b3a55 48%, #0f172a 100%);
+    color:#e6eeff;
+    border:2px solid var(--board-blue);
+    border-radius:18px;
+    box-shadow:
+        0 0 0 2px var(--black),
+        9px 11px 0 var(--black);
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.vacant-panel::before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    right:-80px;
+    top:-90px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(107,143,219,.4), transparent 67%);
+}
+
+.vacant-panel::after{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:55%;
+    height:100%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
+    transform:skewX(-18deg);
+    animation:premiumShine 6.5s ease-in-out infinite;
+}
+
+.vacant-panel > *{
+    position:relative;
+    z-index:2;
+}
+
+.vacant-icon{
+    font-size:78px;
+    line-height:1;
+    margin-bottom:18px;
+    display:block;
+    animation:vacantFloat 3.5s ease-in-out infinite;
+}
+
+.vacant-panel h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(26px,4vw,42px);
+    color:#e6eeff;
+    margin-bottom:14px;
+    letter-spacing:-1px;
+}
+
+.vacant-panel p{
+    max-width:620px;
+    margin:0 auto 12px;
+    color:#c4d3f2;
+    font-size:15px;
+    line-height:1.75;
+}
+
+.vacant-panel p strong{
+    color:#ffd968;
+}
+
+.vacant-status-row{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:24px;
+}
+
+.vacant-chip{
+    padding:8px 14px;
+    background:var(--board-blue-light);
+    color:#0f172a;
+    border:2px solid var(--board-blue-light);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
+
+.vacant-chip.alt{
+    background:transparent;
+    color:var(--board-blue-light);
+    border-color:var(--board-blue-light);
+}
+
+/* =====================================================
+   PROFILE CARD
+===================================================== */
+
+.profile-card{
+    margin-top:40px;
+    padding:35px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    transition:box-shadow .5s var(--ease-out);
+}
+
+.profile-card:hover{
+    box-shadow:8px 9px 0 var(--black);
+}
+
+.profile-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.profile-heading h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:34px;
+    word-break:break-word;
+    color:var(--text);
+}
+
+.verified{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 11px;
+    background:#e9f8e8;
+    border:2px solid var(--black);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.verified::before{
+    content:"✓";
+    width:16px;
+    height:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:var(--blue);
+    color:white;
+}
+
+.profile-text{
+    margin-top:22px;
+    color:var(--body);
+    font-size:15px;
+    line-height:1.85;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.profile-text + .profile-text{
+    margin-top:14px;
+}
+
+.fact-list{
+    margin-top:24px;
+    display:grid;
+    gap:10px;
+}
+
+.fact{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:13px;
+    background:var(--soft);
+    border:1px solid rgba(29,26,20,.25);
+    border-radius:8px;
+    flex-wrap:wrap;
+    transition:transform .3s var(--ease-out), background .3s ease;
+}
+
+.fact:hover{
+    transform:translateX(4px);
+    background:#f0e6c9;
+}
+
+.fact span{
+    color:#6b6254;
+    font-family:"Roboto Mono",monospace;
+    font-size:8px;
+    font-weight:900;
+}
+
+.fact strong{
+    font-size:12px;
+    text-align:right;
+    word-break:break-word;
+    color:var(--text);
+}
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message-card{
+    position:relative;
+    margin-top:40px;
+    padding:40px;
+    background:var(--black);
+    color:var(--surface);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.message-card::before{
+    content:"“";
+    position:absolute;
+    right:25px;
+    top:-35px;
+    color:#302b20;
+    font-family:Georgia,serif;
+    font-size:220px;
+    line-height:1;
+    opacity:0;
+    animation:fadeSlideRight 1.2s var(--ease-out) .5s forwards;
+}
+
+.message-card > *{
+    position:relative;
+    z-index:2;
+}
+
+.message-label{
+    color:var(--yellow);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+}
+
+.message-card h3{
+    margin-top:17px;
+    max-width:800px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(31px,5vw,54px);
+    line-height:1;
+    word-break:break-word;
+    color:#fffdf4;
+}
+
+.message-card blockquote{
+    margin-top:24px;
+    max-width:850px;
+    color:#e5ddce;
+    font-size:17px;
+    line-height:1.85;
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
+.signature{
+    margin-top:27px;
+    padding-top:18px;
+    border-top:1px solid #655e50;
+}
+
+.signature-name{
+    font-family:"Caveat",cursive;
+    color:var(--yellow);
+    font-size:38px;
+}
+
+.signature-role{
+    margin-top:3px;
+    color:#cfc6b4;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+}
+
+/* =====================================================
+   LEADERSHIP GRID (Executive Areas)
+===================================================== */
+
+.leadership-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-top:40px;
+}
+
+.leadership-card{
+    padding:27px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-small);
+    transition:transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+}
+
+.leadership-card:hover{
+    transform:translateY(-6px);
+    box-shadow:6px 8px 0 var(--black);
+}
+
+.leadership-icon{
+    width:54px;
+    height:54px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--yellow);
+    border:var(--border);
+    border-radius:12px;
+    box-shadow:3px 4px 0 var(--black);
+    font-size:24px;
+    transition:transform .5s var(--ease-spring);
+}
+
+.leadership-card:hover .leadership-icon{
+    transform:rotate(-8deg) scale(1.1);
+}
+
+.leadership-card h3{
+    margin-top:20px;
+    font-family:"Archivo Black",sans-serif;
+    font-size:22px;
+    color:var(--text);
+}
+
+.leadership-card p{
+    margin-top:11px;
+    color:var(--body);
+    font-size:13.5px;
+    line-height:1.7;
+}
+
+/* =====================================================
+   RESPONSIBILITIES
+===================================================== */
+
+.responsibility-box{
+    margin-top:40px;
+    padding:32px;
+    background:linear-gradient(135deg, #fffef8, #f8edc9);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+}
+
+.responsibility-box h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:32px;
+    color:var(--text);
+}
+
+.responsibility-box > p{
+    margin-top:12px;
+    color:var(--body);
+    font-size:15px;
+    line-height:1.7;
+}
+
+.responsibility-list{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:24px;
+}
+
+.responsibility{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:16px;
+    background:var(--surface);
+    border:2px solid var(--black);
+    border-radius:9px;
+    transition:transform .3s var(--ease-out), box-shadow .3s var(--ease-out);
+}
+
+.responsibility:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:4px 4px 0 var(--black);
+}
+
+.responsibility-number{
+    flex:none;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--yellow);
+    border:2px solid var(--black);
+    border-radius:50%;
+    font-family:"Roboto Mono",monospace;
+    font-size:8px;
+    font-weight:900;
+}
+
+.responsibility strong{
+    display:block;
+    font-size:14px;
+    color:var(--text);
+}
+
+.responsibility span{
+    display:block;
+    margin-top:4px;
+    color:#62594c;
+    font-size:11.5px;
+    line-height:1.5;
+}
+
+/* =====================================================
+   STATEMENT
+===================================================== */
+
+.statement{
+    margin-top:40px;
+    padding:35px;
+    background:var(--yellow);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    text-align:center;
+}
+
+.statement h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(29px,5vw,48px);
+    line-height:1;
+    color:var(--text);
+}
+
+.statement p{
+    max-width:780px;
+    margin:16px auto 0;
+    color:#3b321f;
+    font-size:14.5px;
+    line-height:1.75;
+}
+
+.statement-seal{
+    display:inline-flex;
+    margin-top:22px;
+    padding:9px 13px;
+    background:var(--black);
+    color:var(--yellow);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    font-weight:900;
+    animation:softPulse 4s ease-in-out infinite;
+}
+
+/* =====================================================
+   VERIFY GRID
+===================================================== */
+
+.verify-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-top:40px;
+}
+
+.verify-box{
+    padding:23px;
+    background:var(--soft);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-small);
+    transition:transform .3s var(--ease-out);
+}
+
+.verify-box:hover{
+    transform:translateY(-3px);
+}
+
+.verify-label{
+    font-family:"Roboto Mono",monospace;
+    font-size:8px;
+    font-weight:900;
+    color:#6b6254;
+    text-transform:uppercase;
+}
+
+.verify-value{
+    margin-top:9px;
+    font-family:"Roboto Mono",monospace;
+    font-size:12px;
+    line-height:1.6;
+    word-break:break-word;
+    color:var(--text);
+    font-weight:700;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+    margin-top:105px;
+    padding:55px 0 30px;
+    background:var(--black);
+    color:var(--surface);
+    border-top:5px solid var(--yellow);
+}
+
+.footer-inner{
+    width:min(1120px, calc(100% - 30px));
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:25px;
+}
+
+.footer-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.footer-logo{
+    width:49px;
+    height:49px;
+    border-radius:50%;
+    border:2px solid var(--surface);
+    object-fit:cover;
+    transition:transform .5s var(--ease-spring);
+}
+
+.footer-logo:hover{
+    transform:rotate(-8deg) scale(1.08);
+}
+
+.footer h3{
+    font-family:"Archivo Black",sans-serif;
+}
+
+.footer p{
+    margin-top:7px;
+    color:#cfc8b8;
+    font-size:11px;
+}
+
+.footer-code{
+    color:var(--yellow);
+    font-family:"Roboto Mono",monospace;
+    font-size:9px;
+    text-align:right;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:920px){
+    .nav-links{ display:none; }
+
+    .hero-inner{
+        grid-template-columns:1fr;
+        gap:45px;
+    }
+
+    .hero-content{ text-align:center; }
+
+    .hero h1 span{ margin:auto; }
+
+    .hero-sub{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .role-pills,
+    .hero-actions{ justify-content:center; }
+
+    .ceo-visual{ order:1; }
+    .hero-content{ order:2; }
+
+    .leadership-grid{ grid-template-columns:1fr; }
+    .responsibility-list{ grid-template-columns:1fr; }
+    .verify-grid{ grid-template-columns:1fr; }
+
+    .footer-inner{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .footer-code{ text-align:left; }
+}
+
+@media(max-width:600px){
+    .nav{
+        width:calc(100% - 18px);
+        top:7px;
+        margin-top:7px;
+    }
+
+    .brand-text{ font-size:12px; }
+    .brand-logo{ width:40px; height:40px; }
+
+    .hero{ padding-top:90px; }
+
+    .hero h1{
+        font-size:clamp(47px,15vw,72px);
+        letter-spacing:-3px;
+    }
+
+    .section{ padding-top:75px; }
+
+    .profile-card,
+    .message-card,
+    .leadership-card,
+    .responsibility-box,
+    .statement,
+    .verify-box,
+    .vacant-panel{ padding:23px; }
+
+    .ceo-frame{ width:90%; }
+
+    .ceo-initials-fallback{ font-size:80px; }
+
+    .profile-heading{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .vacant-panel h3{ font-size:24px; }
+    .vacant-icon{ font-size:60px; }
+}
+
+@media(prefers-reduced-motion:reduce){
+    *, *::before, *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        scroll-behavior:auto !important;
+        transition-duration:.01ms !important;
+    }
+    .reveal{
+        opacity:1 !important;
+        transform:none !important;
+        filter:none !important;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="nav">
+
+    <a href="#" class="brand">
+
+        <img
+            class="brand-logo"
+            src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
+            alt="EIAFSDO Logo"
+        >
+
+        <span class="brand-text">EIAFSDO</span>
+
+    </a>
+
+    <div class="nav-links">
+        <a href="#desk">CEO's Desk</a>
+        <a href="#about">About</a>
+        <a href="#responsibilities">Responsibilities</a>
+        <a href="#verify">Verify</a>
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     PAGE MOUNT (rendered by JS)
+===================================================== -->
+
+<div id="pageMount">
+
+    <div class="page-loading">
+        <span class="spin"></span>
+        LOADING CEO'S DESK…
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+
+            <img
+                class="footer-logo"
+                src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
+                alt="EIAFSDO Logo"
+            >
+
+            <div>
+                <h3>EIAFSDO</h3>
+                <p id="footerSubtitle">Official CEO's Desk</p>
+            </div>
+
+        </div>
+
+        <div class="footer-code" id="footerCode">
+            CEO'S DESK<br>
+            EIAFSDO · <span id="footerYear">2026</span>
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     APPLICATION LOGIC
+===================================================== -->
+
+<script>
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+const firebaseConfig = {
+    apiKey:"AIzaSyAd5ycGAi8QVr8CeVP0sjpEUY_u2_CzYWU",
+    authDomain:"eiafsdo-dashboard.firebaseapp.com",
+    projectId:"eiafsdo-dashboard",
+    storageBucket:"eiafsdo-dashboard.firebasestorage.app",
+    messagingSenderId:"171714190075",
+    appId:"1:171714190075:web:ee3dfe78f82896cc736e5e"
+};
+
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let ceoUser = null;
+let ceoUnsubscribe = null;
+let revealObserver = null;
+let firstRender = true;
+let hasRendered = false;
+
+
+/* =====================================================
+   UTILITIES
+===================================================== */
+
+function escapeHTML(str){
+    if (!str) return '';
+    return String(str).replace(/[&<>'"]/g, tag => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+    }[tag] || tag));
+}
+
+
+function normalizeRole(role){
+    const r = String(role || '').toLowerCase().trim().replaceAll('_','-');
+    if (r === 'superadmin') return 'super-admin';
+    return r;
+}
+
+
+function getInitials(name){
+    if (!name) return 'CEO';
+    const parts = String(name).trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return 'CEO';
+    if (parts.length === 1) return parts[0].substring(0,2).toUpperCase();
+    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
+
+
+function toDate(value){
+    try{
+        if (!value) return null;
+        if (typeof value.toDate === 'function') return value.toDate();
+        if (value instanceof Date) return value;
+        const d = new Date(value);
+        return Number.isNaN(d.getTime()) ? null : d;
+    } catch(_) { return null; }
+}
+
+
+function formatLongDate(value){
+    const d = toDate(value);
+    if (!d) return null;
+    return d.toLocaleDateString('en-IN', {
+        day:'2-digit', month:'long', year:'numeric'
+    }).toUpperCase();
+}
+
+
+/* =====================================================
+   REVEAL OBSERVER
+===================================================== */
+
+function initRevealObserver(){
+    if (revealObserver) revealObserver.disconnect();
+
+    revealObserver = new IntersectionObserver(
+        entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting){
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold:.12,
+            rootMargin:'0px 0px -40px 0px'
+        }
+    );
+}
+
+
+function attachReveal(){
+    const items = document.querySelectorAll(
+        ".profile-card, .message-card, .leadership-card, .responsibility-box, .responsibility, .statement, .verify-box, .vacant-panel, .section .label, .section .section-title, .section .section-description"
+    );
+
+    items.forEach((el, i) => {
+        el.classList.add('reveal');
+        el.style.transitionDelay = (Math.min(i, 6) * 70) + 'ms';
+        revealObserver.observe(el);
+    });
+}
+
+
+/* =====================================================
+   BUILD PHOTO
+===================================================== */
+
+function buildCeoPhotoHTML(user){
+    const name = (user && user.name) || 'Chief Executive Officer';
+
+    if (user && user.photoURL && String(user.photoURL).trim()){
+        return `
+            <img
+                class="ceo-photo"
+                src="${escapeHTML(user.photoURL)}"
+                alt="${escapeHTML(name)} — Chief Executive Officer, EIAFSDO"
+                loading="eager"
+                onerror="this.outerHTML='<div class=\\'ceo-initials-fallback\\'>${escapeHTML(getInitials(name))}</div>';"
+            >
+        `;
+    }
+
+    return `<div class="ceo-initials-fallback">${escapeHTML(getInitials(name))}</div>`;
+}
+
+
+/* =====================================================
+   RENDER — CEO IN OFFICE
+===================================================== */
+
+function renderCeoPage(user){
+
+    const name = user.name || 'Chief Executive Officer';
+    const firstName = name.split(/\s+/)[0] || name;
+    const lastName = name.split(/\s+/).slice(1).join(' ') || '';
+    const bio = user.bio || '';
+    const stack = user.stack || '';
+    const org = user.org || 'EIAFSDO';
+    const status = user.status || 'Active';
+    const since = formatLongDate(user.createdAt);
+
+    const photoHTML = buildCeoPhotoHTML(user);
+
+    /* ---------- FACT LIST ---------- */
+    const facts = [
+        ['NAME', name],
+        ['POSITION', 'Chief Executive Officer'],
+        ['BOARD ROLE', 'Executive · Under Board'],
+        ['ORGANIZATION', org],
+        ['MEMBER STATUS', status],
+        ['PLATFORM', 'EIAFSDO Digital System']
+    ];
+
+    if (stack) facts.push(['TECHNOLOGY FOCUS', stack]);
+    if (since) facts.push(['IN OFFICE SINCE', since]);
+
+
+    /* ---------- HERO ---------- */
+    const heroHTML = `
+        <header class="hero" id="desk">
+            <div class="container">
+                <div class="hero-inner">
+
+                    <div class="ceo-visual">
+                        <div class="image-orbit"></div>
+                        <div class="image-orbit two"></div>
+                        <div class="ceo-frame">
+                            ${photoHTML}
+                        </div>
+                    </div>
+
+                    <div class="hero-content">
+                        <div class="status state-active">
+                            <span class="status-dot"></span>
+                            OFFICIAL CEO'S DESK
+                        </div>
+
+                        <h1>
+                            ${escapeHTML(firstName)}
+                            ${lastName ? `<span>${escapeHTML(lastName)}</span>` : ''}
+                        </h1>
+
+                        <p class="hero-sub">
+                            ${bio
+                                ? escapeHTML(bio)
+                                : `Chief Executive Officer of ${escapeHTML(org)}, responsible for executive coordination, operational leadership and organizational direction under the guidance of the EIAFSDO Board.`}
+                        </p>
+
+                        <div class="role-pills">
+                            <span class="role-pill">CEO</span>
+                            <span class="role-pill">CHIEF EXECUTIVE</span>
+                            <span class="role-pill">EXECUTIVE LEADERSHIP</span>
+                            <span class="role-pill">UNDER BOARD</span>
+                        </div>
+
+                        <div class="hero-actions">
+                            <a href="#message" class="btn btn-yellow">MESSAGE FROM CEO</a>
+                            <a href="#responsibilities" class="btn btn-white">EXECUTIVE ROLE</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+    `;
+
+
+    /* ---------- PROFILE ---------- */
+    const profileHTML = `
+        <section class="section" id="about">
+            <div class="container">
+
+                <div class="label">OFFICIAL PROFILE</div>
+
+                <h2 class="section-title">About the CEO</h2>
+
+                <p class="section-description">
+                    The CEO's Desk provides an official digital space for
+                    the Chief Executive Officer's profile, executive
+                    leadership message, responsibilities and organizational
+                    direction under the EIAFSDO Board.
+                </p>
+
+                <div class="profile-card">
+
+                    <div class="profile-heading">
+                        <h3>${escapeHTML(name)}</h3>
+                        <div class="verified">VERIFIED EXECUTIVE RECORD</div>
+                    </div>
+
+                    <p class="profile-text">
+                        ${bio
+                            ? escapeHTML(bio)
+                            : `${escapeHTML(name)} serves as the Chief Executive Officer of ${escapeHTML(org)}, leading executive-level coordination, operational oversight and strategic direction while operating under the governance of the EIAFSDO Board.`}
+                    </p>
+
+                    <p class="profile-text">
+                        The CEO's Desk represents the executive layer of the
+                        organization — bridging the Board's direction with
+                        day-to-day execution across projects, technology,
+                        teams and organizational initiatives.
+                    </p>
+
+                    <p class="profile-text">
+                        ${escapeHTML(org)} places importance on practical
+                        technology development, collaborative execution and
+                        responsible digital work. The CEO's Desk reflects
+                        these areas through executive communication and
+                        organizational leadership.
+                    </p>
+
+                    <div class="fact-list">
+                        ${facts.map(([label, value]) => `
+                            <div class="fact">
+                                <span>${escapeHTML(label)}</span>
+                                <strong>${escapeHTML(value)}</strong>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- MESSAGE ---------- */
+    const messageHTML = `
+        <section class="section" id="message">
+            <div class="container">
+
+                <div class="label">FROM THE CEO'S DESK</div>
+
+                <h2 class="section-title">A Message from the CEO</h2>
+
+                <div class="message-card">
+
+                    <div class="message-label">CHIEF EXECUTIVE MESSAGE</div>
+
+                    <h3>
+                        Execute with clarity.<br>
+                        Coordinate with care.<br>
+                        Deliver with purpose.
+                    </h3>
+
+                    <blockquote>
+${escapeHTML(org)} exists to build real capability — through projects, technology, teamwork and the pursuit of practical learning.
+
+As Chief Executive Officer, my focus is on turning the Board's direction into execution: aligning teams, coordinating projects, removing friction and helping every initiative move forward with purpose.
+
+The work we do is collective. Every member, every project and every contribution shapes what ${escapeHTML(org)} can become. My responsibility is to help that work happen — clearly, responsibly and consistently.
+
+Together, we keep building, learning and growing.
+                    </blockquote>
+
+                    <div class="signature">
+                        <div class="signature-name">${escapeHTML(name)}</div>
+                        <div class="signature-role">CHIEF EXECUTIVE OFFICER · ${escapeHTML(org.toUpperCase())}</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- LEADERSHIP AREAS ---------- */
+    const leadershipHTML = `
+        <section class="section">
+            <div class="container">
+
+                <div class="label">EXECUTIVE LEADERSHIP</div>
+
+                <h2 class="section-title">Areas of Executive Focus</h2>
+
+                <p class="section-description">
+                    The CEO operates at the executive layer of ${escapeHTML(org)},
+                    coordinating between Board direction and organizational execution.
+                </p>
+
+                <div class="leadership-grid">
+
+                    <article class="leadership-card">
+                        <div class="leadership-icon">🎯</div>
+                        <h3>Strategic Execution</h3>
+                        <p>Translating Board strategy and organizational direction into concrete, actionable execution across teams and projects.</p>
+                    </article>
+
+                    <article class="leadership-card">
+                        <div class="leadership-icon">⚙️</div>
+                        <h3>Operational Oversight</h3>
+                        <p>Overseeing day-to-day organizational operations, project coordination and execution timelines.</p>
+                    </article>
+
+                    <article class="leadership-card">
+                        <div class="leadership-icon">🤝</div>
+                        <h3>Team Coordination</h3>
+                        <p>Aligning teams, departments and contributors toward shared organizational goals and priorities.</p>
+                    </article>
+
+                    <article class="leadership-card">
+                        <div class="leadership-icon">📊</div>
+                        <h3>Reporting & Review</h3>
+                        <p>Reporting progress, performance and outcomes to the EIAFSDO Board for informed governance.</p>
+                    </article>
+
+                    <article class="leadership-card">
+                        <div class="leadership-icon">🚀</div>
+                        <h3>Project Delivery</h3>
+                        <p>Ensuring technology and organizational projects move from concept to completion with quality.</p>
+                    </article>
+
+                    <article class="leadership-card">
+                        <div class="leadership-icon">🌱</div>
+                        <h3>Growth & Culture</h3>
+                        <p>Supporting member growth, collaboration and a healthy execution culture across the organization.</p>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- RESPONSIBILITIES ---------- */
+    const responsibilities = [
+        ['01','Executive Leadership','Leading executive-level coordination across the organization.'],
+        ['02','Board Alignment','Operating under the EIAFSDO Board and reporting to it.'],
+        ['03','Operational Direction','Directing day-to-day operations and organizational execution.'],
+        ['04','Project Oversight','Overseeing key projects and organizational initiatives.'],
+        ['05','Team Coordination','Aligning departments, teams and contributors.'],
+        ['06','Strategic Reporting','Reporting progress and outcomes to the Board.']
+    ];
+
+    const responsibilitiesHTML = `
+        <section class="section" id="responsibilities">
+            <div class="container">
+
+                <div class="label">EXECUTIVE RESPONSIBILITIES</div>
+
+                <h2 class="section-title">CEO's Role & Responsibilities</h2>
+
+                <div class="responsibility-box">
+
+                    <h3>Executive Responsibilities</h3>
+
+                    <p>
+                        As Chief Executive Officer, the role operates at the
+                        executive layer of ${escapeHTML(org)}, coordinating
+                        execution and reporting to the EIAFSDO Board.
+                    </p>
+
+                    <div class="responsibility-list">
+                        ${responsibilities.map(([num, title, desc]) => `
+                            <div class="responsibility">
+                                <div class="responsibility-number">${escapeHTML(num)}</div>
+                                <div>
+                                    <strong>${escapeHTML(title)}</strong>
+                                    <span>${escapeHTML(desc)}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- STATEMENT ---------- */
+    const statementHTML = `
+        <section class="section">
+            <div class="container">
+                <div class="statement">
+                    <h3>Build. Learn. Grow.</h3>
+                    <p>
+                        ${escapeHTML(org)} continues to develop as a technology
+                        and learning-oriented organization.
+                        The CEO's Desk represents executive communication,
+                        operational direction and coordination between the
+                        Board and the organization's execution.
+                    </p>
+                    <div class="statement-seal">✓ ${escapeHTML(org.toUpperCase())} EXECUTIVE LEADERSHIP</div>
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- VERIFY ---------- */
+    const verifyHTML = `
+        <section class="section" id="verify">
+            <div class="container">
+
+                <div class="label">DIGITAL VERIFICATION</div>
+
+                <h2 class="section-title">CEO Record</h2>
+
+                <p class="section-description">
+                    Digital information associated with the
+                    ${escapeHTML(org)} CEO's Desk.
+                </p>
+
+                <div class="verify-grid">
+
+                    <div class="verify-box">
+                        <div class="verify-label">RECORD NAME</div>
+                        <div class="verify-value">${escapeHTML(org.toUpperCase())} CEO'S DESK</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">CHIEF EXECUTIVE OFFICER</div>
+                        <div class="verify-value">${escapeHTML(name.toUpperCase())}</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">ORGANIZATION</div>
+                        <div class="verify-value">${escapeHTML(org.toUpperCase())}</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">GOVERNING BODY</div>
+                        <div class="verify-value">${escapeHTML(org.toUpperCase())} BOARD</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">RECORD TYPE</div>
+                        <div class="verify-value">EXECUTIVE LEADERSHIP PROFILE</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">STATUS</div>
+                        <div class="verify-value">${status === 'Active' ? 'OFFICIAL DIGITAL RECORD' : status.toUpperCase()}</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- MOUNT ---------- */
+    document.getElementById('pageMount').innerHTML =
+        heroHTML +
+        `<main class="container">` +
+            profileHTML +
+            messageHTML +
+            leadershipHTML +
+            responsibilitiesHTML +
+            statementHTML +
+            verifyHTML +
+        `</main>`;
+
+
+    /* ---------- FOOTER ---------- */
+    document.getElementById('footerSubtitle').textContent = 'Official CEO\'s Desk';
+    document.getElementById('footerCode').innerHTML = `
+        CEO'S DESK<br>
+        ${escapeHTML(name.toUpperCase())}<br>
+        ${escapeHTML(org.toUpperCase())} · <span id="footerYear">${new Date().getFullYear()}</span>
+    `;
+
+
+    requestAnimationFrame(() => {
+        attachReveal();
+    });
+}
+
+
+/* =====================================================
+   RENDER — CEO POST VACANT (no CEO in DB)
+===================================================== */
+
+function renderCeoVacantPage(){
+
+    /* ---------- HERO ---------- */
+    const heroHTML = `
+        <header class="hero" id="desk">
+            <div class="container">
+                <div class="hero-inner">
+
+                    <div class="ceo-visual vacant">
+                        <div class="image-orbit"></div>
+                        <div class="image-orbit two"></div>
+                        <div class="ceo-frame">
+                            <div class="ceo-initials-fallback">👔</div>
+                        </div>
+                    </div>
+
+                    <div class="hero-content">
+                        <div class="status state-board">
+                            <span class="status-dot"></span>
+                            BOARD-CONTROLLED STATE
+                        </div>
+
+                        <h1>
+                            CEO Post
+                            <span>Vacant</span>
+                        </h1>
+
+                        <p class="hero-sub">
+                            The position of Chief Executive Officer at EIAFSDO
+                            is currently vacant. The CEO post is under the direct
+                            control and appointment authority of the EIAFSDO Board.
+                            A CEO will be officially appointed soon.
+                        </p>
+
+                        <div class="role-pills">
+                            <span class="role-pill">POSITION VACANT</span>
+                            <span class="role-pill">BOARD CONTROL</span>
+                            <span class="role-pill">APPOINTMENT PENDING</span>
+                        </div>
+
+                        <div class="hero-actions">
+                            <a href="#vacancy" class="btn btn-board">VACANCY NOTICE</a>
+                            <a href="#responsibilities" class="btn btn-white">EXECUTIVE ROLE</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+    `;
+
+
+    /* ---------- VACANCY PANEL ---------- */
+    const vacancyHTML = `
+        <section class="section" id="vacancy">
+            <div class="container">
+
+                <div class="label">OFFICIAL VACANCY NOTICE</div>
+
+                <h2 class="section-title">CEO Post Under Board Control</h2>
+
+                <p class="section-description">
+                    No Chief Executive Officer is currently assigned in the
+                    EIAFSDO database. The position remains vacant and is
+                    governed directly by the EIAFSDO Board.
+                </p>
+
+                <div class="vacant-panel">
+                    <span class="vacant-icon">🏛️</span>
+
+                    <h3>CEO Post Vacant</h3>
+
+                    <p>
+                        The Chief Executive Officer position at EIAFSDO is
+                        currently vacant. Until a CEO is officially appointed,
+                        all executive authority rests with the
+                        <strong>EIAFSDO Board</strong>.
+                    </p>
+
+                    <p>
+                        A CEO will be appointed soon by the EIAFSDO Board.
+                        Once the appointment is recorded in the organization's
+                        database, the official CEO profile will appear on this
+                        desk.
+                    </p>
+
+                    <div class="vacant-status-row">
+                        <span class="vacant-chip">UNDER BOARD CONTROL</span>
+                        <span class="vacant-chip alt">APPOINTMENT PENDING</span>
+                        <span class="vacant-chip">VACANT POSITION</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- EXECUTIVE ROLE (still shows what CEO will do) ---------- */
+    const responsibilitiesHTML = `
+        <section class="section" id="responsibilities">
+            <div class="container">
+
+                <div class="label">EXECUTIVE ROLE</div>
+
+                <h2 class="section-title">What the CEO's Role Includes</h2>
+
+                <p class="section-description">
+                    Once appointed, the CEO will operate at the executive
+                    layer of EIAFSDO, coordinating execution under the
+                    governance of the EIAFSDO Board.
+                </p>
+
+                <div class="responsibility-box">
+
+                    <h3>Expected Executive Responsibilities</h3>
+
+                    <p>
+                        The CEO will report directly to the EIAFSDO Board and
+                        be responsible for executive coordination, operational
+                        oversight and organizational execution.
+                    </p>
+
+                    <div class="responsibility-list">
+                        <div class="responsibility">
+                            <div class="responsibility-number">01</div>
+                            <div>
+                                <strong>Executive Leadership</strong>
+                                <span>Leading executive-level coordination across the organization.</span>
+                            </div>
+                        </div>
+                        <div class="responsibility">
+                            <div class="responsibility-number">02</div>
+                            <div>
+                                <strong>Board Alignment</strong>
+                                <span>Operating under the EIAFSDO Board and reporting to it.</span>
+                            </div>
+                        </div>
+                        <div class="responsibility">
+                            <div class="responsibility-number">03</div>
+                            <div>
+                                <strong>Operational Direction</strong>
+                                <span>Directing day-to-day operations and organizational execution.</span>
+                            </div>
+                        </div>
+                        <div class="responsibility">
+                            <div class="responsibility-number">04</div>
+                            <div>
+                                <strong>Project Oversight</strong>
+                                <span>Overseeing key projects and organizational initiatives.</span>
+                            </div>
+                        </div>
+                        <div class="responsibility">
+                            <div class="responsibility-number">05</div>
+                            <div>
+                                <strong>Team Coordination</strong>
+                                <span>Aligning departments, teams and contributors.</span>
+                            </div>
+                        </div>
+                        <div class="responsibility">
+                            <div class="responsibility-number">06</div>
+                            <div>
+                                <strong>Strategic Reporting</strong>
+                                <span>Reporting progress and outcomes to the Board.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- STATEMENT ---------- */
+    const statementHTML = `
+        <section class="section">
+            <div class="container">
+                <div class="statement">
+                    <h3>Build. Learn. Grow.</h3>
+                    <p>
+                        EIAFSDO continues to develop as a technology and
+                        learning-oriented organization. The CEO's Desk will
+                        publish the official executive profile, message and
+                        responsibilities once a CEO is appointed by the Board.
+                    </p>
+                    <div class="statement-seal">✓ EIAFSDO EXECUTIVE LEADERSHIP</div>
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- VERIFY ---------- */
+    const verifyHTML = `
+        <section class="section" id="verify">
+            <div class="container">
+
+                <div class="label">DIGITAL VERIFICATION</div>
+
+                <h2 class="section-title">CEO Record</h2>
+
+                <p class="section-description">
+                    Digital information associated with the EIAFSDO CEO's Desk.
+                </p>
+
+                <div class="verify-grid">
+
+                    <div class="verify-box">
+                        <div class="verify-label">RECORD NAME</div>
+                        <div class="verify-value">EIAFSDO CEO'S DESK</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">CHIEF EXECUTIVE OFFICER</div>
+                        <div class="verify-value">POSITION VACANT</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">ORGANIZATION</div>
+                        <div class="verify-value">EIAFSDO</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">GOVERNING BODY</div>
+                        <div class="verify-value">EIAFSDO BOARD</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">RECORD TYPE</div>
+                        <div class="verify-value">EXECUTIVE LEADERSHIP PROFILE</div>
+                    </div>
+
+                    <div class="verify-box">
+                        <div class="verify-label">STATUS</div>
+                        <div class="verify-value">BOARD-CONTROLLED · APPOINTMENT PENDING</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    `;
+
+
+    /* ---------- MOUNT ---------- */
+    document.getElementById('pageMount').innerHTML =
+        heroHTML +
+        `<main class="container">` +
+            vacancyHTML +
+            responsibilitiesHTML +
+            statementHTML +
+            verifyHTML +
+        `</main>`;
+
+
+    /* ---------- FOOTER ---------- */
+    document.getElementById('footerSubtitle').textContent = 'Board-Controlled Executive Desk';
+    document.getElementById('footerCode').innerHTML = `
+        CEO'S DESK<br>
+        UNDER BOARD CONTROL<br>
+        EIAFSDO · <span id="footerYear">${new Date().getFullYear()}</span>
+    `;
+
+
+    requestAnimationFrame(() => {
+        attachReveal();
+    });
+}
+
+
+/* =====================================================
+   PROCESS USERS
+===================================================== */
+
+function processUsers(users){
+    // CEO — first user with role 'ceo'
+    ceoUser = users.find(u => normalizeRole(u.role) === 'ceo') || null;
+}
+
+
+/* =====================================================
+   FETCH / SUBSCRIBE
+===================================================== */
+
+async function fetchCeoOnce(){
+    try{
+        const snap = await db.collection('users').get();
+        const users = [];
+        snap.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+        processUsers(users);
+
+        if (ceoUser) renderCeoPage(ceoUser);
+        else renderCeoVacantPage();
+    } catch(err){
+        console.error('CEO fetch error:', err);
+        processUsers([]);
+        renderCeoVacantPage();
+    }
+}
+
+
+function subscribeCeo(){
+    if (ceoUnsubscribe) ceoUnsubscribe();
+
+    ceoUnsubscribe = db.collection('users').onSnapshot(
+        snap => {
+            const users = [];
+            snap.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+
+            const prevCeoId = ceoUser ? ceoUser.id : null;
+            processUsers(users);
+            const newCeoId = ceoUser ? ceoUser.id : null;
+
+            // Re-render only when CEO identity changes or first render
+            if (firstRender || prevCeoId !== newCeoId || !hasRendered){
+                firstRender = false;
+                hasRendered = true;
+
+                if (ceoUser) renderCeoPage(ceoUser);
+                else renderCeoVacantPage();
+            }
+        },
+        err => {
+            console.error('CEO subscription error:', err);
+            fetchCeoOnce();
+        }
+    );
+}
+
+
+/* =====================================================
+   NAV SHADOW
+===================================================== */
+
+const nav = document.querySelector(".nav");
+
+window.addEventListener(
+    "scroll",
+    () => {
+        if (window.scrollY > 40){
+            nav.style.boxShadow = "5px 7px 0 rgba(23,21,15,.9)";
+        } else {
+            nav.style.boxShadow = "3px 4px 0 rgba(23,21,15,1)";
+        }
+    },
+    { passive:true }
+);
+
+
+/* =====================================================
+   BOOTSTRAP
+===================================================== */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initRevealObserver();
+    subscribeCeo();
+});
+
+</script>
+
+</body>
+</html>
