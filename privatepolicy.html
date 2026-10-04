@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#fffaf0" />
+
+<title>EIAFSDO — Legal Documents · Privacy Policy & Terms</title>
+<meta name="description" content="Official Privacy Policy, Terms of Service and Terms of Use of the East Indian Amateur Full-Stack Developers Organization (EIAFSDO).">
+<meta name="keywords" content="EIAFSDO legal, EIAFSDO privacy policy, EIAFSDO terms, EIAFSDO terms of service">
+<meta name="author" content="EIAFSDO">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://priyabratacare-source.github.io/EIAFSDO/legal.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="EIAFSDO — Legal Documents">
+<meta property="og:description" content="Official Privacy Policy, Terms of Service and Terms of Use of EIAFSDO.">
+<meta property="og:url" content="https://priyabratacare-source.github.io/EIAFSDO/legal.html">
+<meta property="og:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EIAFSDO — Legal Documents">
+<meta name="twitter:description" content="Official Privacy Policy, Terms of Service and Terms of Use of EIAFSDO.">
+<meta name="twitter:image" content="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@500;600;700&family=Nunito+Sans:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================================================
+   ROOT TOKENS
+============================================================ */
+:root{
+    --bg:#fffaf0;
+    --surface:#fffef8;
+    --soft:#f6eed8;
+
+    --text:#1d1a14;
+    --body:#3d3830;
+
+    --yellow:#f2c94c;
+    --gold:#c9972e;
+    --gold-light:#ffe68a;
+    --gold-dark:#765300;
+
+    --green:#e8ddb4;
+    --blue:#1687ff;
+    --red:#d94a3a;
+    --board-blue:#3d64b8;
+
+    --black:#17150f;
+    --white:#fffef8;
+
+    --border:2px solid var(--black);
+    --shadow:6px 7px 0 var(--black);
+    --shadow-soft:3px 4px 0 var(--black);
+    --radius:12px;
+
+    --ease-out:cubic-bezier(.22,.75,.2,1);
+    --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{
+    scroll-behavior:smooth;
+    scroll-padding-top:110px;
+    -webkit-text-size-adjust:100%;
+}
+
+body{
+    font-family:"Nunito Sans",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+    position:relative;
+    isolation:isolate;
+}
+
+/* BACKGROUND */
+body::before{
+    content:"";
+    position:fixed;
+    inset:-20%;
+    z-index:-5;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(242,201,76,.24), transparent 25%),
+        radial-gradient(circle at 90% 15%, rgba(232,221,180,.38), transparent 27%),
+        radial-gradient(circle at 50% 100%, rgba(242,201,76,.15), transparent 32%);
+    filter:blur(22px);
+    animation:bgBreath 9s ease-in-out infinite alternate;
+}
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-4;
+    pointer-events:none;
+    opacity:.22;
+    background-image:
+        linear-gradient(rgba(29,26,20,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29,26,20,.08) 1px, transparent 1px);
+    background-size:48px 48px;
+    animation:gridMove 20s linear infinite;
+}
+@keyframes bgBreath{from{transform:scale(1);}to{transform:scale(1.08);}}
+@keyframes gridMove{from{background-position:0 0;}to{background-position:48px 48px;}}
+
+/* REVEAL */
+.reveal{
+    opacity:0;
+    transform:translateY(45px);
+    transition:opacity .85s var(--ease-out), transform .85s var(--ease-out);
+    will-change:opacity,transform;
+}
+.reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* NAVBAR */
+.navbar{
+    position:sticky;
+    top:12px;
+    z-index:1000;
+    width:min(1180px,calc(100% - 28px));
+    margin:12px auto 0;
+    min-height:66px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:9px 13px;
+    background:rgba(255,254,248,.9);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-soft);
+    animation:fadeSlideDown .8s var(--ease-out) both;
+    transition:box-shadow .3s ease;
+}
+@keyframes fadeSlideDown{
+    from{opacity:0;transform:translateY(-22px);}
+    to{opacity:1;transform:translateY(0);}
+}
+.navbar.scrolled{box-shadow:5px 7px 0 var(--black);}
+
+.nav-inner{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--text);
+    font-family:"Archivo Black",sans-serif;
+    font-size:15px;
+    line-height:1;
+    letter-spacing:-.4px;
+    min-width:0;
+}
+.logo img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:2px solid var(--black);
+    background:var(--yellow);
+    object-fit:cover;
+    flex-shrink:0;
+    transition:transform .5s var(--ease-spring);
+}
+.logo:hover img{transform:rotate(-8deg) scale(1.08);}
+.logo-text{display:flex;flex-direction:column;min-width:0;}
+.logo-text small{
+    font-family:"Roboto Mono",monospace;
+    font-size:8px;
+    font-weight:700;
+    color:#6b6254;
+    letter-spacing:.4px;
+    margin-top:3px;
+    max-width:220px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+}
+.nav-links a{
+    color:var(--text);
+    text-decoration:none;
+    padding:9px 12px;
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+    transition:.25s ease;
+    white-space:nowrap;
+}
+.nav-links a:hover{
+    background:var(--yellow);
+    transform:translateY(-2px);
+}
+
+.hamburger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:6px;
+}
+.hamburger span{
+    display:block;
+    width:24px;
+    height:2.5px;
+    background:var(--black);
+    border-radius:2px;
+    transition:.3s ease;
+}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+/* HERO */
+.legal-hero{
+    max-width:1100px;
+    margin:auto;
+    padding:110px 25px 40px;
+    text-align:center;
+}
+.legal-hero .small-title{
+    display:inline-block;
+    padding:7px 14px;
+    background:var(--green);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-soft);
+    color:var(--text);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    margin-bottom:24px;
+    opacity:0;
+    animation:fadeSlideUp .8s var(--ease-out) .2s forwards;
+}
+@keyframes fadeSlideUp{
+    from{opacity:0;transform:translateY(28px);}
+    to{opacity:1;transform:translateY(0);}
+}
+.legal-hero h1{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(38px,6vw,72px);
+    line-height:.95;
+    letter-spacing:-2px;
+    margin-bottom:22px;
+    color:var(--text);
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .35s forwards;
+}
+.legal-hero h1 span{
+    display:inline-block;
+    position:relative;
+    z-index:0;
+}
+.legal-hero h1 span::after{
+    content:"";
+    position:absolute;
+    left:2%;right:-4%;bottom:4px;
+    height:14px;
+    background:var(--yellow);
+    z-index:-1;
+    transform:skew(-8deg) scaleX(0);
+    transform-origin:left center;
+    animation:underlineGrow 1s var(--ease-spring) 1s forwards;
+}
+@keyframes underlineGrow{to{transform:skew(-8deg) scaleX(1);}}
+
+.legal-hero p{
+    max-width:720px;
+    margin:auto;
+    color:var(--body);
+    font-size:16px;
+    line-height:1.75;
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .7s forwards;
+}
+
+.legal-meta-banner{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:26px;
+    padding:12px 20px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:999px;
+    box-shadow:var(--shadow-soft);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    color:var(--text);
+    opacity:0;
+    animation:fadeSlideUp .9s var(--ease-out) .95s forwards;
+}
+.legal-meta-banner .lmb-dot{
+    width:8px;height:8px;
+    border-radius:50%;
+    background:#35a853;
+    border:1.5px solid var(--black);
+    animation:pulseDot 2.2s ease-in-out infinite;
+}
+@keyframes pulseDot{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.4);}
+}
+.legal-meta-banner .lmb-sep{
+    color:#a89b7c;
+}
+
+/* UNREGISTERED NOTICE BANNER */
+.unreg-notice{
+    max-width:1100px;
+    margin:32px auto 0;
+    padding:22px 26px;
+    border-radius:var(--radius);
+    border:2px solid var(--board-blue);
+    background:linear-gradient(135deg,#eef4ff,#d6e9ff);
+    box-shadow:6px 7px 0 var(--black);
+    display:flex;
+    align-items:flex-start;
+    gap:16px;
+    position:relative;
+    overflow:hidden;
+}
+.unreg-notice::before{
+    content:"";
+    position:absolute;
+    width:200px;height:200px;
+    right:-70px;top:-80px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(61,100,184,.25), transparent 70%);
+    pointer-events:none;
+}
+.unreg-notice > *{position:relative;z-index:1;}
+.unreg-notice .un-icon{
+    flex-shrink:0;
+    width:48px;height:48px;
+    border-radius:12px;
+    background:var(--board-blue);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    border:2px solid var(--black);
+    box-shadow:3px 3px 0 var(--black);
+}
+.unreg-notice .un-text{flex:1;min-width:0;}
+.unreg-notice h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:16px;
+    letter-spacing:-.3px;
+    color:#0d3d72;
+    margin-bottom:6px;
+}
+.unreg-notice p{
+    color:#1a3a72;
+    font-size:13.5px;
+    line-height:1.65;
+    font-weight:600;
+}
+
+/* CONTENT WRAPPER */
+.legal-wrap{
+    max-width:980px;
+    margin:auto;
+    padding:40px 25px 80px;
+}
+
+/* TOC */
+.toc{
+    padding:26px 28px;
+    border-radius:var(--radius);
+    border:var(--border);
+    background:var(--surface);
+    box-shadow:var(--shadow);
+    margin-bottom:50px;
+}
+.toc h2{
+    font-family:"Archivo Black",sans-serif;
+    font-size:22px;
+    letter-spacing:-.5px;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.toc h2 .toc-icon{
+    display:inline-flex;
+    width:34px;height:34px;
+    background:var(--yellow);
+    border:2px solid var(--black);
+    border-radius:8px;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    box-shadow:2px 3px 0 var(--black);
+}
+.toc ol{
+    list-style:none;
+    counter-reset:toc-counter;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+.toc ol li{
+    counter-increment:toc-counter;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:8px;
+    background:var(--soft);
+    border:1.5px solid var(--black);
+    transition:.25s ease;
+}
+.toc ol li:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:3px 3px 0 var(--black);
+    background:var(--yellow);
+}
+.toc ol li::before{
+    content:counter(toc-counter, decimal-leading-zero);
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    background:var(--black);
+    color:var(--yellow);
+    padding:3px 7px;
+    border-radius:5px;
+    flex-shrink:0;
+    margin-top:1px;
+}
+.toc ol li a{
+    text-decoration:none;
+    color:var(--text);
+    font-family:"Nunito Sans",sans-serif;
+    font-size:13.5px;
+    font-weight:700;
+    line-height:1.4;
+}
+
+/* SECTION TITLE */
+.legal-section{
+    margin-bottom:70px;
+    scroll-margin-top:110px;
+}
+.legal-section-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+}
+.legal-section-header .sec-icon{
+    width:54px;height:54px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--yellow);
+    border:var(--border);
+    border-radius:14px;
+    box-shadow:3px 4px 0 var(--black);
+    font-size:24px;
+    transition:transform .5s var(--ease-spring);
+}
+.legal-section-header:hover .sec-icon{
+    transform:rotate(-8deg) scale(1.08);
+}
+.legal-section-header .sec-title{
+    flex:1;
+    min-width:200px;
+}
+.legal-section-header h2{
+    font-family:"Archivo Black",sans-serif;
+    font-size:clamp(24px,3.5vw,34px);
+    letter-spacing:-1px;
+    line-height:1.15;
+    color:var(--text);
+}
+.legal-section-header .sec-kicker{
+    display:block;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--gold-dark);
+    margin-bottom:6px;
+}
+
+/* HEADINGS */
+h3.legal-h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:19px;
+    letter-spacing:-.4px;
+    color:var(--text);
+    margin:32px 0 12px;
+    padding-left:14px;
+    border-left:5px solid var(--yellow);
+    line-height:1.25;
+}
+h4.legal-h4{
+    font-family:"Archivo Black",sans-serif;
+    font-size:15.5px;
+    letter-spacing:-.2px;
+    color:var(--text);
+    margin:22px 0 8px;
+    line-height:1.3;
+}
+
+/* PARAGRAPHS */
+p.legal-p{
+    color:var(--body);
+    font-size:15px;
+    line-height:1.8;
+    margin-bottom:14px;
+    font-weight:500;
+}
+p.legal-p strong{color:var(--text);font-weight:800;}
+p.legal-p em{color:var(--gold-dark);font-style:italic;font-weight:600;}
+
+/* LISTS */
+ul.legal-ul,
+ol.legal-ol{
+    margin:0 0 16px 0;
+    padding-left:0;
+    list-style:none;
+}
+ul.legal-ul li,
+ol.legal-ol li{
+    position:relative;
+    padding:8px 0 8px 30px;
+    color:var(--body);
+    font-size:14.5px;
+    line-height:1.7;
+    font-weight:500;
+    border-bottom:1px dashed rgba(29,26,20,.12);
+}
+ul.legal-ul li:last-child,
+ol.legal-ol li:last-child{border-bottom:none;}
+ul.legal-ul li::before{
+    content:"";
+    position:absolute;
+    left:6px;
+    top:16px;
+    width:9px;height:9px;
+    background:var(--yellow);
+    border:1.5px solid var(--black);
+    border-radius:3px;
+    transform:rotate(45deg);
+}
+ol.legal-ol{
+    counter-reset:legal-counter;
+}
+ol.legal-ol li{
+    counter-increment:legal-counter;
+}
+ol.legal-ol li::before{
+    content:counter(legal-counter, decimal-leading-zero);
+    position:absolute;
+    left:0;
+    top:10px;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    background:var(--black);
+    color:var(--yellow);
+    padding:2px 6px;
+    border-radius:4px;
+}
+ul.legal-ul li strong,
+ol.legal-ol li strong{color:var(--text);font-weight:800;}
+
+/* TABLE */
+.legal-table-wrap{
+    overflow-x:auto;
+    margin:18px 0 22px;
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-soft);
+    background:var(--surface);
+}
+table.legal-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:520px;
+}
+table.legal-table th{
+    background:var(--black);
+    color:var(--yellow);
+    font-family:"Roboto Mono",monospace;
+    font-size:10.5px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    padding:12px 14px;
+    text-align:left;
+    border-bottom:2px solid var(--black);
+}
+table.legal-table td{
+    padding:11px 14px;
+    font-size:13.5px;
+    color:var(--body);
+    font-weight:500;
+    border-bottom:1px solid rgba(29,26,20,.12);
+    vertical-align:top;
+    line-height:1.6;
+}
+table.legal-table tbody tr:last-child td{border-bottom:none;}
+table.legal-table tbody tr:nth-child(even) td{background:rgba(246,238,216,.4);}
+table.legal-table td strong{color:var(--text);font-weight:800;}
+
+/* CALLOUT BOX */
+.legal-callout{
+    margin:22px 0;
+    padding:20px 24px;
+    border-radius:var(--radius);
+    border:2px solid var(--gold-dark);
+    background:linear-gradient(135deg,#fff7dc,#ffe68a);
+    box-shadow:5px 6px 0 var(--black);
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    position:relative;
+}
+.legal-callout::before{
+    content:"";
+    position:absolute;
+    width:160px;height:160px;
+    right:-50px;top:-60px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(201,151,46,.2), transparent 70%);
+    pointer-events:none;
+}
+.legal-callout > *{position:relative;z-index:1;}
+.legal-callout .lc-icon{
+    font-size:24px;
+    flex-shrink:0;
+    line-height:1;
+    filter:drop-shadow(0 2px 0 rgba(0,0,0,.15));
+}
+.legal-callout .lc-body{flex:1;min-width:0;}
+.legal-callout .lc-body strong{
+    font-family:"Archivo Black",sans-serif;
+    font-size:14.5px;
+    color:var(--gold-dark);
+    display:block;
+    margin-bottom:6px;
+    letter-spacing:-.2px;
+}
+.legal-callout .lc-body p{
+    font-size:13.5px;
+    color:#5a4514;
+    line-height:1.65;
+    margin:0;
+    font-weight:600;
+}
+
+/* INFO CARD */
+.legal-info-card{
+    margin:22px 0;
+    padding:24px 26px;
+    background:var(--surface);
+    border:var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+}
+.legal-info-card::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;
+    width:6px;height:100%;
+    background:var(--yellow);
+    border-right:2px solid var(--black);
+}
+.legal-info-card h4{
+    font-family:"Archivo Black",sans-serif;
+    font-size:16px;
+    letter-spacing:-.3px;
+    color:var(--text);
+    margin-bottom:10px;
+    padding-left:10px;
+}
+.legal-info-card p{
+    color:var(--body);
+    font-size:14px;
+    line-height:1.7;
+    margin-bottom:8px;
+    padding-left:10px;
+    font-weight:500;
+}
+.legal-info-card p:last-child{margin-bottom:0;}
+.legal-info-card p strong{color:var(--text);font-weight:800;}
+
+/* ISSUER CARD */
+.issuer-card{
+    margin-top:60px;
+    padding:30px 32px;
+    border-radius:var(--radius);
+    background:linear-gradient(135deg,#1a1a15,#2b261b,#1a1a15);
+    color:#f3ead2;
+    border:2px solid var(--yellow);
+    box-shadow:6px 7px 0 var(--yellow), 6px 7px 0 3px var(--black);
+    position:relative;
+    overflow:hidden;
+}
+.issuer-card::before{
+    content:"";
+    position:absolute;
+    top:-60%;
+    left:-120%;
+    width:55%;
+    height:220%;
+    background:linear-gradient(90deg, transparent, rgba(242,201,76,.16), transparent);
+    transform:skewX(-18deg);
+    animation:shimmer 5s ease-in-out infinite;
+    pointer-events:none;
+}
+@keyframes shimmer{
+    0%{left:-120%;}
+    40%,100%{left:160%;}
+}
+.issuer-card > *{position:relative;z-index:1;}
+.issuer-card .ic-row{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    flex-wrap:wrap;
+}
+.issuer-card .ic-logo{
+    width:64px;height:64px;
+    border-radius:50%;
+    border:2px solid var(--yellow);
+    background:var(--yellow);
+    object-fit:cover;
+    flex-shrink:0;
+    transition:transform .5s var(--ease-spring);
+}
+.issuer-card:hover .ic-logo{
+    transform:rotate(-8deg) scale(1.06);
+}
+.issuer-card .ic-body{flex:1;min-width:220px;}
+.issuer-card .ic-kicker{
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--yellow);
+    display:block;
+    margin-bottom:6px;
+}
+.issuer-card h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:20px;
+    letter-spacing:-.5px;
+    color:#fffdf4;
+    margin-bottom:8px;
+    line-height:1.2;
+}
+.issuer-card p{
+    color:#cfc8b8;
+    font-size:13.5px;
+    line-height:1.7;
+    font-weight:500;
+}
+.issuer-card .ic-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:16px;
+    padding-top:16px;
+    border-top:1px solid #403b2c;
+}
+.issuer-card .ic-meta span{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 12px;
+    background:rgba(242,201,76,.1);
+    border:1px solid rgba(242,201,76,.4);
+    border-radius:999px;
+    font-family:"Roboto Mono",monospace;
+    font-size:9.5px;
+    font-weight:900;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--yellow);
+}
+.issuer-card .ic-meta span strong{
+    color:#fffdf4;
+    font-weight:900;
+}
+
+/* FOOTER */
+footer{
+    margin-top:0;
+    padding:55px 25px 30px;
+    background:var(--black);
+    color:var(--surface);
+    border-top:5px solid var(--yellow);
+    text-align:center;
+}
+footer .footer-brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+}
+footer .footer-brand img{
+    width:52px;height:52px;
+    border-radius:50%;
+    border:2px solid var(--yellow);
+    background:var(--yellow);
+    object-fit:cover;
+    transition:transform .5s var(--ease-spring);
+}
+footer .footer-brand img:hover{
+    transform:rotate(-8deg) scale(1.08);
+}
+footer .footer-brand h3{
+    font-family:"Archivo Black",sans-serif;
+    font-size:18px;
+    color:var(--surface);
+    letter-spacing:-.4px;
+}
+footer .footer-brand p{
+    font-family:"Roboto Mono",monospace;
+    font-size:9.5px;
+    color:#a89b7c;
+    font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-top:2px;
+}
+footer .footer-links{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:16px;
+    margin:22px 0;
+}
+footer .footer-links a{
+    color:var(--yellow);
+    text-decoration:none;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    transition:.25s ease;
+}
+footer .footer-links a:hover{color:var(--surface);}
+footer .copyright{
+    font-size:12.5px;
+    color:#cfc6b4;
+    font-family:"Nunito Sans",sans-serif;
+    max-width:1120px;
+    margin:auto;
+    line-height:1.7;
+}
+footer .copyright strong{color:var(--surface);font-family:"Archivo Black",sans-serif;font-weight:400;}
+footer .footer-handle{
+    display:block;
+    margin-top:14px;
+    color:#a89b7c;
+    font-family:"Roboto Mono",monospace;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+}
+footer .footer-handle strong{color:var(--yellow);font-family:inherit;font-weight:900;}
+
+/* SCROLL TOP */
+.scroll-top{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    width:52px;height:52px;
+    border-radius:50%;
+    background:var(--yellow);
+    border:var(--border);
+    color:var(--text);
+    font-size:20px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:var(--shadow-soft);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    transition:.25s ease;
+    z-index:999;
+}
+.scroll-top.visible{display:flex;}
+.scroll-top:hover{
+    transform:translate(-2px,-2px);
+    box-shadow:6px 7px 0 var(--black);
+    background:var(--surface);
+}
+
+/* RESPONSIVE */
+@media(max-width:920px){
+    .nav-links{
+        display:none;
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+        gap:6px;
+        padding:14px 0 6px;
+        border-top:2px solid var(--black);
+        margin-top:10px;
+        flex-basis:100%;
+    }
+    .nav-links.open{display:flex;}
+    .nav-links a{padding:11px 14px;text-align:center;}
+    .hamburger{display:flex;}
+    .navbar{top:7px;margin-top:7px;width:calc(100% - 18px);border-radius:22px;}
+
+    .toc ol{grid-template-columns:1fr;}
+
+    .legal-hero{padding-top:90px;}
+    .legal-wrap{padding:30px 18px 60px;}
+
+    .issuer-card{padding:24px 22px;}
+    .issuer-card .ic-logo{width:54px;height:54px;}
+    .issuer-card h3{font-size:17px;}
+
+    .unreg-notice{flex-direction:column;}
+}
+
+@media(max-width:600px){
+    .legal-hero h1{font-size:clamp(34px,11vw,54px);letter-spacing:-1.5px;}
+    .legal-section{margin-bottom:55px;}
+    .legal-section-header .sec-icon{width:46px;height:46px;font-size:20px;}
+    .legal-section-header h2{font-size:22px;}
+
+    .legal-meta-banner{font-size:9px;padding:10px 14px;gap:8px;}
+    .legal-meta-banner .lmb-sep{display:none;}
+
+    .legal-table-wrap{border-radius:8px;}
+    table.legal-table th,
+    table.legal-table td{padding:9px 11px;font-size:12.5px;}
+
+    .legal-callout{padding:16px 18px;}
+    .legal-callout .lc-icon{font-size:20px;}
+
+    .scroll-top{width:46px;height:46px;bottom:20px;right:20px;}
+}
+
+/* REDUCED MOTION */
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        scroll-behavior:auto !important;
+        transition-duration:.01ms !important;
+    }
+    .reveal{opacity:1 !important;transform:none !important;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav class="navbar" id="navbar">
+    <div class="nav-inner">
+        <a href="index.html" class="logo">
+            <img src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo">
+            <span class="logo-text">
+                EIAFSDO
+                <small>East Indian Amateur Full-Stack Developers Org.</small>
+            </span>
+        </a>
+
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="team.html">Team</a>
+            <a href="projects.html">Projects</a>
+            <a href="talks.html">Talks</a>
+            <a href="notice.html">Notice</a>
+            <a href="orgstructure.html">Structure</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<header class="legal-hero">
+    <div class="small-title">Official Legal Documentation</div>
+    <h1>Privacy Policy & <span>Terms.</span></h1>
+    <p>
+        The complete legal framework of the East Indian Amateur Full-Stack Developers Organization (EIAFSDO) — covering organizational privacy, website privacy, member terms, and website terms of use.
+    </p>
+
+    <div class="legal-meta-banner">
+        <span class="lmb-dot"></span>
+        <span>Issued by EIAFSDO Board</span>
+        <span class="lmb-sep">·</span>
+        <span>Version 1.0</span>
+        <span class="lmb-sep">·</span>
+        <span>Effective 04 October 2026</span>
+    </div>
+</header>
+
+<!-- ============================================================
+     UNREGISTERED NOTICE
+============================================================ -->
+<div class="legal-wrap" style="padding-bottom:0;">
+    <div class="unreg-notice reveal">
+        <div class="un-icon">ℹ️</div>
+        <div class="un-text">
+            <h3>Organizational Status — Currently Unregistered</h3>
+            <p>
+                EIAFSDO (East Indian Amateur Full-Stack Developers Organization) is currently a <strong>student-operated collective</strong> and is <strong>not a registered company, partnership, trust, or society</strong> under any Indian registration act as of the date of this document. These policies reflect our good-faith commitment to legal and ethical practice, and will be formally ratified and updated upon organizational registration.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     MAIN CONTENT
+============================================================ -->
+<div class="legal-wrap">
+
+    <!-- ============ TOC ============ -->
+    <div class="toc reveal">
+        <h2><span class="toc-icon">📑</span> Table of Contents</h2>
+        <ol>
+            <li><a href="#part-1">Privacy Policy — Organization</a></li>
+            <li><a href="#part-2">Privacy Policy — Website</a></li>
+            <li><a href="#part-3">Terms of Service (Members)</a></li>
+            <li><a href="#part-4">Terms of Use (Website)</a></li>
+            <li><a href="#part-5">Legal Disclaimers & Compliance</a></li>
+            <li><a href="#part-6">Issuing Authority</a></li>
+        </ol>
+    </div>
+
+    <!-- ============================================================
+         PART 1 — ORGANIZATIONAL PRIVACY
+    ============================================================ -->
+    <section class="legal-section reveal" id="part-1">
+        <div class="legal-section-header">
+            <div class="sec-icon">🛡️</div>
+            <div class="sec-title">
+                <span class="sec-kicker">Part 01</span>
+                <h2>Privacy Policy — Organization</h2>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">1.1 Introduction</h3>
+        <p class="legal-p">
+            The <strong>East Indian Amateur Full-Stack Developers Organization</strong> (“EIAFSDO,” “we,” “our,” or “us”) is a student-operated collective based in Tarakeswar, Hooghly, West Bengal, India. We are committed to protecting the privacy and personal data of our members, volunteers, website visitors, and all individuals who interact with our organization.
+        </p>
+        <p class="legal-p">
+            This Privacy Policy describes how EIAFSDO collects, uses, stores, shares, and protects personal data in the course of our organizational activities. It is published in accordance with the <strong>Information Technology Act, 2000</strong> (“IT Act”), the <strong>Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011</strong> (“SPDI Rules”), and the <strong>Digital Personal Data Protection Act, 2023</strong> (“DPDP Act”).
+        </p>
+        <p class="legal-p">
+            By becoming a member of EIAFSDO, participating in our activities, or interacting with our organizational platforms, you acknowledge that you have read and understood this Privacy Policy.
+        </p>
+
+        <h3 class="legal-h3">1.2 Who This Policy Applies To</h3>
+        <ul class="legal-ul">
+            <li><strong>Registered Members</strong> of EIAFSDO</li>
+            <li><strong>Founding Board Members</strong>, Chairman, CEO, and other leadership roles</li>
+            <li><strong>Volunteers</strong> and contributors</li>
+            <li><strong>Event Participants</strong> — workshops, hackathons, talks</li>
+            <li><strong>Website Users</strong> and visitors</li>
+            <li><strong>Third Parties</strong> who interact with EIAFSDO in an official capacity</li>
+        </ul>
+
+        <h3 class="legal-h3">1.3 Personal Data We Collect</h3>
+        <p class="legal-p">
+            EIAFSDO collects the following categories of personal data from members and participants:
+        </p>
+
+        <div class="legal-table-wrap">
+            <table class="legal-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Examples</th>
+                        <th>Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Identity Data</strong></td>
+                        <td>Full name, photograph, role/title</td>
+                        <td>Member registration, profile update</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contact Data</strong></td>
+                        <td>Email address, phone number</td>
+                        <td>Registration, event sign-up</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Professional Data</strong></td>
+                        <td>Bio, tech stack/skills, organization/affiliation</td>
+                        <td>Member profile</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Account Data</strong></td>
+                        <td>Login credentials (encrypted), account activity</td>
+                        <td>Dashboard registration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Developer Links</strong></td>
+                        <td>LinkedIn, GitHub, portfolio URLs</td>
+                        <td>Member profile</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Communications</strong></td>
+                        <td>Messages sent through internal systems, talks posted</td>
+                        <td>Platform activity</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Event Data</strong></td>
+                        <td>Attendance records, participation history</td>
+                        <td>Event registration</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="legal-callout">
+            <span class="lc-icon">⚠️</span>
+            <div class="lc-body">
+                <strong>Note on Sensitive Personal Data</strong>
+                <p>
+                    EIAFSDO does not ordinarily collect Sensitive Personal Data or Information (SPDI) as defined under the SPDI Rules — such as financial information, health data, sexual orientation, or biometric information. Passwords are collected solely for authentication and stored in hashed form through Firebase Authentication.
+                </p>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">1.4 Legal Basis for Processing</h3>
+        <p class="legal-p">We process personal data on the following legal bases:</p>
+        <ol class="legal-ol">
+            <li><strong>Consent</strong> — You provide explicit consent when registering as a member or using our platforms.</li>
+            <li><strong>Contractual Necessity</strong> — Processing is necessary to fulfill our obligations as an organization to our members.</li>
+            <li><strong>Legitimate Interests</strong> — For organizational administration, governance, and community management.</li>
+            <li><strong>Legal Compliance</strong> — Where required by applicable Indian law.</li>
+        </ol>
+
+        <h3 class="legal-h3">1.5 How We Use Personal Data</h3>
+        <ul class="legal-ul">
+            <li><strong>Member Administration</strong> — Managing membership records, roles, and organizational structure</li>
+            <li><strong>Governance</strong> — Board decisions, role appointments, and organizational records</li>
+            <li><strong>Platform Operation</strong> — Operating the dashboard, digital ID cards, and notice systems</li>
+            <li><strong>Communication</strong> — Sending organizational notices, updates, and announcements</li>
+            <li><strong>Project Management</strong> — Reviewing, approving, and showcasing member projects</li>
+            <li><strong>Community Building</strong> — Facilitating talks, discussions, and collaboration</li>
+            <li><strong>Verification</strong> — Confirming member identity and roles within the organization</li>
+            <li><strong>Legal Compliance</strong> — Meeting statutory obligations under Indian law</li>
+        </ul>
+
+        <h3 class="legal-h3">1.6 Organizational Data Sharing</h3>
+        <p class="legal-p">
+            EIAFSDO does <strong>not</strong> sell, rent, or trade personal data. We may share data in the following limited circumstances:
+        </p>
+        <ul class="legal-ul">
+            <li><strong>Within the Organization</strong> — Board members, Chairman, CEO, and authorized administrators may access member data for governance and administration purposes.</li>
+            <li><strong>Public-Facing Areas</strong> — Member names, photographs, roles, bios, and developer links may be displayed on the public team page and verified profile modals.</li>
+            <li><strong>Service Providers</strong> — We use Firebase (Google) for authentication and data storage. These providers process data under their own terms and applicable data protection laws.</li>
+            <li><strong>Legal Requirements</strong> — We may disclose data if required by law, court order, or governmental authority.</li>
+        </ul>
+
+        <h3 class="legal-h3">1.7 Data Retention</h3>
+        <ul class="legal-ul">
+            <li><strong>Active Membership Period</strong> — Personal data is retained for the duration of active membership, plus a reasonable period thereafter for archival and governance purposes.</li>
+            <li><strong>Organizational Records</strong> — Board decisions, notices, and appointments are retained as historical records.</li>
+            <li><strong>Deletion Requests</strong> — User account data may be deleted upon request, subject to organizational record-keeping requirements.</li>
+        </ul>
+
+        <h3 class="legal-h3">1.8 Security Practices</h3>
+        <ul class="legal-ul">
+            <li><strong>Firebase Authentication</strong> — Passwords are never stored in plain text; authentication is handled by Google Firebase with industry-standard encryption.</li>
+            <li><strong>Firestore Security Rules</strong> — Database access is controlled by role-based security rules.</li>
+            <li><strong>Role-Based Access Control</strong> — Member data is accessible only to authorized roles.</li>
+            <li><strong>HTTPS Encryption</strong> — All data transmission is encrypted.</li>
+            <li><strong>Regular Review</strong> — Organizational security practices are reviewed periodically.</li>
+        </ul>
+
+        <h3 class="legal-h3">1.9 Member Rights</h3>
+        <p class="legal-p">Under applicable Indian data protection laws, members have the right to:</p>
+        <ul class="legal-ul">
+            <li><strong>Access</strong> their personal data held by EIAFSDO</li>
+            <li><strong>Correct</strong> inaccurate or incomplete data</li>
+            <li><strong>Request deletion</strong> of their data (subject to organizational requirements)</li>
+            <li><strong>Withdraw consent</strong> (which may affect membership status)</li>
+            <li><strong>Lodge a grievance</strong> with the EIAFSDO Board</li>
+        </ul>
+
+        <h3 class="legal-h3">1.10 Contact for Organizational Privacy</h3>
+        <div class="legal-info-card">
+            <h4>Privacy Inquiries</h4>
+            <p><strong>Organization Email:</strong> eiafsdoindia@proton.me</p>
+            <p><strong>Issuing Authority:</strong> EIAFSDO Board</p>
+            <p><strong>Address:</strong> Tarakeswar, Hooghly, West Bengal, India</p>
+        </div>
+
+        <h3 class="legal-h3">1.11 Changes to This Policy</h3>
+        <p class="legal-p">
+            EIAFSDO may update this Privacy Policy from time to time. Material changes will be communicated through the EIAFSDO notice board, email to registered members, and a notice on the organization website.
+        </p>
+    </section>
+
+    <!-- ============================================================
+         PART 2 — WEBSITE PRIVACY
+    ============================================================ -->
+    <section class="legal-section reveal" id="part-2">
+        <div class="legal-section-header">
+            <div class="sec-icon">🌐</div>
+            <div class="sec-title">
+                <span class="sec-kicker">Part 02</span>
+                <h2>Privacy Policy — Website</h2>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">2.1 Introduction</h3>
+        <p class="legal-p">
+            This section of the Privacy Policy applies specifically to the <strong>EIAFSDO website</strong> and all associated pages, including but not limited to:
+        </p>
+        <ul class="legal-ul">
+            <li><strong>Homepage</strong> — index.html</li>
+            <li><strong>Team Directory</strong> — team.html</li>
+            <li><strong>Project Showcase</strong> — projects.html</li>
+            <li><strong>Community Talks</strong> — talks.html</li>
+            <li><strong>Notice Board</strong> — notice.html</li>
+            <li><strong>Chairman's Desk</strong> — chairman-desk.html</li>
+            <li><strong>CEO's Desk</strong> — ceo.html</li>
+            <li><strong>Organizational Structure</strong> — orgstructure.html</li>
+            <li><strong>Member Dashboard</strong> — login.html</li>
+        </ul>
+        <p class="legal-p">
+            This website privacy policy is published in compliance with the SPDI Rules, which require every body corporate collecting and processing personal information to publish a privacy policy on its website.
+        </p>
+
+        <h3 class="legal-h3">2.2 Information Collected Through the Website</h3>
+
+        <div class="legal-table-wrap">
+            <table class="legal-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Collection Method</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>IP Address</strong></td>
+                        <td>Automatically by hosting provider</td>
+                        <td>Basic site analytics, security</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Browser / Device Info</strong></td>
+                        <td>Automatically</td>
+                        <td>Site functionality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pages Visited</strong></td>
+                        <td>Basic server logs</td>
+                        <td>Understanding site usage</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Form Data</strong></td>
+                        <td>Contact form submissions</td>
+                        <td>Responding to inquiries</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Login Credentials</strong></td>
+                        <td>Dashboard login</td>
+                        <td>Member authentication</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Profile Data</strong></td>
+                        <td>Member profile updates</td>
+                        <td>Displaying member info</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Firebase Auth Data</strong></td>
+                        <td>Google Firebase</td>
+                        <td>Authentication, account management</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="legal-callout">
+            <span class="lc-icon">🍪</span>
+            <div class="lc-body">
+                <strong>Cookies</strong>
+                <p>
+                    The EIAFSDO website does not use tracking cookies for advertising. Firebase Authentication may use local storage for session management. No third-party advertising cookies are set.
+                </p>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">2.3 How Website Data Is Used</h3>
+        <ul class="legal-ul">
+            <li><strong>Member Authentication</strong> — Logging into the dashboard</li>
+            <li><strong>Profile Display</strong> — Showing member information on the public team page</li>
+            <li><strong>Project Showcase</strong> — Displaying approved member projects</li>
+            <li><strong>Notice Board</strong> — Publishing organizational notices</li>
+            <li><strong>Communication</strong> — Responding to contact form submissions</li>
+            <li><strong>Site Security</strong> — Preventing abuse and unauthorized access</li>
+        </ul>
+
+        <h3 class="legal-h3">2.4 Public-Facing Information</h3>
+        <p class="legal-p">
+            The following information may be <strong>publicly visible</strong> on the EIAFSDO website:
+        </p>
+        <ul class="legal-ul">
+            <li>Member names, photographs, roles, bios, tech stacks, organization</li>
+            <li>Developer links — LinkedIn, GitHub, portfolio</li>
+            <li>Approved project information — name, description, links, images</li>
+            <li>Community talks posted by members</li>
+            <li>Organizational notices and announcements</li>
+            <li>Organizational structure and leadership information</li>
+        </ul>
+        <p class="legal-p">
+            <strong>By becoming a member and using the EIAFSDO dashboard, you consent to this public display of your profile information.</strong>
+        </p>
+
+        <h3 class="legal-h3">2.5 Third-Party Services</h3>
+
+        <div class="legal-table-wrap">
+            <table class="legal-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Provider</th>
+                        <th>Purpose</th>
+                        <th>Data Shared</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Firebase Authentication</strong></td>
+                        <td>Google</td>
+                        <td>User login, registration</td>
+                        <td>Email, password (hashed), UID</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cloud Firestore</strong></td>
+                        <td>Google</td>
+                        <td>Data storage</td>
+                        <td>Member profiles, projects, talks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>EmailJS</strong></td>
+                        <td>EmailJS</td>
+                        <td>Email notifications</td>
+                        <td>Email address, name</td>
+                    </tr>
+                    <tr>
+                        <td><strong>html2canvas</strong></td>
+                        <td>Client-side library</td>
+                        <td>ID card download</td>
+                        <td>None (runs in browser)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>QR Server API</strong></td>
+                        <td>qrserver.com</td>
+                        <td>QR code generation</td>
+                        <td>UID, name, role, email</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google Fonts</strong></td>
+                        <td>Google</td>
+                        <td>Typography</td>
+                        <td>None</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="legal-h3">2.6 Data Security on the Website</h3>
+        <ul class="legal-ul">
+            <li><strong>HTTPS Encryption</strong> for all data transmission</li>
+            <li><strong>Firebase Authentication</strong> for secure login</li>
+            <li><strong>Firestore Security Rules</strong> controlling database access</li>
+            <li><strong>Role-based access</strong> in the dashboard</li>
+            <li><strong>No storage of plain-text passwords</strong></li>
+        </ul>
+
+        <h3 class="legal-h3">2.7 Website User Rights</h3>
+        <ul class="legal-ul">
+            <li><strong>Access</strong> their data through the member dashboard</li>
+            <li><strong>Update</strong> their profile information</li>
+            <li><strong>Request account deletion</strong> through the EIAFSDO Board</li>
+            <li><strong>Contact</strong> the organization through the contact form</li>
+        </ul>
+
+        <h3 class="legal-h3">2.8 Children’s Privacy</h3>
+        <p class="legal-p">
+            The EIAFSDO website is not directed at children under 13. We do not knowingly collect personal data from children under 13. If we become aware of such collection, we will delete the data promptly.
+        </p>
+
+        <h3 class="legal-h3">2.9 International Visitors</h3>
+        <p class="legal-p">
+            The EIAFSDO website is hosted on GitHub Pages and uses Firebase services. Data may be transferred to and processed in countries outside India. By using the website, you consent to such transfer.
+        </p>
+    </section>
+
+    <!-- ============================================================
+         PART 3 — TERMS OF SERVICE
+    ============================================================ -->
+    <section class="legal-section reveal" id="part-3">
+        <div class="legal-section-header">
+            <div class="sec-icon">📜</div>
+            <div class="sec-title">
+                <span class="sec-kicker">Part 03</span>
+                <h2>Terms of Service — Members</h2>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">3.1 Introduction</h3>
+        <p class="legal-p">
+            These Terms of Service (“Terms”) govern the relationship between the <strong>East Indian Amateur Full-Stack Developers Organization</strong> (“EIAFSDO,” “we,” “our,” or “us”) and each <strong>Member</strong> (“you,” “your,” or “Member”) of the organization.
+        </p>
+        <p class="legal-p">
+            These Terms form a <strong>legally binding agreement</strong> governed by the <strong>Indian Contract Act, 1872</strong>, and the <strong>Information Technology Act, 2000</strong>. By registering as a member of EIAFSDO, accessing the member dashboard, or participating in organizational activities, you agree to be bound by these Terms.
+        </p>
+
+        <h3 class="legal-h3">3.2 Membership Eligibility</h3>
+        <ul class="legal-ul">
+            <li>Be at least <strong>13 years of age</strong> (or have parental/guardian consent if under 18)</li>
+            <li>Provide accurate and complete registration information</li>
+            <li>Maintain the security of your account credentials</li>
+            <li>Comply with all applicable laws and organizational policies</li>
+        </ul>
+
+        <h3 class="legal-h3">3.3 Member Account Responsibilities</h3>
+        <ul class="legal-ul">
+            <li>Maintaining the confidentiality of your login credentials</li>
+            <li>All activity that occurs under your account</li>
+            <li>Ensuring your profile information is accurate</li>
+            <li>Notifying EIAFSDO immediately of any unauthorized account use</li>
+        </ul>
+
+        <h3 class="legal-h3">3.4 Acceptable Use</h3>
+        <p class="legal-p">Members agree <strong>not</strong> to:</p>
+        <ul class="legal-ul">
+            <li>Submit false or misleading information</li>
+            <li>Upload malicious code, viruses, or harmful content</li>
+            <li>Harass, threaten, or abuse other members</li>
+            <li>Post illegal, defamatory, or infringing content</li>
+            <li>Attempt to gain unauthorized access to other accounts</li>
+            <li>Reverse-engineer, scrape, or abuse the platform</li>
+            <li>Use the organization for unauthorized commercial purposes</li>
+        </ul>
+
+        <h3 class="legal-h3">3.5 Intellectual Property</h3>
+        <div class="legal-info-card">
+            <h4>Organizational IP</h4>
+            <p>EIAFSDO owns the organization name, logo, website design, dashboard code, and organizational materials.</p>
+        </div>
+        <div class="legal-info-card">
+            <h4>Member IP</h4>
+            <p>Members retain ownership of their original projects, code, and creative works. By submitting content (projects, talks, bios) to EIAFSDO, you grant EIAFSDO a non-exclusive, royalty-free license to display, host, and promote that content on organizational platforms.</p>
+        </div>
+
+        <h3 class="legal-h3">3.6 Project Submissions</h3>
+        <ul class="legal-ul">
+            <li>You confirm you have the right to share the project</li>
+            <li>You grant EIAFSDO permission to review, approve/reject, and display the project</li>
+            <li>You understand that approved projects may be publicly visible</li>
+            <li>EIAFSDO may edit project metadata (formatting, categorization) for display purposes</li>
+        </ul>
+
+        <h3 class="legal-h3">3.7 Role Assignments and Governance</h3>
+        <p class="legal-p">
+            Members may be assigned roles (Member, Admin, IT Admin, CEO, Chairman, Founding Board Member) by authorized administrators or the Founding Board. Role assignments may be changed or revoked according to organizational governance procedures.
+        </p>
+
+        <h3 class="legal-h3">3.8 Termination and Suspension</h3>
+        <p class="legal-p">EIAFSDO reserves the right to suspend or terminate membership for:</p>
+        <ul class="legal-ul">
+            <li>Violation of these Terms</li>
+            <li>Violation of organizational policies</li>
+            <li>Conduct harmful to the organization or its members</li>
+            <li>Legal or regulatory requirements</li>
+        </ul>
+
+        <h3 class="legal-h3">3.9 Limitation of Liability</h3>
+        <ul class="legal-ul">
+            <li>EIAFSDO provides its platforms and services <strong>“as is”</strong> without warranties</li>
+            <li>EIAFSDO is not liable for indirect, incidental, or consequential damages</li>
+            <li>EIAFSDO’s total liability is limited to the amount of any fees paid by the member (if any)</li>
+        </ul>
+
+        <h3 class="legal-h3">3.10 Indemnification</h3>
+        <p class="legal-p">
+            You agree to indemnify and hold harmless EIAFSDO, its officers, Board members, and administrators from any claims arising from:
+        </p>
+        <ul class="legal-ul">
+            <li>Your violation of these Terms</li>
+            <li>Your submission of unlawful content</li>
+            <li>Your violation of any third-party rights</li>
+        </ul>
+
+        <h3 class="legal-h3">3.11 Governing Law and Dispute Resolution</h3>
+        <p class="legal-p">
+            These Terms are governed by the laws of <strong>India</strong>. Any disputes shall be subject to the exclusive jurisdiction of the courts in <strong>Hooghly, West Bengal, India</strong>.
+        </p>
+
+        <h3 class="legal-h3">3.12 Changes to Terms</h3>
+        <p class="legal-p">
+            EIAFSDO may update these Terms from time to time. Continued membership after changes constitutes acceptance of the updated Terms.
+        </p>
+    </section>
+
+    <!-- ============================================================
+         PART 4 — WEBSITE TERMS OF USE
+    ============================================================ -->
+    <section class="legal-section reveal" id="part-4">
+        <div class="legal-section-header">
+            <div class="sec-icon">📄</div>
+            <div class="sec-title">
+                <span class="sec-kicker">Part 04</span>
+                <h2>Terms of Use — Website</h2>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">4.1 Introduction</h3>
+        <p class="legal-p">
+            These Terms of Use govern your access to and use of the <strong>EIAFSDO website</strong> and all associated pages. By accessing the website, you agree to these Terms of Use. If you do not agree, please do not use the website.
+        </p>
+        <p class="legal-p">
+            These Terms of Use are governed by the <strong>Indian Contract Act, 1872</strong> and the <strong>Information Technology Act, 2000</strong>.
+        </p>
+
+        <h3 class="legal-h3">4.2 Acceptance of Terms</h3>
+        <p class="legal-p">By using the EIAFSDO website, you acknowledge that:</p>
+        <ul class="legal-ul">
+            <li>You have read and understood these Terms of Use</li>
+            <li>You accept and agree to be bound by them</li>
+            <li>You are legally capable of entering into a binding agreement under Indian law</li>
+        </ul>
+        <p class="legal-p">
+            <em>This is a “browse-wrap” agreement.</em> By continuing to use the website, you accept these terms.
+        </p>
+
+        <h3 class="legal-h3">4.3 Permitted Use</h3>
+        <p class="legal-p">You may use the EIAFSDO website for:</p>
+        <ul class="legal-ul">
+            <li>Learning about the organization</li>
+            <li>Viewing public team, project, and notice information</li>
+            <li>Contacting the organization</li>
+            <li>Accessing the member dashboard (if registered)</li>
+        </ul>
+
+        <h3 class="legal-h3">4.4 Prohibited Use</h3>
+        <p class="legal-p">You may <strong>not</strong>:</p>
+        <ul class="legal-ul">
+            <li>Attempt to gain unauthorized access to any part of the website</li>
+            <li>Use automated tools to scrape or harvest content</li>
+            <li>Introduce viruses, malware, or harmful code</li>
+            <li>Interfere with the website’s operation</li>
+            <li>Reproduce, duplicate, or copy website content for commercial purposes</li>
+            <li>Impersonate EIAFSDO or its members</li>
+        </ul>
+
+        <h3 class="legal-h3">4.5 Intellectual Property</h3>
+        <p class="legal-p">
+            All website content — including text, design, code, graphics, and logos — is owned by or licensed to EIAFSDO and is protected by applicable Indian intellectual property laws. Unauthorized use is prohibited.
+        </p>
+
+        <h3 class="legal-h3">4.6 User-Generated Content</h3>
+        <p class="legal-p">
+            If you submit content through the website (contact form, project submission, talks), you confirm you have the right to share it, grant EIAFSDO permission to display and use it, and confirm it does not violate any third-party rights.
+        </p>
+
+        <h3 class="legal-h3">4.7 Website Availability</h3>
+        <p class="legal-p">
+            EIAFSDO does not guarantee that the website will be available at all times. The website may be under maintenance or unavailable due to technical issues. EIAFSDO is not liable for any loss caused by website unavailability.
+        </p>
+
+        <h3 class="legal-h3">4.8 Third-Party Links</h3>
+        <p class="legal-p">
+            The website may contain links to third-party sites. EIAFSDO is not responsible for the content or privacy practices of those sites.
+        </p>
+
+        <h3 class="legal-h3">4.9 Disclaimer of Warranties</h3>
+        <p class="legal-p">
+            The website is provided <strong>“as is”</strong> without warranties of any kind. EIAFSDO disclaims all warranties, express or implied, including merchantability and fitness for a particular purpose.
+        </p>
+
+        <h3 class="legal-h3">4.10 Limitation of Liability</h3>
+        <p class="legal-p">
+            EIAFSDO is not liable for any direct, indirect, incidental, or consequential damages arising from your use of the website, to the maximum extent permitted by law.
+        </p>
+
+        <h3 class="legal-h3">4.11 Governing Law</h3>
+        <p class="legal-p">
+            These Terms of Use are governed by Indian law. Disputes are subject to the exclusive jurisdiction of courts in <strong>Hooghly, West Bengal, India</strong>.
+        </p>
+    </section>
+
+    <!-- ============================================================
+         PART 5 — LEGAL DISCLAIMERS
+    ============================================================ -->
+    <section class="legal-section reveal" id="part-5">
+        <div class="legal-section-header">
+            <div class="sec-icon">⚖️</div>
+            <div class="sec-title">
+                <span class="sec-kicker">Part 05</span>
+                <h2>Legal Disclaimers & Compliance</h2>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">5.1 Organizational Status</h3>
+        <p class="legal-p">
+            EIAFSDO is a <strong>student-operated collective</strong>, and is <strong>not a registered company, partnership, trust, society, or any other registered legal entity</strong> under any Indian registration act as of the date of this document. It operates as an informal organization for educational and community purposes. Nothing in these documents creates a partnership, agency, employment, or fiduciary relationship beyond what is expressly stated. These documents reflect our good-faith commitment to legal and ethical practice and will be formally ratified and updated upon organizational registration.
+        </p>
+
+        <h3 class="legal-h3">5.2 Applicable Indian Laws</h3>
+        <p class="legal-p">These documents are drafted with reference to:</p>
+        <ul class="legal-ul">
+            <li><strong>Information Technology Act, 2000</strong> — Governs electronic records and contracts</li>
+            <li><strong>SPDI Rules, 2011</strong> — Governs privacy policy requirements for body corporates</li>
+            <li><strong>Digital Personal Data Protection Act, 2023</strong> — India’s primary data protection law</li>
+            <li><strong>Indian Contract Act, 1872</strong> — Governs contract formation and enforceability</li>
+            <li><strong>Indian Evidence Act, 1872</strong> — Governs admissibility of electronic records</li>
+        </ul>
+
+        <h3 class="legal-h3">5.3 Electronic Contract Validity</h3>
+        <p class="legal-p">
+            These documents constitute <strong>electronic records</strong> under the IT Act. By registering, logging in, or using the website, you are entering into a valid electronic contract. Under Section 10A of the IT Act, contracts formed through electronic means are legally valid and enforceable.
+        </p>
+
+        <div class="legal-callout">
+            <span class="lc-icon">🖱️</span>
+            <div class="lc-body">
+                <strong>Click-Wrap Acceptance</strong>
+                <p>
+                    Where the website requires you to check a box or click “I agree,” that action constitutes acceptance under Indian law.
+                </p>
+            </div>
+        </div>
+
+        <h3 class="legal-h3">5.4 Compliance — Honest Disclosure</h3>
+        <p class="legal-p">
+            EIAFSDO acknowledges that as a student-run, unregistered organization, we may not be fully compliant with every procedural requirement under the DPDP Act, 2023 (which is still being implemented). This document represents our good-faith effort to comply with applicable Indian laws. We commit to updating these policies as the legal framework evolves and as the organization registers.
+        </p>
+
+        <h3 class="legal-h3">5.5 Contact for Legal Matters</h3>
+        <div class="legal-info-card">
+            <h4>EIAFSDO Board — Legal Contact</h4>
+            <p><strong>Organization Email:</strong> eiafsdoindia@proton.me</p>
+            <p><strong>Issuing Authority:</strong> EIAFSDO Board</p>
+            <p><strong>Address:</strong> Tarakeswar, Hooghly, West Bengal, India</p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         PART 6 — ISSUING AUTHORITY
+    ============================================================ -->
+    <section class="legal-section reveal" id="part-6">
+        <div class="legal-section-header">
+            <div class="sec-icon">🏛️</div>
+            <div class="sec-title">
+                <span class="sec-kicker">Part 06</span>
+                <h2>Issuing Authority</h2>
+            </div>
+        </div>
+
+        <p class="legal-p">
+            These legal documents are officially issued and maintained by the <strong>EIAFSDO Board</strong> — the Founding Board of the East Indian Amateur Full-Stack Developers Organization.
+        </p>
+        <p class="legal-p">
+            The EIAFSDO Board holds ultimate governance authority over the organization and is responsible for approving, updating, and enforcing these policies. Any amendments, updates, or formal ratifications of these documents will be published through the official EIAFSDO digital platforms and communicated to members.
+        </p>
+
+        <div class="issuer-card">
+            <div class="ic-row">
+                <img src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo" class="ic-logo">
+                <div class="ic-body">
+                    <span class="ic-kicker">Issued By</span>
+                    <h3>EIAFSDO Board</h3>
+                    <p>
+                        The Founding Board of the East Indian Amateur Full-Stack Developers Organization. Ultimate governance authority of the organization.
+                    </p>
+                    <div class="ic-meta">
+                        <span>Document <strong>Privacy & Terms v1.0</strong></span>
+                        <span>Issued <strong>04 October 2026</strong></span>
+                        <span>Status <strong>Active</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+    <div class="footer-brand">
+        <img src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo">
+        <div>
+            <h3>EIAFSDO</h3>
+            <p>East Indian Amateur Full-Stack Developers Org.</p>
+        </div>
+    </div>
+
+    <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+        <a href="mailto:eiafsdoindia@proton.me">Email</a>
+    </div>
+
+    <div class="copyright">
+        © 2026 <strong>East Indian Amateur Full-Stack Developers Organization</strong>. All rights reserved.
+    </div>
+
+    <span class="footer-handle">Legal Documents · Issued by <strong>EIAFSDO Board</strong></span>
+</footer>
+
+<!-- ============================================================
+     SCROLL TOP
+============================================================ -->
+<button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">↑</button>
+
+<!-- ============================================================
+     SCRIPT
+============================================================ -->
+<script>
+/* ---------- NAV ---------- */
+const navbar = document.getElementById('navbar');
+const scrollBtn = document.getElementById('scrollTopBtn');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    scrollBtn.classList.toggle('visible', window.scrollY > 400);
+});
+scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('open');
+    });
+});
+
+/* ---------- REVEAL ---------- */
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ---------- SMOOTH ANCHOR ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId.length > 1) {
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+                e.preventDefault();
+                const yOffset = -100;
+                const y = targetEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+    });
+});
+</script>
+
+</body>
+</html>
