@@ -1,496 +1,571 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0756b5">
-<title>EIAFSDO | Under Maintenance</title>
-
+<meta name="theme-color" content="#facc15">
+<title>EIAFSDO | System Maintenance</title>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-
-:root {
-    --blue: #0866d6;
-    --dark: #103b76;
-    --light: #eff6ff;
-}
-
-body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #eaf3ff, #ffffff, #eaf4ff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px 15px;
-    color: var(--dark);
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* Animated background */
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    width: 350px;
-    height: 350px;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.4;
-    z-index: -1;
-    animation: float 9s ease-in-out infinite alternate;
-}
-
-body::before {
-    background: #8dc4ff;
-    top: -100px;
-    left: -100px;
-}
-
-body::after {
-    background: #a4bfff;
-    bottom: -100px;
-    right: -100px;
-    animation-delay: 2s;
-}
-
-@keyframes float {
-    from { transform: translate(0, 0); }
-    to { transform: translate(45px, 35px); }
-}
-
-.container {
-    width: 100%;
-    max-width: 780px;
-    background: rgba(255, 255, 255, 0.88);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.9);
-    border-radius: 25px;
-    padding: 38px;
-    text-align: center;
-    box-shadow: 0 20px 70px rgba(0, 66, 150, 0.12);
-    animation: appear 0.9s ease-out;
-}
-
-@keyframes appear {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.98);
+    /* --- CSS Reset & Variables --- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+
+    :root {
+        --bg-cream: #fdfbf7;
+        --text-main: #111111;
+        --text-muted: #555555;
+        --accent-yellow: #facc15;
+        --border-black: #111111;
+        --card-white: #ffffff;
+        --shadow-offset: 6px 6px 0px var(--border-black);
+        --shadow-hover: 8px 8px 0px var(--border-black);
     }
-}
 
-/* Official logo */
-.logo-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 16px;
-}
+    body {
+        min-height: 100vh;
+        background-color: var(--bg-cream);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        /* Premium grid background */
+        background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+        background-size: 24px 24px;
+        line-height: 1.5;
+    }
 
-.logo {
-    width: 105px;
-    height: 105px;
-    object-fit: contain;
-    border-radius: 22px;
-    background: white;
-    padding: 5px;
-    box-shadow: 0 8px 30px rgba(0, 86, 190, 0.15);
-    animation: logoFloat 4s ease-in-out infinite;
-}
+    /* --- Layout --- */
+    .container {
+        width: 100%;
+        max-width: 860px;
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-@keyframes logoFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-7px); }
-}
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-h1 {
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: #0756b5;
-}
+    /* --- Header & Badges --- */
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
 
-.tagline {
-    font-size: 13px;
-    color: #72849e;
-    margin: 8px 0 30px;
-    line-height: 1.7;
-}
+    .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
 
-.maintenance-icon {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 22px;
-    background: linear-gradient(135deg, #e6f2ff, #f7fbff);
-    border: 1px solid #d7eaff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 49px;
-    box-shadow: 0 10px 30px rgba(0, 88, 190, 0.08);
-    animation: gear 8s linear infinite;
-}
+    .logo-img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        border-radius: 12px;
+        border: 2px solid var(--border-black);
+        background: white;
+        box-shadow: 4px 4px 0 var(--border-black);
+    }
 
-@keyframes gear {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
+    .logo-text h1 {
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+    }
 
-h2 {
-    font-size: 26px;
-    color: #103d7c;
-    margin-bottom: 13px;
-}
+    .logo-text p {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-.description {
-    max-width: 570px;
-    margin: 0 auto 22px;
-    color: #647790;
-    font-size: 15px;
-    line-height: 1.85;
-}
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: var(--accent-yellow);
+        border: 2px solid var(--border-black);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 13px;
+        text-transform: uppercase;
+        box-shadow: 4px 4px 0 var(--border-black);
+    }
 
-.status {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    padding: 10px 19px;
-    background: #fff4dd;
-    border: 1px solid #ffe0a4;
-    border-radius: 50px;
-    color: #9b6200;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: .5px;
-    margin-bottom: 28px;
-}
+    .badge-dot {
+        width: 10px;
+        height: 10px;
+        background-color: #ef4444; /* Red for locked/alert */
+        border-radius: 50%;
+        border: 1.5px solid var(--border-black);
+        animation: pulse 1.5s infinite;
+    }
 
-.status-dot {
-    width: 9px;
-    height: 9px;
-    background: #e69b16;
-    border-radius: 50%;
-    animation: pulse 1.5s infinite;
-}
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.3); opacity: 0.7; }
+    }
 
-@keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(230,155,22,.5); }
-    50% { box-shadow: 0 0 0 7px rgba(230,155,22,0); }
-}
+    /* --- Main Content --- */
+    .hero {
+        text-align: center;
+        margin-bottom: 50px;
+    }
 
-/* Schedule */
-.schedule {
-    background: linear-gradient(135deg, #f3f8ff, #ffffff);
-    border: 1px solid #e0ebfa;
-    border-radius: 18px;
-    padding: 24px;
-    margin-bottom: 28px;
-}
+    .hero h2 {
+        font-size: clamp(36px, 6vw, 56px);
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        margin-bottom: 16px;
+        position: relative;
+        display: inline-block;
+    }
 
-.schedule h3 {
-    font-size: 19px;
-    color: #0756b5;
-    margin-bottom: 20px;
-}
+    .highlight {
+        position: relative;
+        z-index: 1;
+    }
 
-.details {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-}
+    .highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        width: 100%;
+        height: 16px;
+        background-color: var(--accent-yellow);
+        z-index: -1;
+        border-radius: 4px;
+    }
 
-.detail {
-    background: white;
-    padding: 18px 10px;
-    border-radius: 12px;
-    border: 1px solid #e5edfa;
-    transition: transform .3s ease, box-shadow .3s ease;
-}
+    .hero p {
+        font-size: 16px;
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto;
+        font-weight: 500;
+    }
 
-.detail:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 9px 22px rgba(0, 85, 180, .09);
-}
+    /* --- Login Locked Alert --- */
+    .alert-locked {
+        background-color: #fff1f2;
+        border: 2px solid #e11d48;
+        border-radius: 16px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 40px;
+        box-shadow: 6px 6px 0 #e11d48;
+    }
 
-.detail span {
-    display: block;
-    font-size: 12px;
-    color: #8292a9;
-    margin-bottom: 9px;
-}
+    .alert-locked-icon {
+        font-size: 32px;
+        background: #e11d48;
+        color: white;
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        border: 2px solid var(--border-black);
+        flex-shrink: 0;
+    }
 
-.detail strong {
-    color: #164784;
-    font-size: 15px;
-}
+    .alert-locked-text h3 {
+        font-size: 18px;
+        font-weight: 900;
+        color: #be123c;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+    }
 
-/* Countdown */
-.countdown-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 15px;
-    color: #49678f;
-}
+    .alert-locked-text p {
+        font-size: 14px;
+        color: #881337;
+        font-weight: 600;
+    }
 
-.countdown {
-    display: flex;
-    justify-content: center;
-    gap: 13px;
-    margin-bottom: 30px;
-}
+    /* --- Countdown --- */
+    .countdown-section {
+        margin-bottom: 50px;
+    }
 
-.time-box {
-    min-width: 82px;
-    padding: 15px 10px;
-    border-radius: 14px;
-    color: white;
-    background: linear-gradient(145deg, #0876e9, #064ba8);
-    box-shadow: 0 7px 20px rgba(0, 83, 182, .18);
-    transition: transform .25s ease;
-}
+    .section-label {
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-.time-box:hover {
-    transform: translateY(-4px);
-}
+    .section-label::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 3px;
+        background: var(--accent-yellow);
+        border-radius: 2px;
+    }
 
-.time-box strong {
-    display: block;
-    font-size: 27px;
-    font-weight: 800;
-}
+    .countdown-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
 
-.time-box span {
-    font-size: 11px;
-    opacity: .85;
-}
+    .countdown-card {
+        background: var(--card-white);
+        border: 2px solid var(--border-black);
+        border-radius: 16px;
+        padding: 24px 16px;
+        text-align: center;
+        box-shadow: var(--shadow-offset);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-/* Notice */
-.notice {
-    text-align: left;
-    padding: 21px;
-    background: #f5f9ff;
-    border-left: 4px solid #0871df;
-    border-radius: 12px;
-    margin-bottom: 28px;
-}
+    .countdown-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: var(--shadow-hover);
+    }
 
-.notice h3 {
-    color: #0756b5;
-    font-size: 17px;
-    margin-bottom: 10px;
-}
+    .countdown-card .number {
+        display: block;
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 8px;
+    }
 
-.notice p {
-    font-size: 13px;
-    color: #687b95;
-    line-height: 1.9;
-}
+    .countdown-card .label {
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
+    }
 
-.signature {
-    border-top: 1px solid #e3ebf5;
-    padding-top: 22px;
-    text-align: left;
-    line-height: 1.8;
-}
+    /* --- Info Grid --- */
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 50px;
+    }
 
-.signature .issued {
-    font-size: 13px;
-    color: #7d8ea4;
-}
+    .info-card {
+        background: var(--card-white);
+        border: 2px solid var(--border-black);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow-offset);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
 
-.signature strong {
-    font-size: 17px;
-    color: #0756b5;
-}
+    .info-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: var(--shadow-hover);
+    }
 
-.signature p {
-    color: #72839b;
-    font-size: 13px;
-}
+    .info-card .icon-box {
+        width: 48px;
+        height: 48px;
+        background: var(--accent-yellow);
+        border: 2px solid var(--border-black);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 16px;
+        box-shadow: 3px 3px 0 var(--border-black);
+    }
 
-.official {
-    margin-top: 10px;
-    display: inline-block;
-    background: #e9f4ff;
-    color: #0756b5;
-    padding: 5px 12px;
-    border-radius: 5px;
-    font-size: 11px;
-    font-weight: 700;
-}
+    .info-card h4 {
+        font-size: 16px;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
 
-footer {
-    border-top: 1px solid #e9eff8;
-    margin-top: 27px;
-    padding-top: 20px;
-    font-size: 12px;
-    color: #9aa9bb;
-    line-height: 1.8;
-}
+    .info-card p {
+        font-size: 14px;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
 
-@media (max-width: 550px) {
-    body { padding: 18px 12px; }
-    .container { padding: 27px 17px; border-radius: 19px; }
-    .logo { width: 85px; height: 85px; }
-    h1 { font-size: 27px; }
-    h2 { font-size: 22px; }
-    .details { grid-template-columns: 1fr; }
-    .countdown { gap: 7px; }
-    .time-box { min-width: 68px; padding: 13px 6px; }
-    .time-box strong { font-size: 22px; }
-}
+    /* --- Signature Section --- */
+    .signature-section {
+        background: var(--card-white);
+        border: 2px solid var(--border-black);
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: var(--shadow-offset);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .signature-header {
+        font-size: 18px;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px dashed #ccc;
+    }
+
+    .signature-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Centered single column */
+        gap: 30px;
+        margin-bottom: 24px;
+    }
+
+    .sig-block {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .sig-block .role {
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.5px;
+    }
+
+    .sig-block .name {
+        font-size: 22px;
+        font-weight: 900;
+    }
+
+    .sig-block .dept {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .sig-block .signature-mock {
+        font-family: 'Brush Script MT', cursive, sans-serif;
+        font-size: 32px;
+        color: #1d4ed8;
+        transform: rotate(-5deg);
+        margin-top: 10px;
+        display: inline-block;
+        border-bottom: 2px solid #1d4ed8;
+        padding-bottom: 4px;
+        width: fit-content;
+    }
+
+    .digital-sign-id {
+        background: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 14px 18px;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        font-weight: 700;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .digital-sign-id span:first-child {
+        color: #64748b;
+        text-transform: uppercase;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    /* --- Footer --- */
+    footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 640px) {
+        .top-bar { flex-direction: column; align-items: flex-start; }
+        .badge { align-self: flex-start; }
+        .countdown-grid { grid-template-columns: 1fr; }
+        .info-grid { grid-template-columns: 1fr; }
+        .signature-grid { grid-template-columns: 1fr; gap: 20px; }
+        .alert-locked { flex-direction: column; text-align: center; }
+        .digital-sign-id { flex-direction: column; align-items: flex-start; }
+        .sig-block .name { font-size: 20px; }
+        .sig-block .signature-mock { font-size: 28px; }
+    }
 </style>
 </head>
-
 <body>
 
 <main class="container">
-
-    <div class="logo-wrap">
-        <img
-            class="logo"
-            src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
-            alt="EIAFSDO Official Logo"
-        >
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="logo-area">
+            <img class="logo-img" src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png" alt="EIAFSDO Logo">
+            <div class="logo-text">
+                <h1>EIAFSDO</h1>
+                <p>East Indian Amateur Full-Stack Developers Organization</p>
+            </div>
+        </div>
+        <div class="badge">
+            <span class="badge-dot"></span>
+            System Status: Maintenance
+        </div>
     </div>
 
-    <h1>EIAFSDO</h1>
-
-    <p class="tagline">
-        East Indian Amateur Full-Stack Developers Organization
-        <br>Build. Learn. Grow.
-    </p>
-
-    <div class="maintenance-icon" aria-hidden="true">⚙️</div>
-
-    <h2>Website Under Maintenance</h2>
-
-    <p class="description">
-        We are currently upgrading our website and login portal
-        to improve performance, enhance security, and deliver
-        a smoother experience. Please wait until we go live.
-    </p>
-
-    <div class="status">
-        <span class="status-dot"></span>
-        SYSTEM UNDER MAINTENANCE
+    <!-- Hero Section -->
+    <div class="hero">
+        <h2>Website Under <span class="highlight">Maintenance</span></h2>
+        <p>We are currently upgrading our infrastructure to improve performance, enhance security, and deliver a smoother experience.</p>
     </div>
 
-    <section class="schedule">
-        <h3>Maintenance Schedule</h3>
+    <!-- Login Locked Alert -->
+    <div class="alert-locked">
+        <div class="alert-locked-icon">🔒</div>
+        <div class="alert-locked-text">
+            <h3>System Login is Locked</h3>
+            <p>All user and admin login portals are temporarily disabled during this maintenance window.</p>
+        </div>
+    </div>
 
-        <div class="details">
-            <div class="detail">
-                <span>Maintenance Date</span>
-                <strong>04 October 2026</strong>
+    <!-- Countdown Section -->
+    <section class="countdown-section">
+        <div class="section-label">Estimated Time Remaining</div>
+        <div class="countdown-grid">
+            <div class="countdown-card">
+                <span class="number" id="hours">00</span>
+                <span class="label">Hours</span>
             </div>
-
-            <div class="detail">
-                <span>Duration</span>
-                <strong>5 Hours</strong>
+            <div class="countdown-card">
+                <span class="number" id="minutes">00</span>
+                <span class="label">Minutes</span>
             </div>
-
-            <div class="detail">
-                <span>Expected Go-Live</span>
-                <strong>06:00 PM IST</strong>
-            </div>
-
-            <div class="detail">
-                <span>Time Zone</span>
-                <strong>UTC +05:30</strong>
+            <div class="countdown-card">
+                <span class="number" id="seconds">00</span>
+                <span class="label">Seconds</span>
             </div>
         </div>
     </section>
 
-    <p class="countdown-title" id="countdownTitle">
-        Estimated Time Remaining
-    </p>
+    <!-- Schedule Info Grid -->
+    <section class="info-grid">
+        <div class="info-card">
+            <div class="icon-box">📅</div>
+            <h4>Maintenance Date</h4>
+            <p>04 October 2026</p>
+        </div>
+        <div class="info-card">
+            <div class="icon-box">⏱️</div>
+            <h4>Duration</h4>
+            <p>5 Hours</p>
+        </div>
+        <div class="info-card">
+            <div class="icon-box">🚀</div>
+            <h4>Expected Go-Live</h4>
+            <p>06:00 PM IST</p>
+        </div>
+        <div class="info-card">
+            <div class="icon-box">🌍</div>
+            <h4>Time Zone</h4>
+            <p>UTC +05:30</p>
+        </div>
+    </section>
 
-    <div class="countdown" aria-live="polite">
-        <div class="time-box">
-            <strong id="hours">00</strong>
-            <span>Hours</span>
-        </div>
-        <div class="time-box">
-            <strong id="minutes">00</strong>
-            <span>Minutes</span>
-        </div>
-        <div class="time-box">
-            <strong id="seconds">00</strong>
-            <span>Seconds</span>
-        </div>
-    </div>
-
-    <section class="notice">
-        <h3>Official Maintenance Notice</h3>
-        <p>
-            All members, users, and visitors are hereby informed
-            that the EIAFSDO website and login portal are
-            temporarily unavailable due to scheduled maintenance.
-            Please avoid repeated login attempts and wait for
-            the official go-live announcement.
-            We sincerely apologize for the inconvenience.
+    <!-- Official Notice & Signature -->
+    <section class="signature-section">
+        <div class="signature-header">Official Maintenance Notice & Digital Signature</div>
+        
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; font-weight: 500;">
+            All members, users, and visitors are hereby informed that the EIAFSDO website and login portal are temporarily unavailable due to scheduled maintenance. Please avoid repeated login attempts and wait for the official go-live announcement. We sincerely apologize for the inconvenience.
         </p>
+
+        <div class="signature-grid">
+            <!-- Admin & IT Department Head Lead Signature -->
+            <div class="sig-block">
+                <span class="role">Officially Issued By / IT Department Head Lead</span>
+                <span class="name">Priyabrata Patra</span>
+                <span class="dept">Admin & Board Member, EIAFSDO</span>
+                <span class="signature-mock">Priyabrata P.</span>
+            </div>
+        </div>
+
+        <!-- Digital Sign ID -->
+        <div class="digital-sign-id">
+            <span>Digitally Verified Sign ID:</span>
+            <span>EIA-2026-10-04-7A9F-2B4C-D1E8</span>
+        </div>
     </section>
 
-    <section class="signature">
-        <p class="issued">Officially Issued By</p>
-        <strong>Priyabrata Patra</strong>
-        <p>Admin & Board Member</p>
-        <p>IT Department, EIAFSDO</p>
-        <p>Notice Date: 04 October 2026</p>
-        <span class="official">OFFICIAL MAINTENANCE NOTICE</span>
-    </section>
-
+    <!-- Footer -->
     <footer>
-        © 2026 EIAFSDO. All Rights Reserved.
-        <br>Official Website Maintenance Portal
+        © 2026 EIAFSDO. All Rights Reserved. <br>
+        Official Website Maintenance Portal
     </footer>
 
 </main>
 
 <script>
-const targetDate = new Date("2026-10-04T18:00:00+05:30").getTime();
+    // Set target date to October 4, 2026 at 6:00 PM IST
+    const targetDate = new Date("2026-10-04T18:00:00+05:30").getTime();
 
-function updateCountdown() {
-    const now = Date.now();
-    const distance = targetDate - now;
+    function updateCountdown() {
+        const now = Date.now();
+        const distance = targetDate - now;
 
-    const hoursEl = document.getElementById("hours");
-    const minutesEl = document.getElementById("minutes");
-    const secondsEl = document.getElementById("seconds");
-    const titleEl = document.getElementById("countdownTitle");
+        const hoursEl = document.getElementById("hours");
+        const minutesEl = document.getElementById("minutes");
+        const secondsEl = document.getElementById("seconds");
 
-    if (distance <= 0) {
-        hoursEl.textContent = "00";
-        minutesEl.textContent = "00";
-        secondsEl.textContent = "00";
-        titleEl.textContent = "Estimated maintenance time has ended";
-        return;
+        if (distance <= 0) {
+            hoursEl.textContent = "00";
+            minutesEl.textContent = "00";
+            secondsEl.textContent = "00";
+            document.querySelector('.section-label').textContent = "Maintenance Ended - System Going Live";
+            return;
+        }
+
+        const hours = Math.floor(distance / 3600000);
+        const minutes = Math.floor((distance % 3600000) / 60000);
+        const seconds = Math.floor((distance % 60000) / 1000);
+
+        hoursEl.textContent = String(hours).padStart(2, "0");
+        minutesEl.textContent = String(minutes).padStart(2, "0");
+        secondsEl.textContent = String(seconds).padStart(2, "0");
     }
 
-    const hours = Math.floor(distance / 3600000);
-    const minutes = Math.floor((distance % 3600000) / 60000);
-    const seconds = Math.floor((distance % 60000) / 1000);
-
-    hoursEl.textContent = String(hours).padStart(2, "0");
-    minutesEl.textContent = String(minutes).padStart(2, "0");
-    secondsEl.textContent = String(seconds).padStart(2, "0");
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 </script>
 
 </body>
