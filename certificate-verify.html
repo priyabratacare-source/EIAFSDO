@@ -14,11 +14,16 @@
     <title>EIAFSDO — Certificate Verification</title>
 
 
-    <!-- Firebase SDK v10.8.0 Compat
-         Same version as EIAFSDO Dashboard -->
+    <!-- Firebase SDK v10.8.0 Compat -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+
+    <!-- ★ PDF EXPORT LIBS ★ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 
     <!-- Google Fonts -->
@@ -37,7 +42,6 @@
 
         /* =========================================================
            EIAFSDO DESIGN SYSTEM
-           Based on attached EIAFSDO Dashboard
         ========================================================= */
 
         * {
@@ -407,9 +411,7 @@
 
 
         .hero h1 span {
-
             color: #b88600;
-
         }
 
 
@@ -661,9 +663,7 @@
 
 
         #result.show {
-
             display: block;
-
         }
 
 
@@ -1000,6 +1000,103 @@
 
 
         /* =========================================================
+           ★ DOWNLOAD ACTIONS ★
+        ========================================================= */
+
+        .download-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            padding: 18px 20px 22px;
+
+            flex-wrap: wrap;
+
+            background: var(--surface-soft);
+
+            border-top: var(--border-thick);
+
+        }
+
+
+        .download-btn {
+
+            padding: 12px 20px;
+
+            background: var(--accent-yellow);
+
+            color: var(--text-color);
+
+            border: var(--border-thick);
+
+            border-radius: var(--radius-sm);
+
+            font-size: 13px;
+
+            font-weight: 900;
+
+            cursor: pointer;
+
+            box-shadow: 4px 5px 0 var(--text-color);
+
+            transition: .16s;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+
+        .download-btn:hover:not(:disabled) {
+
+            transform: translate(-1px,-2px);
+
+            box-shadow: 6px 7px 0 var(--text-color);
+
+            background: #ffd968;
+
+        }
+
+
+        .download-btn:active:not(:disabled) {
+
+            transform: translate(2px,3px);
+
+            box-shadow: 1px 1px 0 var(--text-color);
+
+        }
+
+
+        .download-btn:disabled {
+
+            opacity: .6;
+
+            cursor: wait;
+
+            transform: none;
+
+        }
+
+
+        .download-btn.secondary {
+
+            background: var(--surface);
+
+        }
+
+
+        .download-btn.secondary:hover:not(:disabled) {
+
+            background: var(--accent-green);
+
+        }
+
+
+        /* =========================================================
            FOOTER
         ========================================================= */
 
@@ -1104,6 +1201,15 @@
                 padding: 15px;
             }
 
+            .download-actions {
+                flex-direction: column;
+            }
+
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
         }
 
 
@@ -1114,6 +1220,34 @@
                 animation-iteration-count: 1 !important;
                 scroll-behavior: auto !important;
             }
+
+        }
+
+
+        /* =========================================================
+           PRINT STYLES (failsafe for Download PDF)
+        ========================================================= */
+
+        @media print {
+
+            body::before { display: none; }
+
+            header,
+            footer,
+            .hero,
+            .search-card,
+            #message,
+            .verified-card,
+            .download-actions { display: none !important; }
+
+            main { padding: 0; }
+
+            .certificate {
+                box-shadow: none;
+                border: 2px solid #17150f;
+            }
+
+            #result { display: block !important; }
 
         }
 
@@ -1285,7 +1419,7 @@
 
 
 
-        <div class="certificate">
+        <div class="certificate" id="certificateCard">
 
 
             <div class="certificate-head">
@@ -1603,6 +1737,30 @@
             </div>
 
 
+            <!-- ★ DOWNLOAD ACTIONS ★ -->
+
+            <div class="download-actions">
+
+                <button
+                    type="button"
+                    id="downloadPdfBtn"
+                    class="download-btn"
+                >
+                    ⬇ Download Certificate PDF
+                </button>
+
+
+                <button
+                    type="button"
+                    id="printBtn"
+                    class="download-btn secondary"
+                >
+                    🖨 Print
+                </button>
+
+            </div>
+
+
         </div>
 
     </section>
@@ -1634,7 +1792,6 @@
 
     /* ============================================================
        FIREBASE CONFIGURATION
-       EXACT CONFIGURATION FROM ATTACHED EIAFSDO DASHBOARD
     ============================================================ */
 
     const firebaseConfig = {
@@ -1691,12 +1848,20 @@
     const result =
         document.getElementById("result");
 
+    const downloadPdfBtn =
+        document.getElementById("downloadPdfBtn");
+
+    const printBtn =
+        document.getElementById("printBtn");
+
+    const certificateCard =
+        document.getElementById("certificateCard");
+
 
 
     document.getElementById("year")
         .textContent =
         new Date().getFullYear();
-
 
 
     /* ============================================================
@@ -1971,10 +2136,18 @@
        DISPLAY CERTIFICATE
     ============================================================ */
 
+    let lastCertificateData = null;
+    let lastDocumentId = null;
+
+
     function displayCertificate(data, documentId) {
 
         const status =
             calculateStatus(data);
+
+
+        lastCertificateData = data;
+        lastDocumentId = documentId;
 
 
         setValue(
@@ -2391,7 +2564,311 @@
 
 
     /* ============================================================
-       ENTER KEY
+       ★ DOWNLOAD CERTIFICATE PDF ★
+    ============================================================ */
+
+    async function downloadCertificatePDF() {
+
+        if (!lastCertificateData) {
+
+            showMessage(
+                "Please verify a certificate first.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /* ------------------------------------------------------
+           Check the required libraries loaded
+        ------------------------------------------------------ */
+
+        if (
+            typeof window.html2canvas !== "function" ||
+            !window.jspdf ||
+            !window.jspdf.jsPDF
+        ) {
+
+            showMessage(
+                "PDF library unavailable. Using browser print instead.",
+                "info"
+            );
+
+            window.print();
+
+            return;
+
+        }
+
+
+        const { jsPDF } = window.jspdf;
+
+
+        const originalText =
+            downloadPdfBtn.innerHTML;
+
+
+        downloadPdfBtn.disabled = true;
+
+        downloadPdfBtn.innerHTML =
+            "⏳ Generating PDF...";
+
+
+        try {
+
+            /* --------------------------------------------------
+               Give the browser a moment to settle
+            -------------------------------------------------- */
+
+            await new Promise(r => setTimeout(r, 60));
+
+
+            /* --------------------------------------------------
+               Capture the certificate card as a canvas
+            -------------------------------------------------- */
+
+            const canvas =
+                await window.html2canvas(
+                    certificateCard,
+                    {
+                        scale: 2,
+                        backgroundColor: "#fffef8",
+                        useCORS: true,
+                        allowTaint: false,
+                        logging: false,
+                        windowWidth:
+                            certificateCard.scrollWidth,
+                        windowHeight:
+                            certificateCard.scrollHeight
+                    }
+                );
+
+
+            const imgData =
+                canvas.toDataURL(
+                    "image/png",
+                    1.0
+                );
+
+
+            /* --------------------------------------------------
+               Build A4 portrait PDF
+            -------------------------------------------------- */
+
+            const pdf =
+                new jsPDF({
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "a4"
+                });
+
+
+            const pageWidth =
+                pdf.internal.pageSize.getWidth();
+
+            const pageHeight =
+                pdf.internal.pageSize.getHeight();
+
+
+            const margin = 10;
+
+
+            const usableWidth =
+                pageWidth - margin * 2;
+
+            const usableHeight =
+                pageHeight - margin * 2;
+
+
+            const imgWidth =
+                usableWidth;
+
+            const imgHeight =
+                (canvas.height * imgWidth) /
+                canvas.width;
+
+
+            let yOffset = margin;
+
+
+            if (imgHeight <= usableHeight) {
+
+                pdf.addImage(
+                    imgData,
+                    "PNG",
+                    margin,
+                    yOffset,
+                    imgWidth,
+                    imgHeight
+                );
+
+            }
+
+            else {
+
+                /* ----------------------------------------------
+                   Multi-page: slice the image row by row
+                ---------------------------------------------- */
+
+                const pxPerMm =
+                    canvas.width / imgWidth;
+
+                const sliceHeightPx =
+                    usableHeight * pxPerMm;
+
+
+                let renderedPx = 0;
+
+                while (renderedPx < canvas.height) {
+
+                    const currentSlicePx =
+                        Math.min(
+                            sliceHeightPx,
+                            canvas.height - renderedPx
+                        );
+
+
+                    /* Create a temporary canvas for this slice */
+
+                    const sliceCanvas =
+                        document.createElement("canvas");
+
+                    sliceCanvas.width =
+                        canvas.width;
+
+                    sliceCanvas.height =
+                        currentSlicePx;
+
+
+                    const sliceCtx =
+                        sliceCanvas.getContext("2d");
+
+
+                    sliceCtx.drawImage(
+                        canvas,
+                        0,
+                        renderedPx,
+                        canvas.width,
+                        currentSlicePx,
+                        0,
+                        0,
+                        canvas.width,
+                        currentSlicePx
+                    );
+
+
+                    const sliceData =
+                        sliceCanvas.toDataURL(
+                            "image/png",
+                            1.0
+                        );
+
+
+                    const sliceHeightMm =
+                        currentSlicePx / pxPerMm;
+
+
+                    if (renderedPx > 0) {
+
+                        pdf.addPage();
+
+                    }
+
+
+                    pdf.addImage(
+                        sliceData,
+                        "PNG",
+                        margin,
+                        margin,
+                        imgWidth,
+                        sliceHeightMm
+                    );
+
+
+                    renderedPx += currentSlicePx;
+
+                }
+
+            }
+
+
+            /* --------------------------------------------------
+               Footer text (small print, bottom of last page)
+            -------------------------------------------------- */
+
+            pdf.setFontSize(7);
+
+            pdf.setTextColor(120, 110, 90);
+
+            pdf.text(
+                "Verified via EIAFSDO Certificate Verification Portal · " +
+                new Date().toLocaleString("en-IN"),
+                margin,
+                pageHeight - 5
+            );
+
+
+            /* --------------------------------------------------
+               Save
+            -------------------------------------------------- */
+
+            const safeId =
+                String(
+                    lastCertificateData.certificateId ||
+                    lastDocumentId ||
+                    "certificate"
+                ).replace(
+                    /[^A-Za-z0-9._-]+/g,
+                    "_"
+                );
+
+
+            pdf.save(
+                `EIAFSDO-Certificate-${safeId}.pdf`
+            );
+
+
+            showMessage(
+                "✓ Certificate PDF downloaded successfully.",
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "PDF generation error:",
+                error
+            );
+
+
+            showMessage(
+                "PDF generation failed. Using browser print instead.",
+                "info"
+            );
+
+            window.print();
+
+        }
+
+        finally {
+
+            downloadPdfBtn.disabled = false;
+
+            downloadPdfBtn.innerHTML =
+                originalText;
+
+        }
+
+    }
+
+
+
+    /* ============================================================
+       EVENT LISTENERS
     ============================================================ */
 
     input.addEventListener(
@@ -2408,15 +2885,29 @@
     );
 
 
+    verifyButton.addEventListener(
+        "click",
+        verifyCertificate
+    );
+
+
+    downloadPdfBtn.addEventListener(
+        "click",
+        downloadCertificatePDF
+    );
+
+
+    printBtn.addEventListener(
+        "click",
+        function() {
+            window.print();
+        }
+    );
+
+
 
     /* ============================================================
        URL AUTO VERIFICATION
-       
-       Supports:
-       certificate-verify.html?id=EIAFSDO-CERT-2026-00001
-       
-       and:
-       certificate-verify.html?certificate=EIAFSDO-CERT-2026-00001
     ============================================================ */
 
     const params =
