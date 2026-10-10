@@ -1,0 +1,597 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EIAFSDO | Member Registration</title>
+
+<style>
+:root {
+  --primary: #1769ff;
+  --dark: #10254a;
+  --muted: #64748b;
+  --border: #dce6f4;
+  --bg: #f3f7ff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: var(--dark);
+  background:
+    radial-gradient(circle at 10% 10%, #d9e9ff 0, transparent 30%),
+    radial-gradient(circle at 90% 90%, #dce4ff 0, transparent 30%),
+    var(--bg);
+  min-height: 100vh;
+  padding: 28px 15px;
+}
+
+.page {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+  animation: appear .7s ease both;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.logo {
+  width: 76px;
+  height: 76px;
+  border-radius: 22px;
+  object-fit: contain;
+  background: white;
+  padding: 8px;
+  box-shadow: 0 8px 25px #1c5bd51c;
+  margin-bottom: 12px;
+}
+
+.header h1 {
+  font-size: clamp(24px, 5vw, 35px);
+  font-weight: 800;
+  letter-spacing: -.8px;
+}
+
+.header h1 span { color: var(--primary); }
+
+.header p {
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.card {
+  background: rgba(255,255,255,.94);
+  border: 1px solid #ffffff;
+  border-radius: 24px;
+  padding: clamp(20px, 5vw, 38px);
+  box-shadow: 0 20px 65px #183d7512;
+}
+
+.form-title {
+  margin-bottom: 25px;
+}
+
+.form-title h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.form-title p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.progress-track {
+  height: 5px;
+  background: #e8eef8;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 18px;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #1769ff, #6d5dfc);
+  border-radius: 10px;
+  transition: width .3s ease;
+}
+
+.section {
+  border-top: 1px solid #edf1f8;
+  padding-top: 23px;
+  margin-top: 24px;
+}
+
+.section h3 {
+  font-size: 15px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section h3 span {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: var(--primary);
+  background: #edf4ff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 19px;
+}
+
+.field { min-width: 0; }
+.full { grid-column: 1 / -1; }
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.required { color: #e13e54; }
+
+input, select, textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--border);
+  background: #fbfdff;
+  border-radius: 11px;
+  padding: 13px 14px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--dark);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px #1769ff13;
+}
+
+textarea {
+  min-height: 95px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 7px;
+}
+
+.photo-area {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 78px;
+  height: 78px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #edf4ff;
+  border: 3px solid white;
+  box-shadow: 0 0 0 1px var(--border);
+  object-fit: cover;
+}
+
+.consent-box {
+  background: #f7faff;
+  border: 1px solid #e3ebf8;
+  padding: 17px;
+  border-radius: 13px;
+  margin-top: 15px;
+}
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.65;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+.check-row:last-child { margin-bottom: 0; }
+
+.check-row input {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: var(--primary);
+}
+
+.notice {
+  padding: 13px 15px;
+  border-radius: 11px;
+  background: #eef5ff;
+  color: #254d87;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 20px;
+}
+
+button {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  background: linear-gradient(110deg, #1769ff, #5146e5);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 23px;
+  box-shadow: 0 8px 20px #1769ff2c;
+  transition: transform .2s, box-shadow .2s, opacity .2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px #1769ff40;
+}
+
+button:active { transform: scale(.99); }
+
+button:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+#message {
+  display: none;
+  padding: 13px;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+#message.error {
+  display: block;
+  color: #a32735;
+  background: #fff0f1;
+}
+
+#message.info {
+  display: block;
+  color: #174e31;
+  background: #eaf9ef;
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin-top: 23px;
+}
+
+.footer a { color: var(--primary); text-decoration: none; }
+
+@media (max-width: 600px) {
+  body { padding: 20px 11px; }
+  .grid { grid-template-columns: 1fr; gap: 16px; }
+  .full { grid-column: auto; }
+  .card { border-radius: 19px; }
+  .photo-area { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<main class="page">
+
+  <header class="header">
+    <img
+      class="logo"
+      src="https://i.ibb.co/WpW6yjc5/Chat-GPT-Image-Sep-3-2026-02-37-25-PM.png"
+      alt="EIAFSDO Logo"
+    >
+    <h1>EIAFSDO <span>Registration</span></h1>
+    <p>East Indian Amateur Full-Stack Developers Organization<br>
+      Build. Learn. Grow.</p>
+  </header>
+
+  <div class="card">
+    <div class="form-title">
+      <h2>Become a Member</h2>
+      <p>Complete the form below to submit your membership application. Fields marked * are required.</p>
+      <div class="progress-track">
+        <div class="progress-bar" id="progress"></div>
+      </div>
+      <p id="progressText" class="hint">Form completion: 0%</p>
+    </div>
+
+    <!-- Replace this endpoint with your secure backend URL. -->
+    <form id="registrationForm" action="YOUR_REGISTRATION_API_ENDPOINT"
+          method="POST">
+
+      <div class="section">
+        <h3><span>01</span> Personal Information</h3>
+        <div class="grid">
+
+          <div class="field">
+            <label for="fullName">Full Name <b class="required">*</b></label>
+            <input id="fullName" name="fullName" type="text"
+              placeholder="Enter your full name" autocomplete="name"
+              minlength="2" maxlength="100" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address <b class="required">*</b></label>
+            <input id="email" name="email" type="email"
+              placeholder="you@example.com" autocomplete="email"
+              maxlength="254" required>
+            <p class="hint">Use an email address you can access.</p>
+          </div>
+
+          <div class="field full">
+            <label for="photoUrl">Profile Photo Hosted Link <b class="required">*</b></label>
+            <div class="photo-area">
+              <img id="avatarPreview" class="avatar"
+                src="https://placehold.co/160x160/eaf1ff/1769ff?text=Photo"
+                alt="Profile photo preview">
+              <div style="flex:1;min-width:0">
+                <input id="photoUrl" name="photoUrl" type="url"
+                  placeholder="https://example.com/your-photo.jpg"
+                  inputmode="url" required>
+                <p class="hint">Paste a direct HTTPS link to your hosted profile image.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="linkedin">LinkedIn Profile</label>
+            <input id="linkedin" name="linkedin" type="url"
+              placeholder="https://www.linkedin.com/in/...">
+          </div>
+
+          <div class="field">
+            <label for="github">GitHub Profile</label>
+            <input id="github" name="github" type="url"
+              placeholder="https://github.com/username">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="section">
+        <h3><span>02</span> Skills & Interests</h3>
+        <div class="grid">
+
+          <div class="field">
+            <label for="role">Area of Interest <b class="required">*</b></label>
+            <select id="role" name="role" required>
+              <option value="">Select an area</option>
+              <option>Web Development</option>
+              <option>Frontend Development</option>
+              <option>Backend Development</option>
+              <option>Full-Stack Development</option>
+              <option>App Development</option>
+              <option>UI/UX Design</option>
+              <option>Cybersecurity</option>
+              <option>Artificial Intelligence</option>
+              <option>Internet of Things (IoT)</option>
+              <option>Data Science</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="experience">Experience Level <b class="required">*</b></label>
+            <select id="experience" name="experience" required>
+              <option value="">Select level</option>
+              <option>Beginner</option>
+              <option>Student / Learner</option>
+              <option>Intermediate</option>
+              <option>Experienced</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="skills">Technical Skills</label>
+            <input id="skills" name="skills" type="text" maxlength="500"
+              placeholder="HTML, CSS, JavaScript, Python, Firebase...">
+          </div>
+
+          <div class="field full">
+            <label for="bio">Short Introduction <b class="required">*</b></label>
+            <textarea id="bio" name="bio" minlength="10" maxlength="1000"
+              placeholder="Tell us about yourself, your interests, and what you want to learn..."
+              required></textarea>
+          </div>
+
+          <div class="field full">
+            <label for="projects">Projects / Portfolio (Optional)</label>
+            <textarea id="projects" name="projects" maxlength="1500"
+              placeholder="Share your project links or briefly describe your work."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3><span>03</span> Consent & Confirmation</h3>
+
+        <div class="consent-box">
+          <label class="check-row">
+            <input type="checkbox" name="profileConsent" value="yes" required>
+            <span>I consent to EIAFSDO processing my submitted information for membership registration and organizational communication. <b class="required">*</b></span>
+          </label>
+
+          <label class="check-row">
+            <input type="checkbox" name="publicationConsent" value="yes">
+            <span>I voluntarily agree to the public display of my name, profile photo, and approved profile information on EIAFSDO platforms. This consent is optional.</span>
+          </label>
+
+          <label class="check-row">
+            <input type="checkbox" name="accuracyConfirmation" value="yes" required>
+            <span>I confirm that the information I have provided is accurate to the best of my knowledge. <b class="required">*</b></span>
+          </label>
+        </div>
+
+        <div class="notice">
+          <strong>Privacy & account security</strong><br>
+          Your information should only be processed for the purposes explained in the organization's privacy notice. Account creation and email notifications must be handled by a secure backend. Never enter an existing account password in this form.
+        </div>
+
+        <button type="submit" id="submitBtn">Submit Membership Application →</button>
+        <div id="message" role="status" aria-live="polite"></div>
+      </div>
+
+    </form>
+  </div>
+
+  <footer class="footer">
+    <strong>EIAFSDO</strong> — East Indian Amateur Full-Stack Developers Organization<br>
+    Build. Learn. Grow.<br>
+    Contact: <a href="mailto:eiafsdoindia@gmail.com">eiafsdoindia@gmail.com</a><br>
+    <span>Secure registration requires a configured server endpoint.</span>
+  </footer>
+</main>
+
+<script>
+const form = document.getElementById("registrationForm");
+const photoInput = document.getElementById("photoUrl");
+const avatar = document.getElementById("avatarPreview");
+const progress = document.getElementById("progress");
+const progressText = document.getElementById("progressText");
+const message = document.getElementById("message");
+const submitBtn = document.getElementById("submitBtn");
+
+const requiredFields = [
+  "fullName", "email", "photoUrl", "role", "experience", "bio"
+];
+
+function updateProgress() {
+  let complete = 0;
+
+  requiredFields.forEach(id => {
+    const field = document.getElementById(id);
+    if (field && field.value.trim() && field.checkValidity()) complete++;
+  });
+
+  const consentFields = form.querySelectorAll(
+    'input[type="checkbox"][required]'
+  );
+  const total = requiredFields.length + consentFields.length;
+  const checked = [...consentFields].filter(item => item.checked).length;
+  const percentage = Math.round(((complete + checked) / total) * 100);
+
+  progress.style.width = percentage + "%";
+  progressText.textContent = "Form completion: " + percentage + "%";
+}
+
+form.addEventListener("input", updateProgress);
+form.addEventListener("change", updateProgress);
+
+photoInput.addEventListener("input", () => {
+  const value = photoInput.value.trim();
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") throw new Error("HTTPS required");
+    avatar.src = url.href;
+  } catch {
+    avatar.src =
+      "https://placehold.co/160x160/eaf1ff/1769ff?text=Photo";
+  }
+});
+
+avatar.addEventListener("error", () => {
+  avatar.src = "https://placehold.co/160x160/eaf1ff/1769ff?text=Photo";
+});
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  message.className = "";
+  message.style.display = "none";
+
+  if (!form.reportValidity()) return;
+
+  const endpoint = form.getAttribute("action");
+
+  if (!endpoint || endpoint === "YOUR_REGISTRATION_API_ENDPOINT") {
+    message.className = "error";
+    message.textContent =
+      "The form design is ready, but registration is not connected yet. Configure your secure backend endpoint before accepting applications.";
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      body: new FormData(form),
+      headers: { "Accept": "application/json" }
+    });
+
+    if (!response.ok) {
+      throw new Error("The server could not process the application.");
+    }
+
+    message.className = "info";
+    message.textContent =
+      "Your application was submitted. Follow the instructions sent by EIAFSDO if any further action is required.";
+    form.reset();
+    avatar.src =
+      "https://placehold.co/160x160/eaf1ff/1769ff?text=Photo";
+    updateProgress();
+  } catch (error) {
+    message.className = "error";
+    message.textContent =
+      "Submission failed. Please try again later or contact eiafsdoindia@gmail.com.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Membership Application →";
+  }
+});
+
+updateProgress();
+</script>
+</body>
+</html>
